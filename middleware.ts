@@ -14,18 +14,33 @@ const publicOnlyUrls: Routes = {
   "/github/complete": true,
 };
 
+const privateOnlyUrls: Routes = {
+  "/profile": true,
+};
+
+//로그인 안되었는데, 프라이빗 주소로 접근하면 "/"로 보내버리기
 export async function middleware(request: NextRequest) {
   const session = await getSession();
   const exists = publicOnlyUrls[request.nextUrl.pathname];
-  if (!session.id) {
-    if (!exists) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
-  } else {
-    if (exists) {
-      return NextResponse.redirect(new URL("/profile", request.url));
-    }
+  const isPrivate = privateOnlyUrls[request.nextUrl.pathname];
+
+  if (!session.token && isPrivate) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
+  // if (!session.token) {
+  //   return NextResponse.redirect(new URL("/", request.url));
+  // } else {
+  //   return NextResponse.redirect(new URL("/profile", request.url));
+  // }
+  // if (!session.token) {
+  //   if (!exists) {
+  //     return NextResponse.redirect(new URL("/login", request.url));
+  //   }
+  // } else {
+  //   if (exists) {
+  //     return NextResponse.redirect(new URL("/", request.url));
+  //   }
+  // }
 }
 
 export const config = {

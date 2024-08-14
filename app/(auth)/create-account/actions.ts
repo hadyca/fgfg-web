@@ -7,10 +7,9 @@ import {
 } from "@/lib/constants";
 import { z } from "zod";
 import { redirect } from "next/navigation";
-import { useQuery } from "@apollo/client";
 import { CHECK_EMAIL, CHECK_USERNAME, CREATE_ACCOUNT } from "./queries";
-import { client } from "@/lib/apolloClient";
 import getSession from "@/lib/session";
+import { client } from "@/lib/apolloClient";
 
 const unvailableUsername = (username: string) =>
   !UNAVAILABLE_USERNAME.includes(username);
@@ -102,9 +101,8 @@ export async function createAccount(prevState: any, formData: FormData) {
       },
     });
     const session = await getSession();
-    session.id = data.createAccount.id;
     session.token = data.createAccount.token;
     await session.save();
-    redirect("/profile");
+    redirect("/");
   }
 }

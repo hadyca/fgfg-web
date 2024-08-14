@@ -8,9 +8,9 @@ import {
 import { z } from "zod";
 import getSession from "@/lib/session";
 import { redirect } from "next/navigation";
-import { client } from "@/lib/apolloClient";
 import { CHECK_EMAIL } from "../create-account/queries";
 import { LOG_IN } from "./queries";
+import { client } from "@/lib/apolloClient";
 
 const checkEmailExists = async (email: string) => {
   const {
@@ -57,10 +57,9 @@ export async function logIn(prevState: any, formData: FormData) {
     });
     if (data.login.ok) {
       const session = await getSession();
-      session.id = data.login.id;
       session.token = data.login.token;
       await session.save();
-      redirect("/profile");
+      redirect("/");
     } else {
       return {
         fieldErrors: {
