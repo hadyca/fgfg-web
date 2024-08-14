@@ -1,7 +1,4 @@
 export default function HeroSection() {
-  {
-    /* Hero Section */
-  }
   <section
     className="relative h-[80vh] flex items-center justify-center bg-cover bg-center"
     style={{
