@@ -5,7 +5,6 @@ export const LOG_IN = gql`
     login(email: $email, password: $password) {
       ok
       token
-      id
       error
     }
   }
