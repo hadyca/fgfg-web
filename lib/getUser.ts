@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import getSession from "./session";
 import { client } from "./apolloClient";
+import { redirect } from "next/navigation";
 
 export const ME_QUERY = gql`
   query me {
@@ -19,10 +20,11 @@ export default async function getUser() {
   }
   const { data } = await client.query({
     query: ME_QUERY,
+    fetchPolicy: "no-cache",
   });
   if (data?.me === null) {
-    //세션 토큰 삭제
-    return;
+    session.destroy();
+    redirect("/");
   }
   return { data };
 }

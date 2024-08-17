@@ -2,16 +2,16 @@ import Footer from "@/components/mainPage/footer";
 import HeaderSection from "@/components/mainPage/headerSection";
 import HeroSection from "@/components/mainPage/heroSection";
 import HowItWorksSection from "@/components/mainPage/howItWorksSection";
-import Testimonials from "@/components/mainPage/testimonials";
-import Image from "next/image";
+import getUser from "@/lib/getUser";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getUser();
+
   return (
     <main className="bg-white text-gray-800">
-      <HeaderSection />
+      <HeaderSection username={user?.data?.me?.username} />
       <HeroSection />
       <HowItWorksSection />
-      <Testimonials />
       <Footer />
     </main>
   );

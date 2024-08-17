@@ -9,7 +9,7 @@ export default function HowItWorksSection() {
       <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="text-center">
           <Image
-            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
+            src=""
             alt="Step 1"
             width={100}
             height={100}
@@ -22,7 +22,7 @@ export default function HowItWorksSection() {
         </div>
         <div className="text-center">
           <Image
-            src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e"
+            src=""
             alt="Step 2"
             width={100}
             height={100}
@@ -35,7 +35,7 @@ export default function HowItWorksSection() {
         </div>
         <div className="text-center">
           <Image
-            src="https://images.unsplash.com/photo-1510074377623-8cf13fb90f61"
+            src=""
             alt="Step 3"
             width={100}
             height={100}
