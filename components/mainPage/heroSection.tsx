@@ -10,14 +10,14 @@ export default function HeroSection() {
       }}
     >
       <div className="absolute inset-0 bg-black opacity-60"></div>
-      <div className="relative z-10 text-center">
-        <div className="">
+      <div className="relative z-10 text-center flex flex-col gap-4 items-center">
+        <div className="mt-6">
           <h1 className="text-2xl md:text-4xl font-bold text-white">
             외국인 여자친구 가이드와 함께 여행하세요
           </h1>
         </div>
-        <form className="mt-8 bg-white p-6 rounded-lg shadow-xl border border-gray-200 gap-6 w-max">
-          <div className="flex flex-row gap-4">
+        <form className="bg-white p-6 rounded-lg shadow-xl border border-gray-200 gap-6 w-max">
+          <div className="flex flex-row gap-4 mb-4">
             <div>
               <label className="block text-gray-700 text-sm font-medium mb-2">
                 픽업 날짜
@@ -52,7 +52,7 @@ export default function HeroSection() {
               </select>
             </div>
           </div>
-          <Button text="예약하기" />
+          <Button text="검색하기" />
         </form>
       </div>
     </section>
