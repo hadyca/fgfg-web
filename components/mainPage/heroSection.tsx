@@ -1,8 +1,20 @@
 "use client";
+
 import { useFormState } from "react-dom";
-import Button from "../ui/button";
+import Button from "../customUi/button";
 import { getGuides } from "@/app/actions";
 import { useEffect, useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function HeroSection() {
   const [state, action] = useFormState(getGuides, null);
@@ -14,9 +26,7 @@ export default function HeroSection() {
     setToday(currentDate);
   }, []);
 
-  useEffect(() => {
-    alert("날짜와 시간을 다시 확인 하세요.");
-  }, [state?.fieldErrors]);
+  useEffect(() => {}, [state?.fieldErrors]);
 
   return (
     <section
@@ -82,6 +92,22 @@ export default function HeroSection() {
             </div>
           </div>
           <Button text="검색하기" />
+          <AlertDialog>
+            <AlertDialogTrigger>Open</AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction>Continue</AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </form>
       </div>
     </section>
