@@ -9,7 +9,6 @@ export default async function Home() {
 
   return (
     <main className="bg-white text-gray-800">
-      <HeaderSection username={user?.data?.me?.username} />
       <HeroSection />
       <HowItWorksSection />
       <Footer />

@@ -1,6 +1,6 @@
 "use client";
 
-import Input from "@/components/input";
+import Input from "@/components/ui/input";
 import SocialLogin from "@/components/social-login";
 import { useFormState } from "react-dom";
 import { createAccount } from "./actions";
