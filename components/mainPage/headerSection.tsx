@@ -17,7 +17,7 @@ export default function HeaderSection({ username }: NavProps) {
 
   return (
     <header className="py-4 bg-white shadow-md relative">
-      <div className="flex justify-between items-center px-6">
+      <div className="flex justify-between items-center px-10">
         <Link href="/" className="text-2xl font-bold text-orange-500">
           FGFG
         </Link>
