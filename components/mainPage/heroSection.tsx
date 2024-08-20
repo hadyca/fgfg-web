@@ -1,32 +1,66 @@
 "use client";
 
-import { useFormState } from "react-dom";
-import Button from "../customUi/button";
-import { getGuides } from "@/app/actions";
 import { useEffect, useState } from "react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { searchGuideSchema, SearchGuideType } from "@/app/(main)/schema";
+import { Button } from "../ui/button";
+import { searchGuide } from "@/app/(main)/actions";
+import { useFormStatus } from "react-dom";
 
 export default function HeroSection() {
-  const [state, action] = useFormState(getGuides, null);
   const [today, setToday] = useState("");
+  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useForm<SearchGuideType>({
+    resolver: zodResolver(searchGuideSchema),
+  });
 
   useEffect(() => {
     const current = new Date();
     const currentDate = current.toISOString().split("T")[0];
     setToday(currentDate);
-  }, []);
+    setValue("date", currentDate); // 폼 필드의 값을 업데이트
 
-  useEffect(() => {}, [state?.fieldErrors]);
+    const savedFormData = localStorage.getItem("form-data");
+    if (savedFormData) {
+      const parsedData = JSON.parse(savedFormData);
+      setValue("date", parsedData.date || currentDate);
+      setValue("startTime", parsedData.startTime || "");
+      setValue("endTime", parsedData.endTime || "");
+    }
+  }, [setValue]);
+
+  const onSubmit = async (data: SearchGuideType) => {
+    setLoading(true); // 로딩 시작
+
+    // 폼 데이터를 localStorage에 저장
+    localStorage.setItem("form-data", JSON.stringify(data));
+
+    // 폼 데이터를 FormData 객체로 변환
+    const formData = new FormData();
+    formData.append("date", data.date);
+    formData.append("startTime", data.startTime);
+    formData.append("endTime", data.endTime);
+
+    // 서버 함수 호출
+    await searchGuide(formData);
+    setLoading(false);
+  };
+
+  const timeOptions = Array.from({ length: 24 }, (_, i) => {
+    const time = `${String(i).padStart(2, "0")}:00`;
+    return (
+      <option key={time} value={time}>
+        {time}
+      </option>
+    );
+  });
 
   return (
     <section
@@ -44,70 +78,63 @@ export default function HeroSection() {
           </h1>
         </div>
         <form
-          action={action}
+          onSubmit={handleSubmit(onSubmit)}
           className="bg-white p-6 rounded-lg shadow-xl border border-gray-200 gap-6 w-max"
         >
-          <div className="flex flex-row gap-4 mb-4">
-            <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2">
-                픽업 날짜
-              </label>
-              <input
-                type="date"
-                name="date"
-                min={today}
-                defaultValue={today}
-                className="w-full md:w-auto px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-row justify-center items-center gap-4">
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-2">
+                  픽업 날짜
+                </label>
+                <input
+                  type="date"
+                  min={today}
+                  {...register("date")}
+                  className="w-full md:w-auto px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-2">
+                  픽업 시각
+                </label>
+                <select
+                  {...register("startTime")}
+                  className="w-full md:w-auto px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                >
+                  {timeOptions}
+                </select>
+              </div>
+              <div>
+                <label className="block text-gray-700 text-sm font-medium mb-2">
+                  종료 시각
+                </label>
+                <select
+                  {...register("endTime")}
+                  className="w-full md:w-auto px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                >
+                  {timeOptions}
+                </select>
+              </div>
             </div>
-            <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2">
-                픽업 시각
-              </label>
-              <select
-                name="startTime"
-                className="w-full md:w-auto px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="06:00">06:00 AM</option>
-                <option value="09:00">09:00 AM</option>
-                <option value="12:00">12:00 PM</option>
-                <option value="15:00">03:00 PM</option>
-                <option value="18:00">06:00 PM</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2">
-                종료 시각
-              </label>
-              <select
-                name="endTime"
-                className="w-full md:w-auto px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="09:00">09:00 AM</option>
-                <option value="12:00">12:00 PM</option>
-                <option value="15:00">03:00 PM</option>
-                <option value="18:00">06:00 PM</option>
-                <option value="21:00">09:00 PM</option>
-              </select>
-            </div>
+            {errors?.startTime?.type === "custom" ? (
+              <div className="items-start">
+                <span className="text-red-500 font-medium">
+                  최소 이용시간은 3시간 입니다.
+                </span>
+              </div>
+            ) : errors?.startTime || errors?.startTime || errors?.endTime ? (
+              <div>
+                <span>날짜와 시간을 다시 확인해주세요.</span>
+              </div>
+            ) : null}
+            <Button
+              disabled={loading}
+              className="w-full disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
+            >
+              검색하기
+            </Button>
           </div>
-          <Button text="검색하기" />
-          <AlertDialog>
-            <AlertDialogTrigger>Open</AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction>Continue</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
         </form>
       </div>
     </section>
