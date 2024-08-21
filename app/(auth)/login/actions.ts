@@ -1,52 +1,36 @@
 "use server";
 
-import {
-  PASSWORD_MIN_LENGTH,
-  PASSWORD_REGEX,
-  PASSWORD_REGEX_ERROR,
-} from "@/lib/constants";
-import { z } from "zod";
 import getSession from "@/lib/session";
 import { redirect } from "next/navigation";
-import { CHECK_EMAIL } from "../create-account/queries";
 import { LOG_IN } from "./queries";
 import { client } from "@/lib/apolloClient";
+import { loginSchema } from "./schema";
+import { CHECK_EMAIL } from "../create-account/queries";
 
-const checkEmailExists = async (email: string) => {
-  const {
-    data: {
-      checkEmail: { ok },
-    },
-  } = await client.query({
-    query: CHECK_EMAIL,
-    variables: {
-      email,
-    },
-  });
-  return Boolean(!ok);
-};
-
-const formSchema = z.object({
-  email: z
-    .string()
-    .email()
-    .toLowerCase()
-    .refine(checkEmailExists, "존재 하지 않는 이메일 입니다."),
-  password: z.string({
-    required_error: "Password is required",
-  }),
-  // .min(PASSWORD_MIN_LENGTH),
-  // .regex(PASSWORD_REGEX, PASSWORD_REGEX_ERROR),
-});
-
-export async function logIn(prevState: any, formData: FormData) {
+export async function logIn(formData: FormData) {
   const data = {
     email: formData.get("email"),
     password: formData.get("password"),
   };
-  const result = await formSchema.spa(data);
+  const {
+    data: { checkEmail },
+  } = await client.query({
+    query: CHECK_EMAIL,
+    variables: {
+      email: data.email,
+    },
+  });
+
+  if (checkEmail.ok) {
+    return {
+      type: "checkEmail",
+      error: "없는 이메일 입니다.",
+    };
+  }
+
+  const result = loginSchema.safeParse(data);
   if (!result.success) {
-    return result.error.flatten();
+    return { type: "zodSchema", error: "유효하지 않은 데이터 입니다." };
   } else {
     const { data } = await client.mutate({
       mutation: LOG_IN,
@@ -61,12 +45,7 @@ export async function logIn(prevState: any, formData: FormData) {
       await session.save();
       redirect("/");
     } else {
-      return {
-        fieldErrors: {
-          password: ["비밀번호가 틀렸습니다."],
-          email: [],
-        },
-      };
+      return { type: "password", error: "비밀번호가 틀렸습니다." };
     }
   }
 }

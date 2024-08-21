@@ -9,7 +9,7 @@ export default function HowItWorksSection() {
       <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="text-center">
           <Image
-            src=""
+            src="https://images.pexels.com/photos/6665776/pexels-photo-6665776.jpeg?auto=compress&cs=tinysrgb&w=1920&h=750&dpr=1"
             alt="Step 1"
             width={100}
             height={100}
@@ -22,11 +22,11 @@ export default function HowItWorksSection() {
         </div>
         <div className="text-center">
           <Image
-            src=""
+            src="https://images.pexels.com/photos/6665776/pexels-photo-6665776.jpeg?auto=compress&cs=tinysrgb&w=1920&h=750&dpr=1"
             alt="Step 2"
             width={100}
             height={100}
-            className="mx-auto rounded-full"
+            className="mx-auto"
           />
           <h3 className="mt-4 text-xl font-semibold">Book Your Experience</h3>
           <p className="mt-2 text-gray-600">
@@ -35,7 +35,7 @@ export default function HowItWorksSection() {
         </div>
         <div className="text-center">
           <Image
-            src=""
+            src="https://images.pexels.com/photos/6665776/pexels-photo-6665776.jpeg?auto=compress&cs=tinysrgb&w=1920&h=750&dpr=1"
             alt="Step 3"
             width={100}
             height={100}

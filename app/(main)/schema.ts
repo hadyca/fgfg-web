@@ -23,19 +23,3 @@ export const searchGuideSchema = z
   });
 
 export type SearchGuideType = z.infer<typeof searchGuideSchema>;
-
-// .superRefine((val, ctx) => {
-//   console.log(val);
-//   const startDate = new Date(`${date}T${startTime}`);
-//   const endDate = new Date(`${date}T${endTime}`);
-//   const timeDifference = endDate.getTime() - startDate.getTime(); // 밀리초 단위의 차이
-//   const threeHoursInMilliseconds = 3 * 60 * 60 * 1000; // 3시간을 밀리초로 변환
-
-//   if (timeDifference < threeHoursInMilliseconds) {
-//     ctx.addIssue({
-//       code: "custom",
-//       message: "최소 가이드 시간은 3시간 입니다.",
-//       path: ["startTime"],
-//     });
-//   }
-// })

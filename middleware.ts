@@ -8,10 +8,7 @@ interface Routes {
 const publicOnlyUrls: Routes = {
   "/": true,
   "/login": true,
-  "/sms": true,
   "/create-account": true,
-  "/github/start": true,
-  "/github/complete": true,
 };
 
 const privateOnlyUrls: Routes = {
@@ -25,7 +22,7 @@ export async function middleware(request: NextRequest) {
   const isPrivate = privateOnlyUrls[request.nextUrl.pathname];
 
   if (!session.token && isPrivate) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/create-account", request.url));
   }
   // if (!session.token) {
   //   return NextResponse.redirect(new URL("/", request.url));
