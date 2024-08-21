@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { searchGuideSchema, SearchGuideType } from "@/app/(main)/schema";
 import { Button } from "../ui/button";
 import { searchGuide } from "@/app/(main)/actions";
-import { useFormStatus } from "react-dom";
 
 export default function HeroSection() {
   const [today, setToday] = useState("");
@@ -36,7 +35,7 @@ export default function HeroSection() {
     }
   }, [setValue]);
 
-  const onSubmit = async (data: SearchGuideType) => {
+  const onValid = async (data: SearchGuideType) => {
     setLoading(true); // 로딩 시작
 
     // 폼 데이터를 localStorage에 저장
@@ -53,8 +52,17 @@ export default function HeroSection() {
     setLoading(false);
   };
 
-  const timeOptions = Array.from({ length: 24 }, (_, i) => {
+  const startTimeOptions = Array.from({ length: 22 }, (_, i) => {
     const time = `${String(i).padStart(2, "0")}:00`;
+    return (
+      <option key={time} value={time}>
+        {time}
+      </option>
+    );
+  });
+
+  const endTimeOptions = Array.from({ length: 22 }, (_, i) => {
+    const time = `${String(i + 3).padStart(2, "0")}:00`;
     return (
       <option key={time} value={time}>
         {time}
@@ -78,7 +86,7 @@ export default function HeroSection() {
           </h1>
         </div>
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onValid)}
           className="bg-white p-6 rounded-lg shadow-xl border border-gray-200 gap-6 w-max"
         >
           <div className="flex flex-col gap-3">
@@ -102,7 +110,7 @@ export default function HeroSection() {
                   {...register("startTime")}
                   className="w-full md:w-auto px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
-                  {timeOptions}
+                  {startTimeOptions}
                 </select>
               </div>
               <div>
@@ -113,14 +121,14 @@ export default function HeroSection() {
                   {...register("endTime")}
                   className="w-full md:w-auto px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
-                  {timeOptions}
+                  {endTimeOptions}
                 </select>
               </div>
             </div>
             {errors?.startTime?.type === "custom" ? (
               <div className="items-start">
                 <span className="text-red-500 font-medium">
-                  최소 이용시간은 3시간 입니다.
+                  최소 이용 시간은 3시간 입니다.
                 </span>
               </div>
             ) : errors?.startTime || errors?.startTime || errors?.endTime ? (
