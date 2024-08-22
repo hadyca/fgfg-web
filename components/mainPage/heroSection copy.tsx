@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { searchGuideSchema, SearchGuideType } from "@/app/(main)/schema";
 import { Button } from "../ui/button";
@@ -39,27 +38,22 @@ export default function HeroSection() {
     handleSubmit,
     setValue,
     formState: { errors },
-    watch,
   } = useForm<SearchGuideType>({
     resolver: zodResolver(searchGuideSchema),
   });
 
-  const currentDate = watch("date"); // 날짜 필드의 값을 관찰합니다.
-
-  console.log(currentDate);
-
   useEffect(() => {
     const current = new Date();
-    const today = current.toISOString().split("T")[0];
-    setToday(today);
-    setValue("date", today); // 폼 필드의 현재 값을 업데이트
+    const currentDate = current.toISOString().split("T")[0];
+    setToday(currentDate);
+    setValue("date", currentDate); // 폼 필드의 값을 업데이트
 
     const savedFormData = localStorage.getItem("form-data");
 
     if (savedFormData) {
       const parsedData = JSON.parse(savedFormData);
 
-      setValue("date", parsedData.date || today);
+      setValue("date", parsedData.date || currentDate);
 
       const initialStartTime = parsedData.startTime || "09:00";
       setValue("startTime", initialStartTime);
@@ -105,10 +99,6 @@ export default function HeroSection() {
       </SelectItem>
     );
   });
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    setIsCalendarOpen(false); // 날짜 선택 후 캘린더 닫기
-  };
 
   const handleStartTimeChange = (value: string) => {
     setValue("startTime", value);
@@ -145,25 +135,24 @@ export default function HeroSection() {
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
-                      // className={cn(
-                      //   "w-[240px] pl-3 text-left font-normal",
-                      //   !field.value && "text-muted-foreground"
-                      // )}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
                     >
-                      {currentDate ? (
-                        format(new Date(currentDate), "PPP")
+                      {field.value ? (
+                        format(field.value, "PPP")
                       ) : (
                         <span>Pick a date</span>
                       )}
-
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"
-                      // selected={field.value}
-                      // onSelect={field.onChange}
+                      selected={field.value}
+                      onSelect={field.onChange}
                       disabled={(date) =>
                         date > new Date() || date < new Date("1900-01-01")
                       }

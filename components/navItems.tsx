@@ -1,51 +1,59 @@
 import Link from "next/link";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 
 interface NavItemsProps {
   username: string;
+  isGuide: boolean;
+  isMobile: boolean;
 }
 
-export default function NavItems({ username }: NavItemsProps) {
+export default function NavItems({
+  username,
+  isGuide,
+  isMobile,
+}: NavItemsProps) {
   return (
-    <>
-      <li className="text-right">
-        <Link
-          href="/search-guide"
-          className="text-gray-800 hover:text-teal-600"
-        >
-          가이드 찾기
+    <NavigationMenu className={isMobile ? "list-none mt-4" : "list-none"}>
+      <NavigationMenuItem className={isMobile ? "flex flex-col gap-1" : ""}>
+        <Link href="/search-guide" legacyBehavior passHref>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+            가이드 찾기
+          </NavigationMenuLink>
         </Link>
-      </li>
-      <li className="text-right">
-        <Link
-          href="/signup-guide"
-          className="text-gray-800 hover:text-teal-600"
-        >
-          가이드 등록
-        </Link>
-      </li>
-      {username ? (
-        <li className="text-right">
-          <Link href="/profile" className="text-gray-800 hover:text-teal-600">
-            {username}
+
+        {!isGuide ? (
+          <Link href="/signup-guide" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              가이드 등록
+            </NavigationMenuLink>
           </Link>
-        </li>
-      ) : (
-        <>
-          <li className="text-right">
-            <Link href="/login" className="text-gray-800 hover:text-teal-600">
-              로그인
+        ) : null}
+        {username ? (
+          <Link href="/profile" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              {username}
+            </NavigationMenuLink>
+          </Link>
+        ) : (
+          <>
+            <Link href="/login" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                로그인
+              </NavigationMenuLink>
             </Link>
-          </li>
-          <li className="text-right">
-            <Link
-              href="/create-account"
-              className="text-gray-800 hover:text-teal-600"
-            >
-              회원가입
+            <Link href="/create-account" legacyBehavior passHref>
+              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                회원가입
+              </NavigationMenuLink>
             </Link>
-          </li>
-        </>
-      )}
-    </>
+          </>
+        )}
+      </NavigationMenuItem>
+    </NavigationMenu>
   );
 }

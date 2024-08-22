@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createAccount } from "./actions";
 import ErrorText from "@/components/errorText";
 import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 
 export default function CreateAccount() {
   const [loading, setLoading] = useState(false);
@@ -98,7 +99,7 @@ export default function CreateAccount() {
             >
               회원 가입
             </Button>
-            <div className="border" />
+            <Separator />
             <Link href={"/login"}>
               <Button className="w-full" variant={"light"}>
                 FGFG회원이신가요? 로그인
