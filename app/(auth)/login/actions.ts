@@ -42,6 +42,7 @@ export async function logIn(formData: FormData) {
     if (data.login.ok) {
       const session = await getSession();
       session.token = data.login.token;
+      session.isGuide = data.login.isGuide;
       await session.save();
       redirect("/");
     } else {
