@@ -7,7 +7,7 @@ export default function AuthLayout({
 }) {
   return (
     <div>
-      <div className="py-4 bg-white px-10 border border-b-slate-200 z-20 relative">
+      <div className="h-16 px-4 bg-white border-b border-b-slate-200 z-20 relative flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold text-orange-500">
           FGFG
         </Link>

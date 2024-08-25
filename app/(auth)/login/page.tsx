@@ -45,41 +45,39 @@ export default function LogIn() {
 
   return (
     <div className="absolute inset-0 flex justify-center items-center z-10">
-      <div className="w-full max-w-md">
-        <Card className="pb-4 shadow-md">
-          <CardHeader>
-            <CardTitle>로그인</CardTitle>
-          </CardHeader>
-          <form
-            onSubmit={handleSubmit(onValid)}
-            className="flex flex-col gap-3 px-4"
+      <Card className="w-full max-w-md pb-4 shadow-md">
+        <CardHeader>
+          <CardTitle>로그인</CardTitle>
+        </CardHeader>
+        <form
+          onSubmit={handleSubmit(onValid)}
+          className="flex flex-col gap-3 px-7"
+        >
+          <Input
+            type="email"
+            placeholder="이메일"
+            {...register("email")}
+            required
+          />
+          {errors?.email ? <ErrorText text={errors.email.message!} /> : null}
+          <Input
+            type="password"
+            placeholder="비밀번호"
+            minLength={PASSWORD_MIN_LENGTH}
+            {...register("password")}
+            required
+          />
+          {errors?.password ? (
+            <ErrorText text={errors.password.message!} />
+          ) : null}
+          <Button
+            disabled={loading}
+            className=" disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
           >
-            <Input
-              type="email"
-              placeholder="이메일"
-              {...register("email")}
-              required
-            />
-            {errors?.email ? <ErrorText text={errors.email.message!} /> : null}
-            <Input
-              type="password"
-              placeholder="비밀번호"
-              minLength={PASSWORD_MIN_LENGTH}
-              {...register("password")}
-              required
-            />
-            {errors?.password ? (
-              <ErrorText text={errors.password.message!} />
-            ) : null}
-            <Button
-              disabled={loading}
-              className=" disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
-            >
-              로그인
-            </Button>
-          </form>
-        </Card>
-      </div>
+            로그인
+          </Button>
+        </form>
+      </Card>
     </div>
   );
 }
