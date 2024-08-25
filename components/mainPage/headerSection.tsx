@@ -12,8 +12,8 @@ interface NavProps {
 
 export default function HeaderSection({ username, isGuide }: NavProps) {
   return (
-    <header className="py-4 bg-white border border-b-slate-200 relative">
-      <div className="flex justify-between items-center px-10">
+    <header>
+      <div className="h-16 px-4 bg-white border-b border-b-slate-200 z-20 relative flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold text-orange-500">
           FGFG
         </Link>

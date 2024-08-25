@@ -19,7 +19,6 @@ export default function CreateAccount() {
   const {
     register,
     handleSubmit,
-    setValue,
     setError,
     formState: { errors },
   } = useForm<CreateAccountType>({
@@ -46,68 +45,66 @@ export default function CreateAccount() {
 
   return (
     <div className="absolute inset-0 flex justify-center items-center z-10">
-      <div className="w-full max-w-md">
-        <Card className="pb-4 shadow-md">
-          <CardHeader>
-            <CardTitle>회원 가입</CardTitle>
-          </CardHeader>
-          <form
-            onSubmit={handleSubmit(onValid)}
-            className="flex flex-col gap-3 px-4"
+      <Card className="w-full max-w-md pb-4 shadow-md">
+        <CardHeader>
+          <CardTitle>회원 가입</CardTitle>
+        </CardHeader>
+        <form
+          onSubmit={handleSubmit(onValid)}
+          className="flex flex-col gap-3 px-7"
+        >
+          <Input
+            type="text"
+            placeholder="유저명"
+            minLength={1}
+            maxLength={10}
+            {...register("username")}
+            required
+          />
+          {errors?.username ? (
+            <ErrorText text={errors.username.message!} />
+          ) : null}
+          <Input
+            type="email"
+            placeholder="이메일"
+            {...register("email")}
+            required
+          />
+          {errors?.email ? <ErrorText text={errors.email.message!} /> : null}
+          <Input
+            type="password"
+            placeholder="비밀번호"
+            minLength={PASSWORD_MIN_LENGTH}
+            {...register("password")}
+            required
+          />
+          {errors?.password ? (
+            <ErrorText text={errors.password.message!} />
+          ) : null}
+          <Input
+            type="password"
+            placeholder="비밀번호 확인"
+            minLength={PASSWORD_MIN_LENGTH}
+            {...register("confirm_password")}
+            required
+          />
+          {errors?.confirm_password ? (
+            <ErrorText text={errors.confirm_password.message!} />
+          ) : null}
+          <Button
+            disabled={loading}
+            className=" disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
           >
-            <Input
-              type="text"
-              placeholder="유저명"
-              minLength={1}
-              maxLength={10}
-              {...register("username")}
-              required
-            />
-            {errors?.username ? (
-              <ErrorText text={errors.username.message!} />
-            ) : null}
-            <Input
-              type="email"
-              placeholder="이메일"
-              {...register("email")}
-              required
-            />
-            {errors?.email ? <ErrorText text={errors.email.message!} /> : null}
-            <Input
-              type="password"
-              placeholder="비밀번호"
-              minLength={PASSWORD_MIN_LENGTH}
-              {...register("password")}
-              required
-            />
-            {errors?.password ? (
-              <ErrorText text={errors.password.message!} />
-            ) : null}
-            <Input
-              type="password"
-              placeholder="비밀번호 확인"
-              minLength={PASSWORD_MIN_LENGTH}
-              {...register("confirm_password")}
-              required
-            />
-            {errors?.confirm_password ? (
-              <ErrorText text={errors.confirm_password.message!} />
-            ) : null}
-            <Button
-              disabled={loading}
-              className=" disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
-            >
-              회원 가입
+            회원 가입
+          </Button>
+          <Separator />
+          <Link href={"/login"}>
+            <Button className="w-full" variant={"light"}>
+              FGFG회원이신가요? 로그인
             </Button>
-            <Separator />
-            <Link href={"/login"}>
-              <Button className="w-full" variant={"light"}>
-                FGFG회원이신가요? 로그인
-              </Button>
-            </Link>
-          </form>
-        </Card>
-      </div>
+          </Link>
+        </form>
+      </Card>
     </div>
   );
 }

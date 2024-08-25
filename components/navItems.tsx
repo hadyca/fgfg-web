@@ -25,11 +25,10 @@ export default function NavItems({
             가이드 찾기
           </NavigationMenuLink>
         </Link>
-
         {!isGuide ? (
           <Link href="/signup-guide" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              가이드 등록
+              가이드 가입
             </NavigationMenuLink>
           </Link>
         ) : null}

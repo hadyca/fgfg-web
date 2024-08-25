@@ -1,1 +1,1 @@
-//isGuide 세션에 저장해야함
+export default async function signupGuide(formData: FormData) {}

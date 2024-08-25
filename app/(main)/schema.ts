@@ -13,10 +13,28 @@ export const searchGuideSchema = z
     const timeDifference = endDate.getTime() - startDate.getTime(); // 밀리초 단위의 차이
     const threeHoursInMilliseconds = 3 * 60 * 60 * 1000; // 3시간을 밀리초로 변환
 
+    // 현재 베트남 시각을 구함 (UTC+7)
+    // 현재 UTC 시간
+    const now = new Date();
+
+    // 베트남 현재 시간 계산
+    const vietnamCurrentTime = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Ho_Chi_Minh",
+    });
+    const vietnamNow = new Date(vietnamCurrentTime);
+
     if (timeDifference < threeHoursInMilliseconds) {
       ctx.addIssue({
         code: "custom",
-        message: "최소 가이드 시간은 3시간 입니다.",
+        message: "최소 이용 시간은 3시간 입니다.",
+        path: ["startTime"],
+      });
+    }
+
+    if (startDate <= vietnamNow) {
+      ctx.addIssue({
+        code: "custom",
+        message: "픽업시각은 현지시각 기준입니다. 시간을 다시 확인해주세요.",
         path: ["startTime"],
       });
     }

@@ -9,12 +9,12 @@ export default async function HomeLayout({
   const user = await getUser();
 
   return (
-    <div>
+    <>
       <HeaderSection
         username={user?.data?.me?.username}
         isGuide={user?.data?.me?.isGuide}
       />
       {children}
-    </div>
+    </>
   );
 }

@@ -8,7 +8,6 @@ import { CalendarIcon } from "lucide-react";
 import { searchGuideSchema, SearchGuideType } from "@/app/(main)/schema";
 import { Button } from "../ui/button";
 import { searchGuide } from "@/app/(main)/actions";
-
 import {
   Select,
   SelectContent,
@@ -24,18 +23,20 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { ko } from "date-fns/locale";
+import { subDays } from "date-fns";
 
 export default function HeroSection() {
-  const [today, setToday] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    new Date()
+  );
+  const [selectedDateText, setSelectedDateText] = useState("");
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [date, setDate] = useState<Date | undefined>(new Date());
 
   const [loading, setLoading] = useState(false);
   const {
-    register,
     handleSubmit,
     setValue,
     formState: { errors },
@@ -44,38 +45,24 @@ export default function HeroSection() {
     resolver: zodResolver(searchGuideSchema),
   });
 
-  const currentDate = watch("date"); // 날짜 필드의 값을 관찰합니다.
-
-  console.log(currentDate);
+  const watchDate = watch("date");
 
   useEffect(() => {
-    const current = new Date();
-    const today = current.toISOString().split("T")[0];
-    setToday(today);
-    setValue("date", today); // 폼 필드의 현재 값을 업데이트
+    const today = format(new Date(), "yyyy-MM-dd");
 
-    const savedFormData = localStorage.getItem("form-data");
+    setSelectedDate(new Date());
+    setSelectedDateText(today);
+    setValue("date", format(new Date(), "yyyy-MM-dd"));
 
-    if (savedFormData) {
-      const parsedData = JSON.parse(savedFormData);
+    setStartTime("09:00");
+    setValue("startTime", "09:00");
 
-      setValue("date", parsedData.date || today);
-
-      const initialStartTime = parsedData.startTime || "09:00";
-      setValue("startTime", initialStartTime);
-      setStartTime(initialStartTime);
-
-      const initialEndTime = parsedData.endTime || "12:00";
-      setValue("endTime", initialEndTime);
-      setEndTime(initialEndTime);
-    }
+    setEndTime("12:00");
+    setValue("endTime", "12:00");
   }, [setValue]);
 
   const onValid = async (data: SearchGuideType) => {
     setLoading(true); // 로딩 시작
-
-    // 폼 데이터를 localStorage에 저장
-    localStorage.setItem("form-data", JSON.stringify(data));
 
     // 폼 데이터를 FormData 객체로 변환
     const formData = new FormData();
@@ -105,9 +92,15 @@ export default function HeroSection() {
       </SelectItem>
     );
   });
-  const handleDateChange = (date) => {
+
+  const handleDateChange = (date: Date | undefined) => {
+    if (!date || date === selectedDate) {
+      setIsPopoverOpen(false);
+      return;
+    }
     setSelectedDate(date);
-    setIsCalendarOpen(false); // 날짜 선택 후 캘린더 닫기
+    setValue("date", date ? format(date, "yyyy-MM-dd") : ""); // 날짜 포맷을 맞춰서 저장
+    setIsPopoverOpen(false); // 날짜 선택 후 팝오버 닫기
   };
 
   const handleStartTimeChange = (value: string) => {
@@ -141,32 +134,28 @@ export default function HeroSection() {
             <div className="flex flex-row justify-center items-center gap-4">
               <div>
                 <Label className="block mb-2">날짜 선택</Label>
-                <Popover>
+                <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"outline"}
-                      // className={cn(
-                      //   "w-[240px] pl-3 text-left font-normal",
-                      //   !field.value && "text-muted-foreground"
-                      // )}
-                    >
-                      {currentDate ? (
-                        format(new Date(currentDate), "PPP")
-                      ) : (
-                        <span>Pick a date</span>
+                      className={cn(
+                        "hover:bg-white w-40 pl-3 text-left font-normal"
                       )}
-
+                    >
+                      <span>{watchDate}</span>
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
                       mode="single"
-                      // selected={field.value}
-                      // onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
+                      locale={ko}
+                      selected={selectedDate}
+                      onSelect={handleDateChange}
+                      disabled={(date) => {
+                        const yesterday = subDays(new Date(), 1);
+                        return date <= yesterday;
+                      }}
                       initialFocus
                     />
                   </PopoverContent>
@@ -202,7 +191,7 @@ export default function HeroSection() {
             {errors?.startTime?.type === "custom" ? (
               <div className="items-start">
                 <span className="text-red-500 font-medium">
-                  최소 이용 시간은 3시간 입니다.
+                  {errors?.startTime?.message}
                 </span>
               </div>
             ) : errors?.startTime || errors?.startTime || errors?.endTime ? (
@@ -216,7 +205,7 @@ export default function HeroSection() {
               disabled={loading}
               className="w-full disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
             >
-              검색하기
+              검색 하기
             </Button>
           </div>
         </form>
