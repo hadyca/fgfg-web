@@ -17,41 +17,99 @@ import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  IdentificationIcon,
+  QuestionMarkCircleIcon,
+} from "@heroicons/react/24/outline";
+import { PhotoIcon } from "@heroicons/react/24/solid";
+import { getUploadUrl, signupGuide, userCheck } from "./actions";
 import { Separator } from "@/components/ui/separator";
-import { IdentificationIcon, EyeIcon } from "@heroicons/react/24/outline";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function SignUpGuide() {
   const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState("");
+  const [uploadUrl, setUploadUrl] = useState("");
+  const [existError, setExistError] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [isTermsChecked, setIsTermsChecked] = useState(false); // 체크박스 상태 관리
 
   const {
     register,
     handleSubmit,
+    setValue,
     setError,
     formState: { errors },
   } = useForm<SignUpGuideType>({
     resolver: zodResolver(signUpGuideSchema),
   });
 
-  console.log(errors);
+  const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { files },
+    } = event;
+    if (!files) {
+      return;
+    }
+    const file = files[0];
+    const url = URL.createObjectURL(file);
+    setPreview(url);
+    setFile(file);
+    const { success, result } = await getUploadUrl();
+
+    if (success) {
+      const { id, uploadURL } = result;
+      setUploadUrl(uploadURL);
+      setValue(
+        "photo",
+        `https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/${id}`
+      );
+    }
+  };
 
   const onValid = async (data: SignUpGuideType) => {
-    console.log(data);
     setLoading(true);
+    const user = await userCheck();
+    if (user?.data?.me?.isGuide !== null) {
+      setExistError("가이드 심사 중 혹은 이미 등록된 가이드 입니다.");
+      setLoading(false);
+      return;
+    }
+
+    if (!file || !uploadUrl) {
+      setError("photo", { message: "사진을 업로드해주세요." });
+      return;
+    }
+
+    const cloudflareForm = new FormData();
+    cloudflareForm.append("file", file);
+    const response = await fetch(uploadUrl, {
+      method: "post",
+      body: cloudflareForm,
+    });
+    if (response.status !== 200) {
+      setError("photo", {
+        message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
+      });
+      return;
+    }
+
     const formData = new FormData();
     formData.append("fullname", data.fullname);
     formData.append("birthdate", data.birthdate);
     formData.append("address", data.address);
     formData.append("phone", data.phone);
+    formData.append("photo", data.photo);
     formData.append("selfIntro", data.selfIntro);
 
-    // const result = await createAccount(formData);
-    // if (result?.type === "checkUsername") {
-    //   setError("username", { message: result.error });
-    // }
-    // if (result?.type === "checkEmail") {
-    //   setError("email", { message: result.error });
-    // }
-    //to-be 접수 성공 후, 24시간 내 결과 줄거라는 (심사 중)이라는 모달창 띄우기
+    await signupGuide(formData);
+
+    //to-be 접수 성공 후, 24시간 내 심사 결과 줄거라는 (심사 중)이라는 모달창 띄우기
     setLoading(false);
   };
 
@@ -62,7 +120,7 @@ export default function SignUpGuide() {
           <CardTitle>가이드 가입</CardTitle>
         </CardHeader>
         <form onSubmit={handleSubmit(onValid)} className="flex flex-col px-7">
-          <div>
+          <div className="mb-4">
             <div className="flex flex-row items-center gap-1">
               <IdentificationIcon className="size-6" />
               <span className="text-lg font-semibold">개인 정보</span>
@@ -72,7 +130,7 @@ export default function SignUpGuide() {
               외부에 공개되지 않습니다.
             </div>
           </div>
-          <div className="flex flex-col gap-3 my-4">
+          <div className="flex flex-col gap-3">
             <div className="space-y-1">
               <Label htmlFor="fullname">이름(본명)</Label>
               <Input
@@ -80,12 +138,36 @@ export default function SignUpGuide() {
                 type="text"
                 minLength={1}
                 {...register("fullname")}
-                required
               />
             </div>
             {errors?.fullname ? (
               <ErrorText text={errors.fullname.message!} />
             ) : null}
+            <div className="space-y-1">
+              <Label htmlFor="photo">프로필 사진</Label>
+              <Label
+                htmlFor="photo"
+                className="border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
+                style={{ backgroundImage: `url(${preview})` }}
+              >
+                {preview === "" ? (
+                  <>
+                    <PhotoIcon className="w-12" />
+                    <div className="text-neutral-400 text-sm">사진 추가</div>
+                  </>
+                ) : null}
+              </Label>
+              <input
+                onChange={onImageChange}
+                id="photo"
+                name="photo"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                required
+              />
+            </div>
+            {errors?.photo ? <ErrorText text={errors.photo.message!} /> : null}
             <div className="space-y-1">
               <Label htmlFor="birthdate">생년월일</Label>
               <Input
@@ -112,104 +194,65 @@ export default function SignUpGuide() {
               <Label htmlFor="phone">핸드폰 번호</Label>
               <Input id="phone" type="text" {...register("phone")} required />
             </div>
+            {errors?.phone ? <ErrorText text={errors.phone.message!} /> : null}
             <div className="space-y-1">
               <Label htmlFor="selfIntro">자기 소개</Label>
               <Textarea id="selfIntro" {...register("selfIntro")} required />
             </div>
           </div>
-          <Separator />
-          <div className="my-4">
-            <div className="flex flex-row items-center gap-1">
-              <EyeIcon className="size-6" />
-              <span className="text-lg font-semibold">공개 정보</span>
+          <Separator className="my-4" />
+          <div className="flex flex-row items-center gap-1">
+            <QuestionMarkCircleIcon className="size-6" />
+            <span className="text-lg font-semibold">자주 묻는 질문</span>
+          </div>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>면접을 봐야 하나요?</AccordionTrigger>
+              <AccordionContent>네 면접 봐야합니다.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>수익 부분</AccordionTrigger>
+              <AccordionContent>수익 부분 설명</AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>성적인 부분</AccordionTrigger>
+              <AccordionContent>안전합니다</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+          <Separator className="my-4" />
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="terms"
+                onCheckedChange={(checked) =>
+                  setIsTermsChecked(checked === true)
+                } // 체크박스 상태 업데이트
+              />
+              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                <Link
+                  href={"/policies/privacy-policy"}
+                  className="text-orange-500"
+                >
+                  개인정보 수집
+                </Link>
+                <span> 및 </span>
+                <Link
+                  href={"/policies/terms-and-conditions"}
+                  className="text-orange-500"
+                >
+                  이용약관
+                </Link>
+                <span> 동의</span>
+              </label>
             </div>
-            <div className="text-sm text-muted-foreground">
-              공개 정보는 실제 고객이 가이드 조회 시 확인할 수 있는 내용으로,
-              서비스 이용 시 고객에게 공개됩니다. 가입 후 다시 수정 할 수
-              있습니다.
-            </div>
+            {existError !== "" ? <ErrorText text={existError} /> : null}
+            <Button
+              disabled={loading || !isTermsChecked}
+              className=" disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
+            >
+              {loading ? "로딩 중" : "가이드 가입"}
+            </Button>
           </div>
-          <div className="space-y-1">
-            <Label htmlFor="hobby">사진 등록 부분</Label>
-            <Input
-              id="hobby"
-              type="text"
-              minLength={1}
-              maxLength={10}
-              {...register("hobby")}
-              required
-            />
-          </div>
-          {errors?.username ? (
-            <ErrorText text={errors.username.message!} />
-          ) : null}
-          <div className="space-y-1">
-            <Label htmlFor="hobby">취미 및 관심사</Label>
-            <Input
-              id="hobby"
-              type="text"
-              minLength={1}
-              maxLength={10}
-              {...register("hobby")}
-              required
-            />
-          </div>
-          {errors?.username ? (
-            <ErrorText text={errors.username.message!} />
-          ) : null}
-          <div className="space-y-1">
-            <Label htmlFor="hobby">언어 능력</Label>
-            <Input
-              id="hobby"
-              type="text"
-              minLength={1}
-              maxLength={10}
-              {...register("hobby")}
-              required
-            />
-          </div>
-          {errors?.username ? (
-            <ErrorText text={errors.username.message!} />
-          ) : null}
-          <div className="space-y-1">
-            <Label htmlFor="hobby">가이드 불가능한 시간</Label>
-            <Input
-              id="hobby"
-              type="text"
-              minLength={1}
-              maxLength={10}
-              {...register("hobby")}
-              required
-            />
-          </div>
-          {errors?.username ? (
-            <ErrorText text={errors.username.message!} />
-          ) : null}
-          <div className="flex items-center space-x-2">
-            <Checkbox id="terms" />
-            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              <Link
-                href={"/policies/privacy-policy"}
-                className="text-orange-500"
-              >
-                개인정보 수집
-              </Link>
-              <span> 및 </span>
-              <Link
-                href={"/policies/terms-and-conditions"}
-                className="text-orange-500"
-              >
-                이용약관
-              </Link>
-              <span> 동의</span>
-            </label>
-          </div>
-          <Button
-            disabled={loading}
-            className=" disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
-          >
-            가이드 가입
-          </Button>
         </form>
       </Card>
     </div>
