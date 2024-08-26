@@ -22,7 +22,7 @@ export default async function Home() {
   //   variables: { userId: 1 },
   // });
   const data = await getData();
-  console.log(data);
+
   return (
     <main>
       <h1>이거 기본</h1>
