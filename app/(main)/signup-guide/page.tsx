@@ -1,12 +1,7 @@
 "use client";
 
 import ErrorText from "@/components/errorText";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { signUpGuideSchema, SignUpGuideType } from "./schema";
@@ -19,17 +14,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   IdentificationIcon,
-  QuestionMarkCircleIcon,
+  MinusCircleIcon,
 } from "@heroicons/react/24/outline";
-import { PhotoIcon } from "@heroicons/react/24/solid";
+import { PhotoIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 import { getUploadUrl, signupGuide, userCheck } from "./actions";
 import { Separator } from "@/components/ui/separator";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";
+import GuideQandA from "@/components/guideQandA";
 
 export default function SignUpGuide() {
   const [loading, setLoading] = useState(false);
@@ -37,17 +35,26 @@ export default function SignUpGuide() {
   const [uploadUrl, setUploadUrl] = useState("");
   const [existError, setExistError] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [isTermsChecked, setIsTermsChecked] = useState(false); // 체크박스 상태 관리
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
+  const [nextId, setNextId] = useState(2);
 
   const {
     register,
     handleSubmit,
     setValue,
     setError,
+    watch,
     formState: { errors },
   } = useForm<SignUpGuideType>({
     resolver: zodResolver(signUpGuideSchema),
+    defaultValues: {
+      language: [{ id: 1, language: "", level: "" }],
+    },
   });
+
+  const language = watch("language");
+  const isAllLanguagesSelected =
+    language.length >= LANGUAGE_OPTIONS_KOREAN.length;
 
   const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -74,6 +81,7 @@ export default function SignUpGuide() {
 
   const onValid = async (data: SignUpGuideType) => {
     setLoading(true);
+
     const user = await userCheck();
     if (user?.data?.me?.isGuide !== null) {
       setExistError("가이드 심사 중 혹은 이미 등록된 가이드 입니다.");
@@ -99,6 +107,10 @@ export default function SignUpGuide() {
       return;
     }
 
+    const filteredLanguageOptions = language.filter(
+      (option) => option.language.trim() !== "" && option.level.trim() !== ""
+    );
+
     const formData = new FormData();
     formData.append("fullname", data.fullname);
     formData.append("birthdate", data.birthdate);
@@ -106,11 +118,47 @@ export default function SignUpGuide() {
     formData.append("phone", data.phone);
     formData.append("photo", data.photo);
     formData.append("selfIntro", data.selfIntro);
+    formData.append("language", JSON.stringify(filteredLanguageOptions));
 
     await signupGuide(formData);
 
     //to-be 접수 성공 후, 24시간 내 심사 결과 줄거라는 (심사 중)이라는 모달창 띄우기
     setLoading(false);
+  };
+
+  const handleLanguageChange = (index: number, value: string) => {
+    const newOptions = [...language];
+    newOptions[index].language = value;
+    setValue("language", newOptions);
+  };
+
+  const handleLevelChange = (index: number, value: string) => {
+    const newOptions = [...language];
+    newOptions[index].level = value;
+    setValue("language", newOptions);
+  };
+
+  const handleAddLanguage = () => {
+    setValue("language", [
+      ...language,
+      { id: nextId, language: "", level: "" },
+    ]);
+    setNextId(nextId + 1);
+  };
+
+  const handleRemoveLanguage = (id: number) => {
+    const newOptions = language.filter((item) => item.id !== id);
+    setValue("language", newOptions);
+  };
+
+  const getAvailableLanguages = (currentIndex: number) => {
+    const selectedLanguages = language
+      .filter((_, index) => index !== currentIndex)
+      .map((option) => option.language);
+    return LANGUAGE_OPTIONS_KOREAN.map((lang) => ({
+      name: lang,
+      disabled: selectedLanguages.includes(lang),
+    }));
   };
 
   return (
@@ -126,7 +174,7 @@ export default function SignUpGuide() {
               <span className="text-lg font-semibold">개인 정보</span>
             </div>
             <div className="text-sm text-muted-foreground">
-              귀하의 개인 정보는 fgfg에서 가이드 관리 목적으로만 사용되며,
+              귀하의 개인 정보는 FGFG에서 가이드 관리 목적으로만 사용되며,
               외부에 공개되지 않습니다.
             </div>
           </div>
@@ -164,7 +212,6 @@ export default function SignUpGuide() {
                 type="file"
                 accept="image/*"
                 className="hidden"
-                required
               />
             </div>
             {errors?.photo ? <ErrorText text={errors.photo.message!} /> : null}
@@ -181,6 +228,76 @@ export default function SignUpGuide() {
             {errors?.birthdate ? (
               <ErrorText text={errors.birthdate.message!} />
             ) : null}
+            <div className="space-y-1">
+              <Label>외국어 능력</Label>
+              {errors?.language ? (
+                <ErrorText text={errors?.language[0]?.message!} />
+              ) : null}
+              {language.map((option, index) => (
+                <div
+                  key={option.id}
+                  className="flex flex-row gap-3 items-center mb-3"
+                >
+                  <div>
+                    <Select
+                      value={option.language}
+                      onValueChange={(value) =>
+                        handleLanguageChange(index, value)
+                      }
+                    >
+                      <SelectTrigger className="w-36">
+                        <SelectValue placeholder="언어 선택" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {getAvailableLanguages(index).map((lang) => (
+                          <SelectItem
+                            key={lang.name}
+                            value={lang.name}
+                            disabled={lang.disabled}
+                          >
+                            {lang.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <Select
+                      value={option.level}
+                      onValueChange={(value) => handleLevelChange(index, value)}
+                    >
+                      <SelectTrigger className="w-20">
+                        <SelectValue placeholder="레벨" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">1 (기초 수준)</SelectItem>
+                        <SelectItem value="2">2</SelectItem>
+                        <SelectItem value="3">3</SelectItem>
+                        <SelectItem value="4">4</SelectItem>
+                        <SelectItem value="5">5 (원어민 수준)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  {index > 0 && (
+                    <MinusCircleIcon
+                      className="w-6 h-6 text-red-500 cursor-pointer"
+                      onClick={() => handleRemoveLanguage(option.id)}
+                    />
+                  )}
+                </div>
+              ))}
+              {!isAllLanguagesSelected && (
+                <Button
+                  variant={"outline"}
+                  onClick={handleAddLanguage}
+                  type="button"
+                  className="flex items-center justify-between w-36 pl-1 gap-1"
+                >
+                  <PlusCircleIcon className="w-6 h-6 text-orange-500 cursor-pointer" />
+                  <span>언어 추가하기</span>
+                </Button>
+              )}
+            </div>
             <div className="space-y-1">
               <Label htmlFor="address">주소</Label>
               <Input
@@ -201,24 +318,7 @@ export default function SignUpGuide() {
             </div>
           </div>
           <Separator className="my-4" />
-          <div className="flex flex-row items-center gap-1">
-            <QuestionMarkCircleIcon className="size-6" />
-            <span className="text-lg font-semibold">자주 묻는 질문</span>
-          </div>
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="item-1">
-              <AccordionTrigger>면접을 봐야 하나요?</AccordionTrigger>
-              <AccordionContent>네 면접 봐야합니다.</AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger>수익 부분</AccordionTrigger>
-              <AccordionContent>수익 부분 설명</AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger>성적인 부분</AccordionTrigger>
-              <AccordionContent>안전합니다</AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <GuideQandA />
           <Separator className="my-4" />
           <div className="flex flex-col gap-4">
             <div className="flex items-center space-x-2">
@@ -226,7 +326,7 @@ export default function SignUpGuide() {
                 id="terms"
                 onCheckedChange={(checked) =>
                   setIsTermsChecked(checked === true)
-                } // 체크박스 상태 업데이트
+                }
               />
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 <Link

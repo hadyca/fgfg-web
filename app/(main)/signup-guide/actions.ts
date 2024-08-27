@@ -20,6 +20,9 @@ export async function signupGuide(formData: FormData) {
     phone: formData.get("phone"),
     photo: formData.get("photo"),
     selfIntro: formData.get("selfIntro"),
+    language: formData.get("language")
+      ? JSON.parse(formData.get("language") as string)
+      : null,
   };
 
   const result = signUpGuideSchema.safeParse(data);
@@ -27,7 +30,7 @@ export async function signupGuide(formData: FormData) {
   if (!result.success) {
     return result.error.flatten();
   } else {
-    await client.mutate({
+    const { data } = await client.mutate({
       mutation: CREATE_GUIDE,
       variables: {
         fullname: result.data.fullname,
@@ -36,8 +39,10 @@ export async function signupGuide(formData: FormData) {
         phone: result.data.phone,
         photo: result.data.photo,
         selfIntro: result.data.selfIntro,
+        language: result.data.language,
       },
     });
+
     redirect("/");
   }
 }

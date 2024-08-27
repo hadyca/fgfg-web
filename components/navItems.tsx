@@ -10,16 +10,23 @@ interface NavItemsProps {
   username: string;
   isGuide: boolean;
   isMobile: boolean;
+  onLinkClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export default function NavItems({
   username,
   isGuide,
   isMobile,
+  onLinkClick,
 }: NavItemsProps) {
   return (
     <NavigationMenu className={isMobile ? "list-none mt-4" : "list-none"}>
-      <NavigationMenuItem className={isMobile ? "flex flex-col gap-1" : ""}>
+      <NavigationMenuItem
+        onClick={(e) =>
+          onLinkClick?.(e as unknown as React.MouseEvent<HTMLAnchorElement>)
+        }
+        className={isMobile ? "flex flex-col gap-1" : ""}
+      >
         <Link href="/search-guide" legacyBehavior passHref>
           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
             가이드 찾기

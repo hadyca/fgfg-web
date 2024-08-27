@@ -5,6 +5,25 @@ import { z } from "zod";
 const unavailableName = (username: string) =>
   !UNAVAILABLE_USERNAME.includes(username);
 
+const LanguageOptionSchema = z
+  .object({
+    id: z.number(),
+    language: z.string(),
+    level: z.string(),
+  })
+  .refine(
+    (data) => {
+      const hasLanguage = data.language.trim() !== "";
+      const hasLevel = data.level.trim() !== "";
+
+      // 둘 다 값이 있는 경우에만 유효
+      return (hasLanguage && hasLevel) || (!hasLanguage && !hasLevel);
+    },
+    {
+      message: "언어와 레벨은 둘 다 값이 있어야 합니다.",
+    }
+  );
+
 export const signUpGuideSchema = z.object({
   fullname: z
     .string({
@@ -32,6 +51,7 @@ export const signUpGuideSchema = z.object({
   photo: z.string({
     required_error: "필수 항목 입니다.",
   }),
+  language: z.array(LanguageOptionSchema),
 });
 
 export type SignUpGuideType = z.infer<typeof signUpGuideSchema>;
