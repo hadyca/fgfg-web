@@ -11,11 +11,7 @@ export const searchGuideSchema = z
     const startDate = new Date(`${date}T${startTime}`);
     const endDate = new Date(`${date}T${endTime}`);
     const timeDifference = endDate.getTime() - startDate.getTime(); // 밀리초 단위의 차이
-    const threeHoursInMilliseconds = 3 * 60 * 60 * 1000; // 3시간을 밀리초로 변환
-
-    // 현재 베트남 시각을 구함 (UTC+7)
-    // 현재 UTC 시간
-    const now = new Date();
+    const threeHoursInMilliseconds = 2 * 60 * 60 * 1000; // 3시간을 밀리초로 변환
 
     // 베트남 현재 시간 계산
     const vietnamCurrentTime = new Date().toLocaleString("en-US", {
@@ -26,7 +22,7 @@ export const searchGuideSchema = z
     if (timeDifference < threeHoursInMilliseconds) {
       ctx.addIssue({
         code: "custom",
-        message: "최소 이용 시간은 3시간 입니다.",
+        message: "최소 이용 시간은 2시간 입니다.",
         path: ["startTime"],
       });
     }
