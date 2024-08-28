@@ -91,12 +91,7 @@ export default function CreateAccount() {
           {errors?.confirm_password ? (
             <ErrorText text={errors.confirm_password.message!} />
           ) : null}
-          <Button
-            disabled={loading}
-            className=" disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
-          >
-            회원 가입
-          </Button>
+          <Button disabled={loading}>회원 가입</Button>
           <Separator />
           <Link href={"/login"}>
             <Button className="w-full" variant={"light"}>

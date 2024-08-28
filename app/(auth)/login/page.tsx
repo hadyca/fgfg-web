@@ -70,12 +70,7 @@ export default function LogIn() {
           {errors?.password ? (
             <ErrorText text={errors.password.message!} />
           ) : null}
-          <Button
-            disabled={loading}
-            className=" disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
-          >
-            로그인
-          </Button>
+          <Button disabled={loading}>로그인</Button>
         </form>
       </Card>
     </div>

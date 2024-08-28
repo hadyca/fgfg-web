@@ -25,6 +25,7 @@ import {
 import { cn } from "@/lib/utils";
 import { ko } from "date-fns/locale";
 import { subDays } from "date-fns";
+import { Card } from "../ui/card";
 
 export default function HeroSection() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
@@ -121,92 +122,86 @@ export default function HeroSection() {
     >
       <div className="absolute inset-0 bg-black opacity-60"></div>
       <div className="relative z-10 text-center flex flex-col gap-4 items-center">
-        <h1 className="text-xl md:text-5xl font-extrabold text-white text-center my-4 md:mt-20">
+        <h1 className="text-xl md:text-5xl font-bold text-muted text-center my-4 md:mt-20">
           베트남 여자친구와 짜릿한 호치민 여행을 떠나보세요!
         </h1>
-        <form
-          onSubmit={handleSubmit(onValid)}
-          className="bg-white p-6 rounded-lg shadow-xl border border-gray-200 gap-6 w-max"
-        >
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-              <div>
-                <Label className="block mb-2">날짜 선택</Label>
-                <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "hover:bg-white w-40 pl-3 text-left font-normal"
-                      )}
-                    >
-                      <span>{watchDate}</span>
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      locale={ko}
-                      selected={selectedDate}
-                      onSelect={handleDateChange}
-                      disabled={(date) => {
-                        const yesterday = subDays(new Date(), 1);
-                        return date <= yesterday;
-                      }}
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+        <Card className="shadow-xl p-6">
+          <form onSubmit={handleSubmit(onValid)}>
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <div>
+                  <Label className="block mb-2">날짜 선택</Label>
+                  <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "hover:bg-white w-40 pl-3 text-left font-normal"
+                        )}
+                      >
+                        <span>{watchDate}</span>
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        locale={ko}
+                        selected={selectedDate}
+                        onSelect={handleDateChange}
+                        disabled={(date) => {
+                          const yesterday = subDays(new Date(), 1);
+                          return date <= yesterday;
+                        }}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+                <div>
+                  <Label className="block mb-2">픽업 시각</Label>
+                  <Select
+                    key={startTime}
+                    onValueChange={handleStartTimeChange}
+                    defaultValue={startTime}
+                  >
+                    <SelectTrigger className="w-36">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>{startTimeOptions}</SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="block mb-2">종료 시각</Label>
+                  <Select
+                    key={endTime}
+                    onValueChange={handleEndTimeChange}
+                    defaultValue={endTime}
+                  >
+                    <SelectTrigger className="w-36">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>{endTimeOptions}</SelectContent>
+                  </Select>
+                </div>
               </div>
-              <div>
-                <Label className="block mb-2">픽업 시각</Label>
-                <Select
-                  key={startTime}
-                  onValueChange={handleStartTimeChange}
-                  defaultValue={startTime}
-                >
-                  <SelectTrigger className="w-36">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>{startTimeOptions}</SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label className="block mb-2">종료 시각</Label>
-                <Select
-                  key={endTime}
-                  onValueChange={handleEndTimeChange}
-                  defaultValue={endTime}
-                >
-                  <SelectTrigger className="w-36">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>{endTimeOptions}</SelectContent>
-                </Select>
-              </div>
+              {errors?.startTime?.type === "custom" ? (
+                <div className="items-start">
+                  <span className="text-destructive font-medium">
+                    {errors?.startTime?.message}
+                  </span>
+                </div>
+              ) : errors?.startTime || errors?.startTime || errors?.endTime ? (
+                <div>
+                  <span className="text-destructive font-medium">
+                    날짜와 시간을 다시 확인해주세요.
+                  </span>
+                </div>
+              ) : null}
+              <Button disabled={loading}>지금 예약하기</Button>
             </div>
-            {errors?.startTime?.type === "custom" ? (
-              <div className="items-start">
-                <span className="text-red-500 font-medium">
-                  {errors?.startTime?.message}
-                </span>
-              </div>
-            ) : errors?.startTime || errors?.startTime || errors?.endTime ? (
-              <div>
-                <span className="text-red-500 font-medium">
-                  날짜와 시간을 다시 확인해주세요.
-                </span>
-              </div>
-            ) : null}
-            <Button
-              disabled={loading}
-              className="w-full disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
-            >
-              지금 예약하기
-            </Button>
-          </div>
-        </form>
+          </form>
+        </Card>
       </div>
     </section>
   );

@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 export default function ErrorPage() {
@@ -9,12 +10,7 @@ export default function ErrorPage() {
       <div className="text-center">
         <h1 className="text-4xl">😥</h1>
         <p className="text-lg mt-2">에러 페이지</p>
-        <button
-          onClick={() => router.push("/")}
-          className="primary-btn mt-4 h-10 disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
-        >
-          홈으로
-        </button>
+        <Button onClick={() => router.push("/")}>홈으로</Button>
       </div>
     </div>
   );

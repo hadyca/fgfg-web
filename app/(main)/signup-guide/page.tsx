@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";
+import { ACCEPTED_IMAGE_TYPES, LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";
 import GuideQandA from "@/components/guideQandA";
 
 export default function SignUpGuide() {
@@ -51,7 +51,7 @@ export default function SignUpGuide() {
       language: [{ id: 1, language: "", level: "" }],
     },
   });
-
+  console.log(errors);
   const language = watch("language");
   const isAllLanguagesSelected =
     language.length >= LANGUAGE_OPTIONS_KOREAN.length;
@@ -60,10 +60,21 @@ export default function SignUpGuide() {
     const {
       target: { files },
     } = event;
-    if (!files) {
+
+    const fileType = files?.[0]?.type;
+    const typeOk = fileType ? ACCEPTED_IMAGE_TYPES.includes(fileType) : false;
+
+    if (!typeOk) {
+      setError("photo", { message: "이미지 파일을 선택해주세요." });
       return;
     }
+
+    if (!files || files.length === 0) {
+      return;
+    }
+
     const file = files[0];
+
     const url = URL.createObjectURL(file);
     setPreview(url);
     setFile(file);
@@ -178,19 +189,20 @@ export default function SignUpGuide() {
               외부에 공개되지 않습니다.
             </div>
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-5">
             <div className="space-y-1">
               <Label htmlFor="fullname">이름(본명)</Label>
+              {errors?.fullname ? (
+                <ErrorText text={errors.fullname.message!} />
+              ) : null}
               <Input
                 id="fullname"
                 type="text"
                 minLength={1}
                 {...register("fullname")}
+                required
               />
             </div>
-            {errors?.fullname ? (
-              <ErrorText text={errors.fullname.message!} />
-            ) : null}
             <div className="space-y-1">
               <Label htmlFor="photo">프로필 사진</Label>
               <Label
@@ -201,10 +213,13 @@ export default function SignUpGuide() {
                 {preview === "" ? (
                   <>
                     <PhotoIcon className="w-12" />
-                    <div className="text-neutral-400 text-sm">사진 추가</div>
+                    <div className="text-neutral-300 text-sm">사진 추가</div>
                   </>
                 ) : null}
               </Label>
+              {errors?.photo ? (
+                <ErrorText text={errors.photo.message!} />
+              ) : null}
               <input
                 onChange={onImageChange}
                 id="photo"
@@ -214,9 +229,11 @@ export default function SignUpGuide() {
                 className="hidden"
               />
             </div>
-            {errors?.photo ? <ErrorText text={errors.photo.message!} /> : null}
             <div className="space-y-1">
               <Label htmlFor="birthdate">생년월일</Label>
+              {errors?.birthdate ? (
+                <ErrorText text={errors.birthdate.message!} />
+              ) : null}
               <Input
                 id="birthdate"
                 type="date"
@@ -225,9 +242,7 @@ export default function SignUpGuide() {
                 className="w-36"
               />
             </div>
-            {errors?.birthdate ? (
-              <ErrorText text={errors.birthdate.message!} />
-            ) : null}
+
             <div className="space-y-1">
               <Label>외국어 능력</Label>
               {errors?.language ? (
@@ -236,7 +251,7 @@ export default function SignUpGuide() {
               {language.map((option, index) => (
                 <div
                   key={option.id}
-                  className="flex flex-row gap-3 items-center mb-3"
+                  className="flex flex-row gap-3 items-center"
                 >
                   <div>
                     <Select
@@ -280,7 +295,7 @@ export default function SignUpGuide() {
                   </div>
                   {index > 0 && (
                     <MinusCircleIcon
-                      className="w-6 h-6 text-red-500 cursor-pointer"
+                      className="w-6 h-6 text-destructive cursor-pointer"
                       onClick={() => handleRemoveLanguage(option.id)}
                     />
                   )}
@@ -293,13 +308,16 @@ export default function SignUpGuide() {
                   type="button"
                   className="flex items-center justify-between w-36 pl-1 gap-1"
                 >
-                  <PlusCircleIcon className="w-6 h-6 text-orange-500 cursor-pointer" />
+                  <PlusCircleIcon className="w-6 h-6 text-primary" />
                   <span>언어 추가하기</span>
                 </Button>
               )}
             </div>
             <div className="space-y-1">
               <Label htmlFor="address">주소</Label>
+              {errors?.address ? (
+                <ErrorText text={errors.address.message!} />
+              ) : null}
               <Input
                 id="address"
                 type="text"
@@ -309,11 +327,17 @@ export default function SignUpGuide() {
             </div>
             <div className="space-y-1">
               <Label htmlFor="phone">핸드폰 번호</Label>
+              {errors?.phone ? (
+                <ErrorText text={errors.phone.message!} />
+              ) : null}
               <Input id="phone" type="text" {...register("phone")} required />
             </div>
-            {errors?.phone ? <ErrorText text={errors.phone.message!} /> : null}
+
             <div className="space-y-1">
               <Label htmlFor="selfIntro">자기 소개</Label>
+              {errors?.selfIntro ? (
+                <ErrorText text={errors.selfIntro.message!} />
+              ) : null}
               <Textarea id="selfIntro" {...register("selfIntro")} required />
             </div>
           </div>
@@ -328,17 +352,17 @@ export default function SignUpGuide() {
                   setIsTermsChecked(checked === true)
                 }
               />
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <label htmlFor="terms2" className="text-sm font-medium">
                 <Link
                   href={"/policies/privacy-policy"}
-                  className="text-orange-500"
+                  className="text-primary"
                 >
                   개인정보 수집
                 </Link>
                 <span> 및 </span>
                 <Link
                   href={"/policies/terms-and-conditions"}
-                  className="text-orange-500"
+                  className="text-primary"
                 >
                   이용약관
                 </Link>
@@ -346,10 +370,7 @@ export default function SignUpGuide() {
               </label>
             </div>
             {existError !== "" ? <ErrorText text={existError} /> : null}
-            <Button
-              disabled={loading || !isTermsChecked}
-              className=" disabled:bg-neutral-400  disabled:text-neutral-300 disabled:cursor-not-allowed"
-            >
+            <Button disabled={loading || !isTermsChecked}>
               {loading ? "로딩 중" : "가이드 가입"}
             </Button>
           </div>

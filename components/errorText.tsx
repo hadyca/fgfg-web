@@ -3,5 +3,5 @@ interface ErrorTextProps {
 }
 
 export default function ErrorText({ text }: ErrorTextProps) {
-  return <span className="text-red-500 font-medium">{text}</span>;
+  return <div className="text-destructive font-medium">{text}</div>;
 }
