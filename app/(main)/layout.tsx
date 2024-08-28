@@ -7,7 +7,7 @@ export default async function HomeLayout({
   children: React.ReactNode;
 }) {
   const user = await getUser();
-
+  console.log(user?.data?.me?.isGuide);
   return (
     <>
       <HeaderSection

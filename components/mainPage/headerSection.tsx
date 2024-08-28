@@ -20,8 +20,8 @@ export default function HeaderSection({ username, isGuide }: NavProps) {
 
   return (
     <header>
-      <div className="h-16 px-4 bg-white border-b border-b-slate-200 z-20 relative flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-orange-500">
+      <div className="h-16 px-4 border-b border-b-border z-20 relative flex justify-between items-center">
+        <Link href="/" className="text-2xl font-bold text-primary">
           FGFG
         </Link>
         {/* 데스크탑 네비게이션 메뉴 */}
@@ -32,7 +32,7 @@ export default function HeaderSection({ username, isGuide }: NavProps) {
         <nav className="md:hidden block">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger className="md:hidden block">
-              <Bars3Icon className="w-6 h-6 text-black" />
+              <Bars3Icon className="w-6 h-6" />
             </SheetTrigger>
             <SheetContent>
               <NavItems

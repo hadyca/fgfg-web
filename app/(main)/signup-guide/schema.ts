@@ -1,4 +1,9 @@
-import { UNAVAILABLE_USERNAME } from "@/lib/constants";
+import {
+  ACCEPTED_IMAGE_TYPES,
+  BIRTHDATE_REGEX,
+  IMAGE_FILE_REGEX,
+  UNAVAILABLE_USERNAME,
+} from "@/lib/constants";
 import validator from "validator";
 import { z } from "zod";
 
@@ -32,9 +37,12 @@ export const signUpGuideSchema = z.object({
     .toLowerCase()
     .min(1, "이름을 다시 확인 해주세요.")
     .refine(unavailableName, "사용할 수 없는 이름 입니다."),
-  birthdate: z.string({
-    required_error: "필수 항목 입니다.",
-  }),
+  birthdate: z
+    .string({
+      required_error: "필수 항목 입니다.",
+    })
+    .regex(BIRTHDATE_REGEX, "생년월일을 다시 확인해주세요."),
+
   address: z.string({
     required_error: "필수 항목 입니다.",
   }),

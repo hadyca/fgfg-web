@@ -36,7 +36,7 @@ export default function TimeSelect({ onChange }: TimeSelectProps) {
 
   return (
     <Select defaultValue="00:00" onValueChange={handleChange}>
-      <SelectTrigger className="w-full md:w-auto px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500">
+      <SelectTrigger className="w-full md:w-auto px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
