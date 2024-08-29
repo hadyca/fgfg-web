@@ -7,11 +7,16 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
 
 interface NavProps {
-  username: string;
-  isGuide: boolean;
+  userId?: number;
+  avatar?: string;
+  isApprovedGuide?: Boolean;
 }
 
-export default function HeaderSection({ username, isGuide }: NavProps) {
+export default function HeaderSection({
+  userId,
+  avatar,
+  isApprovedGuide,
+}: NavProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLinkClick = () => {
@@ -26,7 +31,12 @@ export default function HeaderSection({ username, isGuide }: NavProps) {
         </Link>
         {/* 데스크탑 네비게이션 메뉴 */}
         <nav className="md:block hidden">
-          <NavItems username={username} isGuide={isGuide} isMobile={false} />
+          <NavItems
+            userId={userId}
+            avatar={avatar}
+            isApprovedGuide={isApprovedGuide}
+            isMobile={false}
+          />
         </nav>
         {/* 모바일 네비게이션 메뉴 */}
         <nav className="md:hidden block">
@@ -36,8 +46,9 @@ export default function HeaderSection({ username, isGuide }: NavProps) {
             </SheetTrigger>
             <SheetContent>
               <NavItems
-                username={username}
-                isGuide={isGuide}
+                userId={userId}
+                avatar={avatar}
+                isApprovedGuide={isApprovedGuide}
                 isMobile={true}
                 onLinkClick={handleLinkClick}
               />

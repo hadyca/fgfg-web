@@ -1,3 +1,4 @@
+import getSession from "@/lib/session";
 import Link from "next/link";
 
 export default function AuthLayout({

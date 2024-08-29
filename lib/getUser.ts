@@ -1,15 +1,19 @@
 import { gql } from "@apollo/client";
 import getSession from "./session";
-import { client } from "./apolloClient";
 import { redirect } from "next/navigation";
+import { client } from "./apolloClient";
 
 export const ME_QUERY = gql`
   query me {
     me {
       id
       username
+      avatar
       email
-      isGuide
+      guide {
+        id
+        isApproved
+      }
     }
   }
 `;
@@ -19,13 +23,15 @@ export default async function getUser() {
   if (!session.token) {
     return;
   }
-  const { data } = await client.query({
+  const {
+    data: { me },
+  } = await client.query({
     query: ME_QUERY,
     fetchPolicy: "no-cache",
   });
-  if (data?.me === null) {
+  if (me === null) {
     session.destroy();
     redirect("/");
   }
-  return { data };
+  return { me };
 }

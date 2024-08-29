@@ -7,9 +7,9 @@ import { redirect } from "next/navigation";
 import getUser from "@/lib/getUser";
 
 export async function userCheck() {
-  const result = await getUser();
+  const user = await getUser();
 
-  return result;
+  return user;
 }
 
 export async function signupGuide(formData: FormData) {
@@ -30,7 +30,7 @@ export async function signupGuide(formData: FormData) {
   if (!result.success) {
     return result.error.flatten();
   } else {
-    const { data } = await client.mutate({
+    await client.mutate({
       mutation: CREATE_GUIDE,
       variables: {
         fullname: result.data.fullname,
