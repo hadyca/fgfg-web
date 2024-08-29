@@ -51,7 +51,7 @@ export default function SignUpGuide() {
       language: [{ id: 1, language: "", level: "" }],
     },
   });
-  console.log(errors);
+
   const language = watch("language");
   const isAllLanguagesSelected =
     language.length >= LANGUAGE_OPTIONS_KOREAN.length;
@@ -94,7 +94,7 @@ export default function SignUpGuide() {
     setLoading(true);
 
     const user = await userCheck();
-    if (user?.data?.me?.isGuide !== null) {
+    if (user?.me?.isApproved !== null) {
       setExistError("가이드 심사 중 혹은 이미 등록된 가이드 입니다.");
       setLoading(false);
       return;

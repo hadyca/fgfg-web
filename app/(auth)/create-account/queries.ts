@@ -26,8 +26,8 @@ export const CREATE_ACCOUNT = gql`
   ) {
     createAccount(username: $username, email: $email, password: $password) {
       ok
-      token
       error
+      token
     }
   }
 `;

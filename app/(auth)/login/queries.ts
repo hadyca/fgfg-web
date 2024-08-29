@@ -4,9 +4,9 @@ export const LOG_IN = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       ok
-      token
       error
-      isGuide
+      token
+      guideId
     }
   }
 `;

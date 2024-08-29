@@ -5,17 +5,21 @@ import {
   NavigationMenuLink,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserCircleIcon } from "@heroicons/react/24/solid";
 
 interface NavItemsProps {
-  username: string;
-  isGuide: boolean;
+  userId?: number;
+  avatar?: string;
+  isApprovedGuide?: Boolean;
   isMobile: boolean;
   onLinkClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export default function NavItems({
-  username,
-  isGuide,
+  userId,
+  avatar,
+  isApprovedGuide,
   isMobile,
   onLinkClick,
 }: NavItemsProps) {
@@ -25,25 +29,30 @@ export default function NavItems({
         onClick={(e) =>
           onLinkClick?.(e as unknown as React.MouseEvent<HTMLAnchorElement>)
         }
-        className={isMobile ? "flex flex-col gap-1" : ""}
+        className={
+          isMobile ? "flex flex-col gap-1" : "flex flex-row items-center"
+        }
       >
         <Link href="/search-guide" legacyBehavior passHref>
           <NavigationMenuLink className={navigationMenuTriggerStyle()}>
             가이드 찾기
           </NavigationMenuLink>
         </Link>
-        {!isGuide ? (
+        {!isApprovedGuide ? (
           <Link href="/signup-guide" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               가이드 가입
             </NavigationMenuLink>
           </Link>
         ) : null}
-        {username ? (
-          <Link href="/profile" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              {username}
-            </NavigationMenuLink>
+        {userId ? (
+          <Link href="/user-profile" legacyBehavior passHref>
+            <Avatar>
+              <AvatarImage src={avatar} alt="@shadcn" />
+              <AvatarFallback>
+                <UserCircleIcon className="text-primary" />
+              </AvatarFallback>
+            </Avatar>
           </Link>
         ) : (
           <>
