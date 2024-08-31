@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import getSession from "./lib/session";
-import { client } from "./lib/apolloClient";
-import getUser, { ME_QUERY } from "./lib/getUser";
+import getUser from "./lib/getUser";
 
 interface Routes {
   [key: string]: boolean;
@@ -22,30 +21,24 @@ export async function middleware(request: NextRequest) {
   const isOnlyGuidePath = onlyGuideUrls.has(request.nextUrl.pathname);
 
   const session = await getSession();
-  console.log(session);
+
   const isLoggedIn = Boolean(session.token);
   const isApprovedGuide = Boolean(session.guideId);
 
-  if (isLoggedIn && isOnlyLogoutPath) {
+  if (isOnlyLogoutPath && isLoggedIn) {
     return NextResponse.redirect(new URL("/", request.url));
   }
-  if (!isLoggedIn && isOnlyLoginPath) {
+  if (isOnlyLoginPath && !isLoggedIn) {
     return NextResponse.redirect(new URL("/create-account", request.url));
   }
 
-  if (!isApprovedGuide && isOnlyGuidePath) {
+  if (isOnlyGuidePath && !isApprovedGuide) {
     const user = await getUser();
     if (user?.me?.guide?.isApproved) {
-      // API 호출로 세션을 업데이트
-      await fetch(new URL("/api/update-session", request.url), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "same-origin", // 쿠키를 전달하도록 설정
-        body: JSON.stringify({ guideId: user.me.guide.id }),
-      });
-      return NextResponse.next();
+      const originalUrl = request.nextUrl.pathname; // 원래 사용자가 가려던 URL
+      const redirectUrl = new URL("/add-guideid-session", request.url);
+      redirectUrl.searchParams.set("redirect", originalUrl); // 원래 URL을 쿼리 파라미터로 추가
+      return NextResponse.redirect(redirectUrl);
     }
     return NextResponse.redirect(new URL("/", request.url));
   }

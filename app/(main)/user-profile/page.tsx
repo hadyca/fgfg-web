@@ -1,8 +1,5 @@
-import { client } from "@/lib/apolloClient";
+import { logout } from "@/lib/sharedActions";
 import getUser from "@/lib/getUser";
-import getSession from "@/lib/session";
-import { gql } from "@apollo/client";
-import { logout } from "./actions";
 
 export default async function UserProfile() {
   const user = await getUser();

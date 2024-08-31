@@ -2,9 +2,21 @@
 
 import Link from "next/link";
 import { Bars3Icon } from "@heroicons/react/24/solid";
-import NavItems from "../navItems";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { UserCircleIcon } from "@heroicons/react/24/solid";
+import NavItemsPC from "../navItems_pc";
+import NavItemsMobile from "../navItems_mobile";
+import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
+import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
+import AvatarDropMenu from "../avatarDropMenu";
 
 interface NavProps {
   userId?: number;
@@ -25,37 +37,53 @@ export default function HeaderSection({
 
   return (
     <header>
-      <div className="h-16 px-4 border-b border-b-border z-20 relative flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-primary">
-          FGFG
-        </Link>
-        {/* 데스크탑 네비게이션 메뉴 */}
-        <nav className="md:block hidden">
-          <NavItems
-            userId={userId}
-            avatar={avatar}
-            isApprovedGuide={isApprovedGuide}
-            isMobile={false}
-          />
-        </nav>
-        {/* 모바일 네비게이션 메뉴 */}
-        <nav className="md:hidden block">
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger className="md:hidden block">
-              <Bars3Icon className="w-6 h-6" />
-            </SheetTrigger>
-            <SheetContent>
-              <NavItems
-                userId={userId}
-                avatar={avatar}
-                isApprovedGuide={isApprovedGuide}
-                isMobile={true}
-                onLinkClick={handleLinkClick}
-              />
-            </SheetContent>
-          </Sheet>
-        </nav>
-      </div>
+      {/* 데스크탑 네비게이션 메뉴 */}
+      <nav className="md:block hidden">
+        <NavItemsPC
+          userId={userId}
+          avatar={avatar}
+          isApprovedGuide={isApprovedGuide}
+        />
+      </nav>
+      {/* 모바일 네비게이션 메뉴 */}
+      <nav className="md:hidden block">
+        <div className="h-16 px-4 border-b border-b-border z-20 relative flex items-center">
+          <div className="flex-1">
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger className="md:hidden block">
+                <Bars3Icon className="w-6 h-6" />
+              </SheetTrigger>
+              <SheetContent side={"left"} className="w-1/2">
+                <NavItemsMobile
+                  userId={userId}
+                  isApprovedGuide={isApprovedGuide}
+                  onLinkClick={handleLinkClick}
+                />
+              </SheetContent>
+            </Sheet>
+          </div>
+
+          <Link
+            href="/"
+            className="text-2xl font-bold text-primary absolute left-1/2  transform -translate-x-1/2"
+          >
+            FGFG
+          </Link>
+
+          <div className="flex-1 flex justify-end">
+            {userId ? (
+              <AvatarDropMenu avatar={avatar} />
+            ) : (
+              <Link
+                href="/create-account"
+                className={navigationMenuTriggerStyle()}
+              >
+                회원가입
+              </Link>
+            )}
+          </div>
+        </div>
+      </nav>
     </header>
   );
 }
