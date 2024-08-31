@@ -165,7 +165,7 @@ export default function HeroSection() {
                     onValueChange={handleStartTimeChange}
                     defaultValue={startTime}
                   >
-                    <SelectTrigger className="w-36">
+                    <SelectTrigger className="w-36 focus:outline-none">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>{startTimeOptions}</SelectContent>
@@ -178,7 +178,7 @@ export default function HeroSection() {
                     onValueChange={handleEndTimeChange}
                     defaultValue={endTime}
                   >
-                    <SelectTrigger className="w-36">
+                    <SelectTrigger className="w-36 focus:outline-none">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>{endTimeOptions}</SelectContent>

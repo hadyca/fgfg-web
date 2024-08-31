@@ -12,21 +12,12 @@ import ClientComponent from "@/components/test";
 //   }
 // `;
 
-async function getData() {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-  return "data1";
-}
-export default async function Home() {
-  // const { data } = await client().query({
-  //   query: SEE_PROFILE,
-  //   variables: { userId: 1 },
-  // });
-  const data = await getData();
-
+// async function getData() {
+//   await new Promise((resolve) => setTimeout(resolve, 5000));
+//   return "data1";
+// }
+export default async function Test() {
   return (
-    <main>
-      <h1>이거 기본</h1>
-      {data}
-    </main>
+    <div className="flex justify-center items-center h-screen">loading...</div>
   );
 }
