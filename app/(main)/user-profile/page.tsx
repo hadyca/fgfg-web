@@ -3,6 +3,7 @@ import getUser from "@/lib/getUser";
 
 export default async function UserProfile() {
   const user = await getUser();
+
   return (
     <div>
       <h1>프로필 화면</h1>

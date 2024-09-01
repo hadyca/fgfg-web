@@ -28,6 +28,8 @@ export default function AddGuideIdSession({
     updateSessionAndRedirect();
   }, [router, searchParams]);
   return (
-    <div className="flex justify-center items-center h-screen">loading...</div>
+    <div className="flex justify-center items-center h-screen text-7xl font-semibold text-muted-foreground">
+      Guide logging in...
+    </div>
   );
 }

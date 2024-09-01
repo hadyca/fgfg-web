@@ -78,6 +78,7 @@ export default function SignUpGuide() {
     const url = URL.createObjectURL(file);
     setPreview(url);
     setFile(file);
+
     const { success, result } = await getUploadUrl();
 
     if (success) {
@@ -94,7 +95,8 @@ export default function SignUpGuide() {
     setLoading(true);
 
     const user = await userCheck();
-    if (user?.me?.isApproved !== null) {
+
+    if (user?.me?.guide?.isApproved !== undefined) {
       setExistError("가이드 심사 중 혹은 이미 등록된 가이드 입니다.");
       setLoading(false);
       return;

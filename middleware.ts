@@ -13,7 +13,7 @@ const onlyLogoutUrls = new Set(["/login", "/create-account"]);
 const onlyLogInUrls = new Set(["/user-profile", "/signup-guide"]);
 
 //로그인 상태 - 가이드만 접속 가능
-const onlyGuideUrls = new Set(["/create-guide-profile"]);
+const onlyGuideUrls = new Set(["/create-guide-profile", "/guide-dashboard"]);
 
 export async function middleware(request: NextRequest) {
   const isOnlyLogoutPath = onlyLogoutUrls.has(request.nextUrl.pathname);

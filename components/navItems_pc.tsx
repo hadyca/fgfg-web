@@ -4,21 +4,12 @@ import {
   NavigationMenuItem,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UserCircleIcon } from "@heroicons/react/24/solid";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import AvatarDropMenu from "./avatarDropMenu";
 
 interface NavItemsProps {
   userId?: number;
   avatar?: string;
-  isApprovedGuide?: Boolean;
+  isApprovedGuide?: boolean;
   onLinkClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
@@ -49,7 +40,7 @@ export default function NavItemsPC({
             </Link>
           ) : null}
           {userId ? (
-            <AvatarDropMenu avatar={avatar} />
+            <AvatarDropMenu avatar={avatar} isApprovedGuide={isApprovedGuide} />
           ) : (
             <>
               <Link href="/login" className={navigationMenuTriggerStyle()}>

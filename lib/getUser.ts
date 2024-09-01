@@ -12,6 +12,7 @@ export const ME_QUERY = gql`
       email
       guide {
         id
+        fullname
         isApproved
       }
     }
