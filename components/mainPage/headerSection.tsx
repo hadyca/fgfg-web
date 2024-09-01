@@ -4,24 +4,15 @@ import Link from "next/link";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UserCircleIcon } from "@heroicons/react/24/solid";
 import NavItemsPC from "../navItems_pc";
 import NavItemsMobile from "../navItems_mobile";
 import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
-import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import AvatarDropMenu from "../avatarDropMenu";
 
 interface NavProps {
   userId?: number;
   avatar?: string;
-  isApprovedGuide?: Boolean;
+  isApprovedGuide?: boolean;
 }
 
 export default function HeaderSection({
@@ -62,17 +53,18 @@ export default function HeaderSection({
               </SheetContent>
             </Sheet>
           </div>
-
           <Link
             href="/"
             className="text-2xl font-bold text-primary absolute left-1/2  transform -translate-x-1/2"
           >
             FGFG
           </Link>
-
           <div className="flex-1 flex justify-end">
             {userId ? (
-              <AvatarDropMenu avatar={avatar} />
+              <AvatarDropMenu
+                avatar={avatar}
+                isApprovedGuide={isApprovedGuide}
+              />
             ) : (
               <Link
                 href="/create-account"

@@ -31,7 +31,7 @@ export default function HeroSection() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date()
   );
-  const [selectedDateText, setSelectedDateText] = useState("");
+
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -49,11 +49,10 @@ export default function HeroSection() {
   const watchDate = watch("date");
 
   useEffect(() => {
-    const today = format(new Date(), "yyyy-MM-dd");
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
 
-    setSelectedDate(new Date());
-    setSelectedDateText(today);
-    setValue("date", format(new Date(), "yyyy-MM-dd"));
+    setValue("date", format(tomorrow, "yyyy-MM-dd"));
 
     setStartTime("09:00");
     setValue("startTime", "09:00");
@@ -135,9 +134,7 @@ export default function HeroSection() {
                     <PopoverTrigger asChild>
                       <Button
                         variant={"outline"}
-                        className={cn(
-                          "hover:bg-white w-40 pl-3 text-left font-normal"
-                        )}
+                        className={cn("hover:bg-white w-40 pl-3")}
                       >
                         <span>{watchDate}</span>
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />

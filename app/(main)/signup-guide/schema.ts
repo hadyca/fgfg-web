@@ -1,9 +1,4 @@
-import {
-  ACCEPTED_IMAGE_TYPES,
-  BIRTHDATE_REGEX,
-  IMAGE_FILE_REGEX,
-  UNAVAILABLE_USERNAME,
-} from "@/lib/constants";
+import { BIRTHDATE_REGEX, UNAVAILABLE_USERNAME } from "@/lib/constants";
 import validator from "validator";
 import { z } from "zod";
 

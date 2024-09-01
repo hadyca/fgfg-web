@@ -12,9 +12,13 @@ import { logout } from "@/lib/sharedActions";
 
 interface AvatarDropMenuProps {
   avatar?: string;
+  isApprovedGuide?: boolean;
 }
 
-export default function AvatarDropMenu({ avatar }: AvatarDropMenuProps) {
+export default function AvatarDropMenu({
+  avatar,
+  isApprovedGuide,
+}: AvatarDropMenuProps) {
   const handleLogout = async () => {
     await logout();
   };
@@ -36,11 +40,13 @@ export default function AvatarDropMenu({ avatar }: AvatarDropMenuProps) {
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
-        <Link href="/guide-dashboard">
-          <DropdownMenuItem>
-            <span>가이드 관리</span>
-          </DropdownMenuItem>
-        </Link>
+        {isApprovedGuide ? (
+          <Link href="/guide-dashboard">
+            <DropdownMenuItem>
+              <span>가이드 관리</span>
+            </DropdownMenuItem>
+          </Link>
+        ) : null}
         <Link href="/user-profile">
           <DropdownMenuItem>
             <span>계정</span>
