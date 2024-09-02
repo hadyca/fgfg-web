@@ -37,7 +37,15 @@ export const signUpGuideSchema = z.object({
       required_error: "필수 항목 입니다.",
     })
     .regex(BIRTHDATE_REGEX, "생년월일을 다시 확인해주세요."),
-
+  height: z.string({ required_error: "필수 항목 입니다." }).refine(
+    (val) => {
+      const height = Number(val);
+      return !isNaN(height) && height >= 100 && height <= 200;
+    },
+    {
+      message: "키를 다시 확인 해주세요.",
+    }
+  ),
   address: z.string({
     required_error: "필수 항목 입니다.",
   }),

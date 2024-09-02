@@ -127,6 +127,7 @@ export default function SignUpGuide() {
     const formData = new FormData();
     formData.append("fullname", data.fullname);
     formData.append("birthdate", data.birthdate);
+    formData.append("height", data.height);
     formData.append("address", data.address);
     formData.append("phone", data.phone);
     formData.append("photo", data.photo);
@@ -181,19 +182,9 @@ export default function SignUpGuide() {
           <CardTitle>가이드 가입</CardTitle>
         </CardHeader>
         <form onSubmit={handleSubmit(onValid)} className="flex flex-col px-7">
-          <div className="mb-4">
-            <div className="flex flex-row items-center gap-1">
-              <IdentificationIcon className="size-6" />
-              <span className="text-lg font-semibold">개인 정보</span>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              귀하의 개인 정보는 FGFG에서 가이드 관리 목적으로만 사용되며,
-              외부에 공개되지 않습니다.
-            </div>
-          </div>
           <div className="flex flex-col gap-5">
             <div className="space-y-1">
-              <Label htmlFor="fullname">이름(본명)</Label>
+              <Label htmlFor="fullname">이름</Label>
               {errors?.fullname ? (
                 <ErrorText text={errors.fullname.message!} />
               ) : null}
@@ -244,7 +235,19 @@ export default function SignUpGuide() {
                 className="w-36"
               />
             </div>
-
+            <div className="space-y-1">
+              <Label htmlFor="birthdate">키(cm)</Label>
+              {errors?.height ? (
+                <ErrorText text={errors.height.message!} />
+              ) : null}
+              <Input
+                id="height"
+                type="number"
+                {...register("height")}
+                required
+                className="w-36"
+              />
+            </div>
             <div className="space-y-1">
               <Label>외국어 능력</Label>
               {errors?.language ? (
@@ -287,11 +290,11 @@ export default function SignUpGuide() {
                         <SelectValue placeholder="레벨" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="1">1 (기초 수준)</SelectItem>
+                        <SelectItem value="1">1(기초 수준)</SelectItem>
                         <SelectItem value="2">2</SelectItem>
                         <SelectItem value="3">3</SelectItem>
                         <SelectItem value="4">4</SelectItem>
-                        <SelectItem value="5">5 (원어민 수준)</SelectItem>
+                        <SelectItem value="5">5(원어민 수준)</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
