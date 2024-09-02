@@ -1,21 +1,19 @@
 "use client";
 
 import ErrorText from "@/components/errorText";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { signUpGuideSchema, SignUpGuideType } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  IdentificationIcon,
-  MinusCircleIcon,
-} from "@heroicons/react/24/outline";
 import { PhotoIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 import { getUploadUrl, signupGuide, userCheck } from "./actions";
 import { Separator } from "@/components/ui/separator";
@@ -27,16 +25,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ACCEPTED_IMAGE_TYPES, LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";
-import GuideQandA from "@/components/guideQandA";
 import { createGuideProfileSchema } from "./schema";
 import { CreateGuideProfileType } from "./schema";
+import GuideProfileQandA from "@/components/guideProfileQandA";
 
 export default function CreateGuideProfile() {
   const [loading, setLoading] = useState(false);
-  const [preview, setPreview] = useState("");
-  const [uploadUrl, setUploadUrl] = useState("");
+  const [previews, setPreviews] = useState<string[]>(Array(8).fill(""));
+  const [uploadUrl, setUploadUrl] = useState<string[]>([]);
   const [existError, setExistError] = useState("");
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<Array<File | null>>([]);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [nextId, setNextId] = useState(2);
 
@@ -45,339 +43,171 @@ export default function CreateGuideProfile() {
     handleSubmit,
     setValue,
     setError,
-    watch,
+    getValues,
     formState: { errors },
   } = useForm<CreateGuideProfileType>({
     resolver: zodResolver(createGuideProfileSchema),
     defaultValues: {
-      language: [{ id: 1, language: "", level: "" }],
+      photos: [],
     },
   });
 
-  const language = watch("language");
-  const isAllLanguagesSelected =
-    language.length >= LANGUAGE_OPTIONS_KOREAN.length;
-
-  const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
     const {
       target: { files },
     } = event;
 
     const fileType = files?.[0]?.type;
     const typeOk = fileType ? ACCEPTED_IMAGE_TYPES.includes(fileType) : false;
-
     if (!typeOk) {
-      setError("photo", { message: "이미지 파일을 선택해주세요." });
+      setError("photos", { message: "이미지 파일을 선택해주세요." });
       return;
     }
-
     if (!files || files.length === 0) {
       return;
     }
-
     const file = files[0];
-
     const url = URL.createObjectURL(file);
-    setPreview(url);
-    setFile(file);
+    setPreviews((prev) => {
+      const newPreviews = [...prev];
+      newPreviews[index] = url;
+      return newPreviews;
+    });
+
+    setFiles((prev) => [...prev, file]);
 
     const { success, result } = await getUploadUrl();
-
     if (success) {
       const { id, uploadURL } = result;
-      setUploadUrl(uploadURL);
-      setValue(
-        "photo",
-        `https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/${id}`
-      );
+      setUploadUrl((prev) => [...prev, uploadURL]);
+      const currentPhotos = getValues("photos"); // 현재 photos 배열을 가져옴
+
+      const newPhoto = {
+        id: currentPhotos.length + 1, // 배열의 길이 + 1을 id로 설정
+        url: `https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/${id}`,
+      };
+
+      const newPhotos = [...currentPhotos];
+      newPhotos[index] = {
+        id: index + 1,
+        url: `https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/${id}`,
+      };
+      setValue("photos", newPhotos);
     }
   };
 
-  const onValid = async (data: SignUpGuideType) => {
+  const onValid = async (data: CreateGuideProfileType) => {
     setLoading(true);
 
-    const user = await userCheck();
-
-    if (user?.me?.guide?.isApproved !== undefined) {
-      setExistError("가이드 심사 중 혹은 이미 등록된 가이드 입니다.");
-      setLoading(false);
-      return;
-    }
-
-    if (!file || !uploadUrl) {
-      setError("photo", { message: "사진을 업로드해주세요." });
+    if (!files || !uploadUrl) {
+      setError("photos", { message: "사진을 업로드해주세요." });
       return;
     }
 
     const cloudflareForm = new FormData();
-    cloudflareForm.append("file", file);
-    const response = await fetch(uploadUrl, {
-      method: "post",
-      body: cloudflareForm,
-    });
-    if (response.status !== 200) {
-      setError("photo", {
-        message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
-      });
-      return;
-    }
+    // files.map((v) => console.log(v));
+    // cloudflareForm.append("file", file);
+    // const response = await fetch(uploadUrl, {
+    //   method: "post",
+    //   body: cloudflareForm,
+    // });
+    // if (response.status !== 200) {
+    //   setError("photos", {
+    //     message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
+    //   });
+    //   return;
+    // }
 
-    const filteredLanguageOptions = language.filter(
-      (option) => option.language.trim() !== "" && option.level.trim() !== ""
-    );
-
-    const formData = new FormData();
-    formData.append("fullname", data.fullname);
-    formData.append("birthdate", data.birthdate);
-    formData.append("address", data.address);
-    formData.append("phone", data.phone);
-    formData.append("photo", data.photo);
-    formData.append("selfIntro", data.selfIntro);
-    formData.append("language", JSON.stringify(filteredLanguageOptions));
-
-    await signupGuide(formData);
-
-    //to-be 접수 성공 후, 24시간 내 심사 결과 줄거라는 (심사 중)이라는 모달창 띄우기
+    // const formData = new FormData();
+    // formData.append("fullname", data.fullname);
+    // formData.append("birthdate", data.birthdate);
+    // formData.append("address", data.address);
+    // formData.append("phone", data.phone);
+    // formData.append("photo", data.photo);
+    // formData.append("selfIntro", data.selfIntro);
+    // formData.append("language", JSON.stringify(filteredLanguageOptions));
+    // await signupGuide(formData);
     setLoading(false);
-  };
-
-  const handleLanguageChange = (index: number, value: string) => {
-    const newOptions = [...language];
-    newOptions[index].language = value;
-    setValue("language", newOptions);
-  };
-
-  const handleLevelChange = (index: number, value: string) => {
-    const newOptions = [...language];
-    newOptions[index].level = value;
-    setValue("language", newOptions);
-  };
-
-  const handleAddLanguage = () => {
-    setValue("language", [
-      ...language,
-      { id: nextId, language: "", level: "" },
-    ]);
-    setNextId(nextId + 1);
-  };
-
-  const handleRemoveLanguage = (id: number) => {
-    const newOptions = language.filter((item) => item.id !== id);
-    setValue("language", newOptions);
-  };
-
-  const getAvailableLanguages = (currentIndex: number) => {
-    const selectedLanguages = language
-      .filter((_, index) => index !== currentIndex)
-      .map((option) => option.language);
-    return LANGUAGE_OPTIONS_KOREAN.map((lang) => ({
-      name: lang,
-      disabled: selectedLanguages.includes(lang),
-    }));
   };
 
   return (
     <div className="flex justify-center items-center">
       <Card className="w-full max-w-2xl my-10 pb-4 shadow-md">
         <CardHeader>
-          <CardTitle>가이드 가입</CardTitle>
+          <CardTitle>가이드 프로필 생성</CardTitle>
+          <CardDescription>
+            매력적인 사진과 멋진 가이드 소개로 본인을 더 어필 해보세요!
+          </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onValid)} className="flex flex-col px-7">
-          <div className="mb-4">
-            <div className="flex flex-row items-center gap-1">
-              <IdentificationIcon className="size-6" />
-              <span className="text-lg font-semibold">개인 정보</span>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              귀하의 개인 정보는 FGFG에서 가이드 관리 목적으로만 사용되며,
-              외부에 공개되지 않습니다.
-            </div>
-          </div>
           <div className="flex flex-col gap-5">
             <div className="space-y-1">
-              <Label htmlFor="fullname">이름(본명)</Label>
-              {errors?.fullname ? (
-                <ErrorText text={errors.fullname.message!} />
+              <Label>가이드 프로필 사진</Label>
+              {errors?.photos ? (
+                <ErrorText text={errors?.photos?.message!} />
+              ) : null}
+              <div className="flex gap-3 flex-wrap">
+                {Array.from({ length: 8 }).map((_, index) => (
+                  <div key={index}>
+                    <Label
+                      htmlFor={`photo_${index}`}
+                      className="border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
+                      style={{
+                        backgroundImage: `url(${previews[index]})`,
+                      }}
+                    >
+                      {previews[index] === "" ? (
+                        <>
+                          <PhotoIcon className="w-12" />
+                          <div
+                            className={`text-neutral-300 text-sm ${
+                              index === 0 ? "font-bold" : ""
+                            }`}
+                          >
+                            {index === 0 ? `대표 사진` : `사진 추가 (${index})`}
+                          </div>
+                        </>
+                      ) : null}
+                    </Label>
+                    <input
+                      onChange={(e) => onImageChange(e, index)}
+                      id={`photo_${index}`}
+                      name={`photos_${index}`}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="fullname">성격</Label>
+              {errors?.personality ? (
+                <ErrorText text={errors.personality.message!} />
               ) : null}
               <Input
-                id="fullname"
+                id="personality"
                 type="text"
                 minLength={1}
-                {...register("fullname")}
+                {...register("personality")}
                 required
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="photo">프로필 사진</Label>
-              <Label
-                htmlFor="photo"
-                className="border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
-                style={{ backgroundImage: `url(${preview})` }}
-              >
-                {preview === "" ? (
-                  <>
-                    <PhotoIcon className="w-12" />
-                    <div className="text-neutral-300 text-sm">사진 추가</div>
-                  </>
-                ) : null}
-              </Label>
-              {errors?.photo ? (
-                <ErrorText text={errors.photo.message!} />
+              <Label htmlFor="selfIntro">가이드 소개</Label>
+              {errors?.guideIntro ? (
+                <ErrorText text={errors.guideIntro.message!} />
               ) : null}
-              <input
-                onChange={onImageChange}
-                id="photo"
-                name="photo"
-                type="file"
-                accept="image/*"
-                className="hidden"
-              />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="birthdate">생년월일</Label>
-              {errors?.birthdate ? (
-                <ErrorText text={errors.birthdate.message!} />
-              ) : null}
-              <Input
-                id="birthdate"
-                type="date"
-                {...register("birthdate")}
-                required
-                className="w-36"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <Label>외국어 능력</Label>
-              {errors?.language ? (
-                <ErrorText text={errors?.language[0]?.message!} />
-              ) : null}
-              {language.map((option, index) => (
-                <div
-                  key={option.id}
-                  className="flex flex-row gap-3 items-center"
-                >
-                  <div>
-                    <Select
-                      value={option.language}
-                      onValueChange={(value) =>
-                        handleLanguageChange(index, value)
-                      }
-                    >
-                      <SelectTrigger className="w-36">
-                        <SelectValue placeholder="언어 선택" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {getAvailableLanguages(index).map((lang) => (
-                          <SelectItem
-                            key={lang.name}
-                            value={lang.name}
-                            disabled={lang.disabled}
-                          >
-                            {lang.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Select
-                      value={option.level}
-                      onValueChange={(value) => handleLevelChange(index, value)}
-                    >
-                      <SelectTrigger className="w-20">
-                        <SelectValue placeholder="레벨" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1">1 (기초 수준)</SelectItem>
-                        <SelectItem value="2">2</SelectItem>
-                        <SelectItem value="3">3</SelectItem>
-                        <SelectItem value="4">4</SelectItem>
-                        <SelectItem value="5">5 (원어민 수준)</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  {index > 0 && (
-                    <MinusCircleIcon
-                      className="w-6 h-6 text-destructive cursor-pointer"
-                      onClick={() => handleRemoveLanguage(option.id)}
-                    />
-                  )}
-                </div>
-              ))}
-              {!isAllLanguagesSelected && (
-                <Button
-                  variant={"outline"}
-                  onClick={handleAddLanguage}
-                  type="button"
-                  className="flex items-center justify-between w-36 pl-1 gap-1"
-                >
-                  <PlusCircleIcon className="w-6 h-6 text-primary" />
-                  <span>언어 추가하기</span>
-                </Button>
-              )}
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="address">주소</Label>
-              {errors?.address ? (
-                <ErrorText text={errors.address.message!} />
-              ) : null}
-              <Input
-                id="address"
-                type="text"
-                {...register("address")}
-                required
-              />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="phone">핸드폰 번호</Label>
-              {errors?.phone ? (
-                <ErrorText text={errors.phone.message!} />
-              ) : null}
-              <Input id="phone" type="text" {...register("phone")} required />
-            </div>
-
-            <div className="space-y-1">
-              <Label htmlFor="selfIntro">자기 소개</Label>
-              {errors?.selfIntro ? (
-                <ErrorText text={errors.selfIntro.message!} />
-              ) : null}
-              <Textarea id="selfIntro" {...register("selfIntro")} required />
+              <Textarea id="guideIntro" {...register("guideIntro")} required />
             </div>
           </div>
           <Separator className="my-4" />
-          <GuideQandA />
-          <Separator className="my-4" />
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="terms"
-                onCheckedChange={(checked) =>
-                  setIsTermsChecked(checked === true)
-                }
-              />
-              <label htmlFor="terms2" className="text-sm font-medium">
-                <Link
-                  href={"/policies/privacy-policy"}
-                  className="text-primary"
-                >
-                  개인정보 수집
-                </Link>
-                <span> 및 </span>
-                <Link
-                  href={"/policies/terms-and-conditions"}
-                  className="text-primary"
-                >
-                  이용약관
-                </Link>
-                <span> 동의</span>
-              </label>
-            </div>
-            {existError !== "" ? <ErrorText text={existError} /> : null}
-            <Button disabled={loading || !isTermsChecked}>
-              {loading ? "로딩 중" : "가이드 가입"}
-            </Button>
-          </div>
+          <GuideProfileQandA />
+          <Button disabled={loading}>{loading ? "로딩 중" : "확인"}</Button>
         </form>
       </Card>
     </div>

@@ -30,9 +30,5 @@ export default async function getUser() {
     query: ME_QUERY,
     fetchPolicy: "no-cache",
   });
-  if (me === null) {
-    session.destroy();
-    redirect("/");
-  }
   return { me };
 }
