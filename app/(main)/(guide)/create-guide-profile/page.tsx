@@ -51,7 +51,7 @@ export default function CreateGuideProfile() {
       photos: [],
     },
   });
-
+  console.log(errors);
   const onImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
     index: number
@@ -86,15 +86,12 @@ export default function CreateGuideProfile() {
       const currentPhotos = getValues("photos"); // 현재 photos 배열을 가져옴
 
       const newPhoto = {
-        id: currentPhotos.length + 1, // 배열의 길이 + 1을 id로 설정
+        id: index + 1, // 배열의 길이 + 1을 id로 설정
         url: `https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/${id}`,
       };
 
-      const newPhotos = [...currentPhotos];
-      newPhotos[index] = {
-        id: index + 1,
-        url: `https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/${id}`,
-      };
+      const newPhotos = [...currentPhotos, newPhoto];
+
       setValue("photos", newPhotos);
     }
   };
