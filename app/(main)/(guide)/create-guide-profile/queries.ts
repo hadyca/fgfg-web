@@ -12,6 +12,7 @@ export const CREATE_GUIDE_PROFILE = gql`
       guideIntro: $guideIntro
     ) {
       ok
+      error
     }
   }
 `;

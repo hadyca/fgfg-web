@@ -17,7 +17,7 @@ import {
   MinusCircleIcon,
 } from "@heroicons/react/24/outline";
 import { PhotoIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
-import { getUploadUrl, signupGuide, userCheck } from "./actions";
+import { signupGuide, userCheck } from "./actions";
 import { Separator } from "@/components/ui/separator";
 import {
   Select,
@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import { ACCEPTED_IMAGE_TYPES, LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";
 import GuideQandA from "@/components/guideQandA";
+import { getUploadUrl } from "@/lib/sharedActions";
 
 export default function SignUpGuide() {
   const [loading, setLoading] = useState(false);

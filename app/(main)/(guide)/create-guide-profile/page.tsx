@@ -14,29 +14,20 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { PhotoIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
-import { getUploadUrl, signupGuide, userCheck } from "./actions";
+import { PhotoIcon } from "@heroicons/react/24/solid";
 import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ACCEPTED_IMAGE_TYPES, LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";
+import { ACCEPTED_IMAGE_TYPES } from "@/lib/constants";
 import { createGuideProfileSchema } from "./schema";
 import { CreateGuideProfileType } from "./schema";
 import GuideProfileQandA from "@/components/guideProfileQandA";
+import { getUploadUrl } from "@/lib/sharedActions";
+import { createGuideProfile } from "./actions";
 
 export default function CreateGuideProfile() {
   const [loading, setLoading] = useState(false);
-  const [previews, setPreviews] = useState<string[]>(Array(8).fill(""));
+  const [previews, setPreviews] = useState<string[]>([]);
   const [uploadUrl, setUploadUrl] = useState<string[]>([]);
-  const [existError, setExistError] = useState("");
   const [files, setFiles] = useState<Array<File | null>>([]);
-  const [isTermsChecked, setIsTermsChecked] = useState(false);
-  const [nextId, setNextId] = useState(2);
 
   const {
     register,
@@ -51,11 +42,8 @@ export default function CreateGuideProfile() {
       photos: [],
     },
   });
-  console.log(errors);
-  const onImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
+
+  const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { files },
     } = event;
@@ -71,11 +59,7 @@ export default function CreateGuideProfile() {
     }
     const file = files[0];
     const url = URL.createObjectURL(file);
-    setPreviews((prev) => {
-      const newPreviews = [...prev];
-      newPreviews[index] = url;
-      return newPreviews;
-    });
+    setPreviews((prev) => [...prev, url]);
 
     setFiles((prev) => [...prev, file]);
 
@@ -86,7 +70,7 @@ export default function CreateGuideProfile() {
       const currentPhotos = getValues("photos"); // 현재 photos 배열을 가져옴
 
       const newPhoto = {
-        id: index + 1, // 배열의 길이 + 1을 id로 설정
+        id: previews.length + 1,
         url: `https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/${id}`,
       };
 
@@ -99,34 +83,38 @@ export default function CreateGuideProfile() {
   const onValid = async (data: CreateGuideProfileType) => {
     setLoading(true);
 
-    if (!files || !uploadUrl) {
-      setError("photos", { message: "사진을 업로드해주세요." });
-      return;
-    }
+    await Promise.all(
+      files.map(async (file, index) => {
+        const url = uploadUrl[index];
 
-    const cloudflareForm = new FormData();
-    // files.map((v) => console.log(v));
-    // cloudflareForm.append("file", file);
-    // const response = await fetch(uploadUrl, {
-    //   method: "post",
-    //   body: cloudflareForm,
-    // });
-    // if (response.status !== 200) {
-    //   setError("photos", {
-    //     message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
-    //   });
-    //   return;
-    // }
+        if (!file || !url) {
+          setError("photos", { message: "사진을 업로드해주세요." });
+          return;
+        }
 
-    // const formData = new FormData();
-    // formData.append("fullname", data.fullname);
-    // formData.append("birthdate", data.birthdate);
-    // formData.append("address", data.address);
-    // formData.append("phone", data.phone);
-    // formData.append("photo", data.photo);
-    // formData.append("selfIntro", data.selfIntro);
-    // formData.append("language", JSON.stringify(filteredLanguageOptions));
-    // await signupGuide(formData);
+        const cloudflareForm = new FormData();
+        cloudflareForm.append("file", file);
+
+        const response = await fetch(url, {
+          method: "POST",
+          body: cloudflareForm,
+        });
+
+        if (response.status !== 200) {
+          setError("photos", {
+            message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
+          });
+          return;
+        }
+      })
+    );
+
+    const formData = new FormData();
+    formData.append("photos", JSON.stringify(data.photos));
+    formData.append("personality", data.personality);
+    formData.append("guideIntro", data.guideIntro);
+
+    await createGuideProfile(formData);
     setLoading(false);
   };
 
@@ -156,7 +144,7 @@ export default function CreateGuideProfile() {
                         backgroundImage: `url(${previews[index]})`,
                       }}
                     >
-                      {previews[index] === "" ? (
+                      {!previews[index] ? (
                         <>
                           <PhotoIcon className="w-12" />
                           <div
@@ -164,15 +152,15 @@ export default function CreateGuideProfile() {
                               index === 0 ? "font-bold" : ""
                             }`}
                           >
-                            {index === 0 ? `대표 사진` : `사진 추가 (${index})`}
+                            {index === 0 ? "대표 사진" : "사진 추가"}
                           </div>
                         </>
                       ) : null}
                     </Label>
                     <input
-                      onChange={(e) => onImageChange(e, index)}
+                      onChange={(e) => onImageChange(e)}
                       id={`photo_${index}`}
-                      name={`photos_${index}`}
+                      name={`photo_${index}`}
                       type="file"
                       accept="image/*"
                       className="hidden"
