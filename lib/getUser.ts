@@ -14,6 +14,9 @@ export const ME_QUERY = gql`
         id
         fullname
         isApproved
+        guideProfile {
+          id
+        }
       }
     }
   }

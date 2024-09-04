@@ -19,7 +19,7 @@ export async function createGuideProfile(formData: FormData) {
   if (!result.success) {
     return result.error.flatten();
   } else {
-    const test = await client.mutate({
+    await client.mutate({
       mutation: CREATE_GUIDE_PROFILE,
       variables: {
         photos: result.data.photos,
@@ -27,7 +27,7 @@ export async function createGuideProfile(formData: FormData) {
         guideIntro: result.data.guideIntro,
       },
     });
-    console.log(test);
+    //가이드 프로필 상세 페이지로 리다이렉팅
     redirect("/");
   }
 }
