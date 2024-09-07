@@ -8,7 +8,7 @@ export const CREATE_GUIDE = gql`
     $address: String!
     $phone: String!
     $selfIntro: String!
-    $photo: String!
+    $resumePhoto: String!
     $language: [LanguageInput!]
   ) {
     createGuide(
@@ -18,7 +18,7 @@ export const CREATE_GUIDE = gql`
       address: $address
       phone: $phone
       selfIntro: $selfIntro
-      photo: $photo
+      resumePhoto: $resumePhoto
       language: $language
     ) {
       ok

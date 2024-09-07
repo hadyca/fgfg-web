@@ -59,7 +59,7 @@ export const signUpGuideSchema = z.object({
       "잘못된 번호 입니다."
     ),
   selfIntro: z.string(),
-  photo: z.string({
+  resumePhoto: z.string({
     required_error: "필수 항목 입니다.",
   }),
   language: z.array(LanguageOptionSchema),

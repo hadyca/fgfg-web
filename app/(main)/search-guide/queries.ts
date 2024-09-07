@@ -5,6 +5,13 @@ export const SEE_AVAILABLE_GUIDES = gql`
     seeAvailableGuides(startTime: $startTime, endTime: $endTime) {
       id
       fullname
+      birthdate
+      personality
+      mainGuidePhoto {
+        id
+        fileUrl
+      }
+      isActive
     }
   }
 `;

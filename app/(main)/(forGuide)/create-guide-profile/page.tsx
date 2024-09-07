@@ -39,7 +39,7 @@ export default function CreateGuideProfile() {
   } = useForm<CreateGuideProfileType>({
     resolver: zodResolver(createGuideProfileSchema),
     defaultValues: {
-      photos: [],
+      guidePhotos: [],
     },
   });
 
@@ -51,7 +51,7 @@ export default function CreateGuideProfile() {
     const fileType = files?.[0]?.type;
     const typeOk = fileType ? ACCEPTED_IMAGE_TYPES.includes(fileType) : false;
     if (!typeOk) {
-      setError("photos", { message: "이미지 파일을 선택해주세요." });
+      setError("guidePhotos", { message: "이미지 파일을 선택해주세요." });
       return;
     }
     if (!files || files.length === 0) {
@@ -67,7 +67,7 @@ export default function CreateGuideProfile() {
     if (success) {
       const { id, uploadURL } = result;
       setUploadUrl((prev) => [...prev, uploadURL]);
-      const currentPhotos = getValues("photos"); // 현재 photos 배열을 가져옴
+      const currentPhotos = getValues("guidePhotos"); // 현재 guidePhotos 배열을 가져옴
 
       const newPhoto = {
         id: previews.length + 1,
@@ -76,7 +76,7 @@ export default function CreateGuideProfile() {
 
       const newPhotos = [...currentPhotos, newPhoto];
 
-      setValue("photos", newPhotos);
+      setValue("guidePhotos", newPhotos);
     }
   };
 
@@ -88,7 +88,7 @@ export default function CreateGuideProfile() {
         const url = uploadUrl[index];
 
         if (!file || !url) {
-          setError("photos", { message: "사진을 업로드해주세요." });
+          setError("guidePhotos", { message: "사진을 업로드해주세요." });
           return;
         }
 
@@ -101,7 +101,7 @@ export default function CreateGuideProfile() {
         });
 
         if (response.status !== 200) {
-          setError("photos", {
+          setError("guidePhotos", {
             message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
           });
           return;
@@ -110,7 +110,7 @@ export default function CreateGuideProfile() {
     );
 
     const formData = new FormData();
-    formData.append("photos", JSON.stringify(data.photos));
+    formData.append("guidePhotos", JSON.stringify(data.guidePhotos));
     formData.append("personality", data.personality);
     formData.append("guideIntro", data.guideIntro);
 
@@ -131,8 +131,8 @@ export default function CreateGuideProfile() {
           <div className="flex flex-col gap-5">
             <div className="space-y-1">
               <Label>가이드 프로필 사진</Label>
-              {errors?.photos ? (
-                <ErrorText text={errors?.photos?.message!} />
+              {errors?.guidePhotos ? (
+                <ErrorText text={errors?.guidePhotos?.message!} />
               ) : null}
               <div className="flex gap-3 flex-wrap">
                 {Array.from({ length: 8 }).map((_, index) => (

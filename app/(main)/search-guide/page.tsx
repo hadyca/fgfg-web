@@ -9,15 +9,15 @@ interface SearchGuideProps {
 }
 
 export default async function SearchGuide({ searchParams }: SearchGuideProps) {
-  const initialGuides = await getGuides(
-    searchParams?.startTime,
-    searchParams?.endTime
+  const data = await getGuides(searchParams?.startTime, searchParams?.endTime);
+
+  const filteredData = data?.seeAvailableGuides.filter(
+    (guide: any) => guide.mainGuidePhoto !== null
   );
 
   return (
-    <div>
-      <h1>가이드 찾기 화면</h1>
-      <GuideList initialGuides={initialGuides?.seeAvailableGuides} />
+    <div className="max-w-7xl my-10 mx-auto">
+      <GuideList data={filteredData} />
     </div>
   );
 }
