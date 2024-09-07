@@ -2,12 +2,12 @@ import { gql } from "@apollo/client";
 
 export const CREATE_GUIDE_PROFILE = gql`
   mutation createGuideProfile(
-    $photos: [PhotosInput!]!
+    $guidePhotos: [GuidePhotosInput!]!
     $personality: String!
     $guideIntro: String!
   ) {
     createGuideProfile(
-      photos: $photos
+      guidePhotos: $guidePhotos
       personality: $personality
       guideIntro: $guideIntro
     ) {

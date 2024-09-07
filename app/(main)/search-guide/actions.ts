@@ -8,6 +8,7 @@ export async function getGuides(startTime?: string, endTime?: string) {
       startTime,
       endTime,
     },
+    fetchPolicy: "no-cache",
   });
   return data;
 }

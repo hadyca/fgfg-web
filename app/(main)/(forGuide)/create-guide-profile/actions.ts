@@ -7,8 +7,8 @@ import { redirect } from "next/navigation";
 
 export async function createGuideProfile(formData: FormData) {
   const data = {
-    photos: formData.get("photos")
-      ? JSON.parse(formData.get("photos") as string)
+    guidePhotos: formData.get("guidePhotos")
+      ? JSON.parse(formData.get("guidePhotos") as string)
       : null,
     personality: formData.get("personality"),
     guideIntro: formData.get("guideIntro"),
@@ -22,7 +22,7 @@ export async function createGuideProfile(formData: FormData) {
     await client.mutate({
       mutation: CREATE_GUIDE_PROFILE,
       variables: {
-        photos: result.data.photos,
+        guidePhotos: result.data.guidePhotos,
         personality: result.data.personality,
         guideIntro: result.data.guideIntro,
       },

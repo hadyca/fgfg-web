@@ -19,7 +19,7 @@ export async function signupGuide(formData: FormData) {
     height: formData.get("height"),
     address: formData.get("address"),
     phone: formData.get("phone"),
-    photo: formData.get("photo"),
+    resumePhoto: formData.get("resumePhoto"),
     selfIntro: formData.get("selfIntro"),
     language: formData.get("language")
       ? JSON.parse(formData.get("language") as string)
@@ -39,7 +39,7 @@ export async function signupGuide(formData: FormData) {
         height: result.data.height,
         address: result.data.address,
         phone: result.data.phone,
-        photo: result.data.photo,
+        resumePhoto: result.data.resumePhoto,
         selfIntro: result.data.selfIntro,
         language: result.data.language,
       },

@@ -5,7 +5,7 @@ import Link from "next/link";
 export default async function GuideDashboard() {
   const user = await getUser();
 
-  const isGuideProfile = user?.me?.guide?.guideProfile?.id;
+  const isGuideProfile = user?.me?.guide?.personality;
 
   return (
     <div className="flex flex-col items-center mt-20">

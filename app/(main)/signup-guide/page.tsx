@@ -66,7 +66,7 @@ export default function SignUpGuide() {
     const typeOk = fileType ? ACCEPTED_IMAGE_TYPES.includes(fileType) : false;
 
     if (!typeOk) {
-      setError("photo", { message: "이미지 파일을 선택해주세요." });
+      setError("resumePhoto", { message: "이미지 파일을 선택해주세요." });
       return;
     }
 
@@ -86,7 +86,7 @@ export default function SignUpGuide() {
       const { id, uploadURL } = result;
       setUploadUrl(uploadURL);
       setValue(
-        "photo",
+        "resumePhoto",
         `https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/${id}`
       );
     }
@@ -104,7 +104,7 @@ export default function SignUpGuide() {
     }
 
     if (!file || !uploadUrl) {
-      setError("photo", { message: "사진을 업로드해주세요." });
+      setError("resumePhoto", { message: "사진을 업로드해주세요." });
       return;
     }
 
@@ -115,7 +115,7 @@ export default function SignUpGuide() {
       body: cloudflareForm,
     });
     if (response.status !== 200) {
-      setError("photo", {
+      setError("resumePhoto", {
         message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
       });
       return;
@@ -131,7 +131,7 @@ export default function SignUpGuide() {
     formData.append("height", data.height);
     formData.append("address", data.address);
     formData.append("phone", data.phone);
-    formData.append("photo", data.photo);
+    formData.append("resumePhoto", data.resumePhoto);
     formData.append("selfIntro", data.selfIntro);
     formData.append("language", JSON.stringify(filteredLanguageOptions));
 
@@ -198,9 +198,9 @@ export default function SignUpGuide() {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="photo">프로필 사진</Label>
+              <Label htmlFor="resumePhoto">프로필 사진</Label>
               <Label
-                htmlFor="photo"
+                htmlFor="resumePhoto"
                 className="border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
                 style={{ backgroundImage: `url(${preview})` }}
               >
@@ -211,13 +211,13 @@ export default function SignUpGuide() {
                   </>
                 ) : null}
               </Label>
-              {errors?.photo ? (
-                <ErrorText text={errors.photo.message!} />
+              {errors?.resumePhoto ? (
+                <ErrorText text={errors.resumePhoto.message!} />
               ) : null}
               <input
                 onChange={onImageChange}
-                id="photo"
-                name="photo"
+                id="resumePhoto"
+                name="resumePhoto"
                 type="file"
                 accept="image/*"
                 className="hidden"
