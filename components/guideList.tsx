@@ -1,3 +1,4 @@
+import { getGuides } from "@/app/(main)/search-guide/actions";
 import { calculateAge } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +9,6 @@ interface MainGuidePhoto {
 }
 
 interface Guide {
-  __typename: string;
   id: string;
   fullname: string;
   birthdate: string;
@@ -17,14 +17,25 @@ interface Guide {
   isActive: boolean;
 }
 
-interface GuideProps {
-  data: Guide[];
+interface GuideListPros {
+  searchParams?: {
+    startTime: string;
+    endTime: string;
+  };
 }
 
-export default function GuideList({ data }: GuideProps) {
+export default async function GuideList({ searchParams }: GuideListPros) {
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
+  const data = await getGuides(searchParams?.startTime, searchParams?.endTime);
+
+  const filteredData = data?.seeAvailableGuides.filter(
+    (guide: Guide) => guide.mainGuidePhoto !== null
+  );
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 justify-items-center">
-      {data.map((guide) => (
+      {filteredData.map((guide: Guide) => (
         <div key={guide.id} className="text-center group">
           <Link href={`/guide-profile/${guide.id}`}>
             <div className="relative w-60 h-72 rounded-md overflow-hidden">
@@ -32,7 +43,9 @@ export default function GuideList({ data }: GuideProps) {
                 fill
                 src={`${guide.mainGuidePhoto.fileUrl}/mainphoto`}
                 alt={"guide main photo"}
-                className="transform transition-transform duration-300 ease-in-out group-hover:scale-110"
+                className="transform transition-transform duration-300 ease-in-out group-hover:scale-110 object-cover"
+                sizes="240px"
+                priority
               />
             </div>
             <div className="text-primary text-lg">
