@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import saveGuideIdSession from "./actions";
-import getUser from "@/lib/getUser";
 
 interface CheckGuideStatusProps {
   searchParams: {

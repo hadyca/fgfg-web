@@ -2,7 +2,7 @@ import Footer from "@/components/mainPage/footer";
 import HeroSection from "@/components/mainPage/heroSection";
 import HowItWorksSection from "@/components/mainPage/howItWorksSection";
 
-export default async function Home() {
+export default function Home() {
   return (
     <main className="bg-white text-gray-800">
       <HeroSection />
