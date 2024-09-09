@@ -1,7 +1,11 @@
+"use client";
+
 import { getGuides } from "@/app/(main)/search-guide/actions";
+import GetGuideSkeleton from "@/app/(main)/search-guide/skeleton";
 import { calculateAge } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface MainGuidePhoto {
   id: string;
@@ -24,18 +28,39 @@ interface GuideListPros {
   };
 }
 
-export default async function GuideList({ searchParams }: GuideListPros) {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+export default function GuideList({ searchParams }: GuideListPros) {
+  const [guides, setGuides] = useState<Guide[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const data = await getGuides(searchParams?.startTime, searchParams?.endTime);
+  useEffect(() => {
+    const fetchGuides = async () => {
+      setLoading(true);
+      try {
+        const data = await getGuides(
+          searchParams?.startTime,
+          searchParams?.endTime
+        );
+        const filteredData = data?.seeAvailableGuides.filter(
+          (guide: Guide) => guide.mainGuidePhoto !== null
+        );
+        setGuides(filteredData);
+      } catch (error) {
+        console.error("Failed to fetch guides:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const filteredData = data?.seeAvailableGuides.filter(
-    (guide: Guide) => guide.mainGuidePhoto !== null
-  );
+    fetchGuides();
+  }, [searchParams]);
+
+  if (loading) {
+    return <GetGuideSkeleton />;
+  }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 justify-items-center">
-      {filteredData.map((guide: Guide) => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+      {guides.map((guide: Guide) => (
         <div key={guide.id} className="text-center group">
           <Link href={`/guide-profile/${guide.id}`}>
             <div className="relative w-60 h-72 rounded-md overflow-hidden">

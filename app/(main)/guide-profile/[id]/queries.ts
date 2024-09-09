@@ -8,6 +8,11 @@ export const SEE_GUIDE = gql`
       birthdate
       personality
       guideIntro
+      language
+      mainGuidePhoto {
+        id
+        fileUrl
+      }
       guidePhotos {
         id
         fileUrl
