@@ -1,8 +1,8 @@
-"use client"; // 클라이언트 컴포넌트로 설정
+"use client";
 
 import GuideList from "@/components/guideList";
 import { useRouter } from "next/navigation";
-import GuideSearchForm from "@/components/ui/guideSearchForm";
+import GuideSearchForm from "@/components/guideSearchForm";
 import { searchGuide } from "./actions";
 import { SearchGuideType } from "../schema";
 

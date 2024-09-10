@@ -16,7 +16,8 @@ import ClientComponent from "@/components/test";
 //   await new Promise((resolve) => setTimeout(resolve, 5000));
 //   return "data1";
 // }
-export default async function Test() {
+export default async function Test(props) {
+  console.log(props);
   return (
     <div className="flex justify-center items-center h-screen">loading...</div>
   );
