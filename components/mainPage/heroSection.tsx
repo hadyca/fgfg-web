@@ -21,7 +21,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 import { ko } from "date-fns/locale";
 import { subDays, format } from "date-fns";
 import { Card } from "../ui/card";
@@ -133,9 +132,9 @@ export default function HeroSection() {
                     <PopoverTrigger asChild>
                       <Button
                         variant={"outline"}
-                        className={cn("hover:bg-white w-40 pl-3")}
+                        className="hover:bg-white w-36 pl-3"
                       >
-                        <span>{watchDate}</span>
+                        <span className="font-normal">{watchDate}</span>
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
                     </PopoverTrigger>

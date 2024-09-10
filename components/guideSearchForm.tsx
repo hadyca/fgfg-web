@@ -8,13 +8,14 @@ import { CalendarIcon } from "lucide-react";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
 import { ko } from "date-fns/locale";
 import { subDays, format } from "date-fns";
 import {
@@ -24,8 +25,8 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
+import { Drawer, DrawerContent, DrawerHeader } from "./ui/drawer";
 
 interface SearchGuideProps {
   onSubmit: (data: SearchGuideType) => void; // onSubmit의 타입 정의
@@ -42,10 +43,10 @@ export default function GuideSearchForm({
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date()
   );
-
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+
   const {
     handleSubmit,
     setValue,
@@ -130,10 +131,10 @@ export default function GuideSearchForm({
               <PopoverTrigger asChild>
                 <Button
                   variant={"outline"}
-                  className={cn("hover:bg-white w-40 pl-3")}
+                  className="hover:bg-white w-36 pl-3"
                 >
                   {watchDate ? (
-                    <span>{watchDate}</span>
+                    <span className="font-normal">{watchDate}</span>
                   ) : (
                     <span className="text-muted-foreground">날짜 추가</span>
                   )}
@@ -186,7 +187,16 @@ export default function GuideSearchForm({
               >
                 <SelectValue placeholder="시간 추가" />
               </SelectTrigger>
-              <SelectContent>{endTimeOptions}</SelectContent>
+              <SelectContent
+                ref={(ref) => {
+                  if (!ref) return;
+                  ref.ontouchstart = (e) => {
+                    e.preventDefault();
+                  };
+                }}
+              >
+                {endTimeOptions}
+              </SelectContent>
             </Select>
           </div>
           <button className="text-primary hover:text-primary/90">

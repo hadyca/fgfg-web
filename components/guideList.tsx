@@ -62,13 +62,21 @@ export default function GuideList({ searchParams }: GuideListPros) {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
       {guides.map((guide: Guide) => (
         <div key={guide.id} className="text-center group">
-          <Link href={`/guide-profile/${guide.id}`}>
+          <Link
+            href={
+              searchParams?.startTime && searchParams?.endTime
+                ? `/guide-profile/${guide.id}?starttime=${encodeURIComponent(
+                    searchParams?.startTime!
+                  )}&endtime=${encodeURIComponent(searchParams?.endTime!)}`
+                : `/guide-profile/${guide.id}`
+            }
+          >
             <div className="relative w-60 h-72 rounded-md overflow-hidden">
               <Image
                 fill
                 src={`${guide.mainGuidePhoto.fileUrl}/mainphoto`}
                 alt={"guide main photo"}
-                className="transform transition-transform duration-300 ease-in-out group-hover:scale-110 object-cover"
+                className="object-cover"
                 sizes="240px"
                 priority
               />

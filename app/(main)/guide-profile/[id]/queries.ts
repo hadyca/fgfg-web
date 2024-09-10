@@ -6,6 +6,7 @@ export const SEE_GUIDE = gql`
       id
       fullname
       birthdate
+      height
       personality
       guideIntro
       language
