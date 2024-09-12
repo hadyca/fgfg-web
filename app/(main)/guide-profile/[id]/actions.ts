@@ -11,3 +11,5 @@ export async function getGuide(guideId: number) {
   });
   return data;
 }
+
+export async function getGuideReservations();
