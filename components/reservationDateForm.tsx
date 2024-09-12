@@ -1,41 +1,37 @@
 "use client";
+
 import { CalendarIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Label } from "./ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Calendar } from "./ui/calendar";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
 import { useEffect, useState } from "react";
 import { subDays, format } from "date-fns";
 import { searchGuideSchema, SearchGuideType } from "@/app/(main)/schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ko } from "date-fns/locale";
-import { reserveGuide } from "@/app/(main)/guide-profile/[id]/actions";
+import { calculateGapTime, formatCurrency } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface ReservationDateFormProps {
-  searchParams?: { startTime: string; endTime: string };
+  guideId: number;
+  searchParams?: {
+    starttime: string;
+    endtime: string;
+  };
 }
 
-export default function ReservationDateForm({
-  searchParams,
-}: ReservationDateFormProps) {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    new Date()
-  );
+export default function ReservationDateForm(props: ReservationDateFormProps) {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
   const {
     handleSubmit,
     setValue,
@@ -48,17 +44,15 @@ export default function ReservationDateForm({
   const watchDate = watch("date");
 
   useEffect(() => {
-    if (searchParams?.startTime && searchParams?.endTime) {
-      const dateStartTime = new Date(searchParams?.startTime);
-      const date = dateStartTime.toISOString().split("T")[0];
-      const startTime = dateStartTime
-        .toISOString()
+    if (props?.searchParams?.starttime && props?.searchParams?.endtime) {
+      const date = props?.searchParams.starttime.split("T")[0];
+      const startTime = props?.searchParams.starttime
         .split("T")[1]
         .substring(0, 5);
-      const dateEndTime = new Date(searchParams?.endTime);
-      const endTime = dateEndTime.toISOString().split("T")[1].substring(0, 5);
+      const endTime = props?.searchParams.endtime.split("T")[1].substring(0, 5);
 
       setValue("date", date);
+      setSelectedDate(new Date(date));
 
       setStartTime(startTime);
       setValue("startTime", startTime);
@@ -66,40 +60,21 @@ export default function ReservationDateForm({
       setEndTime(endTime);
       setValue("endTime", endTime);
     }
-  }, [setValue, searchParams]);
+  }, [setValue, props]);
 
   const onValid = async (data: SearchGuideType) => {
-    setLoading(true); // 로딩 시작
-
     // 폼 데이터를 FormData 객체로 변환
     const formData = new FormData();
     formData.append("date", data.date);
     formData.append("startTime", data.startTime);
     formData.append("endTime", data.endTime);
 
-    // 서버 함수 호출
-    // await reserveGuide(formData, guideId);
-    // await searchGuide(formData);
-    setLoading(false);
+    router.push(
+      `/reservation/${props.guideId}?starttime=${encodeURIComponent(
+        props?.searchParams?.starttime!
+      )}&endtime=${encodeURIComponent(props?.searchParams?.endtime!)}`
+    );
   };
-
-  const startTimeOptions = Array.from({ length: 23 }, (_, i) => {
-    const time = `${String(i).padStart(2, "0")}:00`;
-    return (
-      <SelectItem key={time} value={time}>
-        {time}
-      </SelectItem>
-    );
-  });
-
-  const endTimeOptions = Array.from({ length: 23 }, (_, i) => {
-    const time = `${String(i + 2).padStart(2, "0")}:00`;
-    return (
-      <SelectItem key={time} value={time}>
-        {time}
-      </SelectItem>
-    );
-  });
 
   const handleDateChange = (date: Date | undefined) => {
     if (!date || date === selectedDate) {
@@ -111,12 +86,16 @@ export default function ReservationDateForm({
     setIsPopoverOpen(false); // 날짜 선택 후 팝오버 닫기
   };
 
-  const handleStartTimeChange = (value: string) => {
+  const handleStartTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
     setValue("startTime", value);
+    setStartTime(value);
   };
 
-  const handleEndTimeChange = (value: string) => {
+  const handleEndTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
     setValue("endTime", value);
+    setEndTime(value);
   };
 
   return (
@@ -130,7 +109,7 @@ export default function ReservationDateForm({
                 <PopoverTrigger asChild>
                   <Button
                     variant={"outline"}
-                    className="hover:bg-white w-36 pl-3"
+                    className="hover:bg-white w-36 px-3"
                   >
                     {watchDate ? (
                       <span className="font-normal">{watchDate}</span>
@@ -158,54 +137,77 @@ export default function ReservationDateForm({
             <div className="flex flwx-row gap-3">
               <div>
                 <Label className="block mb-2">픽업 시각</Label>
-                <Select
-                  key={startTime}
-                  onValueChange={handleStartTimeChange}
-                  defaultValue={startTime}
+                <select
+                  className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
+                    startTime ? "" : "text-muted-foreground"
+                  }`}
+                  value={startTime}
+                  onChange={handleStartTimeChange}
                 >
-                  <SelectTrigger
-                    className={`w-36 focus:outline-none ${
-                      startTime === "" ? "text-muted-foreground" : ""
-                    }`}
-                  >
-                    <SelectValue placeholder="시간 추가" />
-                  </SelectTrigger>
-                  <SelectContent>{startTimeOptions}</SelectContent>
-                </Select>
+                  <option value="" disabled hidden>
+                    시간 추가
+                  </option>
+                  {Array.from({ length: 23 }, (_, i) => {
+                    const time = `${String(i).padStart(2, "0")}:00`;
+                    return (
+                      <option key={time} value={time} className="text-black">
+                        {time}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
               <div>
                 <Label className="block mb-2">종료 시각</Label>
-                <Select
-                  key={endTime}
-                  onValueChange={handleEndTimeChange}
-                  defaultValue={endTime}
+                <select
+                  className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm  ${
+                    endTime ? "" : "text-muted-foreground"
+                  }`}
+                  value={endTime}
+                  onChange={handleEndTimeChange}
                 >
-                  <SelectTrigger
-                    className={`w-36 focus:outline-none ${
-                      endTime === "" ? "text-muted-foreground" : ""
-                    }`}
-                  >
-                    <SelectValue placeholder="시간 추가" />
-                  </SelectTrigger>
-                  <SelectContent>{endTimeOptions}</SelectContent>
-                </Select>
+                  <option value="" disabled hidden>
+                    시간 추가
+                  </option>
+                  {Array.from({ length: 23 }, (_, i) => {
+                    const time = `${String(i + 2).padStart(2, "0")}:00`;
+                    return (
+                      <option key={time} value={time} className="text-black">
+                        {time}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
             </div>
           </div>
           {errors?.startTime?.type === "custom" ? (
-            <div className="items-start">
+            <div className="text-center">
               <span className="text-destructive font-medium">
                 {errors?.startTime?.message}
               </span>
             </div>
-          ) : errors?.startTime || errors?.startTime || errors?.endTime ? (
-            <div>
+          ) : errors?.date || errors?.startTime || errors?.endTime ? (
+            <div className="text-center">
               <span className="text-destructive font-medium">
                 날짜와 시간을 다시 확인해주세요.
               </span>
             </div>
           ) : null}
-          <Button disabled={loading}>예약하기</Button>
+          <Button>예약하기</Button>
+          <div className="text-sm text-center">
+            예약 확정 전에는 요금이 청구되지 않습니다.
+          </div>
+          {calculateGapTime(startTime, endTime) > 1 ? (
+            <div className="flex justify-between">
+              <span className="underline">
+                {`₩20,000 x ${calculateGapTime(startTime, endTime)}시간`}
+              </span>
+              <span>
+                {formatCurrency(20000 * calculateGapTime(startTime, endTime))}
+              </span>
+            </div>
+          ) : null}
         </div>
       </form>
     </Card>

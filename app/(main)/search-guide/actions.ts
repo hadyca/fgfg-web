@@ -31,9 +31,9 @@ export async function searchGuide(formData: FormData) {
     const endTime = `${result.data.date}T${result.data.endTime}:00.000Z`;
     return {
       ok: true,
-      redirect: `/search-guide?startTime=${encodeURIComponent(
+      redirect: `/search-guide?starttime=${encodeURIComponent(
         startTime
-      )}&endTime=${encodeURIComponent(endTime)}`,
+      )}&endtime=${encodeURIComponent(endTime)}`,
     };
   }
 }

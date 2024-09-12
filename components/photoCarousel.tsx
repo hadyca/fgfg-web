@@ -18,7 +18,7 @@ interface PhotoCarouselPros {
 
 export default function PhotoCarousel({ guidePhotos }: PhotoCarouselPros) {
   return (
-    <Carousel className="w-[200px] h-[260px] md:w-[500px] md:h-[640px] mx-auto rounded-md">
+    <Carousel className="w-[200px] h-[260px] md:w-[500px] md:h-[640px] mx-auto rounded-md mb-9">
       <CarouselContent>
         {guidePhotos.map((photo: GuidePhoto) => (
           <CarouselItem key={photo.id}>

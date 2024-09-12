@@ -7,13 +7,6 @@ import { CalendarIcon } from "lucide-react";
 import { searchGuideSchema, SearchGuideType } from "@/app/(main)/schema";
 import { Button } from "../ui/button";
 import { searchGuide } from "@/app/(main)/actions";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Label } from "../ui/label";
 import { Calendar } from "../ui/calendar";
 import {
@@ -26,10 +19,11 @@ import { subDays, format } from "date-fns";
 import { Card } from "../ui/card";
 
 export default function HeroSection() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    new Date()
-  );
-
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(() => {
+    const today = new Date();
+    today.setDate(today.getDate() + 1);
+    return today;
+  });
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -51,7 +45,6 @@ export default function HeroSection() {
     tomorrow.setDate(tomorrow.getDate() + 1);
 
     setValue("date", format(tomorrow, "yyyy-MM-dd"));
-
     setStartTime("09:00");
     setValue("startTime", "09:00");
 
@@ -73,24 +66,6 @@ export default function HeroSection() {
     setLoading(false);
   };
 
-  const startTimeOptions = Array.from({ length: 23 }, (_, i) => {
-    const time = `${String(i).padStart(2, "0")}:00`;
-    return (
-      <SelectItem key={time} value={time}>
-        {time}
-      </SelectItem>
-    );
-  });
-
-  const endTimeOptions = Array.from({ length: 23 }, (_, i) => {
-    const time = `${String(i + 2).padStart(2, "0")}:00`;
-    return (
-      <SelectItem key={time} value={time}>
-        {time}
-      </SelectItem>
-    );
-  });
-
   const handleDateChange = (date: Date | undefined) => {
     if (!date || date === selectedDate) {
       setIsPopoverOpen(false);
@@ -101,12 +76,16 @@ export default function HeroSection() {
     setIsPopoverOpen(false); // 날짜 선택 후 팝오버 닫기
   };
 
-  const handleStartTimeChange = (value: string) => {
+  const handleStartTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
     setValue("startTime", value);
+    setStartTime(value);
   };
 
-  const handleEndTimeChange = (value: string) => {
+  const handleEndTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
     setValue("endTime", value);
+    setEndTime(value);
   };
 
   return (
@@ -132,7 +111,7 @@ export default function HeroSection() {
                     <PopoverTrigger asChild>
                       <Button
                         variant={"outline"}
-                        className="hover:bg-white w-36 pl-3"
+                        className="hover:bg-white w-36 px-3"
                       >
                         <span className="font-normal">{watchDate}</span>
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -155,29 +134,41 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <Label className="block mb-2">픽업 시각</Label>
-                  <Select
-                    key={startTime}
-                    onValueChange={handleStartTimeChange}
-                    defaultValue={startTime}
+                  <select
+                    className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
+                      startTime ? "" : "text-muted-foreground"
+                    }`}
+                    value={startTime}
+                    onChange={handleStartTimeChange}
                   >
-                    <SelectTrigger className="w-36 focus:outline-none">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>{startTimeOptions}</SelectContent>
-                  </Select>
+                    {Array.from({ length: 23 }, (_, i) => {
+                      const time = `${String(i).padStart(2, "0")}:00`;
+                      return (
+                        <option key={time} value={time} className="text-black">
+                          {time}
+                        </option>
+                      );
+                    })}
+                  </select>
                 </div>
                 <div>
                   <Label className="block mb-2">종료 시각</Label>
-                  <Select
-                    key={endTime}
-                    onValueChange={handleEndTimeChange}
-                    defaultValue={endTime}
+                  <select
+                    className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm  ${
+                      endTime ? "" : "text-muted-foreground"
+                    }`}
+                    value={endTime}
+                    onChange={handleEndTimeChange}
                   >
-                    <SelectTrigger className="w-36 focus:outline-none">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>{endTimeOptions}</SelectContent>
-                  </Select>
+                    {Array.from({ length: 23 }, (_, i) => {
+                      const time = `${String(i + 2).padStart(2, "0")}:00`;
+                      return (
+                        <option key={time} value={time} className="text-black">
+                          {time}
+                        </option>
+                      );
+                    })}
+                  </select>
                 </div>
               </div>
               {errors?.startTime?.type === "custom" ? (
@@ -186,7 +177,7 @@ export default function HeroSection() {
                     {errors?.startTime?.message}
                   </span>
                 </div>
-              ) : errors?.startTime || errors?.startTime || errors?.endTime ? (
+              ) : errors?.date || errors?.startTime || errors?.endTime ? (
                 <div>
                   <span className="text-destructive font-medium">
                     날짜와 시간을 다시 확인해주세요.

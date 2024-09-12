@@ -23,8 +23,8 @@ interface Guide {
 
 interface GuideListPros {
   searchParams?: {
-    startTime: string;
-    endTime: string;
+    starttime: string;
+    endtime: string;
   };
 }
 
@@ -37,8 +37,8 @@ export default function GuideList({ searchParams }: GuideListPros) {
       setLoading(true);
       try {
         const data = await getGuides(
-          searchParams?.startTime,
-          searchParams?.endTime
+          searchParams?.starttime,
+          searchParams?.endtime
         );
         const filteredData = data?.seeAvailableGuides.filter(
           (guide: Guide) => guide.mainGuidePhoto !== null
@@ -64,10 +64,10 @@ export default function GuideList({ searchParams }: GuideListPros) {
         <div key={guide.id} className="text-center group">
           <Link
             href={
-              searchParams?.startTime && searchParams?.endTime
+              searchParams?.starttime && searchParams?.endtime
                 ? `/guide-profile/${guide.id}?starttime=${encodeURIComponent(
-                    searchParams?.startTime!
-                  )}&endtime=${encodeURIComponent(searchParams?.endTime!)}`
+                    searchParams?.starttime!
+                  )}&endtime=${encodeURIComponent(searchParams?.endtime!)}`
                 : `/guide-profile/${guide.id}`
             }
           >
@@ -76,7 +76,7 @@ export default function GuideList({ searchParams }: GuideListPros) {
                 fill
                 src={`${guide.mainGuidePhoto.fileUrl}/mainphoto`}
                 alt={"guide main photo"}
-                className="object-cover"
+                className="object-cover transform transition-transform duration-300 ease-in-out group-hover:scale-110"
                 sizes="240px"
                 priority
               />

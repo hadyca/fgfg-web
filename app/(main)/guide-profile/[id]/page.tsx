@@ -12,8 +12,8 @@ interface GuideProfilePros {
     id: string;
   };
   searchParams?: {
-    startTime: string;
-    endTime: string;
+    starttime: string;
+    endtime: string;
   };
 }
 
@@ -23,8 +23,8 @@ interface Language {
   level: string;
 }
 
-export default async function guideProfile(guideProfilePros: GuideProfilePros) {
-  const id = Number(guideProfilePros.params.id);
+export default async function guideProfile(props: GuideProfilePros) {
+  const id = Number(props.params.id);
   if (isNaN(id)) {
     return notFound();
   }
@@ -35,14 +35,14 @@ export default async function guideProfile(guideProfilePros: GuideProfilePros) {
   }
 
   const parsedLanguage = JSON.parse(guide?.seeGuide?.language);
-
+  console.log(guide?.seeGuide?.reservations);
   return (
     <div className="max-w-6xl mx-auto my-10 px-6">
       <PhotoCarousel guidePhotos={guide?.seeGuide?.guidePhotos} />
       <div className="grid grid-cols-1 md:grid-cols-10">
         <div className="w-full md:col-span-6">
           <div className="flex flex-col gap-1">
-            <div className="flex flex-row items-center gap-2 mt-6">
+            <div className="flex flex-row items-center gap-2">
               <Avatar>
                 <AvatarImage
                   src={`${guide?.seeGuide?.mainGuidePhoto?.fileUrl}/avatar`}
@@ -89,10 +89,15 @@ export default async function guideProfile(guideProfilePros: GuideProfilePros) {
           </div>
           <Separator className="my-8" />
         </div>
-        <div className="md:col-span-4 flex justify-center">
-          <ReservationDateForm searchParams={guideProfilePros.searchParams} />
+        <div className="md:col-span-4 flex justify-center items-start ">
+          <ReservationDateForm guideId={id} searchParams={props.searchParams} />
         </div>
       </div>
+      <div className="mt-8 md:mt-0">
+        <div className="text-xl font-medium">가이드 예약 완료 시간</div>
+        {/* <div>{guide?.seeGuide?.reservations}</div> */}
+      </div>
+      <Separator className="my-8" />
     </div>
   );
 }
