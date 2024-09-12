@@ -19,6 +19,11 @@ export const SEE_GUIDE = gql`
         fileUrl
       }
       isActive
+      reservations {
+        id
+        startTime
+        endTime
+      }
     }
   }
 `;

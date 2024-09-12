@@ -8,8 +8,8 @@ import { SearchGuideType } from "../schema";
 
 interface SearchGuideProps {
   searchParams?: {
-    startTime: string;
-    endTime: string;
+    starttime: string;
+    endtime: string;
   };
 }
 

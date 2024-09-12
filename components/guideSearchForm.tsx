@@ -5,15 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { ko } from "date-fns/locale";
@@ -26,13 +17,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
-import { Drawer, DrawerContent, DrawerHeader } from "./ui/drawer";
 
 interface SearchGuideProps {
-  onSubmit: (data: SearchGuideType) => void; // onSubmit의 타입 정의
+  onSubmit: (data: SearchGuideType) => void;
   searchParams?: {
-    startTime: string;
-    endTime: string;
+    starttime: string;
+    endtime: string;
   };
 }
 
@@ -40,9 +30,7 @@ export default function GuideSearchForm({
   onSubmit,
   searchParams,
 }: SearchGuideProps) {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    new Date()
-  );
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -59,17 +47,13 @@ export default function GuideSearchForm({
   const watchDate = watch("date");
 
   useEffect(() => {
-    if (searchParams?.startTime && searchParams?.endTime) {
-      const dateStartTime = new Date(searchParams?.startTime);
-      const date = dateStartTime.toISOString().split("T")[0];
-      const startTime = dateStartTime
-        .toISOString()
-        .split("T")[1]
-        .substring(0, 5);
-      const dateEndTime = new Date(searchParams?.endTime);
-      const endTime = dateEndTime.toISOString().split("T")[1].substring(0, 5);
+    if (searchParams?.starttime && searchParams?.endtime) {
+      const date = searchParams.starttime.split("T")[0];
+      const startTime = searchParams.starttime.split("T")[1].substring(0, 5);
+      const endTime = searchParams.endtime.split("T")[1].substring(0, 5);
 
       setValue("date", date);
+      setSelectedDate(new Date(date));
 
       setStartTime(startTime);
       setValue("startTime", startTime);
@@ -83,40 +67,24 @@ export default function GuideSearchForm({
     onSubmit(data);
   };
 
-  const startTimeOptions = Array.from({ length: 23 }, (_, i) => {
-    const time = `${String(i).padStart(2, "0")}:00`;
-    return (
-      <SelectItem key={time} value={time}>
-        {time}
-      </SelectItem>
-    );
-  });
-
-  const endTimeOptions = Array.from({ length: 23 }, (_, i) => {
-    const time = `${String(i + 2).padStart(2, "0")}:00`;
-    return (
-      <SelectItem key={time} value={time}>
-        {time}
-      </SelectItem>
-    );
-  });
-
   const handleDateChange = (date: Date | undefined) => {
     if (!date || date === selectedDate) {
       setIsPopoverOpen(false);
       return;
     }
     setSelectedDate(date);
-    setValue("date", date ? format(date, "yyyy-MM-dd") : ""); // 날짜 포맷을 맞춰서 저장
-    setIsPopoverOpen(false); // 날짜 선택 후 팝오버 닫기
+    setValue("date", date ? format(date, "yyyy-MM-dd") : "");
+    setIsPopoverOpen(false);
   };
 
-  const handleStartTimeChange = (value: string) => {
+  const handleStartTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
     setValue("startTime", value);
     setStartTime(value);
   };
 
-  const handleEndTimeChange = (value: string) => {
+  const handleEndTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
     setValue("endTime", value);
     setEndTime(value);
   };
@@ -124,14 +92,14 @@ export default function GuideSearchForm({
   return (
     <Card className="max-w-max shadow-lg p-3">
       <form onSubmit={handleSubmit(handleFormSubmit)}>
-        <div className="flex flex-col sm:flex-row justify-center items-end gap-4">
+        <div className="flex flex-col sm:flex-row justify-center items-center sm:items-end gap-4">
           <div>
             <Label className="block mb-2 text-center">날짜 선택</Label>
             <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
               <PopoverTrigger asChild>
                 <Button
                   variant={"outline"}
-                  className="hover:bg-white w-36 pl-3"
+                  className="hover:bg-white w-36 px-3"
                 >
                   {watchDate ? (
                     <span className="font-normal">{watchDate}</span>
@@ -158,59 +126,60 @@ export default function GuideSearchForm({
           </div>
           <div>
             <Label className="block mb-2 text-center">픽업 시각</Label>
-            <Select
-              key={startTime}
-              onValueChange={handleStartTimeChange}
-              defaultValue={startTime}
+            <select
+              className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
+                startTime ? "" : "text-muted-foreground"
+              }`}
+              value={startTime}
+              onChange={handleStartTimeChange}
             >
-              <SelectTrigger
-                className={`w-36 focus:outline-none ${
-                  startTime === "" ? "text-muted-foreground" : ""
-                }`}
-              >
-                <SelectValue placeholder="시간 추가" />
-              </SelectTrigger>
-              <SelectContent>{startTimeOptions}</SelectContent>
-            </Select>
+              <option value="" disabled hidden>
+                시간 추가
+              </option>
+              {Array.from({ length: 23 }, (_, i) => {
+                const time = `${String(i).padStart(2, "0")}:00`;
+                return (
+                  <option key={time} value={time} className="text-black">
+                    {time}
+                  </option>
+                );
+              })}
+            </select>
           </div>
-          <div className="flex flex-col justify-end">
+          <div>
             <Label className="block mb-2 text-center">종료 시각</Label>
-            <Select
-              key={endTime}
-              onValueChange={handleEndTimeChange}
-              defaultValue={endTime}
+            <select
+              className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm  ${
+                endTime ? "" : "text-muted-foreground"
+              }`}
+              value={endTime}
+              onChange={handleEndTimeChange}
             >
-              <SelectTrigger
-                className={`w-36 focus:outline-none ${
-                  endTime === "" ? "text-muted-foreground" : ""
-                }`}
-              >
-                <SelectValue placeholder="시간 추가" />
-              </SelectTrigger>
-              <SelectContent
-                ref={(ref) => {
-                  if (!ref) return;
-                  ref.ontouchstart = (e) => {
-                    e.preventDefault();
-                  };
-                }}
-              >
-                {endTimeOptions}
-              </SelectContent>
-            </Select>
+              <option value="" disabled hidden>
+                시간 추가
+              </option>
+              {Array.from({ length: 23 }, (_, i) => {
+                const time = `${String(i + 2).padStart(2, "0")}:00`;
+                return (
+                  <option key={time} value={time} className="text-black">
+                    {time}
+                  </option>
+                );
+              })}
+            </select>
           </div>
           <button className="text-primary hover:text-primary/90">
             <MagnifyingGlassCircleIcon className="size-10" />
           </button>
         </div>
         {errors?.startTime?.type === "custom" ? (
-          <div className="items-start">
+          <div className="mt-3">
             <span className="text-destructive font-medium">
               {errors?.startTime?.message}
             </span>
           </div>
-        ) : errors?.startTime || errors?.startTime || errors?.endTime ? (
-          <div>
+        ) : errors?.date || errors?.startTime || errors?.endTime ? (
+          <div className="mt-3">
             <span className="text-destructive font-medium">
               날짜와 시간을 다시 확인해주세요.
             </span>
