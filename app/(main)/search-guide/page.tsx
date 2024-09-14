@@ -22,6 +22,7 @@ export default function SearchGuide({ searchParams }: SearchGuideProps) {
     formData.append("startTime", data.startTime);
     formData.append("endTime", data.endTime);
     const result = await searchGuide(formData);
+
     if (result.ok && result.redirect) {
       router.push(result.redirect);
     } else {

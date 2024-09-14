@@ -17,6 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
+import { convertToVietnamISO, convertToVietnamTime } from "@/lib/utils";
 
 interface SearchGuideProps {
   onSubmit: (data: SearchGuideType) => void;
@@ -48,12 +49,14 @@ export default function GuideSearchForm({
 
   useEffect(() => {
     if (searchParams?.starttime && searchParams?.endtime) {
-      const date = searchParams.starttime.split("T")[0];
-      const startTime = searchParams.starttime.split("T")[1].substring(0, 5);
-      const endTime = searchParams.endtime.split("T")[1].substring(0, 5);
+      const date = convertToVietnamISO(searchParams.starttime);
+      const dateOnly = date!.split("T")[0];
 
-      setValue("date", date);
-      setSelectedDate(new Date(date));
+      const startTime = convertToVietnamTime(searchParams.starttime);
+      const endTime = convertToVietnamTime(searchParams.endtime);
+
+      setValue("date", dateOnly!);
+      setSelectedDate(new Date(dateOnly!));
 
       setStartTime(startTime);
       setValue("startTime", startTime);

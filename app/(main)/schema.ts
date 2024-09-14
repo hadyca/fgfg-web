@@ -1,5 +1,6 @@
 import { DATE_REGEX, TIME_30_MIN_REGEX } from "@/lib/constants";
 import { z } from "zod";
+import { DateTime } from "luxon";
 
 export const searchGuideSchema = z
   .object({
@@ -8,18 +9,18 @@ export const searchGuideSchema = z
     endTime: z.string().regex(TIME_30_MIN_REGEX, "시각을 다시 확인하세요."),
   })
   .superRefine(({ date, startTime, endTime }, ctx) => {
-    const startDate = new Date(`${date}T${startTime}`);
-    const endDate = new Date(`${date}T${endTime}`);
-    const timeDifference = endDate.getTime() - startDate.getTime(); // 밀리초 단위의 차이
-    const threeHoursInMilliseconds = 2 * 60 * 60 * 1000; // 3시간을 밀리초로 변환
-
-    // 베트남 현재 시간 계산
-    const vietnamCurrentTime = new Date().toLocaleString("en-US", {
-      timeZone: "Asia/Ho_Chi_Minh",
+    const startDate = DateTime.fromISO(`${date}T${startTime}`, {
+      zone: "Asia/Ho_Chi_Minh",
     });
-    const vietnamNow = new Date(vietnamCurrentTime);
+    const endDate = DateTime.fromISO(`${date}T${endTime}`, {
+      zone: "Asia/Ho_Chi_Minh",
+    });
+    const twoHoursInMilliseconds = 2 * 60 * 60 * 1000;
+    const vietnamNow = DateTime.now().setZone("Asia/Ho_Chi_Minh");
 
-    if (timeDifference < threeHoursInMilliseconds) {
+    const timeDifference = endDate.toMillis() - startDate.toMillis();
+
+    if (timeDifference < twoHoursInMilliseconds) {
       ctx.addIssue({
         code: "custom",
         message: "최소 이용 시간은 2시간 입니다.",
