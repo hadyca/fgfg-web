@@ -8,8 +8,12 @@ export async function getGuide(guideId: number) {
     variables: {
       guideId,
     },
+    fetchPolicy: "no-cache",
   });
+
   return data;
 }
 
-export async function getGuideReservations();
+export async function getGuideReservations() {
+  return;
+}

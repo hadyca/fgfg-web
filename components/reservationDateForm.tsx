@@ -12,8 +12,20 @@ import { searchGuideSchema, SearchGuideType } from "@/app/(main)/schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ko } from "date-fns/locale";
-import { calculateGapTime, formatCurrency } from "@/lib/utils";
+import {
+  calculateGapTime,
+  convertToUTC,
+  convertToVietnamISO,
+  convertToVietnamTime,
+  formatCurrency,
+} from "@/lib/utils";
 import { useRouter } from "next/navigation";
+
+interface Reservation {
+  id: number;
+  startTime: string;
+  endTime: string;
+}
 
 interface ReservationDateFormProps {
   guideId: number;
@@ -21,6 +33,7 @@ interface ReservationDateFormProps {
     starttime: string;
     endtime: string;
   };
+  reservations: Reservation[];
 }
 
 export default function ReservationDateForm(props: ReservationDateFormProps) {
@@ -35,24 +48,24 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
   const {
     handleSubmit,
     setValue,
+    setError,
     formState: { errors },
     watch,
   } = useForm<SearchGuideType>({
     resolver: zodResolver(searchGuideSchema),
   });
-
   const watchDate = watch("date");
 
   useEffect(() => {
     if (props?.searchParams?.starttime && props?.searchParams?.endtime) {
-      const date = props?.searchParams.starttime.split("T")[0];
-      const startTime = props?.searchParams.starttime
-        .split("T")[1]
-        .substring(0, 5);
-      const endTime = props?.searchParams.endtime.split("T")[1].substring(0, 5);
+      const date = convertToVietnamISO(props.searchParams.starttime);
+      const dateOnly = date!.split("T")[0];
 
-      setValue("date", date);
-      setSelectedDate(new Date(date));
+      const startTime = convertToVietnamTime(props.searchParams.starttime);
+      const endTime = convertToVietnamTime(props.searchParams.endtime);
+
+      setValue("date", dateOnly);
+      setSelectedDate(new Date(dateOnly));
 
       setStartTime(startTime);
       setValue("startTime", startTime);
@@ -68,11 +81,41 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
     formData.append("date", data.date);
     formData.append("startTime", data.startTime);
     formData.append("endTime", data.endTime);
+    const inputStartTime = convertToUTC(`${data.date}T${data.startTime}`);
+    const inputEndTime = convertToUTC(`${data.date}T${data.endTime}`);
+
+    // 예약된 시간과 겹치는지 확인
+    for (let reservation of props.reservations) {
+      const reservedStartTime = reservation.startTime;
+      const reservedEndTime = reservation.endTime;
+
+      // 조건 1: 새로운 예약의 시작 시간이 기존 예약의 기간 내에 있는 경우
+      const isStartTimeOverlap =
+        inputStartTime! >= reservedStartTime &&
+        inputStartTime! < reservedEndTime;
+
+      // 조건 2: 새로운 예약의 종료 시간이 기존 예약의 기간 내에 있는 경우
+      const isEndTimeOverlap =
+        inputEndTime! > reservedStartTime && inputEndTime! <= reservedEndTime;
+
+      // 조건 3: 새로운 예약이 기존 예약을 완전히 포함하는 경우
+      const isFullyOverlap =
+        inputStartTime! <= reservedStartTime &&
+        inputEndTime! >= reservedEndTime;
+
+      if (isStartTimeOverlap || isEndTimeOverlap || isFullyOverlap) {
+        setError("startTime", {
+          type: "custom",
+          message: "선택한 시간이 이미 예약된 시간과 겹칩니다.",
+        });
+        return;
+      }
+    }
 
     router.push(
       `/reservation/${props.guideId}?starttime=${encodeURIComponent(
-        props?.searchParams?.starttime!
-      )}&endtime=${encodeURIComponent(props?.searchParams?.endtime!)}`
+        inputStartTime!
+      )}&endtime=${encodeURIComponent(inputEndTime!)}`
     );
   };
 

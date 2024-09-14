@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { DateTime } from "luxon";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -45,4 +46,34 @@ export function formatCurrency(amount: number) {
     style: "currency",
     currency: "KRW",
   }).format(amount);
+}
+
+export function convertToVietnamDate(utcDateTimeString: string) {
+  const utcDate = DateTime.fromISO(utcDateTimeString, { zone: "utc" });
+  const vietnamDate = utcDate.setZone("Asia/Ho_Chi_Minh");
+  return vietnamDate.toFormat("yyyy.M.d");
+}
+
+export function convertToVietnamTime(utcDateTimeString: string) {
+  const utcDate = DateTime.fromISO(utcDateTimeString, { zone: "utc" });
+  const vietnamDate = utcDate.setZone("Asia/Ho_Chi_Minh");
+  return vietnamDate.toFormat("HH:mm");
+}
+
+export function convertToVietnamISO(utcDateTimeString: string) {
+  // UTC 시간대로 해석 후, 베트남 시간대로 변환
+  const vietnamDate = DateTime.fromISO(utcDateTimeString, {
+    zone: "utc",
+  }).setZone("Asia/Ho_Chi_Minh");
+
+  return vietnamDate.toISO();
+}
+
+export function convertToUTC(vietnamLocalTime: string) {
+  // 베트남 시간대로 해석한 후 UTC 시간대로 변환
+  const utcDate = DateTime.fromISO(vietnamLocalTime, {
+    zone: "Asia/Ho_Chi_Minh",
+  }).toUTC();
+
+  return utcDate.toISO();
 }

@@ -3,6 +3,7 @@
 import { client } from "@/lib/apolloClient";
 import { SEE_AVAILABLE_GUIDES } from "./queries";
 import { searchGuideSchema } from "../schema";
+import { convertToUTC } from "@/lib/utils";
 
 export async function getGuides(startTime?: string, endTime?: string) {
   const { data } = await client.query({
@@ -27,13 +28,18 @@ export async function searchGuide(formData: FormData) {
   if (!result.success) {
     return { ok: false, error: "유효하지 않은 데이터" };
   } else {
-    const startTime = `${result.data.date}T${result.data.startTime}:00.000Z`;
-    const endTime = `${result.data.date}T${result.data.endTime}:00.000Z`;
+    const queryStartTime = convertToUTC(
+      `${result.data.date}T${result.data.startTime}`
+    );
+    const queryEndTime = convertToUTC(
+      `${result.data.date}T${result.data.endTime}`
+    );
+
     return {
       ok: true,
       redirect: `/search-guide?starttime=${encodeURIComponent(
-        startTime
-      )}&endtime=${encodeURIComponent(endTime)}`,
+        queryStartTime!
+      )}&endtime=${encodeURIComponent(queryEndTime!)}`,
     };
   }
 }
