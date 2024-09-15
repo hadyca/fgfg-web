@@ -12,10 +12,7 @@ import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  IdentificationIcon,
-  MinusCircleIcon,
-} from "@heroicons/react/24/outline";
+import { MinusCircleIcon } from "@heroicons/react/24/outline";
 import { PhotoIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 import { signupGuide, userCheck } from "./actions";
 import { Separator } from "@/components/ui/separator";
@@ -29,6 +26,14 @@ import {
 import { ACCEPTED_IMAGE_TYPES, LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";
 import GuideQandA from "@/components/guideQandA";
 import { getUploadUrl } from "@/lib/sharedActions";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useRouter } from "next/navigation";
 
 export default function SignUpGuide() {
   const [loading, setLoading] = useState(false);
@@ -38,6 +43,9 @@ export default function SignUpGuide() {
   const [file, setFile] = useState<File | null>(null);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [nextId, setNextId] = useState(2);
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // Dialog 상태 관리
+
+  const router = useRouter();
 
   const {
     register,
@@ -139,6 +147,7 @@ export default function SignUpGuide() {
 
     //to-be 접수 성공 후, 24시간 내 심사 결과 줄거라는 (심사 중)이라는 모달창 띄우기
     setLoading(false);
+    setIsDialogOpen(true);
   };
 
   const handleLanguageChange = (index: number, value: string) => {
@@ -176,6 +185,11 @@ export default function SignUpGuide() {
     }));
   };
 
+  const handleDialog = () => {
+    setIsDialogOpen(false);
+    router.push("/");
+  };
+
   return (
     <div className="flex justify-center items-center">
       <Card className="w-full max-w-2xl my-10 pb-4 shadow-md">
@@ -198,7 +212,12 @@ export default function SignUpGuide() {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="resumePhoto">프로필 사진</Label>
+              <Label htmlFor="resumePhoto">
+                <span>이력서 사진 </span>
+                <span className="text-sm text-muted-foreground">
+                  (※얼굴이 잘 보이는 사진으로 등록해주세요.)
+                </span>
+              </Label>
               <Label
                 htmlFor="resumePhoto"
                 className="border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
@@ -382,6 +401,21 @@ export default function SignUpGuide() {
           </div>
         </form>
       </Card>
+
+      <Dialog open={isDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>🎉 가입 접수 완료</DialogTitle>
+          </DialogHeader>
+          <p>
+            가이드 가입 신청이 완료되었습니다. 심사 결과와 면접 장소는 24시간
+            이내에 가입하신 이메일로 안내해드리겠습니다.
+          </p>
+          <DialogFooter>
+            <Button onClick={handleDialog}>확인</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

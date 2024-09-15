@@ -70,8 +70,13 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
       setStartTime(startTime);
       setValue("startTime", startTime);
 
-      setEndTime(endTime);
-      setValue("endTime", endTime);
+      if (endTime === "00:00") {
+        setEndTime("24:00");
+        setValue("endTime", "24:00");
+      } else {
+        setEndTime(endTime);
+        setValue("endTime", endTime);
+      }
     }
   }, [setValue, props]);
 

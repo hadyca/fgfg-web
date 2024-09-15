@@ -42,8 +42,8 @@ export default function GuideQandA() {
           <AccordionTrigger>Q. 면접을 봐야 하나요?</AccordionTrigger>
           <AccordionContent>
             네 그렇습니다. 면접을 통해 가이드 활동 시 주의사항과 급여에 대해
-            안내해 드립니다. 양식 제출 후 24시간 이내에, 기입하신 핸드폰 번호와
-            이메일 주소로 면접 장소와 시간을 알려드리겠습니다.
+            안내해 드립니다. 양식 제출 후 24시간 이내에, 기입하신 이메일 주소로
+            면접 장소와 시간을 알려드립니다.
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-1">

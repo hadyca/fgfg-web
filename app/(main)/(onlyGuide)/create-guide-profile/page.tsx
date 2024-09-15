@@ -22,6 +22,7 @@ import { CreateGuideProfileType } from "./schema";
 import GuideProfileQandA from "@/components/guideProfileQandA";
 import { getUploadUrl } from "@/lib/sharedActions";
 import { createGuideProfile } from "./actions";
+import GoogleMapApi from "@/components/googleMapApi";
 
 export default function CreateGuideProfile() {
   const [loading, setLoading] = useState(false);
@@ -189,6 +190,12 @@ export default function CreateGuideProfile() {
               ) : null}
               <Textarea id="guideIntro" {...register("guideIntro")} required />
             </div>
+          </div>
+          <Separator className="my-4" />
+          {/* 구글 지도와 연동된 픽업 장소 */}
+          <div className="space-y-1">
+            <Label>픽업 장소</Label>
+            <GoogleMapApi />
           </div>
           <Separator className="my-4" />
           <GuideProfileQandA />

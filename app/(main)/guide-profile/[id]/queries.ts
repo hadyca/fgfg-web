@@ -27,3 +27,12 @@ export const SEE_GUIDE = gql`
     }
   }
 `;
+
+export const REPORT_GUIDE = gql`
+  mutation createReportGuide($guideId: Int!, $reason: String!) {
+    createReportGuide(guideId: $guideId, reason: $reason) {
+      ok
+      error
+    }
+  }
+`;
