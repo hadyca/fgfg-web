@@ -3,7 +3,6 @@
 import { client } from "@/lib/apolloClient";
 import { signUpGuideSchema } from "./schema";
 import { CREATE_GUIDE } from "./queries";
-import { redirect } from "next/navigation";
 import getUser from "@/lib/getUser";
 
 export async function userCheck() {
@@ -44,8 +43,6 @@ export async function signupGuide(formData: FormData) {
         language: result.data.language,
       },
     });
-
-    redirect("/");
   }
 }
 

@@ -94,7 +94,7 @@ export default function CreateAccount() {
           <Button disabled={loading}>회원 가입</Button>
           <Separator />
           <Link href={"/login"}>
-            <Button className="w-full" variant={"light"}>
+            <Button className="w-full" variant={"secondary"}>
               FGFG회원이신가요? 로그인
             </Button>
           </Link>

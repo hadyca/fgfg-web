@@ -11,6 +11,7 @@ import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Separator } from "@/components/ui/separator";
 import ReservationDateForm from "@/components/reservationDateForm";
 import { Card } from "@/components/ui/card";
+import ReportForm from "@/components/reportForm";
 
 interface GuideProfilePros {
   params: {
@@ -35,17 +36,18 @@ interface Reservation {
 }
 
 export default async function guideProfile(props: GuideProfilePros) {
-  const id = Number(props.params.id);
-  if (isNaN(id)) {
+  const guideId = Number(props.params.id);
+  if (isNaN(guideId)) {
     return notFound();
   }
-  const guide = await getGuide(id);
+  const guide = await getGuide(guideId);
 
   if (!guide.seeGuide) {
     return notFound();
   }
 
   const parsedLanguage = JSON.parse(guide?.seeGuide?.language);
+
   return (
     <div className="max-w-6xl mx-auto my-10 px-6">
       <PhotoCarousel guidePhotos={guide?.seeGuide?.guidePhotos} />
@@ -101,32 +103,47 @@ export default async function guideProfile(props: GuideProfilePros) {
           </div>
           <Separator className="my-8" />
         </div>
-        <div className="md:col-span-4 flex justify-center items-start ">
-          <ReservationDateForm
-            guideId={id}
-            searchParams={props.searchParams}
-            reservations={guide?.seeGuide?.reservations}
-          />
+        <div className="md:col-span-4 flex flex-col justify-center items-center gap-3">
+          <div>
+            <ReservationDateForm
+              guideId={guideId}
+              searchParams={props.searchParams}
+              reservations={guide?.seeGuide?.reservations}
+            />
+          </div>
+          <ReportForm guideId={guideId} />
         </div>
       </div>
       <div className="mt-8 md:mt-0 flex flex-col gap-2">
-        <div className="text-xl font-medium">이미 예약된 시간</div>
-        <div className="flex flex-wrap gap-3">
-          {guide?.seeGuide?.reservations.map((reservation: Reservation) => (
-            <Card key={reservation.id} className="shadow-sm p-2 inline-block">
-              <div className="flex items-center gap-1">
-                <span>{convertToVietnamDate(reservation.startTime)}</span>
-                <Separator
-                  className="w-[1px] h-4 bg-primary"
-                  orientation="vertical"
-                />
-                <span>{convertToVietnamTime(reservation.startTime)}</span>
-                <span>~</span>
-                <span>{convertToVietnamTime(reservation.endTime)}</span>
-              </div>
-            </Card>
-          ))}
+        <div className="text-xl font-medium">
+          <div>픽업 위치</div>
+          <div className="text-sm text-muted-foreground">
+            픽업 위치를 바꾸고 싶으시다면, 가이드님과 채팅을 해보세요!
+          </div>
         </div>
+        <div>지정 장소</div>
+      </div>
+      <Separator className="my-8" />
+      <div className="mt-8 md:mt-0 flex flex-col gap-2">
+        <div className="text-xl font-medium">이미 예약된 시간</div>
+        {guide?.seeGuide?.reservations.length !== 0 ? (
+          <div className="flex flex-wrap gap-3">
+            {guide?.seeGuide?.reservations.map((reservation: Reservation) => (
+              <Card key={reservation.id} className="shadow-sm p-2 inline-block">
+                <div className="flex items-center gap-1">
+                  <span>{convertToVietnamDate(reservation.startTime)}</span>
+                  <Separator
+                    className="w-[1px] h-4 bg-primary"
+                    orientation="vertical"
+                  />
+                  <span>{convertToVietnamTime(reservation.startTime)}</span>
+                  <span>~</span>
+                  <span>{convertToVietnamTime(reservation.endTime)}</span>
+                </div>
+              </Card>
+            ))}
+          </div>
+        ) : null}
       </div>
       <Separator className="my-8" />
     </div>
