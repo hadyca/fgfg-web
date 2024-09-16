@@ -49,7 +49,7 @@ export default function GuideSearchForm({
 
   useEffect(() => {
     if (searchParams?.starttime && searchParams?.endtime) {
-      const date = convertToVietnamISO(searchParams.starttime);
+      const date = convertToVietnamISO(searchParams.starttime); //searchParams.starttime는 UTC기준이고, 베트남 시간기준으로 바꿔야함
       const dateOnly = date!.split("T")[0];
 
       const startTime = convertToVietnamTime(searchParams.starttime);

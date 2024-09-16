@@ -8,26 +8,21 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 
-// Google Maps API에서 사용할 라이브러리
 const libraries = ["places"] as any;
-
-const mapContainerStyle = {
-  width: "100%",
-  height: "400px",
-};
 
 const center = {
   lat: 10.8231, // 호치민 위도
   lng: 106.6297, // 호치민 경도
 };
 
-export default function Test() {
+export default function GoogleMapApi() {
   const [mapCenter, setMapCenter] = useState(center); // 지도 중심 좌표 상태
   const [markerPosition, setMarkerPosition] = useState(center); // 마커 위치 상태
+  const [inputValue, setInputValue] = useState(""); // 입력 필드의 값 상태
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null); // Autocomplete 참조를 위한 useRef
+  const geocoderRef = useRef<google.maps.Geocoder | null>(null); // Geocoder 참조를 위한 useRef
+  const validPlaceSelected = useRef(false); // 유효한 장소가 선택되었는지 확인하는 플래그
 
   // Google Maps API를 로드하기 위한 useJsApiLoader 사용
   const { isLoaded, loadError } = useJsApiLoader({
@@ -48,6 +43,47 @@ export default function Test() {
 
       setMapCenter(newCenter); // 지도 중심 업데이트
       setMarkerPosition(newCenter); // 마커 위치 업데이트
+      setInputValue(place.formatted_address || ""); // 선택된 주소로 입력 필드 업데이트
+      validPlaceSelected.current = true; // 유효한 장소가 선택됨을 표시
+    }
+  };
+
+  // 사용자가 입력한 값이 올바르지 않은 경우 초기화
+  const handleInputBlur = () => {
+    if (!validPlaceSelected.current) {
+      // 유효한 장소가 선택되지 않은 경우 입력 필드를 비움
+      setInputValue("");
+    }
+  };
+
+  // 사용자가 입력 필드에서 값을 직접 입력할 때마다 발생
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    validPlaceSelected.current = false; // 유효한 장소가 선택되지 않음을 표시
+  };
+
+  // 지도 클릭 시 마커 위치를 업데이트하고 해당 위치의 주소를 Input에 표시
+  const handleMapClick = (event: google.maps.MapMouseEvent) => {
+    const clickedLatLng = event.latLng;
+    if (clickedLatLng && geocoderRef.current) {
+      const newMarkerPosition = {
+        lat: clickedLatLng.lat(),
+        lng: clickedLatLng.lng(),
+      };
+
+      setMarkerPosition(newMarkerPosition); // 마커 위치 업데이트
+      setMapCenter(newMarkerPosition); // 지도 중심 업데이트
+
+      // 역지오코딩을 통해 클릭한 위치의 주소를 가져옴
+      geocoderRef.current.geocode(
+        { location: newMarkerPosition },
+        (results, status) => {
+          if (status === "OK" && results && results[0]) {
+            setInputValue(results[0].formatted_address); // 입력 필드에 주소 업데이트
+            validPlaceSelected.current = true; // 유효한 장소 선택됨
+          }
+        }
+      );
     }
   };
 
@@ -60,36 +96,41 @@ export default function Test() {
   }
 
   return (
-    <div className="flex justify-center items-center flex-col gap-5">
-      <h1>Google Maps와 Autocomplete 연동</h1>
-
-      {/* 장소 검색용 Autocomplete 입력 */}
+    <>
       <Autocomplete
         onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
         onPlaceChanged={onPlaceChanged}
       >
-        <div className="w-full max-w-md">
-          <Label>픽업 장소</Label>
+        <div className="w-full">
           <Input
             id="pickup-location"
             type="text"
-            placeholder="픽업 장소를 검색하세요"
+            placeholder="픽업 위치를 검색 및 선택 하세요"
             className="w-full"
+            value={inputValue}
+            onChange={handleInputChange} // 입력 필드가 변경될 때마다 호출
+            onBlur={handleInputBlur} // 입력 필드가 포커스를 잃을 때 호출
           />
         </div>
       </Autocomplete>
-
-      {/* Google Map */}
       <GoogleMap
-        mapContainerStyle={mapContainerStyle}
+        mapContainerStyle={{
+          width: "100%",
+          height: "400px",
+        }}
         center={mapCenter}
         zoom={15}
+        onClick={handleMapClick} // 사용자가 지도를 클릭할 때 호출
+        onLoad={(map) => {
+          // Geocoder 객체 초기화
+          geocoderRef.current = new google.maps.Geocoder();
+        }}
+        options={{
+          draggableCursor: "default", // 기본 커서 모양 유지
+        }}
       >
-        {/* 선택된 장소에 마커 표시 */}
         <Marker position={markerPosition} />
       </GoogleMap>
-
-      <Button className="mt-5">가이드 프로필 생성</Button>
-    </div>
+    </>
   );
 }

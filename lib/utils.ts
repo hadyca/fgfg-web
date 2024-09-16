@@ -77,3 +77,11 @@ export function convertToUTC(vietnamLocalTime: string) {
 
   return utcDate.toISO();
 }
+
+export function convertMonthDayIntl(isoString: string) {
+  const date = DateTime.fromISO(isoString, { zone: "Asia/Ho_Chi_Minh" });
+  const userLocale = navigator.language.split("-")[0] || "ko"; // "ko" or "en" 같은 값만 남김
+  return date
+    .setLocale(userLocale)
+    .toLocaleString({ month: "long", day: "numeric" });
+}

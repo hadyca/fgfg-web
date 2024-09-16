@@ -13,16 +13,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { MinusCircleIcon } from "@heroicons/react/24/outline";
-import { PhotoIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
+import {
+  PhotoIcon,
+  PlusCircleIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/solid";
 import { signupGuide, userCheck } from "./actions";
 import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { ACCEPTED_IMAGE_TYPES, LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";
 import GuideQandA from "@/components/guideQandA";
 import { getUploadUrl } from "@/lib/sharedActions";
@@ -145,7 +142,6 @@ export default function SignUpGuide() {
 
     await signupGuide(formData);
 
-    //to-be 접수 성공 후, 24시간 내 심사 결과 줄거라는 (심사 중)이라는 모달창 띄우기
     setLoading(false);
     setIsDialogOpen(true);
   };
@@ -190,6 +186,13 @@ export default function SignUpGuide() {
     router.push("/");
   };
 
+  const handleDeleteImage = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setPreview("");
+    setFile(null);
+    setValue("resumePhoto", ""); // Form에 있는 resumePhoto 값도 비워줍니다.
+  };
+
   return (
     <div className="flex justify-center items-center">
       <Card className="w-full max-w-2xl my-10 pb-4 shadow-md">
@@ -220,7 +223,7 @@ export default function SignUpGuide() {
               </Label>
               <Label
                 htmlFor="resumePhoto"
-                className="border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
+                className="relative border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
                 style={{ backgroundImage: `url(${preview})` }}
               >
                 {preview === "" ? (
@@ -228,7 +231,15 @@ export default function SignUpGuide() {
                     <PhotoIcon className="w-12" />
                     <div className="text-neutral-300 text-sm">사진 추가</div>
                   </>
-                ) : null}
+                ) : (
+                  <>
+                    {/* X 아이콘으로 사진 삭제 기능 추가 */}
+                    <XCircleIcon
+                      className="absolute -top-3 -right-3 size-8 text-destructive cursor-pointer"
+                      onClick={handleDeleteImage}
+                    />
+                  </>
+                )}
               </Label>
               {errors?.resumePhoto ? (
                 <ErrorText text={errors.resumePhoto.message!} />
@@ -278,52 +289,50 @@ export default function SignUpGuide() {
                   key={option.id}
                   className="flex flex-row gap-3 items-center"
                 >
+                  {/* 언어 선택 */}
                   <div>
-                    <Select
+                    <select
                       value={option.language}
-                      onValueChange={(value) =>
-                        handleLanguageChange(index, value)
+                      onChange={(e) =>
+                        handleLanguageChange(index, e.target.value)
                       }
+                      className="h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none"
                     >
-                      <SelectTrigger className="w-36">
-                        <SelectValue placeholder="언어 선택" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {getAvailableLanguages(index).map((lang) => (
-                          <SelectItem
-                            key={lang.name}
-                            value={lang.name}
-                            disabled={lang.disabled}
-                          >
-                            {lang.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      <option value="" disabled>
+                        언어 선택
+                      </option>
+                      {getAvailableLanguages(index).map((lang) => (
+                        <option
+                          key={lang.name}
+                          value={lang.name}
+                          disabled={lang.disabled}
+                        >
+                          {lang.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
+                  {/* 레벨 선택 */}
                   <div>
-                    <Select
+                    <select
                       value={option.level}
-                      onValueChange={(value) => handleLevelChange(index, value)}
+                      onChange={(e) => handleLevelChange(index, e.target.value)}
+                      className="h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none"
                     >
-                      <SelectTrigger className="w-20">
-                        <SelectValue placeholder="레벨" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1">1(기초 수준)</SelectItem>
-                        <SelectItem value="2">2</SelectItem>
-                        <SelectItem value="3">3</SelectItem>
-                        <SelectItem value="4">4</SelectItem>
-                        <SelectItem value="5">5(원어민 수준)</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <option value="" disabled>
+                        레벨
+                      </option>
+                      <option value="1">1(기초 수준)</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5(원어민 수준)</option>
+                    </select>
                   </div>
-                  {index > 0 && (
-                    <MinusCircleIcon
-                      className="w-6 h-6 text-destructive cursor-pointer"
-                      onClick={() => handleRemoveLanguage(option.id)}
-                    />
-                  )}
+                  <MinusCircleIcon
+                    className="w-6 h-6 text-destructive cursor-pointer"
+                    onClick={() => handleRemoveLanguage(option.id)}
+                  />
                 </div>
               ))}
               {!isAllLanguagesSelected && (

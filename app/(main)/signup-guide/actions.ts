@@ -4,6 +4,7 @@ import { client } from "@/lib/apolloClient";
 import { signUpGuideSchema } from "./schema";
 import { CREATE_GUIDE } from "./queries";
 import getUser from "@/lib/getUser";
+import { redirect } from "next/navigation";
 
 export async function userCheck() {
   const user = await getUser();
@@ -30,7 +31,11 @@ export async function signupGuide(formData: FormData) {
   if (!result.success) {
     return result.error.flatten();
   } else {
-    await client.mutate({
+    const {
+      data: {
+        createGuide: { ok },
+      },
+    } = await client.mutate({
       mutation: CREATE_GUIDE,
       variables: {
         fullname: result.data.fullname,
@@ -43,6 +48,10 @@ export async function signupGuide(formData: FormData) {
         language: result.data.language,
       },
     });
+    if (!ok) {
+      redirect("/400");
+    }
+    return;
   }
 }
 

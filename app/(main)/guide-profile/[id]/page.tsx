@@ -12,6 +12,14 @@ import { Separator } from "@/components/ui/separator";
 import ReservationDateForm from "@/components/reservationDateForm";
 import { Card } from "@/components/ui/card";
 import ReportForm from "@/components/reportForm";
+import GoogleMapApiSimple from "@/components/googleMapApiSimple";
+import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface GuideProfilePros {
   params: {
@@ -49,7 +57,7 @@ export default async function guideProfile(props: GuideProfilePros) {
   const parsedLanguage = JSON.parse(guide?.seeGuide?.language);
 
   return (
-    <div className="max-w-6xl mx-auto my-10 px-6">
+    <div className="max-w-6xl mx-auto my-10 px-6 md:px-0">
       <PhotoCarousel guidePhotos={guide?.seeGuide?.guidePhotos} />
       <div className="grid grid-cols-1 md:grid-cols-10">
         <div className="w-full md:col-span-6">
@@ -116,12 +124,44 @@ export default async function guideProfile(props: GuideProfilePros) {
       </div>
       <div className="mt-8 md:mt-0 flex flex-col gap-2">
         <div className="text-xl font-medium">
-          <div>픽업 위치</div>
-          <div className="text-sm text-muted-foreground">
-            픽업 위치를 바꾸고 싶으시다면, 가이드님과 채팅을 해보세요!
+          <div className="flex flex-row items-center">
+            <span>픽업 위치 </span>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <ExclamationCircleIcon className="size-6 text-primary" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    픽업 위치를 바꾸고 싶으시다면, 가이드님과 채팅을 해보세요!
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
-        <div>지정 장소</div>
+        <div className="flex flex-col">
+          <div>
+            {/* 구글 맵 링크 추가 */}
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                guide?.seeGuide?.pickupPlaceMain
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline"
+            >
+              <span>{guide?.seeGuide?.pickupPlaceMain}</span>
+            </a>
+          </div>
+          <span className="text-sm text-muted-foreground">
+            {guide?.seeGuide?.pickupPlaceDetail}
+          </span>
+        </div>
+        <GoogleMapApiSimple
+          lat={guide?.seeGuide?.pickupPlaceLat}
+          lng={guide?.seeGuide?.pickupPlaceLng}
+        />
       </div>
       <Separator className="my-8" />
       <div className="mt-8 md:mt-0 flex flex-col gap-2">

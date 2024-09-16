@@ -29,7 +29,7 @@ export default function AvatarDropMenu({
         <Avatar>
           <AvatarImage src={avatar} alt="@shadcn" />
           <AvatarFallback>
-            <UserCircleIcon className="text-primary" />
+            <UserCircleIcon className="text-primary size-full" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
