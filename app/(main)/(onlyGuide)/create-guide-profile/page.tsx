@@ -14,7 +14,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { PhotoIcon } from "@heroicons/react/24/solid";
+import { PhotoIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { Separator } from "@/components/ui/separator";
 import { ACCEPTED_IMAGE_TYPES } from "@/lib/constants";
 import { createGuideProfileSchema } from "./schema";
@@ -41,6 +41,9 @@ export default function CreateGuideProfile() {
     resolver: zodResolver(createGuideProfileSchema),
     defaultValues: {
       guidePhotos: [],
+      pickupPlaceMain: "",
+      pickupPlaceLat: 0,
+      pickupPlaceLng: 0,
     },
   });
 
@@ -114,9 +117,26 @@ export default function CreateGuideProfile() {
     formData.append("guidePhotos", JSON.stringify(data.guidePhotos));
     formData.append("personality", data.personality);
     formData.append("guideIntro", data.guideIntro);
+    formData.append("pickupPlaceMain", data.pickupPlaceMain);
+    formData.append("pickupPlaceLat", data.pickupPlaceLat.toString());
+    formData.append("pickupPlaceLng", data.pickupPlaceLng.toString());
+    formData.append("pickupPlaceDetail", data.pickupPlaceDetail);
 
     await createGuideProfile(formData);
+
     setLoading(false);
+  };
+
+  const handleDeleteImage = (index: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    setPreviews((prev) => prev.filter((_, i) => i !== index));
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+    setUploadUrl((prev) => prev.filter((_, i) => i !== index));
+    const currentPhotos = getValues("guidePhotos");
+    const updatedGuidePhotos = currentPhotos.filter(
+      (_: any, i: number) => i !== index
+    );
+    setValue("guidePhotos", updatedGuidePhotos);
   };
 
   return (
@@ -140,7 +160,7 @@ export default function CreateGuideProfile() {
                   <div key={index}>
                     <Label
                       htmlFor={`photo_${index}`}
-                      className="border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
+                      className="relative border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
                       style={{
                         backgroundImage: `url(${previews[index]})`,
                       }}
@@ -156,7 +176,12 @@ export default function CreateGuideProfile() {
                             {index === 0 ? "대표 사진" : "사진 추가"}
                           </div>
                         </>
-                      ) : null}
+                      ) : (
+                        <XCircleIcon
+                          className="absolute -top-3 -right-3 size-8 text-destructive cursor-pointer"
+                          onClick={(e) => handleDeleteImage(index, e)}
+                        />
+                      )}
                     </Label>
                     <input
                       onChange={(e) => onImageChange(e)}
@@ -192,10 +217,36 @@ export default function CreateGuideProfile() {
             </div>
           </div>
           <Separator className="my-4" />
-          {/* 구글 지도와 연동된 픽업 장소 */}
+          {/* 구글 지도와 연동된 픽업 위치 */}
           <div className="space-y-1">
-            <Label>픽업 장소</Label>
-            <GoogleMapApi />
+            <Label>픽업 위치</Label>
+            {errors?.pickupPlaceMain ? (
+              <ErrorText text={errors.pickupPlaceMain.message!} />
+            ) : null}
+            <GoogleMapApi
+              onMarkerChange={(position) => {
+                setValue("pickupPlaceLat", position.lat);
+                setValue("pickupPlaceLng", position.lng);
+              }}
+              onInputValueChange={(value) => {
+                setValue("pickupPlaceMain", value);
+              }}
+            />
+          </div>
+          <div className="mt-2">
+            <Label htmlFor="selfIntro">픽업 위치 구체적인 설명</Label>
+            <div className="text-sm text-muted-foreground mb-2">
+              고객님께서 길을 헤매지 않도록, 조금 더 구체적으로 설명해주세요
+            </div>
+            {errors?.pickupPlaceDetail ? (
+              <ErrorText text={errors.pickupPlaceDetail.message!} />
+            ) : null}
+            <Textarea
+              id="pickupPlaceDetail"
+              {...register("pickupPlaceDetail")}
+              placeholder="EX) 노트르담 대성당 맞은편에 있는 카페에요. 카페 안에서 만나요"
+              required
+            />
           </div>
           <Separator className="my-4" />
           <GuideProfileQandA />

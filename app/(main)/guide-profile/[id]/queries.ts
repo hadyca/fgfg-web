@@ -19,6 +19,10 @@ export const SEE_GUIDE = gql`
         fileUrl
       }
       isActive
+      pickupPlaceMain
+      pickupPlaceLat
+      pickupPlaceLng
+      pickupPlaceDetail
       reservations {
         id
         startTime

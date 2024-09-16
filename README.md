@@ -14,7 +14,7 @@
 
 ###백엔드 부분
 
-- guide 모델부분에 language 필드 추 후 postgresql사용 시 String -> Json으로 교체 해야함 (관련 create, 호출부분도 다시 교체)
+- guide 모델부분에 language 필드, 추 후 postgresql사용 시 String -> Json으로 교체 해야함 (관련 create, 호출부분도 다시 교체)
 
 ###글로벌 서비스 될 때,
 

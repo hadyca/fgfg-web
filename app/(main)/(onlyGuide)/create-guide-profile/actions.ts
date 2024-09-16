@@ -12,6 +12,10 @@ export async function createGuideProfile(formData: FormData) {
       : null,
     personality: formData.get("personality"),
     guideIntro: formData.get("guideIntro"),
+    pickupPlaceMain: formData.get("pickupPlaceMain"),
+    pickupPlaceLat: formData.get("pickupPlaceLat"),
+    pickupPlaceLng: formData.get("pickupPlaceLng"),
+    pickupPlaceDetail: formData.get("pickupPlaceDetail"),
   };
 
   const result = createGuideProfileSchema.safeParse(data);
@@ -19,15 +23,26 @@ export async function createGuideProfile(formData: FormData) {
   if (!result.success) {
     return result.error.flatten();
   } else {
-    await client.mutate({
+    const {
+      data: {
+        createGuideProfile: { ok },
+      },
+    } = await client.mutate({
       mutation: CREATE_GUIDE_PROFILE,
       variables: {
         guidePhotos: result.data.guidePhotos,
         personality: result.data.personality,
         guideIntro: result.data.guideIntro,
+        pickupPlaceMain: result.data.pickupPlaceMain,
+        pickupPlaceLat: result.data.pickupPlaceLat,
+        pickupPlaceLng: result.data.pickupPlaceLng,
+        pickupPlaceDetail: result.data.pickupPlaceDetail,
       },
     });
-    //가이드 프로필 상세 페이지로 리다이렉팅
-    redirect("/");
+    if (!ok) {
+      redirect("/400");
+    } else {
+      redirect("/");
+    }
   }
 }

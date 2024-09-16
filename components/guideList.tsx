@@ -61,7 +61,10 @@ export default function GuideList({ searchParams }: GuideListPros) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
       {guides.map((guide: Guide) => (
-        <div key={guide.id} className="text-center group">
+        <div
+          key={guide.id}
+          className="text-center group flex flex-col justify-start items-start"
+        >
           <Link
             href={
               searchParams?.starttime && searchParams?.endtime
@@ -70,6 +73,7 @@ export default function GuideList({ searchParams }: GuideListPros) {
                   )}&endtime=${encodeURIComponent(searchParams?.endtime!)}`
                 : `/guide-profile/${guide.id}`
             }
+            className="w-full flex flex-col items-center"
           >
             <div className="relative w-60 h-72 rounded-md overflow-hidden">
               <Image

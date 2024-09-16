@@ -27,6 +27,7 @@ export default function SearchGuide({ searchParams }: SearchGuideProps) {
       router.push(result.redirect);
     } else {
       console.log(result.error);
+      return;
     }
   };
   return (
