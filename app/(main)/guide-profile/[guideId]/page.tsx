@@ -20,10 +20,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import getUser from "@/lib/getUser";
+import DialogCreatAccount from "@/components/dialogCreatAccount";
 
-interface GuideProfilePros {
+interface GuideProfileProps {
   params: {
-    id: string;
+    guideId: string;
   };
   searchParams?: {
     starttime: string;
@@ -43,8 +47,8 @@ interface Reservation {
   endTime: string;
 }
 
-export default async function guideProfile(props: GuideProfilePros) {
-  const guideId = Number(props.params.id);
+export default async function guideProfile(props: GuideProfileProps) {
+  const guideId = Number(props.params.guideId);
   if (isNaN(guideId)) {
     return notFound();
   }
@@ -54,10 +58,12 @@ export default async function guideProfile(props: GuideProfilePros) {
     return notFound();
   }
 
+  const user = await getUser();
+
   const parsedLanguage = JSON.parse(guide?.seeGuide?.language);
 
   return (
-    <div className="max-w-6xl mx-auto my-10 px-6 md:px-0">
+    <div className="max-w-6xl mx-auto my-10 px-6">
       <PhotoCarousel guidePhotos={guide?.seeGuide?.guidePhotos} />
       <div className="grid grid-cols-1 md:grid-cols-10">
         <div className="w-full md:col-span-6">
@@ -78,6 +84,18 @@ export default async function guideProfile(props: GuideProfilePros) {
                   {guide?.seeGuide?.fullname}
                 </span>
                 <span> 님</span>
+                {user ? (
+                  <Link href={"/chat-room/1"}>
+                    <Button>가이드에게 메시지 보내기</Button>
+                  </Link>
+                ) : (
+                  <DialogCreatAccount
+                    guideId={guideId}
+                    startTime={props.searchParams?.starttime}
+                    endTime={props.searchParams?.endtime}
+                  />
+                )}
+
                 {!guide?.seeGuide?.isActive ? <span> (휴업 중)</span> : null}
               </div>
             </div>
@@ -133,7 +151,8 @@ export default async function guideProfile(props: GuideProfilePros) {
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>
-                    픽업 위치를 바꾸고 싶으시다면, 가이드님과 채팅을 해보세요!
+                    픽업 위치를 바꾸고 싶으시다면, 가이드님께 메시지를 보내
+                    보세요!
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -142,7 +161,6 @@ export default async function guideProfile(props: GuideProfilePros) {
         </div>
         <div className="flex flex-col">
           <div>
-            {/* 구글 맵 링크 추가 */}
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                 guide?.seeGuide?.pickupPlaceMain

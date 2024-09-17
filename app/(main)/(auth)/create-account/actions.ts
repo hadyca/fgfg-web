@@ -6,7 +6,10 @@ import getSession from "@/lib/session";
 import { client } from "@/lib/apolloClient";
 import { createAccountSchema } from "./schema";
 
-export async function createAccount(formData: FormData) {
+export async function createAccount(
+  formData: FormData,
+  redirectUrl: string = "/"
+) {
   const data = {
     username: formData.get("username"),
     email: formData.get("email"),
@@ -61,6 +64,6 @@ export async function createAccount(formData: FormData) {
     const session = await getSession();
     session.token = data.createAccount.token;
     await session.save();
-    redirect("/");
+    redirect(redirectUrl);
   }
 }

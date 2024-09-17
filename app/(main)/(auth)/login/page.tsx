@@ -8,8 +8,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginType } from "./schema";
-import { logIn } from "./actions";
 import ErrorText from "@/components/errorText";
+import { login } from "./actions";
 
 export default function LogIn() {
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,6 @@ export default function LogIn() {
   const {
     register,
     handleSubmit,
-    setValue,
     setError,
     formState: { errors },
   } = useForm<LoginType>({
@@ -31,7 +30,7 @@ export default function LogIn() {
     formData.append("email", data.email);
     formData.append("password", data.password);
 
-    const result = await logIn(formData);
+    const result = await login(formData);
 
     if (result?.type === "checkEmail") {
       setError("email", { message: result.error });

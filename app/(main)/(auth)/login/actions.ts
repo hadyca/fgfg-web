@@ -7,7 +7,7 @@ import { client } from "@/lib/apolloClient";
 import { loginSchema } from "./schema";
 import { CHECK_EMAIL } from "../create-account/queries";
 
-export async function logIn(formData: FormData) {
+export async function login(formData: FormData, redirectUrl: string = "/") {
   const data = {
     email: formData.get("email"),
     password: formData.get("password"),
@@ -44,7 +44,7 @@ export async function logIn(formData: FormData) {
       session.token = data.login.token;
       session.guideId = data.login.guideId;
       await session.save();
-      redirect("/");
+      redirect(redirectUrl);
     } else {
       return { type: "password", error: "비밀번호가 틀렸습니다." };
     }

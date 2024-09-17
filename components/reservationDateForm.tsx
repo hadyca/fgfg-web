@@ -20,6 +20,7 @@ import {
   formatCurrency,
 } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { SERVICE_FEE } from "@/lib/constants";
 
 interface Reservation {
   id: number;
@@ -147,7 +148,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
   };
 
   return (
-    <Card className="shadow-lg p-6 inline-block">
+    <Card className="shadow-lg p-6">
       <form onSubmit={handleSubmit(onValid)}>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col justify-center items-start gap-4">
@@ -249,10 +250,15 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
           {calculateGapTime(startTime, endTime) > 1 ? (
             <div className="flex justify-between">
               <span className="underline">
-                {`₩20,000 x ${calculateGapTime(startTime, endTime)}시간`}
+                {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTime(
+                  startTime,
+                  endTime
+                )}시간`}
               </span>
               <span>
-                {formatCurrency(20000 * calculateGapTime(startTime, endTime))}
+                {formatCurrency(
+                  SERVICE_FEE * calculateGapTime(startTime, endTime)
+                )}
               </span>
             </div>
           ) : null}

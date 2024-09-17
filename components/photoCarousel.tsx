@@ -28,7 +28,7 @@ export default function PhotoCarousel({ guidePhotos }: PhotoCarouselPros) {
                 src={`${photo.fileUrl}/detail`}
                 alt={`guide detail image ${photo.id}`}
                 className="object-cover"
-                sizes="(max-width: 768px) 200px, 500px" // 반응형 sizes 설정
+                sizes="(max-width: 768px) 200px, 500px" // sizes 속성 추가
                 priority
               />
             </div>
