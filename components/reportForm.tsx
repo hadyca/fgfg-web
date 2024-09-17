@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { useState } from "react";
-import { reportGuide } from "@/app/(main)/guide-profile/[id]/actions";
+import { reportGuide } from "@/app/(main)/guide-profile/[guideId]/actions";
 
 interface ReportFormProps {
   guideId: number;

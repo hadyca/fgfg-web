@@ -18,19 +18,17 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
 import { convertToVietnamISO, convertToVietnamTime } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { searchGuide } from "@/app/(main)/search-guide/actions";
 
 interface SearchGuideProps {
-  onSubmit: (data: SearchGuideType) => void;
   searchParams?: {
     starttime: string;
     endtime: string;
   };
 }
 
-export default function GuideSearchForm({
-  onSubmit,
-  searchParams,
-}: SearchGuideProps) {
+export default function SearchGuideForm({ searchParams }: SearchGuideProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [startTime, setStartTime] = useState("");
@@ -70,8 +68,21 @@ export default function GuideSearchForm({
     }
   }, [setValue, searchParams]);
 
-  const handleFormSubmit = async (data: SearchGuideType) => {
-    onSubmit(data);
+  const router = useRouter();
+
+  const onValid = async (data: SearchGuideType) => {
+    const formData = new FormData();
+    formData.append("date", data.date);
+    formData.append("startTime", data.startTime);
+    formData.append("endTime", data.endTime);
+    const result = await searchGuide(formData);
+
+    if (result.ok && result.redirect) {
+      router.push(result.redirect);
+    } else {
+      console.log(result.error);
+      return;
+    }
   };
 
   const handleDateChange = (date: Date | undefined) => {
@@ -98,7 +109,7 @@ export default function GuideSearchForm({
 
   return (
     <Card className="max-w-max shadow-lg p-3">
-      <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <form onSubmit={handleSubmit(onValid)}>
         <div className="flex flex-col sm:flex-row justify-center items-center sm:items-end gap-4">
           <div>
             <Label className="block mb-2 text-center">날짜 선택</Label>

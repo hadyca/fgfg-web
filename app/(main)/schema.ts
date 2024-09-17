@@ -31,7 +31,7 @@ export const searchGuideSchema = z
     if (startDate <= vietnamNow) {
       ctx.addIssue({
         code: "custom",
-        message: "픽업시각은 현지시각 기준입니다. 시간을 다시 확인해주세요.",
+        message: "시간을 다시 확인해주세요.",
         path: ["startTime"],
       });
     }

@@ -233,7 +233,6 @@ export default function SignUpGuide() {
                   </>
                 ) : (
                   <>
-                    {/* X 아이콘으로 사진 삭제 기능 추가 */}
                     <XCircleIcon
                       className="absolute -top-3 -right-3 size-8 text-destructive cursor-pointer"
                       onClick={handleDeleteImage}

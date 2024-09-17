@@ -23,24 +23,32 @@ export function calculateAge(birthdate: string) {
   return age;
 }
 
-export function calculateGapTime(startTime: string, endTime: string) {
-  // "HH:00" 형식에서 시간을 분으로 변환하는 함수
-  const toMinutes = (time: string) => {
-    const [hours] = time.split(":").map(Number); // 분은 항상 0이므로 무시 가능
-    return hours * 60;
-  };
+export function calculateGapTimeISO(startTime: string, endTime: string) {
+  // ISO 8601 형식의 문자열을 DateTime 객체로 변환
+  const start = DateTime.fromISO(startTime);
+  const end = DateTime.fromISO(endTime);
 
-  // 두 시간 간의 차이를 분으로 계산
-  const startMinutes = toMinutes(startTime);
-  const endMinutes = toMinutes(endTime);
-  const difference = endMinutes - startMinutes;
+  // 두 시간 간의 차이를 시간 단위로 계산
+  const difference = end.diff(start, "hours").hours;
 
-  // 차이를 시간으로 변환
-  const hours = Math.floor(difference / 60);
-
-  return hours;
+  return difference;
 }
 
+export function calculateGapTime(startTime: string, endTime: string) {
+  // "HH:00" 형식을 DateTime 객체로 변환하는 함수
+  const toDateTime = (time: string) => {
+    return DateTime.fromFormat(time, "HH:mm");
+  };
+
+  // 두 시간 간의 차이를 시간으로 계산
+  const start = toDateTime(startTime);
+  const end = toDateTime(endTime);
+
+  // 차이를 분 단위로 계산
+  const difference = end.diff(start, "hours").hours;
+
+  return difference;
+}
 export function formatCurrency(amount: number) {
   return new Intl.NumberFormat("ko-KR", {
     style: "currency",
@@ -78,10 +86,9 @@ export function convertToUTC(vietnamLocalTime: string) {
   return utcDate.toISO();
 }
 
-export function convertMonthDayIntl(isoString: string) {
+export function convertMonthDayIntl(isoString: string, locale: string) {
   const date = DateTime.fromISO(isoString, { zone: "Asia/Ho_Chi_Minh" });
-  const userLocale = navigator.language.split("-")[0] || "ko"; // "ko" or "en" 같은 값만 남김
   return date
-    .setLocale(userLocale)
+    .setLocale(locale)
     .toLocaleString({ month: "long", day: "numeric" });
 }
