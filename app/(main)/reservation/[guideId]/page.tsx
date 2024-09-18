@@ -2,13 +2,17 @@ import { Separator } from "@/components/ui/separator";
 import ReservationInfo from "@/components/reservationInfo";
 import { Card } from "@/components/ui/card";
 import { getGuide } from "../../guide-profile/[guideId]/actions";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
-import { calculateGapTimeISO, formatCurrency } from "@/lib/utils";
+import {
+  calculateGapTimeISO,
+  formatCurrency,
+  isValidISODate,
+} from "@/lib/utils";
 import { SERVICE_FEE } from "@/lib/constants";
-import getSession from "@/lib/session";
 import ReservationLoggedInInfo from "@/components/reservatioLoggedInInfo";
 import ReservationCreateAccount from "@/components/reservationCreatAccount";
+import getUser from "@/lib/getUser";
 
 interface ReservationProps {
   params: {
@@ -30,9 +34,22 @@ export default async function Reservation(props: ReservationProps) {
   if (!guide.seeGuide) {
     return notFound();
   }
+  const { starttime, endtime } = props.searchParams;
 
-  const session = await getSession();
-  const isLogin = session.token;
+  // starttime과 endtime이 존재하고, 유효한 ISO 포맷인지 검증
+  if (
+    !starttime ||
+    !endtime ||
+    !isValidISODate(starttime) ||
+    !isValidISODate(endtime)
+  ) {
+    // 값이 없거나 유효하지 않으면 "/"로 리다이렉트
+    redirect("/");
+  }
+
+  const user = await getUser();
+
+  const isMe = Boolean(guideId === user?.me.guide.id);
 
   return (
     <div className="max-w-6xl mx-auto my-10 p-6 grid grid-cols-2">
@@ -42,12 +59,20 @@ export default async function Reservation(props: ReservationProps) {
           endTime={props.searchParams.endtime}
         />
         <Separator className="my-8" />
-        {isLogin ? <ReservationLoggedInInfo /> : <ReservationCreateAccount />}
+        {user ? (
+          <ReservationLoggedInInfo isMe={isMe} />
+        ) : (
+          <ReservationCreateAccount
+            guideId={guideId}
+            startTime={props.searchParams.starttime}
+            endTime={props.searchParams.endtime}
+          />
+        )}
       </div>
       <div className="flex justify-center">
         <Card className="shadow-lg max-w-md p-6 h-fit sticky top-10">
           <div className="flex flex-row gap-3 items-center">
-            <div className="relative size-32 rounded-md overflow-hidden">
+            <div className="relative size-32 rounded-md overflow-hidden flex-shrink-0">
               <Image
                 fill
                 src={`${guide?.seeGuide?.mainGuidePhoto?.fileUrl}/mainphoto`}

@@ -57,7 +57,7 @@ export default function CreateAccount() {
             type="text"
             placeholder="유저명"
             minLength={1}
-            maxLength={10}
+            maxLength={30}
             {...register("username")}
             required
           />

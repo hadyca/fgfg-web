@@ -11,16 +11,10 @@ const onlyLogInUrls = new Set(["/user-profile", "/signup-guide"]);
 //로그인 상태 - 가이드만 접속 가능
 const onlyGuideUrls = new Set(["/create-guide-profile", "/guide-dashboard"]);
 
-// 특정 경로에 쿼리 파라미터가 없는 경우 404로 리다이렉트할 경로 목록
-const needQueryUrls = new Set(["/reservation"]);
-
 export async function middleware(request: NextRequest) {
   const isOnlyLogoutPath = onlyLogoutUrls.has(request.nextUrl.pathname);
   const isOnlyLoginPath = onlyLogInUrls.has(request.nextUrl.pathname);
   const isOnlyGuidePath = onlyGuideUrls.has(request.nextUrl.pathname);
-  const isNeedQueryPath = needQueryUrls.has(
-    request.nextUrl.pathname.split("/")[1]
-  );
 
   const session = await getSession();
 

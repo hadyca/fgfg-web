@@ -33,13 +33,13 @@ export default function GoogleMapApi() {
   // 장소가 선택될 때 호출되는 함수
   const onPlaceChanged = () => {
     const place = autocompleteRef.current?.getPlace();
-
     if (place?.geometry?.location) {
       const location = place.geometry.location;
       const newCenter = {
         lat: location.lat(),
         lng: location.lng(),
       };
+      console.log(place.formatted_address);
 
       setMapCenter(newCenter); // 지도 중심 업데이트
       setMarkerPosition(newCenter); // 마커 위치 업데이트

@@ -20,10 +20,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import getUser from "@/lib/getUser";
-import DialogCreatAccount from "@/components/dialogCreatAccount";
+import CreateChatRoomBtn from "@/components/createChatRoomBtn";
 
 interface GuideProfileProps {
   params: {
@@ -53,14 +51,15 @@ export default async function guideProfile(props: GuideProfileProps) {
     return notFound();
   }
   const guide = await getGuide(guideId);
-
   if (!guide.seeGuide) {
     return notFound();
   }
 
   const user = await getUser();
 
+  const userId = user?.me.id;
   const parsedLanguage = JSON.parse(guide?.seeGuide?.language);
+  const isMe = Boolean(guideId === user?.me?.guide?.id);
 
   return (
     <div className="max-w-6xl mx-auto my-10 px-6">
@@ -78,25 +77,25 @@ export default async function guideProfile(props: GuideProfileProps) {
                   <UserCircleIcon className="text-primary" />
                 </AvatarFallback>
               </Avatar>
-              <div>
-                <span>가이드:</span>
-                <span className="font-semibold">
-                  {guide?.seeGuide?.fullname}
-                </span>
-                <span> 님</span>
-                {user ? (
-                  <Link href={"/chat-room/1"}>
-                    <Button>가이드에게 메시지 보내기</Button>
-                  </Link>
-                ) : (
-                  <DialogCreatAccount
+              <div className="flex flex-row items-center">
+                <div className="mr-3">
+                  <span>가이드:</span>
+                  <span className="font-semibold">
+                    {guide?.seeGuide?.fullname}
+                  </span>
+                  <span className="ml-1">님</span>
+                  {!guide?.seeGuide?.isActive ? (
+                    <span className="ml-1">(휴업 중)</span>
+                  ) : null}
+                </div>
+                {!isMe ? (
+                  <CreateChatRoomBtn
+                    userId={userId}
                     guideId={guideId}
                     startTime={props.searchParams?.starttime}
                     endTime={props.searchParams?.endtime}
                   />
-                )}
-
-                {!guide?.seeGuide?.isActive ? <span> (휴업 중)</span> : null}
+                ) : null}
               </div>
             </div>
             <div className="flex flex-col gap-3">
@@ -129,15 +128,15 @@ export default async function guideProfile(props: GuideProfileProps) {
           </div>
           <Separator className="my-8" />
         </div>
-        <div className="md:col-span-4 flex flex-col justify-center items-center gap-3">
-          <div>
+        <div className="md:col-span-4 flex flex-col justify-start items-center">
+          <div className="flex flex-col gap-3 sticky top-10">
             <ReservationDateForm
               guideId={guideId}
               searchParams={props.searchParams}
               reservations={guide?.seeGuide?.reservations}
             />
+            <ReportForm guideId={guideId} />
           </div>
-          <ReportForm guideId={guideId} />
         </div>
       </div>
       <div className="mt-8 md:mt-0 flex flex-col gap-2">

@@ -50,13 +50,14 @@ export default function GoogleMapApi({
 
       setMapCenter(newPosition); // 지도 중심 업데이트
       setMarkerPosition(newPosition); // 마커 위치 업데이트
-      const placeName = place.name || place.formatted_address || "";
+
+      const placeName = `${place.name}, ${place.formatted_address}` || "";
       setInputValue(placeName); // 선택된 주소로 입력 필드 업데이트
       validPlaceSelected.current = true; // 유효한 장소가 선택됨을 표시
 
       // 부모 컴포넌트로 위치와 입력 값 전달
       onMarkerChange(newPosition);
-      onInputValueChange(placeName || "");
+      onInputValueChange(placeName);
     }
   };
 

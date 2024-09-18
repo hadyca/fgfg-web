@@ -31,6 +31,7 @@ export const signUpGuideSchema = z.object({
     })
     .toLowerCase()
     .min(1, "이름을 다시 확인 해주세요.")
+    .max(30, { message: "최대 30자 까지 가능합니다." })
     .refine(unavailableName, "사용할 수 없는 이름 입니다."),
   birthdate: z
     .string({
