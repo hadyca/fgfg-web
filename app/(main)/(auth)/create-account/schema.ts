@@ -26,7 +26,7 @@ export const createAccountSchema = z
       })
       .toLowerCase()
       .min(1, { message: "유저명을 입력해 주세요." })
-      .max(10, { message: "최대 10자 까지 가능합니다." })
+      .max(30, { message: "최대 30자 까지 가능합니다." })
       .trim()
       .refine(unavailableUsername, "사용할 수 없는 유저명입니다."),
     email: z.string().email("이메일 주소를 입력해주세요.").toLowerCase(),

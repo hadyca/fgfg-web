@@ -15,18 +15,19 @@ import {
 } from "@/app/(main)/(auth)/create-account/schema";
 import { createAccount } from "@/app/(main)/(auth)/create-account/actions";
 import DialogLogin from "./dialogLogin";
+import ReservationLogin from "./reservationLogin";
 
-interface DialogCreatAccountProps {
+interface ReservationCreateAccountProps {
   guideId: number;
-  startTime?: string;
-  endTime?: string;
+  startTime: string;
+  endTime: string;
 }
 
 export default function ReservationCreateAccount({
   guideId,
   startTime,
   endTime,
-}: DialogCreatAccountProps) {
+}: ReservationCreateAccountProps) {
   const [loading, setLoading] = useState(false);
   const [isOpenLogin, setIsOpenLogin] = useState(false);
   const {
@@ -45,12 +46,9 @@ export default function ReservationCreateAccount({
     formData.append("email", data.email);
     formData.append("password", data.password);
     formData.append("confirm_password", data.password);
-    const redirect =
-      startTime && endTime
-        ? `/reservation/${guideId}?starttime=${encodeURIComponent(
-            startTime
-          )}&endtime=${encodeURIComponent(endTime)}`
-        : `/reservation/${guideId}`;
+    const redirect = `/reservation/${guideId}?starttime=${encodeURIComponent(
+      startTime
+    )}&endtime=${encodeURIComponent(endTime)}`;
 
     const result = await createAccount(formData, redirect);
     if (result?.type === "checkUsername") {
@@ -123,7 +121,7 @@ export default function ReservationCreateAccount({
           </form>
         </Card>
       ) : (
-        <DialogLogin
+        <ReservationLogin
           guideId={guideId}
           startTime={startTime}
           endTime={endTime}

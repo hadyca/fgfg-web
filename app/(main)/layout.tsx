@@ -1,5 +1,6 @@
 import HeaderSection from "@/components/mainPage/headerSection";
 import getUser from "@/lib/getUser";
+import getSession from "@/lib/session";
 
 export default async function HomeLayout({
   children,

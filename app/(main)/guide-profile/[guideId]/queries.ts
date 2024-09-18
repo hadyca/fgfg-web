@@ -40,3 +40,11 @@ export const REPORT_GUIDE = gql`
     }
   }
 `;
+
+export const CREATE_CHAT_ROOM = gql`
+  mutation createChatRoom($guideId: Int!) {
+    createChatRoom(guideId: $guideId) {
+      id
+    }
+  }
+`;

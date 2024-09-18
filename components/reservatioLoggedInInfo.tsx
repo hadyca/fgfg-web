@@ -3,7 +3,13 @@ import { Separator } from "./ui/separator";
 import { Textarea } from "./ui/textarea";
 import { ClockIcon } from "@heroicons/react/24/outline";
 
-export default function ReservationLoggedInInfo() {
+interface ReservationLoggedInInfoProps {
+  isMe: Boolean;
+}
+
+export default function ReservationLoggedInInfo({
+  isMe,
+}: ReservationLoggedInInfoProps) {
   return (
     <>
       <div className="flex flex-col gap-3">
@@ -12,16 +18,20 @@ export default function ReservationLoggedInInfo() {
           <div>stripe 결제 부분(추 후)</div>
         </div>
         <Separator className="my-8" />
-        <div>
-          <div className="text-xl">가이드에게 메시지 보내기</div>
-          <div className="text-sm text-muted-foreground">
-            고객님께서 원하시는 데이트 코스, 가이드가 필요한 준비물, 가이드를
-            선택한 이유 등을 알려주세요.
-          </div>
-        </div>
-        <Textarea />
+        {!isMe ? (
+          <>
+            <div>
+              <div className="text-xl">가이드에게 메시지 보내기</div>
+              <div className="text-sm text-muted-foreground">
+                고객님께서 원하시는 데이트 코스, 가이드가 필요한 준비물,
+                가이드를 선택한 이유 등을 알려주세요.
+              </div>
+            </div>
+            <Textarea />
+            <Separator className="my-8" />
+          </>
+        ) : null}
       </div>
-      <Separator className="my-8" />
       <div className="flex flex-col gap-3">
         <div className="text-xl">환불 정책</div>
         <div>환불 정책 내용~~</div>

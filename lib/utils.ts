@@ -92,3 +92,9 @@ export function convertMonthDayIntl(isoString: string, locale: string) {
     .setLocale(locale)
     .toLocaleString({ month: "long", day: "numeric" });
 }
+
+// ISO 8601 포맷 검증 함수
+export function isValidISODate(dateString: string): boolean {
+  const dt = DateTime.fromISO(dateString, { zone: "utc" });
+  return dt.isValid;
+}
