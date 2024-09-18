@@ -79,7 +79,9 @@ export default function CreateChatRoomBtn({
   return (
     <>
       {userId ? (
-        <Button onClick={handleCreateChatRoom}>가이드에게 메시지 보내기</Button>
+        <Button onClick={() => handleCreateChatRoom(guideId)}>
+          가이드에게 메시지 보내기
+        </Button>
       ) : (
         <Dialog>
           <DialogTrigger asChild>
