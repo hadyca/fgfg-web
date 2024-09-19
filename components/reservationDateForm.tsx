@@ -38,9 +38,9 @@ interface ReservationDateFormProps {
 }
 
 export default function ReservationDateForm(props: ReservationDateFormProps) {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
-
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
 
@@ -61,12 +61,12 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
     if (props?.searchParams?.starttime && props?.searchParams?.endtime) {
       const date = convertToVietnamISO(props.searchParams.starttime);
       const dateOnly = date!.split("T")[0];
+      setSelectedDate(new Date(dateOnly));
 
       const startTime = convertToVietnamTime(props.searchParams.starttime);
       const endTime = convertToVietnamTime(props.searchParams.endtime);
 
       setValue("date", dateOnly);
-      setSelectedDate(new Date(dateOnly));
 
       setStartTime(startTime);
       setValue("startTime", startTime);
@@ -117,34 +117,78 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
         return;
       }
     }
-
-    router.push(
-      `/reservation/${props.guideId}?starttime=${encodeURIComponent(
-        inputStartTime!
-      )}&endtime=${encodeURIComponent(inputEndTime!)}`
-    );
+    console.log("onValid실행");
+    // router.push(
+    //   `/reservation/${props.guideId}?starttime=${encodeURIComponent(
+    //     inputStartTime!
+    //   )}&endtime=${encodeURIComponent(inputEndTime!)}`
+    // );
   };
 
   const handleDateChange = (date: Date | undefined) => {
+    //form 실행하는 방법 연구/...
+    handleSubmit(onValid);
     if (!date || date === selectedDate) {
       setIsPopoverOpen(false);
       return;
     }
+    const convertedDate = format(date, "yyyy-MM-dd");
+
+    if (startTime && endTime) {
+      const inputStartTime = convertToUTC(`${convertedDate}T${startTime}`);
+      const inputEndTime = convertToUTC(`${convertedDate}T${endTime}`);
+      setIsPopoverOpen(false); // 날짜 선택 후 팝오버 닫기
+
+      return router.push(
+        `/guide-profile/${props.guideId}?starttime=${encodeURIComponent(
+          inputStartTime!
+        )}&endtime=${encodeURIComponent(inputEndTime!)}`,
+        { scroll: false }
+      );
+    }
     setSelectedDate(date);
-    setValue("date", date ? format(date, "yyyy-MM-dd") : ""); // 날짜 포맷을 맞춰서 저장
+    setValue("date", date ? convertedDate : ""); // 날짜 포맷을 맞춰서 저장
     setIsPopoverOpen(false); // 날짜 선택 후 팝오버 닫기
   };
 
-  const handleStartTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    setValue("startTime", value);
-    setStartTime(value);
+  const handleStartTimeChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const startTime = e.target.value;
+
+    if (selectedDate && endTime) {
+      const convertedDate = format(selectedDate, "yyyy-MM-dd");
+      const inputStartTime = convertToUTC(`${convertedDate}T${startTime}`);
+      const inputEndTime = convertToUTC(`${convertedDate}T${endTime}`);
+      return router.push(
+        `/guide-profile/${props.guideId}?starttime=${encodeURIComponent(
+          inputStartTime!
+        )}&endtime=${encodeURIComponent(inputEndTime!)}`,
+        { scroll: false }
+      );
+    }
+    setValue("startTime", startTime);
+    setStartTime(startTime);
   };
 
-  const handleEndTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    setValue("endTime", value);
-    setEndTime(value);
+  const handleEndTimeChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const endTime = e.target.value;
+
+    if (selectedDate && startTime) {
+      const convertedDate = format(selectedDate, "yyyy-MM-dd");
+      const inputStartTime = convertToUTC(`${convertedDate}T${startTime}`);
+      const inputEndTime = convertToUTC(`${convertedDate}T${endTime}`);
+      return router.push(
+        `/guide-profile/${props.guideId}?starttime=${encodeURIComponent(
+          inputStartTime!
+        )}&endtime=${encodeURIComponent(inputEndTime!)}`,
+        { scroll: false }
+      );
+    }
+    setValue("endTime", endTime);
+    setEndTime(endTime);
   };
 
   return (
@@ -172,8 +216,8 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
                   <Calendar
                     mode="single"
                     locale={ko}
-                    selected={selectedDate}
                     onSelect={handleDateChange}
+                    selected={selectedDate}
                     disabled={(date) => {
                       const yesterday = subDays(new Date(), 1);
                       return date <= yesterday;

@@ -22,7 +22,7 @@ import {
 } from "@/app/(main)/(auth)/create-account/schema";
 import { createAccount } from "@/app/(main)/(auth)/create-account/actions";
 import DialogLogin from "./dialogLogin";
-import { createChatRoom } from "@/app/(main)/guide-profile/[guideId]/actions";
+import Link from "next/link";
 
 interface CreateChatRoomBtnProps {
   userId?: number;
@@ -71,17 +71,20 @@ export default function CreateChatRoomBtn({
     }
     setLoading(false);
   };
-
-  const handleCreateChatRoom = async (guideId: number) => {
-    await createChatRoom(guideId);
-  };
-
   return (
     <>
       {userId ? (
-        <Button onClick={() => handleCreateChatRoom(guideId)}>
-          가이드에게 메시지 보내기
-        </Button>
+        <Link
+          href={
+            startTime && endTime
+              ? `/contact-guide/${guideId}?starttime=${encodeURIComponent(
+                  startTime
+                )}&endtime=${encodeURIComponent(endTime)}`
+              : `/contact-guide/${guideId}`
+          }
+        >
+          <Button>가이드에게 메시지 보내기</Button>
+        </Link>
       ) : (
         <Dialog>
           <DialogTrigger asChild>
