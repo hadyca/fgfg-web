@@ -56,6 +56,7 @@ export function formatCurrency(amount: number) {
   }).format(amount);
 }
 
+//현재 미사용
 export function convertToVietnamDate(utcDateTimeString: string) {
   const utcDate = DateTime.fromISO(utcDateTimeString, { zone: "utc" });
   const vietnamDate = utcDate.setZone("Asia/Ho_Chi_Minh");
