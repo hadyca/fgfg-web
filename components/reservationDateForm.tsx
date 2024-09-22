@@ -117,12 +117,11 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
         return;
       }
     }
-    console.log("onValid실행");
-    // router.push(
-    //   `/reservation/${props.guideId}?starttime=${encodeURIComponent(
-    //     inputStartTime!
-    //   )}&endtime=${encodeURIComponent(inputEndTime!)}`
-    // );
+    router.push(
+      `/reservation/${props.guideId}?starttime=${encodeURIComponent(
+        inputStartTime!
+      )}&endtime=${encodeURIComponent(inputEndTime!)}`
+    );
   };
 
   const handleDateChange = (date: Date | undefined) => {

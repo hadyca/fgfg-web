@@ -10,14 +10,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorText from "@/components/errorText";
 import { loginSchema, LoginType } from "@/app/(main)/(auth)/login/schema";
 import { login } from "@/app/(main)/(auth)/login/actions";
+import { Separator } from "./ui/separator";
 
 interface ReservationLoginProps {
+  setIsOpenLogin: React.Dispatch<React.SetStateAction<boolean>>;
   guideId: number;
   startTime: string;
   endTime: string;
 }
 
 export default function ReservationLogin({
+  setIsOpenLogin,
   guideId,
   startTime,
   endTime,
@@ -83,6 +86,10 @@ export default function ReservationLogin({
           <ErrorText text={errors.password.message!} />
         ) : null}
         <Button disabled={loading}>로그인</Button>
+        <Separator />
+        <Button variant={"secondary"} onClick={() => setIsOpenLogin(false)}>
+          계정이 없으신가요? 회원가입
+        </Button>
       </form>
     </Card>
   );

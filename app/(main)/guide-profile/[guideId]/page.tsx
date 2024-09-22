@@ -57,7 +57,7 @@ export default async function guideProfile(props: GuideProfileProps) {
 
   const user = await getUser();
 
-  const userId = user?.me.id;
+  const userId = user?.me?.id;
   const parsedLanguage = JSON.parse(guide?.seeGuide?.language);
   const isMe = Boolean(guideId === user?.me?.guide?.id);
 
@@ -70,7 +70,7 @@ export default async function guideProfile(props: GuideProfileProps) {
             <div className="flex flex-row items-center gap-2">
               <Avatar>
                 <AvatarImage
-                  src={`${guide?.seeGuide?.mainGuidePhoto?.fileUrl}/avatar`}
+                  src={`${guide?.seeGuide?.user?.avatar}/avatar`}
                   alt="fgfgavatar"
                 />
                 <AvatarFallback>

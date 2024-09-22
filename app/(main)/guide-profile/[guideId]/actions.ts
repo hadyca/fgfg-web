@@ -1,6 +1,6 @@
 "use server";
 import { client } from "@/lib/apolloClient";
-import { CREATE_CHAT_ROOM, REPORT_GUIDE, SEE_GUIDE } from "./queries";
+import { REPORT_GUIDE, SEE_GUIDE } from "./queries";
 
 export async function getGuide(guideId: number) {
   const { data } = await client.query({
@@ -23,14 +23,4 @@ export async function reportGuide(guideId: number, reason: string) {
     },
   });
   return data;
-}
-
-export async function createChatRoom(guideId: number) {
-  const { data } = await client.mutate({
-    mutation: CREATE_CHAT_ROOM,
-    variables: {
-      guideId,
-    },
-  });
-  console.log(data);
 }

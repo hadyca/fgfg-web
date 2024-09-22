@@ -49,7 +49,7 @@ export default async function Reservation(props: ReservationProps) {
 
   const user = await getUser();
 
-  const isMe = Boolean(guideId === user?.me.guide.id);
+  const isMe = Boolean(guideId === user?.me?.guide?.id);
 
   return (
     <div className="max-w-6xl mx-auto my-10 p-6 grid grid-cols-2">
@@ -84,7 +84,7 @@ export default async function Reservation(props: ReservationProps) {
             </div>
             <div>
               <span className="font-semibold">{guide?.seeGuide?.fullname}</span>
-              <span> 님</span>
+              <span>님</span>
               <div className="text-sm text-muted-foreground">
                 {guide?.seeGuide?.personality}
               </div>

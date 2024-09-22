@@ -10,6 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginType } from "./schema";
 import ErrorText from "@/components/errorText";
 import { login } from "./actions";
+import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
 
 export default function LogIn() {
   const [loading, setLoading] = useState(false);
@@ -70,6 +72,12 @@ export default function LogIn() {
             <ErrorText text={errors.password.message!} />
           ) : null}
           <Button disabled={loading}>로그인</Button>
+          <Separator />
+          <Link href={"/create-account"}>
+            <Button className="w-full" variant={"secondary"}>
+              계정이 없으신가요? 회원가입
+            </Button>
+          </Link>
         </form>
       </Card>
     </div>

@@ -28,6 +28,9 @@ export const SEE_GUIDE = gql`
         startTime
         endTime
       }
+      user {
+        avatar
+      }
     }
   }
 `;
@@ -37,14 +40,6 @@ export const REPORT_GUIDE = gql`
     createReportGuide(guideId: $guideId, reason: $reason) {
       ok
       error
-    }
-  }
-`;
-
-export const CREATE_CHAT_ROOM = gql`
-  mutation createChatRoom($guideId: Int!) {
-    createChatRoom(guideId: $guideId) {
-      id
     }
   }
 `;
