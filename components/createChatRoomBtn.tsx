@@ -74,15 +74,7 @@ export default function CreateChatRoomBtn({
   return (
     <>
       {userId ? (
-        <Link
-          href={
-            startTime && endTime
-              ? `/contact-guide/${guideId}?starttime=${encodeURIComponent(
-                  startTime
-                )}&endtime=${encodeURIComponent(endTime)}`
-              : `/contact-guide/${guideId}`
-          }
-        >
+        <Link href={`/contact-guide/${guideId}`}>
           <Button>가이드에게 메시지 보내기</Button>
         </Link>
       ) : (
@@ -160,6 +152,7 @@ export default function CreateChatRoomBtn({
                 </Card>
               ) : (
                 <DialogLogin
+                  setIsOpenLogin={setIsOpenLogin}
                   guideId={guideId}
                   startTime={startTime}
                   endTime={endTime}

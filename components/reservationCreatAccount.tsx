@@ -14,7 +14,7 @@ import {
   CreateAccountType,
 } from "@/app/(main)/(auth)/create-account/schema";
 import { createAccount } from "@/app/(main)/(auth)/create-account/actions";
-import DialogLogin from "./dialogLogin";
+
 import ReservationLogin from "./reservationLogin";
 
 interface ReservationCreateAccountProps {
@@ -122,6 +122,7 @@ export default function ReservationCreateAccount({
         </Card>
       ) : (
         <ReservationLogin
+          setIsOpenLogin={setIsOpenLogin}
           guideId={guideId}
           startTime={startTime}
           endTime={endTime}

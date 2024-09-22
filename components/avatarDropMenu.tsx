@@ -27,19 +27,23 @@ export default function AvatarDropMenu({
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none">
         <Avatar>
-          <AvatarImage src={avatar} alt="@shadcn" />
+          <AvatarImage src={`${avatar}/avatar`} alt="@shadcn" />
           <AvatarFallback>
-            <UserCircleIcon className="text-primary size-full" />
+            <UserCircleIcon className="text-primary" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <Link href="/user-reservation">
-          <DropdownMenuItem>
-            <span>내 예약</span>
-          </DropdownMenuItem>
-        </Link>
-        <DropdownMenuSeparator />
+        {!isApprovedGuide ? (
+          <>
+            <Link href="/user-reservation">
+              <DropdownMenuItem>
+                <span>내 예약</span>
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuSeparator />
+          </>
+        ) : null}
         {isApprovedGuide ? (
           <Link href="/guide-dashboard">
             <DropdownMenuItem>

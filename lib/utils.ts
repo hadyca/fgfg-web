@@ -99,3 +99,29 @@ export function isValidISODate(dateString: string): boolean {
   const dt = DateTime.fromISO(dateString, { zone: "utc" });
   return dt.isValid;
 }
+
+export function formatToTimeAgo(date: string): string {
+  const now = DateTime.now();
+  const time = DateTime.fromMillis(Number(date)); // 타임스탬프를 DateTime으로 변환
+  const diff = now
+    .diff(time, ["years", "months", "days", "hours", "minutes"])
+    .toObject();
+
+  if (diff.years && diff.years > 0) {
+    return `${Math.floor(diff.years)}년 전`;
+  }
+  if (diff.months && diff.months > 0) {
+    return `${Math.floor(diff.months)}개월 전`;
+  }
+  if (diff.days && diff.days > 0) {
+    return `${Math.floor(diff.days)}일 전`;
+  }
+  if (diff.hours && diff.hours > 0) {
+    return `${Math.floor(diff.hours)}시간 전`;
+  }
+  if (diff.minutes && diff.minutes >= 1) {
+    return `${Math.floor(diff.minutes)}분 전`;
+  }
+
+  return "방금 전";
+}
