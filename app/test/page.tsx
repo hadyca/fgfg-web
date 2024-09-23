@@ -39,7 +39,6 @@ export default function GoogleMapApi() {
         lat: location.lat(),
         lng: location.lng(),
       };
-      console.log(place.formatted_address);
 
       setMapCenter(newCenter); // 지도 중심 업데이트
       setMarkerPosition(newCenter); // 마커 위치 업데이트

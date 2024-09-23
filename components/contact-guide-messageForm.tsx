@@ -28,9 +28,11 @@ export default function ContactGuideForm({ guideId }: ContactGuideFormProps) {
   });
 
   const onValid = async (data: ContactGuideType) => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("payload", data.payload);
     await createChatRoom(formData, guideId);
+    setLoading(false);
   };
 
   return (
@@ -41,7 +43,9 @@ export default function ContactGuideForm({ guideId }: ContactGuideFormProps) {
         </div>
         {errors?.payload ? <ErrorText text={errors.payload.message!} /> : null}
         <Textarea id="payload" {...register("payload")} required />
-        <Button className="mt-3">메시지 전송하기</Button>
+        <Button disabled={loading} className="mt-3">
+          메시지 전송하기
+        </Button>
       </div>
     </form>
   );

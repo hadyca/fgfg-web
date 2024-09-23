@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client";
 import getSession from "./session";
-import { redirect } from "next/navigation";
 import { client } from "./apolloClient";
 
 export const ME_QUERY = gql`
@@ -14,6 +13,15 @@ export const ME_QUERY = gql`
         id
         fullname
         isApproved
+      }
+      chatRooms {
+        id
+        users {
+          username
+        }
+        messages {
+          payload
+        }
       }
     }
   }

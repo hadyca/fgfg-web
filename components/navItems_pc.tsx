@@ -19,23 +19,31 @@ export default function NavItemsPC({
   isApprovedGuide,
   onLinkClick,
 }: NavItemsProps) {
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.currentTarget.blur(); // Link 클릭 후 hover 상태 제거
+    onLinkClick?.(e);
+  };
+
   return (
-    <div className="h-16 px-4 border-b border-b-border z-20 relative flex justify-between items-center">
+    <div className="h-16 px-4 border-b border-b-border relative z-20 flex justify-between items-center">
       <Link href="/" className="text-2xl font-bold text-primary">
         FGFG
       </Link>
       <NavigationMenu className="list-none">
-        <NavigationMenuItem
-          onClick={(e) =>
-            onLinkClick?.(e as unknown as React.MouseEvent<HTMLAnchorElement>)
-          }
-          className="flex flex-row items-center"
-        >
-          <Link href="/search-guide" className={navigationMenuTriggerStyle()}>
+        <NavigationMenuItem className="flex flex-row items-center">
+          <Link
+            href="/search-guide"
+            className={navigationMenuTriggerStyle()}
+            onClick={handleLinkClick}
+          >
             가이드 찾기
           </Link>
           {!isApprovedGuide ? (
-            <Link href="/signup-guide" className={navigationMenuTriggerStyle()}>
+            <Link
+              href="/signup-guide"
+              className={navigationMenuTriggerStyle()}
+              onClick={handleLinkClick}
+            >
               가이드 가입
             </Link>
           ) : null}
@@ -43,12 +51,17 @@ export default function NavItemsPC({
             <AvatarDropMenu avatar={avatar} isApprovedGuide={isApprovedGuide} />
           ) : (
             <>
-              <Link href="/login" className={navigationMenuTriggerStyle()}>
+              <Link
+                href="/login"
+                className={navigationMenuTriggerStyle()}
+                onClick={handleLinkClick}
+              >
                 로그인
               </Link>
               <Link
                 href="/create-account"
                 className={navigationMenuTriggerStyle()}
+                onClick={handleLinkClick}
               >
                 회원가입
               </Link>

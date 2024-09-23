@@ -30,3 +30,24 @@ export const CREATE_MESSAGE = gql`
     }
   }
 `;
+
+export const SEE_CHAT_ROOMS = gql`
+  query seeChatRooms {
+    seeChatRooms {
+      id
+      avatar
+      usernameOrFullname
+      lastMessage
+      createdAt
+      isRead
+    }
+  }
+`;
+
+export const UPDATE_ISREAD = gql`
+  mutation updateIsRead($chatRoomId: String!) {
+    updateIsRead(chatRoomId: $chatRoomId) {
+      ok
+    }
+  }
+`;

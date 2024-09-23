@@ -1,7 +1,14 @@
 "use server";
 
 import { client } from "@/lib/apolloClient";
-import { CREATE_MESSAGE, SEE_CHAT_ROOM, SEE_MESSAGES } from "./queries";
+import {
+  CREATE_MESSAGE,
+  SEE_CHAT_ROOM,
+  SEE_CHAT_ROOMS,
+  SEE_MESSAGES,
+  UPDATE_ISREAD,
+} from "./queries";
+import { notFound } from "next/navigation";
 
 export async function getChatRoom(chatRoomId: String) {
   const { data } = await client.query({
@@ -9,8 +16,13 @@ export async function getChatRoom(chatRoomId: String) {
     variables: {
       chatRoomId,
     },
+    fetchPolicy: "no-cache",
   });
-  return data;
+
+  if (!data.seeChatRoom) {
+    return notFound();
+  }
+  return;
 }
 
 export async function getMessages(chatRoomId: String) {
@@ -27,6 +39,15 @@ export async function getMessages(chatRoomId: String) {
   return seeMessages;
 }
 
+export async function getChatRooms() {
+  const { data } = await client.query({
+    query: SEE_CHAT_ROOMS,
+    fetchPolicy: "no-cache",
+  });
+
+  return data;
+}
+
 export async function saveMessage(chatRoomId: string, payload: string) {
   await client.mutate({
     mutation: CREATE_MESSAGE,
@@ -35,4 +56,15 @@ export async function saveMessage(chatRoomId: string, payload: string) {
       payload,
     },
   });
+  return;
+}
+
+export async function updateIsRead(chatRoomId: string) {
+  await client.mutate({
+    mutation: UPDATE_ISREAD,
+    variables: {
+      chatRoomId,
+    },
+  });
+  return;
 }
