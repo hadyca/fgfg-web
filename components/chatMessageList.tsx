@@ -5,7 +5,10 @@ import { RealtimeChannel } from "@supabase/supabase-js";
 import { formatToTimeAgo } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { ArrowUpCircleIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import { saveMessage } from "@/app/(main)/chat-room/[chatRoomId]/actions";
+import {
+  saveMessage,
+  updateIsRead,
+} from "@/app/(main)/chat-room/[chatRoomId]/actions";
 import { supabase } from "@/lib/supabaseClient";
 
 interface User {
@@ -84,6 +87,16 @@ export default function ChatMessageList({
     await saveMessage(chatRoomId, message);
     setMessage("");
   };
+
+  // 처음 렌더링 시 스크롤을 맨 아래로 이동
+  useEffect(() => {
+    setTimeout(() => {
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView();
+      }
+    }, 100);
+  }, []);
+
   useEffect(() => {
     channel.current = supabase.channel(`room-${chatRoomId}`);
     channel.current
@@ -97,17 +110,25 @@ export default function ChatMessageList({
   }, [chatRoomId]);
 
   useEffect(() => {
-    const formatted = messages.map((meesage) =>
-      formatToTimeAgo(meesage.createdAt)
-    );
-    setFormattedTimes(formatted);
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]);
+    // 비동기 함수 정의
+    const updateReadStatus = async () => {
+      const formatted = messages.map((message) =>
+        formatToTimeAgo(message.createdAt)
+      );
+      setFormattedTimes(formatted);
+
+      if (messagesEndRef.current) {
+        messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+
+      await updateIsRead(chatRoomId);
+    };
+
+    updateReadStatus();
+  }, [messages, chatRoomId]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col">
       <div className="flex-grow overflow-y-auto p-5">
         {messages.map((message, index) => (
           <div
@@ -118,7 +139,10 @@ export default function ChatMessageList({
           >
             {message.user.id === userId ? null : (
               <Avatar>
-                <AvatarImage src={`${avatar}/avatar`} alt="fgfgavatar" />
+                <AvatarImage
+                  src={`${message.user.avatar}/avatar`}
+                  alt="fgfgavatar"
+                />
                 <AvatarFallback>
                   <UserCircleIcon className="text-primary" />
                 </AvatarFallback>
@@ -144,20 +168,24 @@ export default function ChatMessageList({
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <form className="flex relative p-5" onSubmit={onSubmit}>
-        <input
-          required
-          onChange={onChange}
-          value={message}
-          className="rounded-full w-full h-10 border border-neutral-300 px-5 placeholder:text-neutral-400 focus:outline-none"
-          type="text"
-          name="message"
-          placeholder="Write a message..."
-        />
-        <button className="absolute right-5">
-          <ArrowUpCircleIcon className="size-10 text-orange-500 transition-colors hover:text-orange-300" />
-        </button>
-      </form>
+
+      {/* Input 영역을 아래로 분리 */}
+      <div className="relative">
+        <form className="flex px-5 pb-3 pt-2 border-t" onSubmit={onSubmit}>
+          <input
+            required
+            onChange={onChange}
+            value={message}
+            className="rounded-full w-full h-10 border border-neutral-300 px-5 placeholder:text-neutral-400 focus:outline-none"
+            type="text"
+            name="message"
+            placeholder="Write a message..."
+          />
+          <button className="absolute right-5">
+            <ArrowUpCircleIcon className="size-10 text-orange-500 transition-colors hover:text-orange-300" />
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
