@@ -25,6 +25,7 @@ import DialogLogin from "./dialogLogin";
 import Link from "next/link";
 
 interface CreateChatRoomBtnProps {
+  matchingChatRoomId?: string;
   userId?: number;
   guideId: number;
   startTime?: string;
@@ -32,6 +33,7 @@ interface CreateChatRoomBtnProps {
 }
 
 export default function CreateChatRoomBtn({
+  matchingChatRoomId,
   userId,
   guideId,
   startTime,
@@ -74,7 +76,13 @@ export default function CreateChatRoomBtn({
   return (
     <>
       {userId ? (
-        <Link href={`/contact-guide/${guideId}`}>
+        <Link
+          href={
+            matchingChatRoomId
+              ? `/chat-room/${matchingChatRoomId}`
+              : `/contact-guide/${guideId}`
+          }
+        >
           <Button>가이드에게 메시지 보내기</Button>
         </Link>
       ) : (

@@ -34,6 +34,11 @@ export default function AvatarDropMenu({
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        <Link href="/user-reservation">
+          <DropdownMenuItem>
+            <span>내 예약</span>
+          </DropdownMenuItem>
+        </Link>
         {!isApprovedGuide ? (
           <>
             <Link href="/user-reservation">

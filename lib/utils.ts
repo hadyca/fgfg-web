@@ -102,26 +102,45 @@ export function isValidISODate(dateString: string): boolean {
 
 export function formatToTimeAgo(date: string): string {
   const now = DateTime.now();
-  const time = DateTime.fromMillis(Number(date)); // 타임스탬프를 DateTime으로 변환
+  const time = DateTime.fromMillis(Number(date)).setLocale(navigator.language); // 타임스탬프를 DateTime으로 변환하고 로케일 설정
   const diff = now
     .diff(time, ["years", "months", "days", "hours", "minutes"])
     .toObject();
 
+  // Intl.RelativeTimeFormat을 사용해 로케일에 맞는 시간차 표현
+  const rtf = new Intl.RelativeTimeFormat(navigator.language, {
+    numeric: "auto",
+  });
+
   if (diff.years && diff.years > 0) {
-    return `${Math.floor(diff.years)}년 전`;
+    return rtf.format(-Math.floor(diff.years), "year");
   }
   if (diff.months && diff.months > 0) {
-    return `${Math.floor(diff.months)}개월 전`;
+    return rtf.format(-Math.floor(diff.months), "month");
   }
   if (diff.days && diff.days > 0) {
-    return `${Math.floor(diff.days)}일 전`;
+    return rtf.format(-Math.floor(diff.days), "day");
   }
   if (diff.hours && diff.hours > 0) {
-    return `${Math.floor(diff.hours)}시간 전`;
+    return rtf.format(-Math.floor(diff.hours), "hour");
   }
   if (diff.minutes && diff.minutes >= 1) {
-    return `${Math.floor(diff.minutes)}분 전`;
+    return rtf.format(-Math.floor(diff.minutes), "minute");
   }
+  return rtf.format(0, "second");
+}
 
-  return "방금 전";
+export function formatChatRoomDate(createdAt: string): string {
+  const chatRoomDate = DateTime.fromISO(createdAt);
+  const now = DateTime.local();
+
+  const isToday = chatRoomDate.hasSame(now, "day");
+
+  if (isToday) {
+    // 오늘이면 시간과 분 표시
+    return chatRoomDate.toLocaleString(DateTime.TIME_SIMPLE);
+  } else {
+    // 어제나 그 이전이면 월과 일 표시
+    return chatRoomDate.toLocaleString({ month: "2-digit", day: "2-digit" });
+  }
 }
