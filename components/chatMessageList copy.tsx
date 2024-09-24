@@ -65,8 +65,8 @@ export default function ChatMessageList({
       createdAt: new Date().toISOString(),
       user: {
         id: userId,
-        username: "xxx",
-        avatar: "xxx",
+        username,
+        avatar,
       },
     };
 
@@ -76,16 +76,7 @@ export default function ChatMessageList({
     channel.current?.send({
       type: "broadcast",
       event: "message",
-      payload: {
-        id: Date.now(),
-        payload: message,
-        createdAt: new Date().toISOString(),
-        user: {
-          id: userId,
-          username,
-          avatar,
-        },
-      },
+      payload: newMessage,
     });
     await saveMessage(chatRoomId, message);
     setMessage("");
