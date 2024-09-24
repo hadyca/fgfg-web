@@ -29,7 +29,11 @@ export const SEE_GUIDE = gql`
         endTime
       }
       user {
+        id
         avatar
+        chatRooms {
+          id
+        }
       }
     }
   }

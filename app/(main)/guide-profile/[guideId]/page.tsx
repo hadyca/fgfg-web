@@ -57,10 +57,16 @@ export default async function guideProfile(props: GuideProfileProps) {
 
   const user = await getUser();
 
-  const userId = user?.me?.id;
+  const matchingChatRoom = user?.me?.chatRooms?.find((chatRoom: any) =>
+    chatRoom.users.some(
+      (userObj: any) => userObj.id === guide?.seeGuide?.user?.id
+    )
+  );
+
+  const matchingChatRoomId = matchingChatRoom ? matchingChatRoom.id : null;
+
   const parsedLanguage = JSON.parse(guide?.seeGuide?.language);
   const isMe = Boolean(guideId === user?.me?.guide?.id);
-
   return (
     <div className="max-w-6xl mx-auto my-10 px-6">
       <PhotoCarousel guidePhotos={guide?.seeGuide?.guidePhotos} />
@@ -90,7 +96,8 @@ export default async function guideProfile(props: GuideProfileProps) {
                 </div>
                 {!isMe ? (
                   <CreateChatRoomBtn
-                    userId={userId}
+                    matchingChatRoomId={matchingChatRoomId}
+                    userId={user?.me?.id}
                     guideId={guideId}
                     startTime={props.searchParams?.starttime}
                     endTime={props.searchParams?.endtime}

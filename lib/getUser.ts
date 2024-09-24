@@ -1,31 +1,7 @@
-import { gql } from "@apollo/client";
+"use server";
 import getSession from "./session";
 import { client } from "./apolloClient";
-
-export const ME_QUERY = gql`
-  query me {
-    me {
-      id
-      username
-      avatar
-      email
-      guide {
-        id
-        fullname
-        isApproved
-      }
-      chatRooms {
-        id
-        users {
-          username
-        }
-        messages {
-          payload
-        }
-      }
-    }
-  }
-`;
+import { ME_QUERY } from "./queries";
 
 export default async function getUser() {
   const session = await getSession();

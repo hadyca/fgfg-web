@@ -5,11 +5,9 @@ import getUser from "@/lib/getUser";
 import ChatMessageList from "@/components/chatMessageList";
 import ChatRoomList from "@/components/chat-room-list";
 import ChatRoomBill from "@/components/chat-room-bill";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
 import { GetMessageSkeleton } from "./skeleton";
-import { supabase } from "@/lib/supabaseClient";
-import { RealtimeChannel } from "@supabase/supabase-js";
 
 interface ChatRoomProps {
   params: {
@@ -23,16 +21,8 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
   const [user, setUser] = useState<{ me: any } | undefined>(undefined); // user 상태 타입 설정
   const { initialLoading, setInitialLoading } = useChatRoomStore(); // Zustand로 로딩 상태 관리
   const setChatRooms = useChatRoomStore((state) => state.setChatRooms); // Zustand에서 전역 상태 설정 함수
-  const channel = useRef<RealtimeChannel>();
 
   useEffect(() => {
-    channel.current = supabase.channel(`room-${chatRoomId}`);
-    channel.current
-      .on("broadcast", { event: "message" }, (payload) => {
-        console.log(payload);
-      })
-      .subscribe();
-
     const fetchData = async () => {
       try {
         if (initialLoading) {
@@ -55,10 +45,8 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
         console.error("Error fetching chat data:", error);
       }
     };
+
     fetchData();
-    return () => {
-      channel.current?.unsubscribe();
-    };
   }, [chatRoomId, setChatRooms, initialLoading, setInitialLoading]);
 
   return (

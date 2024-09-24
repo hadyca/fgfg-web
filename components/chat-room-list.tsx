@@ -1,12 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
-import { Button } from "./ui/button";
-import Link from "next/link";
+import { formatChatRoomDate } from "@/lib/utils";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation"; // Next.js router 사용
+import { useChatRoomStore } from "@/store/useChatRoomStore";
 
-interface ChatRoomList {
+interface ChatRooms {
   id: string;
   avatar: string;
   usernameOrFullname: string;
@@ -17,24 +18,38 @@ interface ChatRoomList {
 
 interface ChatRoomListProps {
   chatRoomId: string;
-  chatRoomList: ChatRoomList[];
+  initialChatRooms: ChatRooms[];
 }
 
 export default function ChatRoomList({
   chatRoomId,
-  chatRoomList,
+  initialChatRooms,
 }: ChatRoomListProps) {
+  const router = useRouter();
+  const chatRooms = useChatRoomStore((state) => state.chatRooms); // Zustand에서 전역 상태 가져오기
+  const setChatRooms = useChatRoomStore((state) => state.setChatRooms);
+
+  // 페이지 로드 시 채팅방 리스트 상태 설정
+  useEffect(() => {
+    if (chatRooms.length === 0) {
+      setChatRooms(initialChatRooms); // Zustand에 채팅방 리스트 저장
+    }
+  }, [initialChatRooms, chatRooms, setChatRooms]);
+
+  const handleRoomClick = (chatRoomId: string) => {
+    router.push(`/chat-room/${chatRoomId}`);
+  };
+
   return (
     <div className="p-4 border-r">
-      {chatRoomList.map((chatRoom) => (
-        <Link
-          href={`/chat-room/${chatRoom.id}`}
+      {chatRooms.map((chatRoom: any) => (
+        <div
           key={chatRoom.id}
-          className={`flex items-start w-full p-4 mb-4 ${
+          className={`flex items-start w-full p-4 mb-2 ${
             chatRoom.id === chatRoomId ? "bg-gray-100" : "bg-white"
-          }  hover:bg-gray-100 rounded-md`}
+          } hover:bg-gray-100 rounded-md cursor-pointer`}
+          onClick={() => handleRoomClick(chatRoom.id)} // 클릭 시 URL 이동 처리
         >
-          {/* Avatar */}
           <div>
             <Avatar className="w-12 h-12">
               <AvatarImage src={`${chatRoom.avatar}/avatar`} alt="fgfgavatar" />
@@ -43,31 +58,20 @@ export default function ChatRoomList({
               </AvatarFallback>
             </Avatar>
           </div>
-
-          {/* Main Content */}
           <div className="flex flex-col flex-grow ml-4">
             <div className="flex items-center justify-between">
               <span className="font-semibold">
                 {chatRoom.usernameOrFullname}
               </span>
               <span className="text-xs text-gray-400">
-                {new Date(parseInt(chatRoom.createdAt)).toLocaleTimeString(
-                  "ko-KR",
-                  {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }
-                )}
+                {formatChatRoomDate(chatRoom.createdAt)}
               </span>
             </div>
-
-            {/* Last Message */}
             <div className="flex items-center mt-1">
               <span className="text-sm text-gray-700">
                 {chatRoom.lastMessage}
               </span>
             </div>
-            {/* Sub Information */}
             {!chatRoom.isRead ? (
               <div className="text-sm text-gray-500 mt-1 flex items-center">
                 <span className="mr-1 text-red-500">●</span>
@@ -75,7 +79,7 @@ export default function ChatRoomList({
               </div>
             ) : null}
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   );
