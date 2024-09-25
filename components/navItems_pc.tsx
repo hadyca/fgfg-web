@@ -8,6 +8,7 @@ import AvatarDropMenu from "./avatarDropMenu";
 
 interface NavItemsProps {
   userId?: number;
+  chatRoomId?: string;
   avatar?: string;
   isApprovedGuide?: boolean;
   onLinkClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
@@ -15,6 +16,7 @@ interface NavItemsProps {
 
 export default function NavItemsPC({
   userId,
+  chatRoomId,
   avatar,
   isApprovedGuide,
   onLinkClick,
@@ -48,7 +50,11 @@ export default function NavItemsPC({
             </Link>
           ) : null}
           {userId ? (
-            <AvatarDropMenu avatar={avatar} isApprovedGuide={isApprovedGuide} />
+            <AvatarDropMenu
+              avatar={avatar}
+              chatRoomId={chatRoomId}
+              isApprovedGuide={isApprovedGuide}
+            />
           ) : (
             <>
               <Link

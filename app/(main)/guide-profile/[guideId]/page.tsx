@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/tooltip";
 import getUser from "@/lib/getUser";
 import CreateChatRoomBtn from "@/components/createChatRoomBtn";
+import { getChatRooms } from "../../chat-room/[chatRoomId]/actions";
 
 interface GuideProfileProps {
   params: {
@@ -57,10 +58,8 @@ export default async function guideProfile(props: GuideProfileProps) {
 
   const user = await getUser();
 
-  const matchingChatRoom = user?.me?.chatRooms?.find((chatRoom: any) =>
-    chatRoom.users.some(
-      (userObj: any) => userObj.id === guide?.seeGuide?.user?.id
-    )
+  const matchingChatRoom = user?.me?.chatRooms?.find(
+    (chatRoom: any) => chatRoom.otherUserId === guide?.seeGuide?.user?.id
   );
 
   const matchingChatRoomId = matchingChatRoom ? matchingChatRoom.id : null;

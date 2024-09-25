@@ -5,11 +5,9 @@ import getUser from "@/lib/getUser";
 import ChatMessageList from "@/components/chatMessageList";
 import ChatRoomList from "@/components/chat-room-list";
 import ChatRoomBill from "@/components/chat-room-bill";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
 import { GetMessageSkeleton } from "./skeleton";
-import { supabase } from "@/lib/supabaseClient";
-import { RealtimeChannel } from "@supabase/supabase-js";
 
 interface ChatRoomProps {
   params: {
@@ -18,21 +16,15 @@ interface ChatRoomProps {
 }
 
 export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
+  const [otherUserId, setOtherUserId] = useState();
   const [messageLoading, setMessageLoading] = useState(true); // ChatMessageList 로딩 상태
   const [initialMessages, setInitialMessages] = useState([]);
   const [user, setUser] = useState<{ me: any } | undefined>(undefined); // user 상태 타입 설정
+
   const { initialLoading, setInitialLoading } = useChatRoomStore(); // Zustand로 로딩 상태 관리
   const setChatRooms = useChatRoomStore((state) => state.setChatRooms); // Zustand에서 전역 상태 설정 함수
-  const channel = useRef<RealtimeChannel>();
 
   useEffect(() => {
-    channel.current = supabase.channel(`room-${chatRoomId}`);
-    channel.current
-      .on("broadcast", { event: "message" }, (payload) => {
-        console.log(payload);
-      })
-      .subscribe();
-
     const fetchData = async () => {
       try {
         if (initialLoading) {
@@ -40,7 +32,9 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
         }
         setMessageLoading(true);
         // 다른 유저 검증용
-        await getChatRoom(chatRoomId);
+        const chatRoom = await getChatRoom(chatRoomId);
+        setOtherUserId(chatRoom.seeChatRoom.otherUserId);
+
         const fetchedChatRooms = await getChatRooms();
         const messages = await getMessages(chatRoomId);
         const currentUser = await getUser();
@@ -56,9 +50,6 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
       }
     };
     fetchData();
-    return () => {
-      channel.current?.unsubscribe();
-    };
   }, [chatRoomId, setChatRooms, initialLoading, setInitialLoading]);
 
   return (
@@ -69,13 +60,18 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
           <div className="text-center text-gray-500">Loading chat rooms...</div>
         </div>
       ) : (
-        <ChatRoomList chatRoomId={chatRoomId} initialChatRooms={[]} />
+        <ChatRoomList
+          chatRoomId={chatRoomId}
+          userId={user?.me?.id}
+          initialChatRooms={[]}
+        />
       )}
       {initialLoading || messageLoading ? (
         <GetMessageSkeleton />
       ) : (
         <ChatMessageList
           chatRoomId={chatRoomId}
+          otherUserId={otherUserId!}
           userId={user?.me?.id}
           username={user?.me?.username}
           avatar={user?.me?.avatar}

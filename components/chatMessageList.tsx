@@ -27,6 +27,7 @@ interface InitialChatMessages {
 
 interface ChatMessageListProps {
   initialMessages: InitialChatMessages[];
+  otherUserId: number;
   userId: number;
   chatRoomId: string;
   username: string;
@@ -37,6 +38,7 @@ interface ChatMessageListProps {
 
 export default function ChatMessageList({
   initialMessages,
+  otherUserId,
   userId,
   chatRoomId,
   username,
@@ -44,11 +46,16 @@ export default function ChatMessageList({
 }: ChatMessageListProps) {
   const [messages, setMessages] = useState<InitialChatMessages[]>([]); // 초기값은 빈 배열
   const [message, setMessage] = useState("");
-  const channel = useRef<RealtimeChannel>();
+  const messageChannel = useRef<RealtimeChannel>();
+  const otherUserChannel = useRef<RealtimeChannel>();
+
   const messagesEndRef = useRef<HTMLDivElement | null>(null); // 메시지 끝의 ref
   const updateLastMessageInRoom = useChatRoomStore(
     (state) => state.updateLastMessageInRoom
-  ); // Zustand에서 업데이트 함수 가져오기
+  );
+  const updateIsReadInRoom = useChatRoomStore(
+    (state) => state.updateIsReadInRoom
+  );
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -56,6 +63,7 @@ export default function ChatMessageList({
     } = event;
     setMessage(value);
   };
+
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -72,15 +80,26 @@ export default function ChatMessageList({
 
     setMessages((prevMsgs) => [...prevMsgs, newMessage]);
 
-    //상대방이 전달 받는 정보
-    channel.current?.send({
+    //상대방 채팅방에 전달 받는 정보
+    messageChannel.current?.send({
       type: "broadcast",
       event: "message",
       payload: newMessage,
     });
     await saveMessage(chatRoomId, message);
     setMessage("");
-    updateLastMessageInRoom(chatRoomId, message, newMessage.createdAt); // 상태 업데이트
+
+    otherUserChannel.current?.send({
+      type: "broadcast",
+      event: "message",
+      payload: {
+        chatRoomId,
+        message,
+        createdAt: newMessage.createdAt,
+        isRead: false,
+      },
+    });
+    updateLastMessageInRoom(chatRoomId, message, newMessage.createdAt);
   };
 
   // 날짜 헤더 표시 함수
@@ -111,13 +130,20 @@ export default function ChatMessageList({
   useEffect(() => setMessages(initialMessages), [initialMessages]);
 
   useEffect(() => {
-    channel.current = supabase.channel(`room-${chatRoomId}`);
-    channel.current
+    updateIsReadInRoom(chatRoomId, true);
+
+    //채팅방 채널 구독 (채팅방 실시간용)
+    messageChannel.current = supabase.channel(`room-${chatRoomId}`);
+    messageChannel.current
       .on("broadcast", { event: "message" }, (payload) => {
         setMessages((prevMsgs) => [...prevMsgs, payload.payload]);
       })
       .subscribe();
 
+    //상대 채널 구독
+    otherUserChannel.current = supabase.channel(`user-${otherUserId}`);
+
+    //
     const updateReadStatus = async () => {
       if (messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView();
@@ -129,9 +155,10 @@ export default function ChatMessageList({
     updateReadStatus();
 
     return () => {
-      channel.current?.unsubscribe();
+      messageChannel.current?.unsubscribe();
+      otherUserChannel.current?.unsubscribe();
     };
-  }, [chatRoomId, messages]);
+  }, [chatRoomId, messages, otherUserId, updateIsReadInRoom]);
 
   return (
     <div className="flex flex-col">
