@@ -11,12 +11,14 @@ import AvatarDropMenu from "../avatarDropMenu";
 
 interface NavProps {
   userId?: number;
+  chatRoomId?: string;
   avatar?: string;
   isApprovedGuide?: boolean;
 }
 
 export default function HeaderSection({
   userId,
+  chatRoomId,
   avatar,
   isApprovedGuide,
 }: NavProps) {
@@ -32,6 +34,7 @@ export default function HeaderSection({
       <nav className="md:block hidden">
         <NavItemsPC
           userId={userId}
+          chatRoomId={chatRoomId}
           avatar={avatar}
           isApprovedGuide={isApprovedGuide}
         />

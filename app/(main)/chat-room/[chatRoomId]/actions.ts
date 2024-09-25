@@ -22,7 +22,7 @@ export async function getChatRoom(chatRoomId: String) {
   if (!data.seeChatRoom) {
     return notFound();
   }
-  return;
+  return data;
 }
 
 export async function getMessages(chatRoomId: String) {

@@ -12,11 +12,13 @@ import { logout } from "@/lib/sharedActions";
 
 interface AvatarDropMenuProps {
   avatar?: string;
+  chatRoomId: string;
   isApprovedGuide?: boolean;
 }
 
-export default function AvatarDropMenu({
+export default async function AvatarDropMenu({
   avatar,
+  chatRoomId,
   isApprovedGuide,
 }: AvatarDropMenuProps) {
   const handleLogout = async () => {
@@ -34,9 +36,9 @@ export default function AvatarDropMenu({
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <Link href="/user-reservation">
+        <Link href={`/chat-room/${chatRoomId}`}>
           <DropdownMenuItem>
-            <span>내 예약</span>
+            <span>메시지</span>
           </DropdownMenuItem>
         </Link>
         {!isApprovedGuide ? (
@@ -46,15 +48,7 @@ export default function AvatarDropMenu({
                 <span>내 예약</span>
               </DropdownMenuItem>
             </Link>
-            <DropdownMenuSeparator />
           </>
-        ) : null}
-        {isApprovedGuide ? (
-          <Link href="/guide-dashboard">
-            <DropdownMenuItem>
-              <span>가이드 관리</span>
-            </DropdownMenuItem>
-          </Link>
         ) : null}
         <Link href="/user-profile">
           <DropdownMenuItem>
@@ -62,6 +56,16 @@ export default function AvatarDropMenu({
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
+        {isApprovedGuide ? (
+          <>
+            <Link href="/guide-dashboard">
+              <DropdownMenuItem>
+                <span>가이드 관리</span>
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuSeparator />
+          </>
+        ) : null}
         <DropdownMenuItem onClick={handleLogout}>로그아웃</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -6,7 +6,7 @@ interface ChatRoom {
   usernameOrFullname: string;
   lastMessage: string;
   createdAt: string;
-  isRead: true;
+  isRead: boolean;
 }
 
 interface ChatRoomState {
@@ -17,6 +17,7 @@ interface ChatRoomState {
     lastMessage: string,
     createdAt: string
   ) => void;
+  updateIsReadInRoom: (chatRoomId: string, isRead: boolean) => void; // 여기에 추가
   initialLoading: boolean;
   setInitialLoading: (loading: boolean) => void;
 }
@@ -24,6 +25,7 @@ interface ChatRoomState {
 export const useChatRoomStore = create<ChatRoomState>((set) => ({
   initialLoading: true, // 초기 로딩 상태는 true로 시작
   setInitialLoading: (loading) => set({ initialLoading: loading }), // 로딩 상태 변경 함수
+
   chatRooms: [],
   setChatRooms: (chatRoom) => set({ chatRooms: chatRoom }),
   // 특정 채팅방의 마지막 메시지를 업데이트하는 로직
@@ -40,5 +42,12 @@ export const useChatRoomStore = create<ChatRoomState>((set) => ({
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         ),
+    })),
+  // 특정 채팅방의 isRead 값을 true로 업데이트하는 로직
+  updateIsReadInRoom: (chatRoomId, isRead) =>
+    set((state) => ({
+      chatRooms: state.chatRooms.map((chatRoom) =>
+        chatRoom.id === chatRoomId ? { ...chatRoom, isRead } : chatRoom
+      ),
     })),
 }));
