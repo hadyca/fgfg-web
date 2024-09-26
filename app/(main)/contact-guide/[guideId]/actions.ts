@@ -3,7 +3,7 @@
 import { client } from "@/lib/apolloClient";
 import { contactGuideSchema } from "./schema";
 import { CREATE_CHAT_ROOM } from "./queries";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export async function createChatRoom(formData: FormData, guideId: number) {
   const data = {
@@ -21,7 +21,7 @@ export async function createChatRoom(formData: FormData, guideId: number) {
       },
     });
     if (!data) {
-      return notFound();
+      redirect("/404");
     }
     redirect(`/chat-room/${data.createChatRoom.id}`);
   }

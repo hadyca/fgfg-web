@@ -31,7 +31,11 @@ export default async function ContactGuide({ params }: ContactGuideProps) {
         </div>
         <Avatar className="size-16">
           <AvatarImage
-            src={`${guide?.seeGuide?.user?.avatar}/avatar`}
+            src={
+              guide?.seeGuide?.user?.avatar
+                ? `${guide?.seeGuide?.user?.avatar}/avatar`
+                : ""
+            }
             alt="fgfgavatar"
           />
           <AvatarFallback>

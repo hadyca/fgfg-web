@@ -7,7 +7,7 @@ import ChatRoomList from "@/components/chat-room-list";
 import ChatRoomBill from "@/components/chat-room-bill";
 import { useEffect, useState } from "react";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
-import { GetMessageSkeleton } from "./skeleton";
+import { GetChatRoomsSkeleton, GetMessageSkeleton } from "./skeleton";
 
 interface ChatRoomProps {
   params: {
@@ -33,6 +33,7 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
         setMessageLoading(true);
         // 다른 유저 검증용
         const chatRoom = await getChatRoom(chatRoomId);
+
         setOtherUserId(chatRoom.seeChatRoom.otherUserId);
 
         const fetchedChatRooms = await getChatRooms();
@@ -54,18 +55,17 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
 
   return (
     <div className="flex flex-row h-[calc(100vh-4rem)]">
-      {initialLoading ? (
-        <div className="w-1/4 p-4">
-          {/* ChatRoomList에 해당하는 로딩 UI */}
-          <div className="text-center text-gray-500">Loading chat rooms...</div>
-        </div>
-      ) : (
-        <ChatRoomList
-          chatRoomId={chatRoomId}
-          userId={user?.me?.id}
-          initialChatRooms={[]}
-        />
-      )}
+      <div className="min-w-[560px] px-10 pt-5 border-r">
+        {initialLoading ? (
+          <GetChatRoomsSkeleton />
+        ) : (
+          <ChatRoomList
+            chatRoomId={chatRoomId}
+            userId={user?.me?.id}
+            initialChatRooms={[]}
+          />
+        )}
+      </div>
       {initialLoading || messageLoading ? (
         <GetMessageSkeleton />
       ) : (

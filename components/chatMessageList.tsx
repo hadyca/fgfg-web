@@ -194,7 +194,11 @@ export default function ChatMessageList({
                 {message.user.id !== userId && (
                   <Avatar>
                     <AvatarImage
-                      src={`${message.user.avatar}/avatar`}
+                      src={
+                        message.user.avatar
+                          ? `${message.user.avatar}/avatar`
+                          : ""
+                      }
                       alt="avatar"
                     />
                     <AvatarFallback>

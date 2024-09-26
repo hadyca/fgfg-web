@@ -18,6 +18,7 @@ interface ChatRoomState {
     createdAt: string
   ) => void;
   updateIsReadInRoom: (chatRoomId: string, isRead: boolean) => void; // 여기에 추가
+  removeChatRoom: (chatRoomId: string) => void;
   initialLoading: boolean;
   setInitialLoading: (loading: boolean) => void;
 }
@@ -48,6 +49,12 @@ export const useChatRoomStore = create<ChatRoomState>((set) => ({
     set((state) => ({
       chatRooms: state.chatRooms.map((chatRoom) =>
         chatRoom.id === chatRoomId ? { ...chatRoom, isRead } : chatRoom
+      ),
+    })),
+  removeChatRoom: (chatRoomId) =>
+    set((state) => ({
+      chatRooms: state.chatRooms.filter(
+        (chatRoom) => chatRoom.id !== chatRoomId
       ),
     })),
 }));
