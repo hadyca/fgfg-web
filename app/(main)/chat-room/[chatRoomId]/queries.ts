@@ -52,3 +52,11 @@ export const UPDATE_ISREAD = gql`
     }
   }
 `;
+
+export const DELETE_CHAT_ROOM = gql`
+  mutation deleteChatRoom($chatRoomId: String!) {
+    deleteChatRoom(chatRoomId: $chatRoomId) {
+      ok
+    }
+  }
+`;

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +14,11 @@ import { logout } from "@/lib/sharedActions";
 
 interface AvatarDropMenuProps {
   avatar?: string;
-  chatRoomId: string;
+  chatRoomId?: string;
   isApprovedGuide?: boolean;
 }
 
-export default async function AvatarDropMenu({
+export default function AvatarDropMenu({
   avatar,
   chatRoomId,
   isApprovedGuide,
@@ -29,18 +31,20 @@ export default async function AvatarDropMenu({
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none">
         <Avatar>
-          <AvatarImage src={`${avatar}/avatar`} alt="@shadcn" />
+          <AvatarImage src={avatar ? `${avatar}/avatar` : ""} alt="@shadcn" />
           <AvatarFallback>
             <UserCircleIcon className="text-primary" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <Link href={`/chat-room/${chatRoomId}`}>
-          <DropdownMenuItem>
-            <span>메시지</span>
-          </DropdownMenuItem>
-        </Link>
+        {chatRoomId ? (
+          <Link href={`/chat-room/${chatRoomId}`}>
+            <DropdownMenuItem>
+              <span>메시지</span>
+            </DropdownMenuItem>
+          </Link>
+        ) : null}
         {!isApprovedGuide ? (
           <>
             <Link href="/user-reservation">

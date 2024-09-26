@@ -65,6 +65,7 @@ export default function HeaderSection({
           <div className="flex-1 flex justify-end">
             {userId ? (
               <AvatarDropMenu
+                chatRoomId={chatRoomId}
                 avatar={avatar}
                 isApprovedGuide={isApprovedGuide}
               />

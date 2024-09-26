@@ -75,7 +75,11 @@ export default async function guideProfile(props: GuideProfileProps) {
             <div className="flex flex-row items-center gap-2">
               <Avatar>
                 <AvatarImage
-                  src={`${guide?.seeGuide?.user?.avatar}/avatar`}
+                  src={
+                    guide?.seeGuide?.user?.avatar
+                      ? `${guide?.seeGuide?.user?.avatar}/avatar`
+                      : ""
+                  }
                   alt="fgfgavatar"
                 />
                 <AvatarFallback>

@@ -3,12 +3,13 @@
 import { client } from "@/lib/apolloClient";
 import {
   CREATE_MESSAGE,
+  DELETE_CHAT_ROOM,
   SEE_CHAT_ROOM,
   SEE_CHAT_ROOMS,
   SEE_MESSAGES,
   UPDATE_ISREAD,
 } from "./queries";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export async function getChatRoom(chatRoomId: String) {
   const { data } = await client.query({
@@ -18,9 +19,8 @@ export async function getChatRoom(chatRoomId: String) {
     },
     fetchPolicy: "no-cache",
   });
-
   if (!data.seeChatRoom) {
-    return notFound();
+    redirect("/");
   }
   return data;
 }
@@ -62,6 +62,16 @@ export async function saveMessage(chatRoomId: string, payload: string) {
 export async function updateIsRead(chatRoomId: string) {
   await client.mutate({
     mutation: UPDATE_ISREAD,
+    variables: {
+      chatRoomId,
+    },
+  });
+  return;
+}
+
+export async function outChatRoom(chatRoomId: string) {
+  await client.mutate({
+    mutation: DELETE_CHAT_ROOM,
     variables: {
       chatRoomId,
     },
