@@ -26,46 +26,34 @@ import {
   AlertDialogTitle,
 } from "./ui/alert-dialog";
 import { outChatRoom } from "@/app/(main)/chat-room/[chatRoomId]/actions";
-
-interface ChatRooms {
-  id: string;
-  avatar: string;
-  usernameOrFullname: string;
-  lastMessage: string;
-  createdAt: string;
-  isRead: true;
-}
+import { GetChatRoomsSkeleton } from "@/app/(main)/chat-room/[chatRoomId]/skeleton";
 
 interface ChatRoomListProps {
   chatRoomId: string;
   userId: number;
-  initialChatRooms: ChatRooms[];
 }
 
 export default function ChatRoomList({
   chatRoomId,
   userId,
-  initialChatRooms,
 }: ChatRoomListProps) {
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [deleteChatRoomId, setDeleteChatRoomId] = useState("");
   const router = useRouter();
   const myChannel = useRef<RealtimeChannel>();
+  const initialChatRoomsLoading = useChatRoomStore(
+    (state) => state.initialChatRoomsLoading
+  );
   const updateLastMessageInRoom = useChatRoomStore(
     (state) => state.updateLastMessageInRoom
   );
   const chatRooms = useChatRoomStore((state) => state.chatRooms);
-  const setChatRooms = useChatRoomStore((state) => state.setChatRooms);
   const updateIsReadInRoom = useChatRoomStore(
     (state) => state.updateIsReadInRoom
   );
   const removeChatRoom = useChatRoomStore((state) => state.removeChatRoom);
 
   useEffect(() => {
-    if (chatRooms.length === 0) {
-      setChatRooms(initialChatRooms);
-    }
-
     myChannel.current = supabase.channel(`user-${userId}`);
     myChannel.current
       .on("broadcast", { event: "message" }, (payload) => {
@@ -75,7 +63,6 @@ export default function ChatRoomList({
           payload.payload.createdAt
         );
 
-        //같은 채팅방에 있으면 isRead는 ture처리
         const isSameRoom = Boolean(chatRoomId === payload.payload.chatRoomId);
         updateIsReadInRoom(payload.payload.chatRoomId, isSameRoom);
       })
@@ -84,15 +71,8 @@ export default function ChatRoomList({
     return () => {
       myChannel.current?.unsubscribe();
     };
-  }, [
-    initialChatRooms,
-    userId,
-    chatRooms,
-    chatRoomId,
-    setChatRooms,
-    updateLastMessageInRoom,
-    updateIsReadInRoom,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, chatRoomId, chatRooms]);
 
   const handleRoomClick = (chatRoomId: string) => {
     router.push(`/chat-room/${chatRoomId}`);
@@ -119,62 +99,67 @@ export default function ChatRoomList({
   };
 
   return (
-    <div>
-      {chatRooms.map((chatRoom: any) => (
-        <div
-          key={chatRoom.id}
-          className={`flex items-start p-4 mb-2 ${
-            chatRoom.id === chatRoomId ? "bg-gray-100" : "bg-white"
-          } hover:bg-gray-100 rounded-md cursor-pointer`}
-          onClick={() => handleRoomClick(chatRoom.id)} // 클릭 시 URL 이동 처리
-        >
-          <div className="relative">
-            <Avatar className="w-12 h-12">
-              <AvatarImage
-                src={chatRoom.avatar ? `${chatRoom.avatar}/avatar` : ""}
-                alt="fgfgavatar"
-              />
-              <AvatarFallback>
-                <UserCircleIcon className="text-primary w-12 h-12" />
-              </AvatarFallback>
-            </Avatar>
-            {!chatRoom.isRead && (
-              <span className="absolute top-0 -left-1 w-2 h-2 bg-primary rounded-full"></span>
-            )}
-          </div>
-          <div className="flex flex-col w-full ml-4 gap-3">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold truncate whitespace-nowrap overflow-hidden max-w-80">
-                {chatRoom.usernameOrFullname}
-              </span>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="focus:ring-0 focus:outline-none focus:border-none">
-                    <MoreHorizontal className="h-6 w-6" strokeWidth={0.8} />
-                    <span className="sr-only">Toggle menu</span>
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onClick={(e) => handleOutChatRoom(e, chatRoom.id)}
-                  >
-                    나가기
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+    <div className="min-w-[560px] px-10 pt-5">
+      {initialChatRoomsLoading ? (
+        <GetChatRoomsSkeleton />
+      ) : (
+        <>
+          {chatRooms.map((chatRoom: any) => (
+            <div
+              key={chatRoom.id}
+              className={`flex items-start p-4 mb-2 ${
+                chatRoom.id === chatRoomId ? "bg-gray-100" : "bg-white"
+              } hover:bg-gray-100 rounded-md cursor-pointer`}
+              onClick={() => handleRoomClick(chatRoom.id)} // 클릭 시 URL 이동 처리
+            >
+              <div className="relative">
+                <Avatar className="w-12 h-12">
+                  <AvatarImage
+                    src={chatRoom.avatar ? `${chatRoom.avatar}/avatar` : ""}
+                    alt="fgfgavatar"
+                  />
+                  <AvatarFallback>
+                    <UserCircleIcon className="text-primary w-12 h-12" />
+                  </AvatarFallback>
+                </Avatar>
+                {!chatRoom.isRead && (
+                  <span className="absolute top-0 -left-1 w-2 h-2 bg-primary rounded-full"></span>
+                )}
+              </div>
+              <div className="flex flex-col w-full ml-4 gap-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold truncate whitespace-nowrap overflow-hidden max-w-80">
+                    {chatRoom.usernameOrFullname}
+                  </span>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="focus:ring-0 focus:outline-none focus:border-none">
+                        <MoreHorizontal className="h-6 w-6" strokeWidth={0.8} />
+                        <span className="sr-only">Toggle menu</span>
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        onClick={(e) => handleOutChatRoom(e, chatRoom.id)}
+                      >
+                        나가기
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-700 truncate whitespace-nowrap overflow-hidden max-w-80">
+                    {chatRoom.lastMessage}
+                  </span>
+                  <span className="text-xs text-gray-400 whitespace-nowrap">
+                    {formatChatRoomDate(chatRoom.createdAt)}
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-700">
-                {chatRoom.lastMessage}
-              </span>
-              <span className="text-xs text-gray-400 whitespace-nowrap">
-                {formatChatRoomDate(chatRoom.createdAt)}
-              </span>
-            </div>
-          </div>
-        </div>
-      ))}
-
+          ))}
+        </>
+      )}
       {/* AlertDialog 컴포넌트 */}
       <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
         <AlertDialogContent>

@@ -1,6 +1,4 @@
 export const PASSWORD_MIN_LENGTH = 8;
-export const PASSWORD_SPACE_REGEX = new RegExp(/^\S*$/);
-export const PASSWORD_SPECIAL_REGEX = new RegExp(/[\W_]/);
 export const SERVICE_FEE = 20000;
 
 export const UNAVAILABLE_USERNAME = ["master", "admin", "fgfg", "sex", "guide"];

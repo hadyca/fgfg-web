@@ -196,17 +196,35 @@ export default function CreateGuideProfile() {
               </div>
             </div>
             <div className="space-y-1">
-              <Label htmlFor="fullname">성격</Label>
+              <Label htmlFor="personality">성격</Label>
               {errors?.personality ? (
                 <ErrorText text={errors.personality.message!} />
               ) : null}
-              <Input
-                id="personality"
-                type="text"
-                minLength={1}
-                {...register("personality")}
-                required
-              />
+              <div>
+                <select
+                  id="personality"
+                  {...register("personality")}
+                  required
+                  defaultValue=""
+                  className="border p-3 rounded-md text-sm w-56"
+                >
+                  <option value="" disabled className="text-muted-foreground">
+                    성격을 선택해주세요
+                  </option>
+                  <option value="귀엽고 발랄한">귀엽고 발랄한</option>
+                  <option value="섹시하고 매혹적인">섹시하고 매혹적인</option>
+                  <option value="엉뚱하고 독특한">엉뚱하고 독특한</option>
+                  <option value="활발하고 명랑한">활발하고 명랑한</option>
+                  <option value="차분하고 따뜻한">차분하고 따뜻한</option>
+                  <option value="친절하고 상냥한">친절하고 상냥한</option>
+                  <option value="긍정적이고 밝은">긍정적이고 밝은</option>
+                  <option value="유머러스하고 재치있는">
+                    유머러스하고 재치있는
+                  </option>
+                  <option value="지적이고 신중한">지적이고 신중한</option>
+                  <option value="매력적이고 세련된">매력적이고 세련된</option>
+                </select>
+              </div>
             </div>
             <div className="space-y-1">
               <Label htmlFor="selfIntro">가이드 소개</Label>

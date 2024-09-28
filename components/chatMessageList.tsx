@@ -11,51 +11,44 @@ import {
 import { supabase } from "@/lib/supabaseClient";
 import { DateTime } from "luxon";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
-
-interface User {
-  id: number;
-  avatar: string;
-  username: string;
-}
-
-interface InitialChatMessages {
-  id: number;
-  payload: string;
-  createdAt: string;
-  user: User;
-}
+import { GetMessageSkeleton } from "@/app/(main)/chat-room/[chatRoomId]/skeleton";
 
 interface ChatMessageListProps {
-  initialMessages: InitialChatMessages[];
   otherUserId: number;
   userId: number;
   chatRoomId: string;
   username: string;
   avatar: string;
-  initialLoading: boolean;
-  messageLoading: boolean;
 }
 
 export default function ChatMessageList({
-  initialMessages,
   otherUserId,
   userId,
   chatRoomId,
   username,
   avatar,
 }: ChatMessageListProps) {
-  const [messages, setMessages] = useState<InitialChatMessages[]>([]); // 초기값은 빈 배열
   const [message, setMessage] = useState("");
   const messageChannel = useRef<RealtimeChannel>();
   const otherUserChannel = useRef<RealtimeChannel>();
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null); // 메시지 끝의 ref
+
   const updateLastMessageInRoom = useChatRoomStore(
     (state) => state.updateLastMessageInRoom
   );
   const updateIsReadInRoom = useChatRoomStore(
     (state) => state.updateIsReadInRoom
   );
+
+  const initialMessagesLoading = useChatRoomStore(
+    (state) => state.initialMessagesLoading
+  );
+  const messages = useChatRoomStore((state) => state.messages);
+  const setMessages = useChatRoomStore((state) => state.setMessages);
+
+  const currentRoomMessages = messages[chatRoomId] || [];
+  const currentRoomLoading = initialMessagesLoading[chatRoomId] ?? true; // 기본적으로 로딩 상태는 true
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -76,9 +69,10 @@ export default function ChatMessageList({
         username,
         avatar,
       },
+      isMyMessage: true,
     };
 
-    setMessages((prevMsgs) => [...prevMsgs, newMessage]);
+    setMessages(chatRoomId, [...currentRoomMessages, newMessage]);
 
     //상대방 채팅방에 전달 받는 정보
     messageChannel.current?.send({
@@ -127,8 +121,6 @@ export default function ChatMessageList({
     }, 100);
   }, []);
 
-  useEffect(() => setMessages(initialMessages), [initialMessages]);
-
   useEffect(() => {
     updateIsReadInRoom(chatRoomId, true);
 
@@ -136,7 +128,14 @@ export default function ChatMessageList({
     messageChannel.current = supabase.channel(`room-${chatRoomId}`);
     messageChannel.current
       .on("broadcast", { event: "message" }, (payload) => {
-        setMessages((prevMsgs) => [...prevMsgs, payload.payload]);
+        const receivedMessage = {
+          id: payload.payload.id,
+          payload: payload.payload.payload,
+          createdAt: payload.payload.createdAt,
+          user: payload.payload.user,
+          isMyMessage: false,
+        };
+        setMessages(chatRoomId, [...currentRoomMessages, receivedMessage]);
       })
       .subscribe();
 
@@ -158,76 +157,83 @@ export default function ChatMessageList({
       messageChannel.current?.unsubscribe();
       otherUserChannel.current?.unsubscribe();
     };
-  }, [chatRoomId, messages, otherUserId, updateIsReadInRoom]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatRoomId, messages, otherUserId]);
 
   return (
-    <div className="flex flex-col">
-      <div className="flex-grow overflow-y-auto p-5">
-        {messages.map((message, index) => {
-          const currentMessageDate = DateTime.fromISO(
-            message.createdAt
-          ).toFormat("yyyy-MM-dd");
-          const previousMessageDate =
-            index > 0
-              ? DateTime.fromISO(messages[index - 1].createdAt).toFormat(
-                  "yyyy-MM-dd"
-                )
-              : null;
+    <div className="flex flex-col w-full border-x">
+      <div className="flex-grow overflow-y-auto p-4">
+        {currentRoomLoading ? (
+          <GetMessageSkeleton />
+        ) : (
+          <>
+            {currentRoomMessages.map((message, index) => {
+              const currentMessageDate = DateTime.fromISO(
+                message.createdAt
+              ).toFormat("yyyy-MM-dd");
+              const previousMessageDate =
+                index > 0
+                  ? DateTime.fromISO(
+                      currentRoomMessages[index - 1].createdAt
+                    ).toFormat("yyyy-MM-dd")
+                  : null;
 
-          const showDateHeader = previousMessageDate !== currentMessageDate;
+              const showDateHeader = previousMessageDate !== currentMessageDate;
 
-          return (
-            <div key={message.id}>
-              {showDateHeader && (
-                <div className="text-center my-4">
-                  <span className="text-gray-500 text-sm bg-gray-200 px-3 py-1 rounded-full">
-                    {formatDateForHeader(message.createdAt)}
-                  </span>
-                </div>
-              )}
+              return (
+                <div key={message.id}>
+                  {showDateHeader && (
+                    <div className="text-center my-4">
+                      <span className="text-gray-500 text-sm bg-gray-200 px-3 py-1 rounded-full">
+                        {formatDateForHeader(message.createdAt)}
+                      </span>
+                    </div>
+                  )}
 
-              <div
-                className={`flex gap-2 items-start ${
-                  message.user.id === userId ? "justify-end" : ""
-                }`}
-              >
-                {message.user.id !== userId && (
-                  <Avatar>
-                    <AvatarImage
-                      src={
-                        message.user.avatar
-                          ? `${message.user.avatar}/avatar`
-                          : ""
-                      }
-                      alt="avatar"
-                    />
-                    <AvatarFallback>
-                      <UserCircleIcon className="text-primary" />
-                    </AvatarFallback>
-                  </Avatar>
-                )}
-                <div
-                  className={`flex flex-col gap-1 ${
-                    message.user.id === userId ? "items-end" : ""
-                  }`}
-                >
-                  <span
-                    className={`${
-                      message.user.id === userId
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-neutral-100"
-                    } p-2.5 rounded-md`}
+                  <div
+                    className={`flex gap-2 items-start ${
+                      message.isMyMessage ? "justify-end" : ""
+                    }`}
                   >
-                    {message.payload}
-                  </span>
-                  <span className="text-xs">
-                    {formatTimeForMessage(message.createdAt)}
-                  </span>
+                    {!message.isMyMessage && (
+                      <Avatar>
+                        <AvatarImage
+                          src={
+                            message.user.avatar
+                              ? `${message.user.avatar}/avatar`
+                              : ""
+                          }
+                          alt="avatar"
+                        />
+                        <AvatarFallback>
+                          <UserCircleIcon className="text-primary" />
+                        </AvatarFallback>
+                      </Avatar>
+                    )}
+                    <div
+                      className={`flex flex-col gap-1 ${
+                        message.isMyMessage ? "items-end pl-36" : "pr-36"
+                      }`}
+                    >
+                      <span
+                        className={`${
+                          message.isMyMessage
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-neutral-100"
+                        } p-2.5 rounded-md`}
+                      >
+                        {message.payload}
+                      </span>
+                      <span className="text-xs">
+                        {formatTimeForMessage(message.createdAt)}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          );
-        })}
+              );
+            })}
+          </>
+        )}
         <div ref={messagesEndRef} />
       </div>
       <div className="relative">
