@@ -15,9 +15,9 @@ export const ME_QUERY = gql`
       chatRooms {
         id
         otherUserId
-        # users {
-        #   id
-        # }
+        users {
+          id
+        }
       }
     }
   }
