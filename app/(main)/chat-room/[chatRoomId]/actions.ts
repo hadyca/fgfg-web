@@ -44,7 +44,6 @@ export async function getChatRooms() {
     query: SEE_CHAT_ROOMS,
     fetchPolicy: "no-cache",
   });
-
   return data;
 }
 

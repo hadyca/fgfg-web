@@ -2,8 +2,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function GetMessageSkeleton() {
   return (
-    <div className="p-4">
-      {Array.from({ length: 10 }).map((_, index) => (
+    <div>
+      {Array.from({ length: 5 }).map((_, index) => (
         <div key={index} className="flex gap-3 items-start mb-6">
           {/* Avatar Skeleton */}
           <Skeleton className="w-10 h-10 rounded-full" />
@@ -25,7 +25,7 @@ export function GetMessageSkeleton() {
 export function GetChatRoomsSkeleton() {
   return (
     <div>
-      {Array.from({ length: 10 }).map((_, index) => (
+      {Array.from({ length: 5 }).map((_, index) => (
         <div key={index} className="flex items-start gap-3 p-4">
           <Skeleton className="w-12 h-12 rounded-full" />
           <div className="flex flex-col gap-2">

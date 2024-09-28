@@ -19,6 +19,7 @@ export const SEE_MESSAGES = gql`
         avatar
         username
       }
+      isMyMessage
       createdAt
     }
   }

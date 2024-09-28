@@ -11,10 +11,6 @@ export default async function HomeLayout({
   const user = await getUser();
   const chatRooms = await getChatRooms();
 
-  // const headersList = headers();
-  // const userAgent = headersList.get("user-agent");
-  // const isMobile = userAgent ? /Mobi|Android/i.test(userAgent) : false;
-
   return (
     <>
       <HeaderSection
