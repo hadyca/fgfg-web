@@ -32,7 +32,7 @@ export default function ReservationInfo({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="text-xl">예약정보</div>
+      <div className="text-xl font-semibold">예약정보</div>
       <div>
         <div>날짜</div>
         <div>

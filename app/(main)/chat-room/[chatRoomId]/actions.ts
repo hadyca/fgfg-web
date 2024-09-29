@@ -5,6 +5,7 @@ import {
   CREATE_MESSAGE,
   DELETE_CHAT_ROOM,
   SEE_CHAT_ROOM,
+  SEE_CHAT_ROOM_RESERVATIONS,
   SEE_CHAT_ROOMS,
   SEE_MESSAGES,
   UPDATE_ISREAD,
@@ -76,4 +77,17 @@ export async function outChatRoom(chatRoomId: string) {
     },
   });
   return;
+}
+
+export async function getBills(chatRoomId: string) {
+  const {
+    data: { seeChatRoomReservations },
+  } = await client.query({
+    query: SEE_CHAT_ROOM_RESERVATIONS,
+    variables: {
+      chatRoomId,
+    },
+    fetchPolicy: "no-cache",
+  });
+  return seeChatRoomReservations;
 }

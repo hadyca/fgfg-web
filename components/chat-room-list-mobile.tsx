@@ -31,11 +31,13 @@ import { GetChatRoomsSkeleton } from "@/app/(main)/chat-room/[chatRoomId]/skelet
 interface ChatRoomListProps {
   chatRoomId: string;
   userId: number;
+  setTabValue: (value: string) => void;
 }
 
-export default function ChatRoomList({
+export default function ChatRoomListMobile({
   chatRoomId,
   userId,
+  setTabValue,
 }: ChatRoomListProps) {
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [deleteChatRoomId, setDeleteChatRoomId] = useState("");
@@ -76,6 +78,7 @@ export default function ChatRoomList({
 
   const handleRoomClick = (chatRoomId: string) => {
     router.push(`/chat-room/${chatRoomId}`);
+    setTabValue("messages");
   };
 
   const handleOutChatRoom = (e: React.MouseEvent, chatRoomId: string) => {
@@ -99,7 +102,7 @@ export default function ChatRoomList({
   };
 
   return (
-    <div className="min-w-[560px] px-10 pt-5 overflow-y-auto">
+    <div className="px-10 pt-5 overflow-y-auto">
       {initialChatRoomsLoading ? (
         <GetChatRoomsSkeleton />
       ) : (

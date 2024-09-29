@@ -57,21 +57,21 @@ export function formatCurrency(amount: number) {
 }
 
 //현재 미사용
-export function convertToVietnamDate(utcDateTimeString: string) {
-  const utcDate = DateTime.fromISO(utcDateTimeString, { zone: "utc" });
+export function convertToVietnamDate(utcTime: string) {
+  const utcDate = DateTime.fromISO(utcTime, { zone: "utc" });
   const vietnamDate = utcDate.setZone("Asia/Ho_Chi_Minh");
   return vietnamDate.toFormat("yyyy.M.d");
 }
 
-export function convertToVietnamTime(utcDateTimeString: string) {
-  const utcDate = DateTime.fromISO(utcDateTimeString, { zone: "utc" });
+export function convertToVietnamTime(utcTime: string) {
+  const utcDate = DateTime.fromISO(utcTime, { zone: "utc" });
   const vietnamDate = utcDate.setZone("Asia/Ho_Chi_Minh");
   return vietnamDate.toFormat("HH:mm");
 }
 
-export function convertToVietnamISO(utcDateTimeString: string) {
+export function convertToVietnamISO(utcTime: string) {
   // UTC 시간대로 해석 후, 베트남 시간대로 변환
-  const vietnamDate = DateTime.fromISO(utcDateTimeString, {
+  const vietnamDate = DateTime.fromISO(utcTime, {
     zone: "utc",
   }).setZone("Asia/Ho_Chi_Minh");
 
@@ -87,16 +87,16 @@ export function convertToUTC(vietnamLocalTime: string) {
   return utcDate.toISO();
 }
 
-export function convertMonthDayIntl(isoString: string, locale: string) {
-  const date = DateTime.fromISO(isoString, { zone: "Asia/Ho_Chi_Minh" });
+export function convertMonthDayIntl(utcTime: string, locale: string) {
+  const date = DateTime.fromISO(utcTime, { zone: "Asia/Ho_Chi_Minh" });
   return date
     .setLocale(locale)
     .toLocaleString({ month: "long", day: "numeric" });
 }
 
 // ISO 8601 포맷 검증 함수
-export function isValidISODate(dateString: string): boolean {
-  const dt = DateTime.fromISO(dateString, { zone: "utc" });
+export function isValidISODate(utcTime: string): boolean {
+  const dt = DateTime.fromISO(utcTime, { zone: "utc" });
   return dt.isValid;
 }
 
@@ -130,8 +130,8 @@ export function formatToTimeAgo(date: string): string {
   return rtf.format(0, "second");
 }
 
-export function formatChatRoomDate(createdAt: string): string {
-  const chatRoomDate = DateTime.fromISO(createdAt);
+export function formatChatRoomDate(utcTime: string): string {
+  const chatRoomDate = DateTime.fromISO(utcTime);
   const now = DateTime.local();
 
   const isToday = chatRoomDate.hasSame(now, "day");
@@ -142,5 +142,14 @@ export function formatChatRoomDate(createdAt: string): string {
   } else {
     // 어제나 그 이전이면 월과 일 표시
     return chatRoomDate.toLocaleString({ month: "2-digit", day: "2-digit" });
+  }
+}
+
+export function convertToVietnamISOToMonthDay(utcTime: string) {
+  const userLocale = navigator.language.split("-")[0] || "ko"; // "ko" or "en" 같은 값만 남김
+  const date = convertToVietnamISO(utcTime);
+  if (date) {
+    const formattedDate = convertMonthDayIntl(date, userLocale);
+    return formattedDate;
   }
 }

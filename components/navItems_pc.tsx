@@ -39,7 +39,7 @@ export default function NavItemsPC({
             className={navigationMenuTriggerStyle()}
             onClick={handleLinkClick}
           >
-            가이드 찾기
+            가이드 보기
           </Link>
           {!isApprovedGuide ? (
             <Link

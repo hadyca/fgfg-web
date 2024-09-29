@@ -61,3 +61,14 @@ export const DELETE_CHAT_ROOM = gql`
     }
   }
 `;
+
+export const SEE_CHAT_ROOM_RESERVATIONS = gql`
+  query seeChatRoomReservations($chatRoomId: String!) {
+    seeChatRoomReservations(chatRoomId: $chatRoomId) {
+      id
+      startTime
+      endTime
+      guideConfirm
+    }
+  }
+`;
