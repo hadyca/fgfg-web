@@ -41,7 +41,7 @@ interface ChatMessageListProps {
   bills: Bills[];
 }
 
-export default function ChatMessageList({
+export default function ChatMessageListMobile({
   otherUserId,
   userId,
   chatRoomId,
@@ -181,10 +181,8 @@ export default function ChatMessageList({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatRoomId, messages, otherUserId]);
 
-  console.log(message);
-
   return (
-    <div className="flex flex-col w-full border-l">
+    <div className="flex flex-col w-full">
       <div className="flex-grow overflow-y-auto py-4 px-10">
         {currentRoomLoading ? (
           <GetMessageSkeleton />

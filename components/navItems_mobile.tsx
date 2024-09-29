@@ -30,7 +30,7 @@ export default function NavItemsMobile({
           </Link>
         ) : null}
         <Link href="/search-guide" className={navigationMenuTriggerStyle()}>
-          가이드 찾기
+          가이드 보기
         </Link>
         {!isApprovedGuide ? (
           <Link href="/signup-guide" className={navigationMenuTriggerStyle()}>
