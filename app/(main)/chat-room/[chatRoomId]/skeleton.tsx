@@ -25,17 +25,19 @@ export function GetMessageSkeleton() {
 
 export function GetChatRoomsSkeleton() {
   return (
-    <div>
-      {Array.from({ length: 5 }).map((_, index) => (
-        <div key={index} className="flex items-start gap-3 p-4">
-          <Skeleton className="w-12 h-12 rounded-full" />
-          <div className="flex flex-col gap-2">
-            <Skeleton className="w-32 h-5 rounded-md" />
-            <Skeleton className="w-40 h-4 rounded-md" />
+    <div className="min-w-xl">
+      <div className="w-full">
+        {Array.from({ length: 5 }).map((_, index) => (
+          <div key={index} className="flex items-start gap-3 p-4 w-full">
+            <Skeleton className="w-12 h-12 rounded-full" />
+            <div className="flex flex-col gap-2">
+              <Skeleton className="w-32 h-5 rounded-md" />
+              <Skeleton className="w-40 h-4 rounded-md" />
+            </div>
+            <Skeleton className="w-16 h-4 rounded-md ml-auto" />
           </div>
-          <Skeleton className="w-16 h-4 rounded-md ml-auto" />
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

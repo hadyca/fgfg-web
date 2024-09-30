@@ -12,16 +12,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { DateTime } from "luxon";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
 import { GetMessageSkeleton } from "@/app/(main)/chat-room/[chatRoomId]/skeleton";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "./ui/drawer";
+import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Button } from "./ui/button";
 import ChatRoomBill from "./chat-room-bill";
 
@@ -181,33 +172,33 @@ export default function ChatMessageList({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatRoomId, messages, otherUserId]);
 
-  console.log(message);
-
   return (
-    <div className="flex flex-col w-full border-l">
-      <div className="flex-grow overflow-y-auto py-4 px-10">
+    <div className="flex flex-col w-full md:border-l h-full">
+      <div className="sticky top-0 bg-white px-5 py-3 border-b z-10">
+        <div className="flex justify-end">
+          <Drawer>
+            <DrawerTrigger asChild>
+              <Button variant="secondary" className="rounded-full">
+                예약 보기
+              </Button>
+            </DrawerTrigger>
+            <DrawerContent className="h-1/2">
+              {bills.length > 0 ? (
+                <ChatRoomBill bills={bills} />
+              ) : (
+                <div className="flex justify-center items-center h-full">
+                  예약 정보가 없습니다.
+                </div>
+              )}
+            </DrawerContent>
+          </Drawer>
+        </div>
+      </div>
+      <div className="h-full py-4 px-5 overflow-y-auto">
         {currentRoomLoading ? (
           <GetMessageSkeleton />
         ) : (
           <>
-            <div className="flex justify-end">
-              <Drawer>
-                <DrawerTrigger asChild>
-                  <Button variant="secondary" className="rounded-full">
-                    예약 보기
-                  </Button>
-                </DrawerTrigger>
-                <DrawerContent className="h-1/2">
-                  {bills.length > 0 ? (
-                    <ChatRoomBill bills={bills} />
-                  ) : (
-                    <div className="flex justify-center items-center h-full">
-                      예약 정보가 없습니다.
-                    </div>
-                  )}
-                </DrawerContent>
-              </Drawer>
-            </div>
             {currentRoomMessages.map((message, index) => {
               const currentMessageDate = DateTime.fromISO(
                 message.createdAt
@@ -225,7 +216,7 @@ export default function ChatMessageList({
                 <div key={message.id}>
                   {showDateHeader && (
                     <div className="text-center my-4">
-                      <span className="text-gray-500 text-sm bg-gray-200 px-3 py-1 rounded-full">
+                      <span className="text-secondary-foreground text-sm bg-secondary px-3 py-1 rounded-full">
                         {formatDateForHeader(message.createdAt)}
                       </span>
                     </div>
@@ -277,8 +268,8 @@ export default function ChatMessageList({
         )}
         <div ref={messagesEndRef} />
       </div>
-      <div className="relative">
-        <form className="flex px-5 pb-3 pt-2" onSubmit={onSubmit}>
+      <div className="relative p-5">
+        <form className="flex" onSubmit={onSubmit}>
           <input
             required
             onChange={onChange}

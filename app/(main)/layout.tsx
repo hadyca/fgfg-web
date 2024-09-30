@@ -1,7 +1,6 @@
 import HeaderSection from "@/components/mainPage/headerSection";
 import getUser from "@/lib/getUser";
 import { getChatRooms } from "./chat-room/[chatRoomId]/actions";
-import { headers } from "next/headers";
 
 export default async function HomeLayout({
   children,
