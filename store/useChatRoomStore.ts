@@ -34,7 +34,9 @@ interface ChatRoomState {
   updateLastMessageInRoom: (
     chatRoomId: string,
     lastMessage: string,
-    createdAt: string
+    createdAt: string,
+    avatar?: string,
+    usernameOrFullname?: string
   ) => void;
 
   //2. messages관련
@@ -52,20 +54,50 @@ export const useChatRoomStore = create<ChatRoomState>((set) => ({
     set({ initialChatRoomsLoading: loading }),
   setChatRooms: (chatRoom) => set({ chatRooms: chatRoom }),
   // 특정 채팅방의 마지막 메시지를 업데이트하는 로직
-  updateLastMessageInRoom: (chatRoomId, lastMessage, createdAt) =>
-    set((state) => ({
-      chatRooms: state.chatRooms
-        .map((chatRoom) =>
-          chatRoom.id === chatRoomId
-            ? { ...chatRoom, lastMessage, createdAt }
-            : chatRoom
-        )
-        // 배열을 최신 메시지 순으로 정렬
-        .sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        ),
-    })),
+  updateLastMessageInRoom: (
+    chatRoomId,
+    lastMessage,
+    createdAt,
+    avatar,
+    usernameOrFullname
+  ) =>
+    set((state) => {
+      const existingRoom = state.chatRooms.find(
+        (chatRoom) => chatRoom.id === chatRoomId
+      );
+
+      // 기존 chatRoomId가 없을 경우 새로운 chatRoom 추가
+      if (!existingRoom) {
+        const newChatRoom: ChatRoom = {
+          id: chatRoomId,
+          avatar: avatar || "", // avatar가 없으면 빈 값으로 설정
+          usernameOrFullname: usernameOrFullname || "Unknown", // 이름이 없으면 "Unknown"으로 설정
+          lastMessage,
+          createdAt,
+          isRead: false,
+        };
+        return {
+          chatRooms: [...state.chatRooms, newChatRoom].sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          ),
+        };
+      }
+
+      // 기존 chatRoomId가 있는 경우 해당 채팅방의 lastMessage와 createdAt만 업데이트
+      return {
+        chatRooms: state.chatRooms
+          .map((chatRoom) =>
+            chatRoom.id === chatRoomId
+              ? { ...chatRoom, lastMessage, createdAt }
+              : chatRoom
+          )
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          ),
+      };
+    }),
   // 특정 채팅방의 isRead 값을 true로 업데이트하는 로직
   updateIsReadInRoom: (chatRoomId, isRead) =>
     set((state) => ({

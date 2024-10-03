@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Separator } from "@/components/ui/separator";
 import ContactGuideForm from "@/components/contact-guide-messageForm";
+import getUser from "@/lib/getUser";
 
 interface ContactGuideProps {
   params: {
@@ -21,6 +22,8 @@ export default async function ContactGuide({ params }: ContactGuideProps) {
   if (!guide.seeGuide) {
     return notFound();
   }
+
+  const user = await getUser();
 
   return (
     <div className="max-w-6xl mx-auto my-10 p-6 border">
@@ -51,7 +54,12 @@ export default async function ContactGuide({ params }: ContactGuideProps) {
         </div>
       </div>
       <Separator className="my-8" />
-      <ContactGuideForm guideId={guideId} />
+      <ContactGuideForm
+        guideId={guideId}
+        userId={user?.me.id}
+        username={user?.me.username}
+        avatar={user?.me.avatar}
+      />
     </div>
   );
 }

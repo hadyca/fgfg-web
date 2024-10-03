@@ -3,11 +3,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { formatChatRoomDate } from "@/lib/utils";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
-import { RealtimeChannel } from "@supabase/supabase-js";
-import { supabase } from "@/lib/supabaseClient";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,47 +28,19 @@ interface ChatRoomListProps {
 
 export default function ChatRoomList({
   chatRoomId,
-  userId,
   setShowChatMessageList,
 }: ChatRoomListProps) {
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [deleteChatRoomId, setDeleteChatRoomId] = useState("");
   const router = useRouter();
-  const myChannel = useRef<RealtimeChannel>();
 
   const initialChatRoomsLoading = useChatRoomStore(
     (state) => state.initialChatRoomsLoading
   );
-  const updateLastMessageInRoom = useChatRoomStore(
-    (state) => state.updateLastMessageInRoom
-  );
+
   const chatRooms = useChatRoomStore((state) => state.chatRooms);
-  const updateIsReadInRoom = useChatRoomStore(
-    (state) => state.updateIsReadInRoom
-  );
+
   const removeChatRoom = useChatRoomStore((state) => state.removeChatRoom);
-
-  useEffect(() => {
-    myChannel.current = supabase.channel(`user-${userId}`);
-
-    myChannel.current
-      .on("broadcast", { event: "message" }, (payload) => {
-        updateLastMessageInRoom(
-          payload.payload.chatRoomId,
-          payload.payload.message,
-          payload.payload.createdAt
-        );
-
-        const isSameRoom = Boolean(chatRoomId === payload.payload.chatRoomId);
-        updateIsReadInRoom(payload.payload.chatRoomId, isSameRoom);
-      })
-      .subscribe();
-
-    return () => {
-      myChannel.current?.unsubscribe();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, chatRoomId, chatRooms]);
 
   const handleRoomClick = (chatRoomId: string) => {
     router.push(`/chat-room/${chatRoomId}`);

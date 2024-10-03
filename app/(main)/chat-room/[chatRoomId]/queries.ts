@@ -4,6 +4,8 @@ export const SEE_CHAT_ROOM = gql`
   query seeChatRoom($chatRoomId: String!) {
     seeChatRoom(chatRoomId: $chatRoomId) {
       id
+      normalUserId
+      guideUserId
       otherUserId
     }
   }
