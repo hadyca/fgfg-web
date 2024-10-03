@@ -4,11 +4,13 @@ import { getBills, getChatRoom, getChatRooms, getMessages } from "./actions";
 import getUser from "@/lib/getUser";
 import ChatMessageList from "@/components/chatMessageList";
 import ChatRoomList from "@/components/chat-room-list";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
 import useMediaQuery from "@/lib/hooks/useMediaQuery";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { motion, AnimatePresence } from "framer-motion"; // framer-motion 임포트
+import { RealtimeChannel } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabaseClient";
 
 interface ChatRoomProps {
   params: {
@@ -25,7 +27,12 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
   const [otherUserId, setOtherUserId] = useState();
   const [user, setUser] = useState<{ me: any } | undefined>(undefined);
   const [bills, setBills] = useState([]);
+  const [username, setUsername] = useState("");
   const [showChatMessageList, setShowChatMessageList] = useState(true); // 메시지 리스트 보여줄지 여부 상태
+
+  const myChannel = useRef<RealtimeChannel>();
+  const messageChannel = useRef<RealtimeChannel>();
+  const otherUserChannel = useRef<RealtimeChannel>();
 
   const isMediumScreen = useMediaQuery("(min-width: 768px)"); // md 크기 기준으로 실시간 감지
 
@@ -37,6 +44,62 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
   );
   const setMessages = useChatRoomStore((state) => state.setMessages);
   const setChatRooms = useChatRoomStore((state) => state.setChatRooms);
+  const updateLastMessageInRoom = useChatRoomStore(
+    (state) => state.updateLastMessageInRoom
+  );
+  const updateIsReadInRoom = useChatRoomStore(
+    (state) => state.updateIsReadInRoom
+  );
+  const messages = useChatRoomStore((state) => state.messages);
+  const currentRoomMessages = messages[chatRoomId] || [];
+
+  useEffect(() => {
+    myChannel.current = supabase.channel(`user-${user?.me?.id}`);
+    myChannel.current
+      .on("broadcast", { event: "message" }, (payload) => {
+        updateLastMessageInRoom(
+          payload.payload.chatRoomId,
+          payload.payload.message,
+          payload.payload.createdAt,
+          payload.payload.avatar,
+          payload.payload.usernameOrFullname
+        );
+
+        const isSameRoom = Boolean(chatRoomId === payload.payload.chatRoomId);
+        updateIsReadInRoom(payload.payload.chatRoomId, isSameRoom);
+      })
+      .subscribe();
+
+    return () => {
+      myChannel.current?.unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.me?.id, chatRoomId]);
+
+  useEffect(() => {
+    //상대 채널 구독
+    otherUserChannel.current = supabase.channel(`user-${otherUserId}`);
+    //채팅방 채널 구독 (채팅방 실시간용)
+    messageChannel.current = supabase.channel(`room-${chatRoomId}`);
+    messageChannel.current
+      .on("broadcast", { event: "message" }, (payload) => {
+        const receivedMessage = {
+          id: payload.payload.id,
+          payload: payload.payload.payload,
+          createdAt: payload.payload.createdAt,
+          user: payload.payload.user,
+          isMyMessage: payload.payload.user.id === user?.me?.id ? true : false, //내꺼면 true, 내꺼 아니면 false
+        };
+        setMessages(chatRoomId, [...currentRoomMessages, receivedMessage]);
+      })
+      .subscribe();
+
+    return () => {
+      otherUserChannel.current?.unsubscribe();
+      messageChannel.current?.unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatRoomId, messages, otherUserId, isMediumScreen, showChatMessageList]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +112,12 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
         const fetchedChatRooms = await getChatRooms();
         const messages = await getMessages(chatRoomId);
         const currentUser = await getUser();
+        if (chatRoom.seeChatRoom.normalUserId === currentUser?.me.id) {
+          setUsername(currentUser?.me.username);
+        } else {
+          setUsername(currentUser?.me?.guide.fullname);
+        }
+
         const bills = await getBills(chatRoomId);
 
         setUser(currentUser);
@@ -75,9 +144,11 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
             chatRoomId={chatRoomId}
             otherUserId={otherUserId!}
             userId={user?.me?.id}
-            username={user?.me?.username}
+            username={username}
             avatar={user?.me?.avatar}
             bills={bills}
+            messageChannel={messageChannel.current}
+            otherUserChannel={otherUserChannel.current}
           />
         </div>
       ) : (
@@ -99,14 +170,15 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
                 >
                   <ArrowLeftIcon className="w-6 h-6 text-secondary-foreground" />
                 </button>
-
                 <ChatMessageList
                   chatRoomId={chatRoomId}
                   otherUserId={otherUserId!}
                   userId={user?.me?.id}
-                  username={user?.me?.username}
+                  username={username}
                   avatar={user?.me?.avatar}
                   bills={bills}
+                  messageChannel={messageChannel.current}
+                  otherUserChannel={otherUserChannel.current}
                 />
               </motion.div>
             ) : (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { useForm } from "react-hook-form";
@@ -11,13 +11,27 @@ import {
 } from "@/app/(main)/contact-guide/[guideId]/schema";
 import ErrorText from "./errorText";
 import { createChatRoom } from "@/app/(main)/contact-guide/[guideId]/actions";
+import { RealtimeChannel } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
 
 interface ContactGuideFormProps {
   guideId: number;
+  userId: number;
+  username: string;
+  avatar: string;
 }
 
-export default function ContactGuideForm({ guideId }: ContactGuideFormProps) {
+export default function ContactGuideForm({
+  guideId,
+  userId,
+  username,
+  avatar,
+}: ContactGuideFormProps) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const messageChannel = useRef<RealtimeChannel>();
+  const otherUserChannel = useRef<RealtimeChannel>();
 
   const {
     register,
@@ -31,7 +45,38 @@ export default function ContactGuideForm({ guideId }: ContactGuideFormProps) {
     setLoading(true);
     const formData = new FormData();
     formData.append("payload", data.payload);
-    await createChatRoom(formData, guideId);
+    const chatRoom = await createChatRoom(formData, guideId);
+    messageChannel.current = supabase.channel(`room-${chatRoom.id}`);
+    otherUserChannel.current = supabase.channel(`user-${chatRoom.otherUserId}`);
+    const newMessage = {
+      id: Date.now(),
+      payload: data.payload,
+      createdAt: new Date().toISOString(),
+      user: {
+        id: userId,
+        username,
+        avatar,
+      },
+      isMyMessage: true,
+    };
+    //상대방 채팅방에 전달 하는 정보
+    messageChannel.current?.send({
+      type: "broadcast",
+      event: "message",
+      payload: newMessage,
+    });
+
+    otherUserChannel.current?.send({
+      type: "broadcast",
+      event: "message",
+      payload: {
+        chatRoomId: chatRoom.id,
+        message: data.payload,
+        createdAt: newMessage.createdAt,
+        isRead: false,
+      },
+    });
+    router.push(`/chat-room/${chatRoom.id}`);
     setLoading(false);
   };
 

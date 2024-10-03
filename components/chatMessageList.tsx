@@ -8,7 +8,6 @@ import {
   saveMessage,
   updateIsRead,
 } from "@/app/(main)/chat-room/[chatRoomId]/actions";
-import { supabase } from "@/lib/supabaseClient";
 import { DateTime } from "luxon";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
 import { GetMessageSkeleton } from "@/app/(main)/chat-room/[chatRoomId]/skeleton";
@@ -30,19 +29,20 @@ interface ChatMessageListProps {
   username: string;
   avatar: string;
   bills: Bills[];
+  messageChannel: RealtimeChannel | undefined;
+  otherUserChannel: RealtimeChannel | undefined;
 }
 
 export default function ChatMessageList({
-  otherUserId,
   userId,
   chatRoomId,
   username,
   avatar,
   bills,
+  messageChannel,
+  otherUserChannel,
 }: ChatMessageListProps) {
   const [message, setMessage] = useState("");
-  const messageChannel = useRef<RealtimeChannel>();
-  const otherUserChannel = useRef<RealtimeChannel>();
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null); // 메시지 끝의 ref
 
@@ -57,7 +57,6 @@ export default function ChatMessageList({
     (state) => state.initialMessagesLoading
   );
   const messages = useChatRoomStore((state) => state.messages);
-  const setMessages = useChatRoomStore((state) => state.setMessages);
 
   const currentRoomMessages = messages[chatRoomId] || [];
   const currentRoomLoading = initialMessagesLoading[chatRoomId] ?? true; // 기본적으로 로딩 상태는 true
@@ -84,24 +83,25 @@ export default function ChatMessageList({
       isMyMessage: true,
     };
 
-    setMessages(chatRoomId, [...currentRoomMessages, newMessage]);
+    setMessage("");
 
     //상대방 채팅방에 전달 하는 정보
-    messageChannel.current?.send({
+    messageChannel?.send({
       type: "broadcast",
       event: "message",
       payload: newMessage,
     });
     await saveMessage(chatRoomId, message);
-    setMessage("");
 
-    otherUserChannel.current?.send({
+    otherUserChannel?.send({
       type: "broadcast",
       event: "message",
       payload: {
         chatRoomId,
         message,
         createdAt: newMessage.createdAt,
+        avatar,
+        usernameOrFullname: username,
         isRead: false,
       },
     });
@@ -136,25 +136,6 @@ export default function ChatMessageList({
   useEffect(() => {
     updateIsReadInRoom(chatRoomId, true);
 
-    //채팅방 채널 구독 (채팅방 실시간용)
-    messageChannel.current = supabase.channel(`room-${chatRoomId}`);
-    messageChannel.current
-      .on("broadcast", { event: "message" }, (payload) => {
-        console.log(payload);
-        const receivedMessage = {
-          id: payload.payload.id,
-          payload: payload.payload.payload,
-          createdAt: payload.payload.createdAt,
-          user: payload.payload.user,
-          isMyMessage: false,
-        };
-        setMessages(chatRoomId, [...currentRoomMessages, receivedMessage]);
-      })
-      .subscribe();
-
-    //상대 채널 구독
-    otherUserChannel.current = supabase.channel(`user-${otherUserId}`);
-
     //
     const updateReadStatus = async () => {
       if (messagesEndRef.current) {
@@ -166,12 +147,8 @@ export default function ChatMessageList({
 
     updateReadStatus();
 
-    return () => {
-      messageChannel.current?.unsubscribe();
-      otherUserChannel.current?.unsubscribe();
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatRoomId, messages, otherUserId]);
+  }, [chatRoomId, messages]);
 
   return (
     <div className="flex flex-col w-full md:border-l h-full">

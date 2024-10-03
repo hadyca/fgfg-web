@@ -13,7 +13,9 @@ export async function createChatRoom(formData: FormData, guideId: number) {
   if (!result.success) {
     return result.error.flatten();
   } else {
-    const { data } = await client.mutate({
+    const {
+      data: { createChatRoom },
+    } = await client.mutate({
       mutation: CREATE_CHAT_ROOM,
       variables: {
         guideId,
@@ -23,6 +25,6 @@ export async function createChatRoom(formData: FormData, guideId: number) {
     if (!data) {
       redirect("/404");
     }
-    redirect(`/chat-room/${data.createChatRoom.id}`);
+    return createChatRoom;
   }
 }

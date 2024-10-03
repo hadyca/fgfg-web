@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/tooltip";
 import getUser from "@/lib/getUser";
 import CreateChatRoomBtn from "@/components/createChatRoomBtn";
-import { getChatRooms } from "../../chat-room/[chatRoomId]/actions";
 
 interface GuideProfileProps {
   params: {
@@ -57,12 +56,6 @@ export default async function guideProfile(props: GuideProfileProps) {
   }
 
   const user = await getUser();
-
-  const matchingChatRoom = user?.me?.chatRooms?.find(
-    (chatRoom: any) => chatRoom.otherUserId === guide?.seeGuide?.user?.id
-  );
-
-  const matchingChatRoomId = matchingChatRoom ? matchingChatRoom.id : null;
 
   const parsedLanguage = JSON.parse(guide?.seeGuide?.language);
   const isMe = Boolean(guideId === user?.me?.guide?.id);
@@ -99,7 +92,6 @@ export default async function guideProfile(props: GuideProfileProps) {
                 </div>
                 {!isMe ? (
                   <CreateChatRoomBtn
-                    matchingChatRoomId={matchingChatRoomId}
                     userId={user?.me?.id}
                     guideId={guideId}
                     startTime={props.searchParams?.starttime}
