@@ -9,13 +9,6 @@ import { useChatRoomStore } from "@/store/useChatRoomStore";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -44,6 +37,7 @@ export default function ChatRoomList({
   const [deleteChatRoomId, setDeleteChatRoomId] = useState("");
   const router = useRouter();
   const myChannel = useRef<RealtimeChannel>();
+
   const initialChatRoomsLoading = useChatRoomStore(
     (state) => state.initialChatRoomsLoading
   );
@@ -58,6 +52,7 @@ export default function ChatRoomList({
 
   useEffect(() => {
     myChannel.current = supabase.channel(`user-${userId}`);
+
     myChannel.current
       .on("broadcast", { event: "message" }, (payload) => {
         updateLastMessageInRoom(
@@ -104,15 +99,13 @@ export default function ChatRoomList({
     if (updatedChatRooms.length > 0) {
       router.push(`/chat-room/${updatedChatRooms[0].id}`);
     } else {
-      router.push("/").then(() => {
-        window.location.reload(); // 강제로 새로고침
-      });
+      window.location.href = "/"; // 새로고침을 포함한 리다이렉트
     }
     setIsAlertDialogOpen(false);
   };
 
   return (
-    <div className="md:min-w-[576px] px-10 pt-5 overflow-y-auto flex flex-col h-full">
+    <div className="md:w-[576px] px-10 pt-5 overflow-y-auto flex flex-col h-full">
       {initialChatRoomsLoading ? (
         <GetChatRoomsSkeleton />
       ) : (
@@ -147,7 +140,7 @@ export default function ChatRoomList({
                     </span>
                     {/* !!shadcn - DropDownMunu 쓰면 안됨!! 추 후 드랍다운 메뉴 쓸거면 수동으로 만들어!*/}
                     <TrashIcon
-                      className="ml-2 size-6 text-primary"
+                      className="ml-2 size-5 text-primary flex-shrink-0"
                       onClick={(e) => handleOutChatRoom(e, chatRoom.id)}
                     />
                   </div>
