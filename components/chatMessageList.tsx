@@ -86,7 +86,7 @@ export default function ChatMessageList({
 
     setMessages(chatRoomId, [...currentRoomMessages, newMessage]);
 
-    //상대방 채팅방에 전달 받는 정보
+    //상대방 채팅방에 전달 하는 정보
     messageChannel.current?.send({
       type: "broadcast",
       event: "message",
@@ -140,6 +140,7 @@ export default function ChatMessageList({
     messageChannel.current = supabase.channel(`room-${chatRoomId}`);
     messageChannel.current
       .on("broadcast", { event: "message" }, (payload) => {
+        console.log(payload);
         const receivedMessage = {
           id: payload.payload.id,
           payload: payload.payload.payload,
