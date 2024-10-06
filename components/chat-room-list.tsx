@@ -69,7 +69,7 @@ export default function ChatRoomList({
     if (updatedChatRooms.length > 0) {
       router.push(`/chat-room/${updatedChatRooms[0].id}`);
     } else {
-      window.location.href = "/"; // 새로고침을 포함한 리다이렉트
+      window.location.href = "/chat-room"; // 새로고침을 포함한 리다이렉트
     }
     setIsAlertDialogOpen(false);
   };
@@ -90,14 +90,20 @@ export default function ChatRoomList({
                 onClick={() => handleRoomClick(chatRoom.id)} // 클릭 시 URL 이동 처리
               >
                 <div className="relative">
-                  <Avatar className="w-12 h-12">
-                    <AvatarImage
-                      src={chatRoom.avatar ? `${chatRoom.avatar}/avatar` : ""}
-                      alt="fgfgavatar"
-                    />
-                    <AvatarFallback>
-                      <UserCircleIcon className="text-primary w-12 h-12" />
-                    </AvatarFallback>
+                  <Avatar className="size-12">
+                    {chatRoom.avatar ? (
+                      <>
+                        <AvatarImage
+                          src={`${chatRoom.avatar}/avatar`}
+                          alt="@shadcn"
+                        />
+                        <AvatarFallback>
+                          <UserCircleIcon className="text-primary w-full h-full" />
+                        </AvatarFallback>
+                      </>
+                    ) : (
+                      <UserCircleIcon className="text-primary w-full h-full" />
+                    )}
                   </Avatar>
                   {!chatRoom.isRead && (
                     <span className="absolute top-0 -left-1 w-2 h-2 bg-primary rounded-full"></span>
@@ -130,7 +136,7 @@ export default function ChatRoomList({
       )}
       {/* AlertDialog 컴포넌트 */}
       <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-fit md:max-w-sm">
           <AlertDialogHeader>
             <AlertDialogTitle>채팅방을 나가시겠어요?</AlertDialogTitle>
             <AlertDialogDescription></AlertDialogDescription>

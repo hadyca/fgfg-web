@@ -31,20 +31,31 @@ export default function AvatarDropMenu({
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none">
         <Avatar>
-          <AvatarImage src={avatar ? `${avatar}/avatar` : ""} alt="@shadcn" />
-          <AvatarFallback>
-            <UserCircleIcon className="text-primary" />
-          </AvatarFallback>
+          {avatar ? (
+            <>
+              <AvatarImage src={`${avatar}/avatar`} alt="@shadcn" />
+              <AvatarFallback>
+                <UserCircleIcon className="text-primary w-full h-full" />
+              </AvatarFallback>
+            </>
+          ) : (
+            <UserCircleIcon className="text-primary w-full h-full" />
+          )}
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {chatRoomId ? (
+        {/* {chatRoomId ? (
           <Link href={`/chat-room/${chatRoomId}`}>
             <DropdownMenuItem>
               <span>메시지</span>
             </DropdownMenuItem>
           </Link>
-        ) : null}
+        ) : null} */}
+        <Link href={`/chat-room/${chatRoomId}`}>
+          <DropdownMenuItem>
+            <span>메시지</span>
+          </DropdownMenuItem>
+        </Link>
         {!isApprovedGuide ? (
           <>
             <Link href="/user-reservation">

@@ -67,17 +67,19 @@ export default async function guideProfile(props: GuideProfileProps) {
           <div className="flex flex-col gap-4">
             <div className="flex flex-row items-center gap-2">
               <Avatar>
-                <AvatarImage
-                  src={
-                    guide?.seeGuide?.user?.avatar
-                      ? `${guide?.seeGuide?.user?.avatar}/avatar`
-                      : ""
-                  }
-                  alt="fgfgavatar"
-                />
-                <AvatarFallback>
-                  <UserCircleIcon className="text-primary" />
-                </AvatarFallback>
+                {guide?.seeGuide?.user?.avatar ? (
+                  <>
+                    <AvatarImage
+                      src={`${guide?.seeGuide?.user?.avatar}/avatar`}
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>
+                      <UserCircleIcon className="text-primary w-full h-full" />
+                    </AvatarFallback>
+                  </>
+                ) : (
+                  <UserCircleIcon className="text-primary w-full h-full" />
+                )}
               </Avatar>
               <div className="flex flex-row items-center">
                 <div className="mr-3">

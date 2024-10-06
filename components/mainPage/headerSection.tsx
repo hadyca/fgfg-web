@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { Bars3Icon } from "@heroicons/react/24/solid";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import NavItemsPC from "../navItems_pc";
 import NavItemsMobile from "../navItems_mobile";
 import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import AvatarDropMenu from "../avatarDropMenu";
+import { RealtimeChannel } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabaseClient";
 
 interface NavProps {
   userId?: number;
@@ -23,6 +25,23 @@ export default function HeaderSection({
   isApprovedGuide,
 }: NavProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [newChatRoomId, setNewChatRoomId] = useState("");
+  const myChannel = useRef<RealtimeChannel>();
+
+  useEffect(() => {
+    myChannel.current = supabase.channel(`user-${userId}`);
+    myChannel.current
+      .on("broadcast", { event: "message" }, (payload) => {
+        console.log(payload);
+        setNewChatRoomId(payload.payload.chatRoomId);
+      })
+      .subscribe();
+
+    return () => {
+      myChannel.current?.unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, newChatRoomId]);
 
   const handleLinkClick = () => {
     setIsOpen(false); // 링크 클릭 시 Sheet 닫기
@@ -34,7 +53,9 @@ export default function HeaderSection({
       <nav className="md:block hidden">
         <NavItemsPC
           userId={userId}
-          chatRoomId={chatRoomId}
+          chatRoomId={
+            newChatRoomId ? newChatRoomId : chatRoomId ? chatRoomId : ""
+          }
           avatar={avatar}
           isApprovedGuide={isApprovedGuide}
         />
@@ -65,7 +86,9 @@ export default function HeaderSection({
           <div className="flex-1 flex justify-end">
             {userId ? (
               <AvatarDropMenu
-                chatRoomId={chatRoomId}
+                chatRoomId={
+                  newChatRoomId ? newChatRoomId : chatRoomId ? chatRoomId : ""
+                }
                 avatar={avatar}
                 isApprovedGuide={isApprovedGuide}
               />

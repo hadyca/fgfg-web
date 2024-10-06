@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Textarea } from "./ui/textarea";

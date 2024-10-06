@@ -17,6 +17,7 @@ interface ChatRoomProps {
     chatRoomId: string;
   };
 }
+
 const variants = {
   hidden: { x: "-100%", opacity: 0 }, // 숨길 때 왼쪽으로 이동
   visible: { x: 0, opacity: 1 }, // 중앙에 있을 때
