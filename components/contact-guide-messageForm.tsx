@@ -73,6 +73,7 @@ export default function ContactGuideForm({
         chatRoomId: chatRoom.id,
         message: data.payload,
         createdAt: newMessage.createdAt,
+        usernameOrFullname: username,
         isRead: false,
       },
     });

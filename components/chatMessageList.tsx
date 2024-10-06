@@ -207,17 +207,19 @@ export default function ChatMessageList({
                   >
                     {!message.isMyMessage && (
                       <Avatar>
-                        <AvatarImage
-                          src={
-                            message.user.avatar
-                              ? `${message.user.avatar}/avatar`
-                              : ""
-                          }
-                          alt="avatar"
-                        />
-                        <AvatarFallback>
-                          <UserCircleIcon className="text-primary" />
-                        </AvatarFallback>
+                        {message.user.avatar ? (
+                          <>
+                            <AvatarImage
+                              src={`${message.user.avatar}/avatar`}
+                              alt="@shadcn"
+                            />
+                            <AvatarFallback>
+                              <UserCircleIcon className="text-primary w-full h-full" />
+                            </AvatarFallback>
+                          </>
+                        ) : (
+                          <UserCircleIcon className="text-primary w-full h-full" />
+                        )}
                       </Avatar>
                     )}
                     <div
