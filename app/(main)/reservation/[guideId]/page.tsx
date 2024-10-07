@@ -51,6 +51,13 @@ export default async function Reservation(props: ReservationProps) {
 
   const isMe = Boolean(guideId === user?.me?.guide?.id);
 
+  const amount =
+    SERVICE_FEE *
+    calculateGapTimeISO(
+      props.searchParams.starttime,
+      props.searchParams.endtime
+    );
+
   return (
     <div className="max-w-6xl mx-auto my-10 p-6 grid grid-cols-2">
       <div>
@@ -60,7 +67,17 @@ export default async function Reservation(props: ReservationProps) {
         />
         <Separator className="my-8" />
         {user ? (
-          <ReservationLoggedInInfo isMe={isMe} />
+          <ReservationLoggedInInfo
+            isMe={isMe}
+            amount={amount}
+            guideId={guideId}
+            userId={user?.me?.id}
+            username={user?.me?.username}
+            avatar={user?.me?.avatar}
+            email={user?.me?.email}
+            startTime={props.searchParams.starttime}
+            endTime={props.searchParams.endtime}
+          />
         ) : (
           <ReservationCreateAccount
             guideId={guideId}
@@ -101,15 +118,7 @@ export default async function Reservation(props: ReservationProps) {
                     props.searchParams.endtime
                   )}시간`}
                 </span>
-                <span>
-                  {formatCurrency(
-                    SERVICE_FEE *
-                      calculateGapTimeISO(
-                        props.searchParams.starttime,
-                        props.searchParams.endtime
-                      )
-                  )}
-                </span>
+                <span>{formatCurrency(amount)}</span>
               </div>
             </div>
           </div>
