@@ -8,6 +8,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
+import { boolean } from "zod";
 import { Textarea } from "./ui/textarea";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import { createChatRoom } from "@/app/(main)/contact-guide/[guideId]/actions";
@@ -74,94 +75,77 @@ export default function CheckoutForm({
       .then((data) => setClientSecret(data.clientSecret));
   }, [amount]);
 
+ 
   const onValid = async (data: ContactGuideType) => {
     setLoading(true);
 
-    try {
-      // Stripe가 초기화되었는지 확인
-      if (!stripe || !elements) {
-        throw new Error("Stripe or Elements not initialized");
-      }
+    const formData = new FormData();
+    formData.append("payload", data.payload);
+    const chatRoom = await createChatRoom(formData, guideId);
+    messageChannel.current = supabase.channel(room-${chatRoom.id});
+    otherUserChannel.current = supabase.channel(user-${chatRoom.otherUserId});
+    const newMessage = {
+      id: Date.now(),
+      payload: data.payload,
+      createdAt: new Date().toISOString(),
+      user: {
+        id: userId,
+        username,
+        avatar,
+      },
+      isMyMessage: true,
+    };
+    //상대방 채팅방에 전달 하는 정보
+    messageChannel.current?.send({
+      type: "broadcast",
+      event: "message",
+      payload: newMessage,
+    });
 
-      // 결제 폼 제출 및 Stripe 결제 먼저 처리
-      const submitResponse = await elements.submit();
-      const { error: submitError } = submitResponse || {};
+    otherUserChannel.current?.send({
+      type: "broadcast",
+      event: "message",
+      payload: {
+        chatRoomId: chatRoom.id,
+        message: data.payload,
+        createdAt: newMessage.createdAt,
+        usernameOrFullname: username,
+        isRead: false,
+      },
+    });
+    await reserveGuide(guideId, startTime, endTime);
 
-      // 결제 폼 제출 결과 확인
-      if (submitError) {
-        throw new Error(submitError.message);
-      }
+    if (!stripe || !elements) {
+      return;
+    }
 
-      const formData = new FormData();
-      formData.append("payload", data.payload);
+    const { error: submitError } = await elements.submit();
 
-      const [chatRoom, reserveResult] = await Promise.all([
-        createChatRoom(formData, guideId), // 채팅방 생성
-        reserveGuide(guideId, startTime, endTime), // 가이드 예약
-      ]);
-
-      // 채널 생성 후 메시지 전송
-      messageChannel.current = supabase.channel(`room-${chatRoom.id}`);
-      otherUserChannel.current = supabase.channel(
-        `user-${chatRoom.otherUserId}`
-      );
-
-      const newMessage = {
-        id: Date.now(),
-        payload: data.payload,
-        createdAt: new Date().toISOString(),
-        user: {
-          id: userId,
-          username,
-          avatar,
-        },
-        isMyMessage: true,
-      };
-
-      // 상대방 채팅방에 메시지 전달
-      messageChannel.current?.send({
-        type: "broadcast",
-        event: "message",
-        payload: newMessage,
-      });
-
-      otherUserChannel.current?.send({
-        type: "broadcast",
-        event: "message",
-        payload: {
-          chatRoomId: chatRoom.id,
-          message: data.payload,
-          createdAt: newMessage.createdAt,
-          usernameOrFullname: username,
-          isRead: false,
-        },
-      });
-
-      const { error } = await stripe.confirmPayment({
-        elements,
-        clientSecret,
-        confirmParams: {
-          return_url: `http://www.localhost:3000/payment-success?amount=${amount}`,
-          receipt_email: email,
-        },
-      });
-
-      if (error) {
-        throw new Error(error.message);
-      }
-    } catch (err) {
-      // 에러가 발생하면 여기서 처리하고 나머지 함수 실행 중지
-      setErrorMessage(
-        err instanceof Error ? err.message : "An unknown error occurred"
-      );
+    if (submitError) {
+      setErrorMessage(submitError.message);
       setLoading(false);
       return;
     }
 
-    // 모든 작업이 성공적으로 완료되면 로딩 상태 해제
+    const { error } = await stripe.confirmPayment({
+      elements,
+      clientSecret,
+      confirmParams: {
+        return_url: http://www.localhost:3000/payment-success?amount=${amount},
+        receipt_email: email, //유저이메일 부분, 추 후 stripe에서 수정
+      },
+    });
+
+    if (error) {
+      // This point is only reached if there's an immediate error when
+      // confirming the payment. Show the error to your customer (for example, payment details incomplete)
+      setErrorMessage(error.message);
+    } else {
+      // The payment UI automatically closes with a success animation.
+      // Your customer is redirected to your return_url.
+    }
     setLoading(false);
   };
-
   if (!clientSecret || !stripe || !elements) {
     return (
       <div className="flex items-center justify-center">
@@ -207,24 +191,7 @@ export default function CheckoutForm({
       ) : null}
       <div className="flex flex-col gap-3">
         <div className="text-xl font-semibold">환불 정책</div>
-        <div>
-          <div className="relative pl-3">
-            <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-              고객님의 No Show 시에는 환불이 불가합니다.
-            </p>
-          </div>
-          <div className="relative pl-3">
-            <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-              가이드가 예약을 확정한 이후에는 환불이 불가합니다.
-            </p>
-          </div>
-          <div className="relative pl-3">
-            <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-              가이드가 예약을 이행하지 않은 경우(No Show)에는 전액 환불을
-              해드립니다.
-            </p>
-          </div>
-        </div>
+        <div>환불 정책 내용~~</div>
       </div>
       <Separator className="my-8" />
       <div className="flex flex-col gap-3">

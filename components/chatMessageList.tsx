@@ -232,7 +232,7 @@ export default function ChatMessageList({
                           message.isMyMessage
                             ? "bg-primary text-primary-foreground"
                             : "bg-neutral-100"
-                        } p-2.5 rounded-md`}
+                        } p-2.5 rounded-md whitespace-pre-wrap`}
                       >
                         {message.payload}
                       </span>
