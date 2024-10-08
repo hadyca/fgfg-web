@@ -215,13 +215,13 @@ export default function CheckoutForm({
           </div>
           <div className="relative pl-3">
             <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-              가이드가 예약을 확정한 이후에는 환불이 불가합니다.
+              가이드가 예약을 확정한 이후에는 예약 취소 및 환불이 불가합니다.
             </p>
           </div>
           <div className="relative pl-3">
             <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-              가이드가 예약을 이행하지 않은 경우(No Show)에는 전액 환불을
-              해드립니다.
+              가이드 요청에 의한 예약 취소 및 가이드가 예약을 이행하지 않은
+              경우(No Show)에는 전액 환불을 해드립니다.
             </p>
           </div>
         </div>

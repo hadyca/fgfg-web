@@ -136,7 +136,7 @@ export default function ChatRoomList({
       )}
       {/* AlertDialog 컴포넌트 */}
       <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
-        <AlertDialogContent className="max-w-fit md:max-w-sm">
+        <AlertDialogContent className="max-w-sm">
           <AlertDialogHeader>
             <AlertDialogTitle>채팅방을 나가시겠어요?</AlertDialogTitle>
             <AlertDialogDescription></AlertDialogDescription>

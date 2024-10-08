@@ -1,7 +1,7 @@
 import { logout } from "@/lib/sharedActions";
 import getUser from "@/lib/getUser";
 
-export default async function UserProfile() {
+export default async function Profile() {
   const user = await getUser();
 
   return (
