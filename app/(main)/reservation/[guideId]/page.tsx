@@ -59,8 +59,8 @@ export default async function Reservation(props: ReservationProps) {
     );
 
   return (
-    <div className="max-w-6xl mx-auto my-10 p-6 grid grid-cols-2">
-      <div>
+    <div className="max-w-6xl mx-auto my-10 px-6 grid grid-cols-1 md:grid-cols-2 md:flex-col">
+      <div className="md:order-1 order-2">
         <ReservationInfo
           startTime={props.searchParams.starttime}
           endTime={props.searchParams.endtime}
@@ -86,7 +86,7 @@ export default async function Reservation(props: ReservationProps) {
           />
         )}
       </div>
-      <div className="flex justify-center">
+      <div className="md:order-2 order-1 flex justify-center mb-6">
         <Card className="shadow-lg max-w-md p-6 h-fit sticky top-10">
           <div className="flex flex-row gap-3 items-center">
             <div className="relative size-32 rounded-md overflow-hidden flex-shrink-0">

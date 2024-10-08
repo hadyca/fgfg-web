@@ -194,7 +194,7 @@ export default async function guideProfile(props: GuideProfileProps) {
                 <div className="flex items-center gap-1">
                   <span>{convertToVietnamDate(reservation.startTime)}</span>
                   <Separator
-                    className="w-[1px] h-4 bg-primary"
+                    className="w-[1px] h-4 bg-gray-300"
                     orientation="vertical"
                   />
                   <span>{convertToVietnamTime(reservation.startTime)}</span>

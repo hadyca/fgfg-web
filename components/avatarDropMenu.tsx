@@ -58,16 +58,21 @@ export default function AvatarDropMenu({
         </Link>
         {!isApprovedGuide ? (
           <>
-            <Link href="/user-reservation">
+            <Link href="/user-dashboard/reservations">
               <DropdownMenuItem>
                 <span>내 예약</span>
               </DropdownMenuItem>
             </Link>
           </>
         ) : null}
-        <Link href="/user-profile">
+        <Link href="/user-dashboard/profile">
           <DropdownMenuItem>
             <span>계정</span>
+          </DropdownMenuItem>
+        </Link>
+        <Link href="/user-dashboard">
+          <DropdownMenuItem>
+            <span>대쉬보드</span>
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />

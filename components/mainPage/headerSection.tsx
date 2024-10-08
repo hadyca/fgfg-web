@@ -32,7 +32,6 @@ export default function HeaderSection({
     myChannel.current = supabase.channel(`user-${userId}`);
     myChannel.current
       .on("broadcast", { event: "message" }, (payload) => {
-        console.log(payload);
         setNewChatRoomId(payload.payload.chatRoomId);
       })
       .subscribe();
