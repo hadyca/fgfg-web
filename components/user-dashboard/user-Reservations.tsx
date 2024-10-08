@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { DateTime } from "luxon";
 import UserReservationList from "./user-Reservation-list";
+import {
+  CalendarIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/solid";
 
 interface MainGuidePhoto {
   fileUrl: string;
@@ -88,11 +93,30 @@ export default function UserReservations({
       </div>
       <div className="mt-3">
         {selected === "upcoming" ? (
-          <UserReservationList reservationList={upComingList} />
+          upComingList.length > 0 ? (
+            <UserReservationList reservationList={upComingList} />
+          ) : (
+            <div className="flex flex-col items-center justify-center text-muted-foreground min-h-[50vh]">
+              <CalendarIcon className="h-10 w-10 mb-2 text-muted-foreground" />
+              <span className="text-lg">다가오는 예약이 없습니다.</span>
+            </div>
+          )
         ) : selected === "completed" ? (
-          <UserReservationList reservationList={completedList} />
-        ) : (
+          completedList.length > 0 ? (
+            <UserReservationList reservationList={completedList} />
+          ) : (
+            <div className="flex flex-col items-center justify-center text-muted-foreground min-h-[50vh]">
+              <CheckCircleIcon className="h-10 w-10 mb-2 text-muted-foreground" />
+              <span className="text-lg">완료된 예약이 없습니다.</span>
+            </div>
+          )
+        ) : canceledList.length > 0 ? (
           <UserReservationList reservationList={canceledList} />
+        ) : (
+          <div className="flex flex-col items-center justify-center text-muted-foreground min-h-[50vh]">
+            <XCircleIcon className="h-10 w-10 mb-2 text-muted-foreground" />
+            <span className="text-lg">취소된 예약이 없습니다.</span>
+          </div>
         )}
       </div>
     </>
