@@ -20,7 +20,6 @@ import { ACCEPTED_IMAGE_TYPES } from "@/lib/constants";
 import { createGuideProfileSchema } from "./schema";
 import { CreateGuideProfileType } from "./schema";
 import GuideProfileQandA from "@/components/guideProfileQandA";
-import { getUploadUrl } from "@/lib/sharedActions";
 import { createGuideProfile } from "./actions";
 
 export default function EditGuideProfile() {

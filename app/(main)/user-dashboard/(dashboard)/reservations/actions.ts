@@ -27,8 +27,5 @@ export async function cancelReservation(reservationId: number) {
     mutation: USER_CANCEL_RESERVATION,
     variables: { reservationId },
   });
-
-  if (!ok) {
-    redirect("/404");
-  }
+  return ok;
 }

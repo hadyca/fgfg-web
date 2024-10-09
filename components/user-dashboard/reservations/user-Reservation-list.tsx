@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Card } from "../ui/card";
+import { Card } from "../../ui/card";
 import {
   calculateAge,
   calculateGapTimeISO,
@@ -11,7 +11,7 @@ import {
   formatCurrency,
 } from "@/lib/utils";
 import { SERVICE_FEE } from "@/lib/constants";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import {
   AlertDialog,
@@ -22,9 +22,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../ui/alert-dialog";
+} from "../../ui/alert-dialog";
 import { useState } from "react";
-import { cancelReservation } from "@/app/(main)/user-dashboard/reservations/actions";
+import { cancelReservation } from "@/app/(main)/user-dashboard/(dashboard)/reservations/actions";
 
 interface MainGuidePhoto {
   fileUrl: string;
@@ -44,17 +44,18 @@ interface Reservations {
   guideConfirm: boolean;
   userCancel: boolean;
   guideCancel: boolean;
-
   createdAt: string;
   serviceFee: number;
 }
 
 interface UpcomingReservationsProps {
   reservationList: Reservations[];
+  selected: string;
 }
 
 export default function UserReservationList({
   reservationList,
+  selected,
 }: UpcomingReservationsProps) {
   const [loading, setLoading] = useState(false);
 
@@ -68,7 +69,10 @@ export default function UserReservationList({
   };
   const handleContinueDialog = async (reservationId: number) => {
     setLoading(true);
-    await cancelReservation(reservationId);
+    const ok = await cancelReservation(reservationId);
+    if (!ok) {
+      alert("나중에 다시 시도해주세요.");
+    }
     setLoading(false);
     window.location.reload();
   };
@@ -80,37 +84,46 @@ export default function UserReservationList({
             <span className="text-sm text-muted-foreground">
               예약번호:{reservation.id}
             </span>
-            {reservation.guideConfirm ? (
+            {selected === "upcoming" ? (
+              reservation.guideConfirm ? (
+                <div className="flex items-center gap-2 bg-green-100 text-green-700 px-3 py-2 rounded-md">
+                  <CheckCircleIcon className="h-5 w-5 text-green-700" />
+                  <span className="font-semibold">예약 확정</span>
+                </div>
+              ) : (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button disabled={loading}>
+                      {loading ? "로딩 중..." : "예약 취소"}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="max-w-sm">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        예약을 취소하시겠어요?
+                      </AlertDialogTitle>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>아니요</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => handleContinueDialog(reservation.id)}
+                      >
+                        확인
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )
+            ) : selected === "completed" ? (
               <div className="flex items-center gap-2 bg-green-100 text-green-700 px-3 py-2 rounded-md">
                 <CheckCircleIcon className="h-5 w-5 text-green-700" />
                 <span className="font-semibold">예약 확정</span>
               </div>
-            ) : reservation.userCancel || reservation.guideCancel ? (
+            ) : (
               <div className="flex items-center gap-2 bg-red-100 text-red-700 px-3 py-2 rounded-md">
                 <XCircleIcon className="h-5 w-5 text-red-700" />
                 <span className="font-semibold">예약 취소됨</span>
               </div>
-            ) : (
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button disabled={loading}>
-                    {loading ? "로딩 중..." : "예약 취소"}
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent className="max-w-sm">
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>예약을 취소하시겠어요?</AlertDialogTitle>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>아니요</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => handleContinueDialog(reservation.id)}
-                    >
-                      확인
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
             )}
           </div>
           <div className="flex flex-row gap-3">

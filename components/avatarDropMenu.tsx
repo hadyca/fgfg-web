@@ -65,7 +65,7 @@ export default function AvatarDropMenu({
             </Link>
           </>
         ) : null}
-        <Link href="/user-dashboard/profile">
+        <Link href="/user-dashboard/account">
           <DropdownMenuItem>
             <span>계정</span>
           </DropdownMenuItem>
