@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -20,11 +19,15 @@ import { ACCEPTED_IMAGE_TYPES } from "@/lib/constants";
 import { createGuideProfileSchema } from "./schema";
 import { CreateGuideProfileType } from "./schema";
 import GuideProfileQandA from "@/components/guideProfileQandA";
-import { getUploadUrl } from "@/lib/sharedActions";
 import { createGuideProfile } from "./actions";
 import GoogleMapApi from "@/components/googleMapApi";
+import { getUploadUrl } from "../../signup-guide/actions";
+import Spinner from "@/components/ui/spinner";
 
 export default function CreateGuideProfile() {
+  const [photoLoading, setPhotoLoading] = useState<boolean[]>(
+    Array(8).fill(false)
+  );
   const [loading, setLoading] = useState(false);
   const [previews, setPreviews] = useState<string[]>([]);
   const [uploadUrl, setUploadUrl] = useState<string[]>([]);
@@ -47,7 +50,10 @@ export default function CreateGuideProfile() {
     },
   });
 
-  const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
     const {
       target: { files },
     } = event;
@@ -67,7 +73,20 @@ export default function CreateGuideProfile() {
 
     setFiles((prev) => [...prev, file]);
 
+    setPhotoLoading((prev) => {
+      const updatedLoading = [...prev];
+      updatedLoading[index] = true;
+      return updatedLoading;
+    });
+
     const { success, result } = await getUploadUrl();
+
+    setPhotoLoading((prev) => {
+      const updatedLoading = [...prev];
+      updatedLoading[index] = false;
+      return updatedLoading;
+    });
+
     if (success) {
       const { id, uploadURL } = result;
       setUploadUrl((prev) => [...prev, uploadURL]);
@@ -160,7 +179,9 @@ export default function CreateGuideProfile() {
                   <div key={index}>
                     <Label
                       htmlFor={`photo_${index}`}
-                      className="relative border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
+                      className={`relative ${
+                        !previews[index] ? "border-dashed" : "border-none"
+                      } border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md cursor-pointer bg-center bg-cover`}
                       style={{
                         backgroundImage: `url(${previews[index]})`,
                       }}
@@ -177,14 +198,23 @@ export default function CreateGuideProfile() {
                           </div>
                         </>
                       ) : (
-                        <XCircleIcon
-                          className="absolute -top-3 -right-3 size-8 text-destructive cursor-pointer"
-                          onClick={(e) => handleDeleteImage(index, e)}
-                        />
+                        <>
+                          {!photoLoading[index] ? (
+                            <XCircleIcon
+                              className="absolute -top-3 -right-3 size-8 text-destructive cursor-pointer"
+                              onClick={(e) => handleDeleteImage(index, e)}
+                            />
+                          ) : null}
+                        </>
+                      )}
+                      {photoLoading[index] && (
+                        <div className="absolute rounded-md inset-0 flex items-center justify-center bg-white bg-opacity-50">
+                          <Spinner />
+                        </div>
                       )}
                     </Label>
                     <input
-                      onChange={(e) => onImageChange(e)}
+                      onChange={(e) => onImageChange(e, index)}
                       id={`photo_${index}`}
                       name={`photo_${index}`}
                       type="file"

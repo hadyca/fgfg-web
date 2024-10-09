@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import { DateTime } from "luxon";
-import UserReservationList from "./reservations/user-Reservation-list";
+import UserReservationList from "./user-Reservation-list";
 import {
   CalendarIcon,
   CheckCircleIcon,

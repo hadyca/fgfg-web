@@ -18,11 +18,10 @@ import {
   PlusCircleIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
-import { signupGuide, userCheck } from "./actions";
+import { getUploadUrl, signupGuide, userCheck } from "./actions";
 import { Separator } from "@/components/ui/separator";
 import { ACCEPTED_IMAGE_TYPES, LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";
 import GuideQandA from "@/components/guideQandA";
-import { getUploadUrl } from "@/lib/sharedActions";
 import {
   Dialog,
   DialogContent,
@@ -31,8 +30,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
+import Spinner from "@/components/ui/spinner";
 
 export default function SignUpGuide() {
+  const [photoLoading, setPhotoLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState("");
   const [uploadUrl, setUploadUrl] = useState("");
@@ -85,7 +86,9 @@ export default function SignUpGuide() {
     setPreview(url);
     setFile(file);
 
+    setPhotoLoading(true);
     const { success, result } = await getUploadUrl();
+    setPhotoLoading(false);
 
     if (success) {
       const { id, uploadURL } = result;
@@ -223,7 +226,9 @@ export default function SignUpGuide() {
               </Label>
               <Label
                 htmlFor="resumePhoto"
-                className="relative border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md border-dashed cursor-pointer bg-center bg-cover"
+                className={`relative ${
+                  !preview ? "border-dashed" : "border-none"
+                } border-2 w-32 h-32 flex items-center justify-center flex-col text-neutral-300 border-neutral-300 rounded-md cursor-pointer bg-center bg-cover`}
                 style={{ backgroundImage: `url(${preview})` }}
               >
                 {preview === "" ? (
@@ -233,11 +238,18 @@ export default function SignUpGuide() {
                   </>
                 ) : (
                   <>
-                    <XCircleIcon
-                      className="absolute -top-3 -right-3 size-8 text-destructive cursor-pointer"
-                      onClick={handleDeleteImage}
-                    />
+                    {!photoLoading ? (
+                      <XCircleIcon
+                        className="absolute -top-3 -right-3 size-8 text-destructive cursor-pointer"
+                        onClick={handleDeleteImage}
+                      />
+                    ) : null}
                   </>
+                )}
+                {photoLoading && (
+                  <div className="absolute rounded-md inset-0 flex items-center justify-center bg-white bg-opacity-50">
+                    <Spinner />
+                  </div>
                 )}
               </Label>
               {errors?.resumePhoto ? (
@@ -403,7 +415,7 @@ export default function SignUpGuide() {
               </label>
             </div>
             {existError !== "" ? <ErrorText text={existError} /> : null}
-            <Button disabled={loading || !isTermsChecked}>
+            <Button disabled={loading || !isTermsChecked || photoLoading}>
               {loading ? "로딩 중" : "가이드 가입"}
             </Button>
           </div>

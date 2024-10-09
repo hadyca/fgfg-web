@@ -1,7 +1,6 @@
 import { Card } from "@/components/ui/card";
 import getUser from "@/lib/getUser";
 import {
-  ArchiveBoxIcon,
   CalendarDaysIcon,
   ChatBubbleLeftRightIcon,
   ClipboardDocumentListIcon,
@@ -33,26 +32,19 @@ export default async function UserDashboard() {
             </div>
           </Card>
         </Link>
-        <Card className="shadow-md max-w-sm p-3">
-          <div className="h-32 flex flex-col justify-between">
-            <IdentificationIcon className="size-10" strokeWidth={1.2} />
-            <div>
-              <div>계정</div>
-              <div className="text-muted-foreground">
-                계정 정보를 수정 할 수 있어요
+        <Link href={"/user-dashboard/account"}>
+          <Card className="shadow-md max-w-sm p-3">
+            <div className="h-32 flex flex-col justify-between">
+              <IdentificationIcon className="size-10" strokeWidth={1.2} />
+              <div>
+                <div>계정</div>
+                <div className="text-muted-foreground">
+                  계정 정보를 수정 할 수 있어요
+                </div>
               </div>
             </div>
-          </div>
-        </Card>
-        <Card className="shadow-md max-w-sm p-3">
-          <div className="h-32 flex flex-col justify-between">
-            <ClipboardDocumentListIcon className="size-10" strokeWidth={1.2} />
-            <div>
-              <div>약관 및 개인정보처리방침</div>
-              <div className="text-muted-foreground">fgfg 서비스 약관</div>
-            </div>
-          </div>
-        </Card>
+          </Card>
+        </Link>
         <Card className="shadow-md max-w-sm p-3">
           <div className="h-32 flex flex-col justify-between">
             <QuestionMarkCircleIcon className="size-10" strokeWidth={1.2} />
