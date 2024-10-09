@@ -298,7 +298,9 @@ export default function CreateGuideProfile() {
           </div>
           <Separator className="my-4" />
           <GuideProfileQandA />
-          <Button disabled={loading}>{loading ? "로딩 중" : "확인"}</Button>
+          <Button disabled={loading || photoLoading.some((loading) => loading)}>
+            {loading ? "로딩 중" : "확인"}
+          </Button>
         </form>
       </Card>
     </div>
