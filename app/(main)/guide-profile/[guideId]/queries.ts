@@ -27,6 +27,8 @@ export const SEE_GUIDE = gql`
         id
         startTime
         endTime
+        userCancel
+        guideCancel
       }
       user {
         id

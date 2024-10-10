@@ -3,6 +3,7 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import { ApolloWrapper } from "@/lib/apolloWrapper";
+import { Toaster } from "@/components/ui/toaster";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -25,6 +26,7 @@ export default async function RootLayout({
         className={cn("min-h-screen font-sans antialiased", fontSans.variable)}
       >
         <ApolloWrapper>{children}</ApolloWrapper>
+        <Toaster />
       </body>
     </html>
   );

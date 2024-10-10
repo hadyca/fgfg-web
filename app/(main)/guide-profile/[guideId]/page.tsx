@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/tooltip";
 import getUser from "@/lib/getUser";
 import CreateChatRoomBtn from "@/components/createChatRoomBtn";
+import { DateTime } from "luxon";
 
 interface GuideProfileProps {
   params: {
@@ -43,6 +44,8 @@ interface Reservation {
   id: number;
   startTime: string;
   endTime: string;
+  userCancel: boolean;
+  guideCancel: boolean;
 }
 
 export default async function guideProfile(props: GuideProfileProps) {
@@ -54,6 +57,16 @@ export default async function guideProfile(props: GuideProfileProps) {
   if (!guide.seeGuide) {
     return notFound();
   }
+  const filteredReservations = guide?.seeGuide?.reservations.filter(
+    (reservation: Reservation) => {
+      const now = DateTime.now().toISO();
+      return (
+        now < reservation.startTime && //예약 시작 시간이 미래 시간
+        !reservation.userCancel &&
+        !reservation.guideCancel
+      ); //유저캔슬과 가이드캔슬이 아닌 것들
+    }
+  );
 
   const user = await getUser();
 
@@ -137,7 +150,7 @@ export default async function guideProfile(props: GuideProfileProps) {
             <ReservationDateForm
               guideId={guideId}
               searchParams={props.searchParams}
-              reservations={guide?.seeGuide?.reservations}
+              reservations={filteredReservations}
             />
             <ReportForm guideId={guideId} />
           </div>
@@ -187,9 +200,9 @@ export default async function guideProfile(props: GuideProfileProps) {
       <Separator className="my-8" />
       <div className="mt-8 md:mt-0 flex flex-col gap-2">
         <div className="text-xl font-medium">이미 예약된 시간</div>
-        {guide?.seeGuide?.reservations.length !== 0 ? (
+        {filteredReservations.length > 0 ? (
           <div className="flex flex-wrap gap-3">
-            {guide?.seeGuide?.reservations.map((reservation: Reservation) => (
+            {filteredReservations.map((reservation: Reservation) => (
               <Card key={reservation.id} className="shadow-sm p-2 inline-block">
                 <div className="flex items-center gap-1">
                   <span>{convertToVietnamDate(reservation.startTime)}</span>

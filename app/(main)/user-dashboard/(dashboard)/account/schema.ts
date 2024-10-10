@@ -1,4 +1,4 @@
-import { UNAVAILABLE_USERNAME } from "@/lib/constants";
+import { PASSWORD_MIN_LENGTH, UNAVAILABLE_USERNAME } from "@/lib/constants";
 import { z } from "zod";
 
 const unavailableUsername = (username: string) =>
@@ -18,3 +18,34 @@ export const usernameSchema = z.object({
 });
 
 export type UsernameType = z.infer<typeof usernameSchema>;
+
+export const emailSchema = z.object({
+  email: z.string().email("이메일 주소를 입력해주세요.").toLowerCase(),
+});
+
+export type EmailType = z.infer<typeof emailSchema>;
+
+const checkPasswords = ({
+  newPassword,
+  confirmPassword,
+}: {
+  newPassword: string;
+  confirmPassword: string;
+}) => newPassword === confirmPassword;
+
+export const passwordSchema = z
+  .object({
+    password: z.string({
+      required_error: "비밀번호를 입력해주세요.",
+    }),
+    newPassword: z
+      .string()
+      .min(PASSWORD_MIN_LENGTH, "최소 8자 이상이어야 합니다."),
+    confirmPassword: z.string({ required_error: "비밀번호를 입력해주세요." }),
+  })
+  .refine(checkPasswords, {
+    message: "동일한 비밀번호를 입력해주세요.",
+    path: ["confirmPassword"],
+  });
+
+export type PasswordType = z.infer<typeof passwordSchema>;

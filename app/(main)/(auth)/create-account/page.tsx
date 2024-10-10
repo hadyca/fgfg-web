@@ -31,7 +31,7 @@ export default function CreateAccount() {
     formData.append("username", data.username);
     formData.append("email", data.email);
     formData.append("password", data.password);
-    formData.append("confirm_password", data.password);
+    formData.append("confirmPassword", data.password);
 
     const result = await createAccount(formData);
     if (result?.type === "checkUsername") {
@@ -85,11 +85,11 @@ export default function CreateAccount() {
             type="password"
             placeholder="비밀번호 확인"
             minLength={PASSWORD_MIN_LENGTH}
-            {...register("confirm_password")}
+            {...register("confirmPassword")}
             required
           />
-          {errors?.confirm_password ? (
-            <ErrorText text={errors.confirm_password.message!} />
+          {errors?.confirmPassword ? (
+            <ErrorText text={errors.confirmPassword.message!} />
           ) : null}
           <Button disabled={loading}>회원 가입</Button>
           <Separator />

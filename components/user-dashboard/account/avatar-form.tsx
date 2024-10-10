@@ -110,20 +110,25 @@ export default function AvatarForm({ avatar }: AvatarFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
+      <div className="font-semibold mb-2">아바타</div>
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row gap-3 justify-center items-center relative">
           <div className="relative">
             <Avatar className="size-16">
               {newAvatar ? (
                 <>
-                  <AvatarImage src={newAvatar} alt="@shadcn" />
+                  <AvatarImage
+                    className="object-cover"
+                    src={newAvatar}
+                    alt="@fgfg"
+                  />
                   <AvatarFallback>
                     <UserCircleIcon className="text-primary w-full h-full" />
                   </AvatarFallback>
                 </>
               ) : avatar ? (
                 <>
-                  <AvatarImage src={`${avatar}/avatar`} alt="@shadcn" />
+                  <AvatarImage src={`${avatar}/avatar`} alt="@fgfg" />
                   <AvatarFallback>
                     <UserCircleIcon className="text-primary w-full h-full" />
                   </AvatarFallback>

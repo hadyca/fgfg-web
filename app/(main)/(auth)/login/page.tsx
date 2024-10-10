@@ -31,6 +31,7 @@ export default function LogIn() {
 
     formData.append("email", data.email);
     formData.append("password", data.password);
+    formData.append("confirmPassword", data.password);
 
     const result = await login(formData);
 

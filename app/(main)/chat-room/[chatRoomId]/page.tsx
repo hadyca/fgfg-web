@@ -6,11 +6,11 @@ import ChatMessageList from "@/components/chatMessageList";
 import ChatRoomList from "@/components/chat-room-list";
 import { useEffect, useRef, useState } from "react";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
-import useMediaQuery from "@/lib/hooks/useMediaQuery";
-import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import useMediaQuery from "@/components/hooks/useMediaQuery";
 import { motion, AnimatePresence } from "framer-motion"; // framer-motion 임포트
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 
 interface ChatRoomProps {
   params: {
@@ -169,7 +169,10 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
                   onClick={() => setShowChatMessageList(false)}
                   className="absolute top-3 left-5 p-2 bg-secondary rounded-full z-20"
                 >
-                  <ArrowLeftIcon className="w-6 h-6 text-secondary-foreground" />
+                  <ChevronLeftIcon
+                    className="size-5 text-secondary-foreground"
+                    strokeWidth={1.2}
+                  />
                 </button>
                 <ChatMessageList
                   chatRoomId={chatRoomId}

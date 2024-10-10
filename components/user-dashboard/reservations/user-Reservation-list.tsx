@@ -25,6 +25,8 @@ import {
 } from "../../ui/alert-dialog";
 import { useState } from "react";
 import { cancelReservation } from "@/app/(main)/user-dashboard/(dashboard)/reservations/actions";
+import { useToast } from "@/components/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 interface MainGuidePhoto {
   fileUrl: string;
@@ -57,6 +59,8 @@ export default function UserReservationList({
   reservationList,
   selected,
 }: UpcomingReservationsProps) {
+  const { toast } = useToast();
+
   const [loading, setLoading] = useState(false);
 
   const convertDate = (startTime: string) => {
@@ -71,7 +75,13 @@ export default function UserReservationList({
     setLoading(true);
     const ok = await cancelReservation(reservationId);
     if (!ok) {
-      alert("나중에 다시 시도해주세요.");
+      toast({
+        variant: "destructive",
+        title: "나중에 다시 시도해주세요.",
+        description: "요청에 문제가 있습니다.",
+        action: <ToastAction altText="Try again">재시도</ToastAction>,
+      });
+      return;
     }
     setLoading(false);
     window.location.reload();
