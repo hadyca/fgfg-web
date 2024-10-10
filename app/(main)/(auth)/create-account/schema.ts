@@ -6,11 +6,11 @@ const unavailableUsername = (username: string) =>
 
 const checkPasswords = ({
   password,
-  confirm_password,
+  confirmPassword,
 }: {
   password: string;
-  confirm_password: string;
-}) => password === confirm_password;
+  confirmPassword: string;
+}) => password === confirmPassword;
 
 export const createAccountSchema = z
   .object({
@@ -28,11 +28,11 @@ export const createAccountSchema = z
     password: z
       .string()
       .min(PASSWORD_MIN_LENGTH, "최소 8자 이상이어야 합니다."),
-    confirm_password: z.string(),
+    confirmPassword: z.string(),
   })
   .refine(checkPasswords, {
     message: "동일한 비밀번호를 입력해주세요.",
-    path: ["confirm_password"],
+    path: ["confirmPassword"],
   });
 
 export type CreateAccountType = z.infer<typeof createAccountSchema>;

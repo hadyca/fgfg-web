@@ -14,7 +14,7 @@ export async function createAccount(
     username: formData.get("username"),
     email: formData.get("email"),
     password: formData.get("password"),
-    confirm_password: formData.get("confirm_password"),
+    confirmPassword: formData.get("confirmPassword"),
   };
   const {
     data: { checkUsername },
