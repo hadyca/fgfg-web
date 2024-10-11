@@ -13,7 +13,7 @@ export default async function UserDashboard() {
   const user = await getUser();
   return (
     <div className="max-w-6xl mx-auto my-10 px-6">
-      <div className="text-3xl">대쉬보드</div>
+      <div className="text-3xl mb-2">대쉬보드</div>
       <div className="text-lg">
         <span className="font-semibold">{user?.me?.username}</span>
         <span>, {user?.me?.email}</span>

@@ -6,7 +6,7 @@ import {
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
+} from "../ui/dialog";
 import { PASSWORD_MIN_LENGTH } from "@/lib/constants";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -21,7 +21,7 @@ import {
   CreateAccountType,
 } from "@/app/(main)/(auth)/create-account/schema";
 import { createAccount } from "@/app/(main)/(auth)/create-account/actions";
-import DialogLogin from "./dialogLogin";
+import DialogLogin from "../dialogLogin";
 import Link from "next/link";
 
 interface CreateChatRoomBtnProps {

@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 export async function createChatRoom(formData: FormData, guideId: number) {
   const data = {
     payload: formData.get("payload"),
+    customerAgeRange: formData.get("customerAgeRange"),
   };
   const result = contactGuideSchema.safeParse(data);
   if (!result.success) {

@@ -27,3 +27,11 @@ export const CHECK_PASSWORD = gql`
     }
   }
 `;
+
+export const DELETE_ACCOUNT = gql`
+  mutation deleteAccount {
+    deleteAccount {
+      ok
+    }
+  }
+`;

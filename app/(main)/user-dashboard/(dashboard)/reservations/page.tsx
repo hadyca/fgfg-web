@@ -7,13 +7,14 @@ export default async function Reservations() {
   const reservations = await getReservations();
   return (
     <>
-      <div className="flex flex-row items-center mb-3">
+      <div className="flex flex-row items-center mb-2">
         <Link href={"/user-dashboard"}>
           <span className="text-primary text-lg">대쉬보드</span>
         </Link>
         <ChevronRightIcon className="size-4" />
         <span className="text-lg">예약</span>
       </div>
+      <div className="font-bold text-3xl mb-10">예약</div>
       <UserReservations reservations={reservations} />
     </>
   );

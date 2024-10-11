@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getGuide } from "./actions";
-import PhotoCarousel from "@/components/photoCarousel";
+import PhotoCarousel from "@/components/guide-profile/photoCarousel";
 import {
   calculateAge,
   convertToVietnamDate,
@@ -9,7 +9,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Separator } from "@/components/ui/separator";
-import ReservationDateForm from "@/components/reservationDateForm";
+import ReservationDateForm from "@/components/guide-profile/reservationDateForm";
 import { Card } from "@/components/ui/card";
 import ReportForm from "@/components/reportForm";
 import GoogleMapApiSimple from "@/components/googleMapApiSimple";
@@ -21,7 +21,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import getUser from "@/lib/getUser";
-import CreateChatRoomBtn from "@/components/createChatRoomBtn";
+import CreateChatRoomBtn from "@/components/guide-profile/createChatRoomBtn";
 import { DateTime } from "luxon";
 
 interface GuideProfileProps {

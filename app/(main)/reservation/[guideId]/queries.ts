@@ -5,11 +5,13 @@ export const CREATE_RESERVATION = gql`
     $guideId: Int!
     $startTime: DateTime!
     $endTime: DateTime!
+    $customerAgeRange: String!
   ) {
     createReservation(
       guideId: $guideId
       startTime: $startTime
       endTime: $endTime
+      customerAgeRange: $customerAgeRange
     ) {
       ok
     }

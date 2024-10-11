@@ -14,6 +14,7 @@ import { GetMessageSkeleton } from "@/app/(main)/chat-room/[chatRoomId]/skeleton
 import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Button } from "./ui/button";
 import ChatRoomBill from "./chat-room-bill";
+import { useToast } from "./hooks/use-toast";
 
 interface Bills {
   id: number;
@@ -23,7 +24,6 @@ interface Bills {
 }
 
 interface ChatMessageListProps {
-  otherUserId: number;
   userId: number;
   chatRoomId: string;
   username: string;
@@ -42,6 +42,8 @@ export default function ChatMessageList({
   messageChannel,
   otherUserChannel,
 }: ChatMessageListProps) {
+  const { toast } = useToast();
+
   const [message, setMessage] = useState("");
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null); // 메시지 끝의 ref
@@ -91,8 +93,13 @@ export default function ChatMessageList({
       event: "message",
       payload: newMessage,
     });
-    await saveMessage(chatRoomId, message);
-
+    const ok = await saveMessage(chatRoomId, message);
+    if (!ok) {
+      toast({
+        description: "탈퇴한 회원입니다.",
+      });
+      return;
+    }
     otherUserChannel?.send({
       type: "broadcast",
       event: "message",
