@@ -23,6 +23,7 @@ export default function PasswordForm() {
     register,
     handleSubmit,
     setError,
+    reset,
     formState: { errors },
   } = useForm<PasswordType>({
     resolver: zodResolver(passwordSchema),
@@ -43,6 +44,7 @@ export default function PasswordForm() {
       toast({
         description: "비밀번호가 업데이트 되었습니다.",
       });
+      reset();
     }
     setLoading(false);
   };
@@ -51,7 +53,7 @@ export default function PasswordForm() {
     <form onSubmit={handleSubmit(onValid)}>
       <div className="font-semibold mb-2">비밀번호</div>
       <div className="flex flex-col gap-3">
-        <div>
+        <div className="flex flex-col gap-2">
           <div className="text-sm">현재 비밀번호</div>
           <Input
             className="w-2/3"
@@ -64,7 +66,7 @@ export default function PasswordForm() {
             <ErrorText text={errors.password.message!} />
           ) : null}
         </div>
-        <div>
+        <div className="flex flex-col gap-2">
           <div className="text-sm">새 비밀번호</div>
           <Input
             className="w-2/3"
@@ -77,7 +79,7 @@ export default function PasswordForm() {
             <ErrorText text={errors.newPassword.message!} />
           ) : null}
         </div>
-        <div>
+        <div className="flex flex-col gap-2">
           <div className="text-sm">비밀번호 확인</div>
           <div className="flex flex-row justify-between">
             <Input

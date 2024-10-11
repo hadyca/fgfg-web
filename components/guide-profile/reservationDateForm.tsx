@@ -1,11 +1,11 @@
 "use client";
 
 import { CalendarIcon } from "lucide-react";
-import { Button } from "./ui/button";
-import { Card } from "./ui/card";
-import { Label } from "./ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Calendar } from "./ui/calendar";
+import { Button } from "../ui/button";
+import { Card } from "../ui/card";
+import { Label } from "../ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Calendar } from "../ui/calendar";
 import { useEffect, useState } from "react";
 import { subDays, format } from "date-fns";
 import { searchGuideSchema, SearchGuideType } from "@/app/(main)/schema";

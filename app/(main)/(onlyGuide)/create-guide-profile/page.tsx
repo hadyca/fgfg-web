@@ -49,7 +49,6 @@ export default function CreateGuideProfile() {
       pickupPlaceLng: 0,
     },
   });
-
   const onImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
     index: number
@@ -69,10 +68,20 @@ export default function CreateGuideProfile() {
     }
     const file = files[0];
     const url = URL.createObjectURL(file);
-    setPreviews((prev) => [...prev, url]);
 
-    setFiles((prev) => [...prev, file]);
+    // 이미지 미리보기와 파일 업데이트
+    setPreviews((prev) => {
+      const updatedPreviews = [...prev];
+      updatedPreviews[index] = url; // 항상 지정된 인덱스에 추가 혹은 대체
+      return updatedPreviews;
+    });
+    setFiles((prev) => {
+      const updatedFiles = [...prev];
+      updatedFiles[index] = file; // 항상 지정된 인덱스에 추가 혹은 대체
+      return updatedFiles;
+    });
 
+    // 로딩 상태를 먼저 설정
     setPhotoLoading((prev) => {
       const updatedLoading = [...prev];
       updatedLoading[index] = true;
@@ -81,6 +90,7 @@ export default function CreateGuideProfile() {
 
     const { success, result } = await getUploadUrl();
 
+    // 로딩 상태 해제
     setPhotoLoading((prev) => {
       const updatedLoading = [...prev];
       updatedLoading[index] = false;
@@ -89,17 +99,25 @@ export default function CreateGuideProfile() {
 
     if (success) {
       const { id, uploadURL } = result;
-      setUploadUrl((prev) => [...prev, uploadURL]);
+
+      // 업로드 URL 배열 업데이트
+      setUploadUrl((prev) => {
+        const updatedUrls = [...prev];
+        updatedUrls[index] = uploadURL;
+        return updatedUrls;
+      });
+
       const currentPhotos = getValues("guidePhotos"); // 현재 guidePhotos 배열을 가져옴
 
       const newPhoto = {
-        id: previews.length + 1,
+        id: index + 1,
         url: `https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/${id}`,
       };
 
       const newPhotos = [...currentPhotos, newPhoto];
-
       setValue("guidePhotos", newPhotos);
+      const test = getValues("guidePhotos");
+      console.log(test);
     }
   };
 
@@ -148,12 +166,32 @@ export default function CreateGuideProfile() {
 
   const handleDeleteImage = (index: number, e: React.MouseEvent) => {
     e.preventDefault();
-    setPreviews((prev) => prev.filter((_, i) => i !== index));
-    setFiles((prev) => prev.filter((_, i) => i !== index));
-    setUploadUrl((prev) => prev.filter((_, i) => i !== index));
+
+    // 이미지 미리보기 배열 업데이트 (해당 인덱스를 null로 설정)
+    setPreviews((prev) => {
+      const updatedPreviews = [...prev];
+      updatedPreviews[index] = ""; // 이미지 URL을 빈 문자열로 설정하여 삭제
+      return updatedPreviews;
+    });
+
+    // 파일 배열 업데이트 (해당 인덱스를 null로 설정)
+    setFiles((prev) => {
+      const updatedFiles = [...prev];
+      updatedFiles[index] = null; // 파일을 null로 설정하여 삭제
+      return updatedFiles;
+    });
+
+    // 업로드 URL 배열 업데이트 (해당 인덱스를 null로 설정)
+    setUploadUrl((prev) => {
+      const updatedUrls = [...prev];
+      updatedUrls[index] = ""; // URL을 빈 문자열로 설정하여 삭제
+      return updatedUrls;
+    });
+
+    // guidePhotos 배열 업데이트 (해당 인덱스를 null로 설정)
     const currentPhotos = getValues("guidePhotos");
     const updatedGuidePhotos = currentPhotos.filter(
-      (_: any, i: number) => i !== index
+      (photo) => photo.id !== index + 1
     );
     setValue("guidePhotos", updatedGuidePhotos);
   };

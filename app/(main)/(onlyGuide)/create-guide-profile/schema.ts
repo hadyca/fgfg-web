@@ -3,7 +3,16 @@ import { z } from "zod";
 const PhotosSchema = z.object({ id: z.number(), url: z.string() });
 
 export const createGuideProfileSchema = z.object({
-  guidePhotos: z.array(PhotosSchema).min(2, "2개 이상의 사진이 필요합니다."),
+  guidePhotos: z
+    .array(PhotosSchema)
+    .min(2, "2개 이상의 사진이 필요합니다.")
+    .refine(
+      (guidePhotos) =>
+        guidePhotos.some((photo) => photo !== null && photo.id === 1),
+      {
+        message: "대표 사진을 추가해주세요.",
+      }
+    ),
   personality: z.enum(
     [
       "귀엽고 발랄한",

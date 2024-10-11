@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorText from "@/components/errorText";
 import { loginSchema, LoginType } from "@/app/(main)/(auth)/login/schema";
 import { login } from "@/app/(main)/(auth)/login/actions";
-import { Separator } from "./ui/separator";
+import { Separator } from "../ui/separator";
 
 interface ReservationLoginProps {
   setIsOpenLogin: React.Dispatch<React.SetStateAction<boolean>>;

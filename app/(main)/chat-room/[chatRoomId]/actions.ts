@@ -49,14 +49,18 @@ export async function getChatRooms() {
 }
 
 export async function saveMessage(chatRoomId: string, payload: string) {
-  await client.mutate({
+  const {
+    data: {
+      createMessage: { ok },
+    },
+  } = await client.mutate({
     mutation: CREATE_MESSAGE,
     variables: {
       chatRoomId,
       payload,
     },
   });
-  return;
+  return ok;
 }
 
 export async function updateIsRead(chatRoomId: string) {

@@ -6,10 +6,10 @@ import {
   useElements,
   PaymentElement,
 } from "@stripe/react-stripe-js";
-import { Button } from "./ui/button";
-import { Separator } from "./ui/separator";
-import { Textarea } from "./ui/textarea";
-import { ClockIcon } from "@heroicons/react/24/outline";
+import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
+import { Textarea } from "../ui/textarea";
+import { ClockIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { createChatRoom } from "@/app/(main)/contact-guide/[guideId]/actions";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useForm } from "react-hook-form";
@@ -18,10 +18,20 @@ import {
   ContactGuideType,
 } from "@/app/(main)/contact-guide/[guideId]/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import ErrorText from "./errorText";
+import ErrorText from "../errorText";
 import { supabase } from "@/lib/supabaseClient";
 import { reserveGuide } from "@/app/(main)/reservation/[guideId]/actions";
-import Spinner from "./ui/spinner";
+import Spinner from "../ui/spinner";
+import {
+  reservationSchema,
+  ReservationType,
+} from "@/app/(main)/reservation/[guideId]/schema";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 interface CheckoutFormProps {
   amount: number;
@@ -52,15 +62,18 @@ export default function CheckoutForm({
   const [errorMessage, setErrorMessage] = useState<string>();
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(false);
+  const [customerAgeRange, setCustomerAgeRange] = useState("");
+
   const messageChannel = useRef<RealtimeChannel>();
   const otherUserChannel = useRef<RealtimeChannel>();
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<ContactGuideType>({
-    resolver: zodResolver(contactGuideSchema),
+  } = useForm<ReservationType>({
+    resolver: zodResolver(reservationSchema),
   });
 
   useEffect(() => {
@@ -75,7 +88,7 @@ export default function CheckoutForm({
       .then((data) => setClientSecret(data.clientSecret));
   }, [amount]);
 
-  const onValid = async (data: ContactGuideType) => {
+  const onValid = async (data: ReservationType) => {
     setLoading(true);
 
     try {
@@ -95,10 +108,10 @@ export default function CheckoutForm({
 
       const formData = new FormData();
       formData.append("payload", data.payload);
-
+      formData.append("customerAgeRange", data.customerAgeRange);
       const [chatRoom, reserveResult] = await Promise.all([
         createChatRoom(formData, guideId), // 채팅방 생성
-        reserveGuide(guideId, startTime, endTime), // 가이드 예약
+        reserveGuide(formData, guideId, startTime, endTime), // 가이드 예약
       ]);
 
       // 채널 생성 후 메시지 전송
@@ -171,6 +184,12 @@ export default function CheckoutForm({
     );
   }
 
+  const handleStartTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value as any;
+    setValue("customerAgeRange", value);
+    setCustomerAgeRange(value);
+  };
+
   return (
     <form onSubmit={handleSubmit(onValid)}>
       <div className="flex flex-col gap-3">
@@ -179,6 +198,64 @@ export default function CheckoutForm({
         {errorMessage && <div>{errorMessage}</div>}
       </div>
       <Separator className="my-8" />
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-row">
+          <div className="text-xl font-semibold">고객님 연령대</div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <ExclamationCircleIcon className="size-6 text-primary" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>가이드에게 미리 제공해야 할 정보입니다.</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+        {errors?.customerAgeRange ? (
+          <ErrorText text={errors.customerAgeRange.message!} />
+        ) : null}
+        <select
+          className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
+            customerAgeRange ? "" : "text-muted-foreground"
+          }`}
+          value={customerAgeRange}
+          onChange={handleStartTimeChange}
+        >
+          <option value="" disabled hidden>
+            연령대 추가
+          </option>
+          <option value="20~25세" className="text-black">
+            20~25세
+          </option>
+          <option value="26~30세" className="text-black">
+            26~30세
+          </option>
+          <option value="31~35세" className="text-black">
+            31~35세
+          </option>
+          <option value="36~40세" className="text-black">
+            36~40세
+          </option>
+          <option value="41~45세" className="text-black">
+            41~45세
+          </option>
+          <option value="46~50세" className="text-black">
+            46~50세
+          </option>
+          <option value="51~55세" className="text-black">
+            51~55세
+          </option>
+          <option value="56~60세" className="text-black">
+            56~60세
+          </option>
+          <option value="60세 이상" className="text-black">
+            60세 이상
+          </option>
+        </select>
+      </div>
+      <Separator className="my-8" />
+
       {!isMe ? (
         <>
           <div className="flex flex-col gap-3">

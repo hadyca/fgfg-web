@@ -1,13 +1,14 @@
 "use server";
 
 import { client } from "@/lib/apolloClient";
-import { CHECK_PASSWORD, EDIT_USER_PROFILE } from "./queries";
+import { CHECK_PASSWORD, DELETE_ACCOUNT, EDIT_USER_PROFILE } from "./queries";
 import { redirect } from "next/navigation";
 import {
   CHECK_EMAIL,
   CHECK_USERNAME,
 } from "@/app/(main)/(auth)/create-account/queries";
 import { emailSchema, passwordSchema, usernameSchema } from "./schema";
+import getSession from "@/lib/session";
 
 export async function updateAvatar(formData: FormData) {
   const data = {
@@ -156,4 +157,20 @@ export async function updatePassword(formData: FormData) {
     }
     return;
   }
+}
+
+export async function deleteAccount() {
+  const {
+    data: {
+      deleteAccount: { ok },
+    },
+  } = await client.mutate({
+    mutation: DELETE_ACCOUNT,
+  });
+  if (!ok) {
+    redirect("/404");
+  }
+  const session = await getSession();
+  session.destroy();
+  return ok;
 }

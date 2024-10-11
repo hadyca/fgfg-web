@@ -143,7 +143,6 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
           <ChatRoomList chatRoomId={chatRoomId} userId={user?.me?.id} />
           <ChatMessageList
             chatRoomId={chatRoomId}
-            otherUserId={otherUserId!}
             userId={user?.me?.id}
             username={username}
             avatar={user?.me?.avatar}
@@ -176,7 +175,6 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
                 </button>
                 <ChatMessageList
                   chatRoomId={chatRoomId}
-                  otherUserId={otherUserId!}
                   userId={user?.me?.id}
                   username={username}
                   avatar={user?.me?.avatar}

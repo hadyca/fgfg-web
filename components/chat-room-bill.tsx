@@ -1,6 +1,5 @@
 "use client";
 
-import { GetBillSkeleton } from "@/app/(main)/chat-room/[chatRoomId]/skeleton";
 import { Card } from "./ui/card";
 import {
   calculateGapTimeISO,
