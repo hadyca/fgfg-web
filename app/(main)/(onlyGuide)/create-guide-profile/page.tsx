@@ -117,7 +117,6 @@ export default function CreateGuideProfile() {
       const newPhotos = [...currentPhotos, newPhoto];
       setValue("guidePhotos", newPhotos);
       const test = getValues("guidePhotos");
-      console.log(test);
     }
   };
 

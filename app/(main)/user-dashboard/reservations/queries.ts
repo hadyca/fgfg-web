@@ -26,6 +26,7 @@ export const USER_CANCEL_RESERVATION = gql`
   mutation userCancelReservation($reservationId: Int!) {
     userCancelReservation(reservationId: $reservationId) {
       ok
+      error
     }
   }
 `;

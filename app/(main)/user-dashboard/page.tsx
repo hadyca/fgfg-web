@@ -45,7 +45,7 @@ export default async function UserDashboard() {
             </div>
           </Card>
         </Link>
-        <Card className="shadow-md max-w-sm p-3">
+        {/* <Card className="shadow-md max-w-sm p-3">
           <div className="h-32 flex flex-col justify-between">
             <QuestionMarkCircleIcon className="size-10" strokeWidth={1.2} />
             <div>
@@ -64,7 +64,7 @@ export default async function UserDashboard() {
               </div>
             </div>
           </div>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );

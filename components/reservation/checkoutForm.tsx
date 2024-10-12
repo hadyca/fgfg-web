@@ -13,10 +13,6 @@ import { ClockIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { createChatRoom } from "@/app/(main)/contact-guide/[guideId]/actions";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useForm } from "react-hook-form";
-import {
-  contactGuideSchema,
-  ContactGuideType,
-} from "@/app/(main)/contact-guide/[guideId]/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorText from "../errorText";
 import { supabase } from "@/lib/supabaseClient";
@@ -32,6 +28,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import { useToast } from "../hooks/use-toast";
 
 interface CheckoutFormProps {
   amount: number;
@@ -56,6 +53,7 @@ export default function CheckoutForm({
   startTime,
   endTime,
 }: CheckoutFormProps) {
+  const { toast } = useToast();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -113,6 +111,14 @@ export default function CheckoutForm({
         createChatRoom(formData, guideId), // 채팅방 생성
         reserveGuide(formData, guideId, startTime, endTime), // 가이드 예약
       ]);
+
+      if (!reserveResult.ok) {
+        toast({
+          variant: "destructive",
+          title: reserveResult.error,
+        });
+        return;
+      }
 
       // 채널 생성 후 메시지 전송
       messageChannel.current = supabase.channel(`room-${chatRoom.id}`);
@@ -203,7 +209,11 @@ export default function CheckoutForm({
           <div className="text-xl font-semibold">고객님 연령대</div>
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger
+                onClick={(e) => {
+                  e.stopPropagation(); // 클릭 이벤트가 상위 form에 전달되지 않도록 막음
+                }}
+              >
                 <ExclamationCircleIcon className="size-6 text-primary" />
               </TooltipTrigger>
               <TooltipContent>
@@ -212,47 +222,49 @@ export default function CheckoutForm({
             </Tooltip>
           </TooltipProvider>
         </div>
-        {errors?.customerAgeRange ? (
-          <ErrorText text={errors.customerAgeRange.message!} />
-        ) : null}
-        <select
-          className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
-            customerAgeRange ? "" : "text-muted-foreground"
-          }`}
-          value={customerAgeRange}
-          onChange={handleStartTimeChange}
-        >
-          <option value="" disabled hidden>
-            연령대 추가
-          </option>
-          <option value="20~25세" className="text-black">
-            20~25세
-          </option>
-          <option value="26~30세" className="text-black">
-            26~30세
-          </option>
-          <option value="31~35세" className="text-black">
-            31~35세
-          </option>
-          <option value="36~40세" className="text-black">
-            36~40세
-          </option>
-          <option value="41~45세" className="text-black">
-            41~45세
-          </option>
-          <option value="46~50세" className="text-black">
-            46~50세
-          </option>
-          <option value="51~55세" className="text-black">
-            51~55세
-          </option>
-          <option value="56~60세" className="text-black">
-            56~60세
-          </option>
-          <option value="60세 이상" className="text-black">
-            60세 이상
-          </option>
-        </select>
+        <div>
+          {errors?.customerAgeRange ? (
+            <ErrorText text={errors.customerAgeRange.message!} />
+          ) : null}
+          <select
+            className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
+              customerAgeRange ? "" : "text-muted-foreground"
+            }`}
+            value={customerAgeRange}
+            onChange={handleStartTimeChange}
+          >
+            <option value="" disabled hidden>
+              연령대 추가
+            </option>
+            <option value="20~25세" className="text-black">
+              20~25세
+            </option>
+            <option value="26~30세" className="text-black">
+              26~30세
+            </option>
+            <option value="31~35세" className="text-black">
+              31~35세
+            </option>
+            <option value="36~40세" className="text-black">
+              36~40세
+            </option>
+            <option value="41~45세" className="text-black">
+              41~45세
+            </option>
+            <option value="46~50세" className="text-black">
+              46~50세
+            </option>
+            <option value="51~55세" className="text-black">
+              51~55세
+            </option>
+            <option value="56~60세" className="text-black">
+              56~60세
+            </option>
+            <option value="60세 이상" className="text-black">
+              60세 이상
+            </option>
+          </select>
+        </div>
       </div>
       <Separator className="my-8" />
 

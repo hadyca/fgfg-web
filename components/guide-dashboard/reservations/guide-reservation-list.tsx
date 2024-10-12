@@ -1,9 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { Card } from "../../ui/card";
 import {
-  calculateAge,
   calculateGapTimeISO,
   convertMonthDayIntl,
   convertToVietnamISO,
@@ -12,7 +10,11 @@ import {
 } from "@/lib/utils";
 import { SERVICE_FEE } from "@/lib/constants";
 import { Button } from "../../ui/button";
-import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
+import {
+  CheckCircleIcon,
+  UserCircleIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/solid";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,22 +26,21 @@ import {
   AlertDialogTrigger,
 } from "../../ui/alert-dialog";
 import { useState } from "react";
-import { cancelReservation } from "@/app/(main)/user-dashboard/reservations/actions";
 import { useToast } from "@/components/hooks/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  cancelReservation,
+  confirmReservation,
+} from "@/app/(main)/(onlyGuide)/guide-dashboard/reservations/actions";
 
-interface MainGuidePhoto {
-  fileUrl: string;
-}
-
-interface Guide {
-  fullname: string;
-  birthdate: string;
-  mainGuidePhoto: MainGuidePhoto;
+interface User {
+  avatar: string;
+  username: string;
 }
 
 interface Reservations {
   id: number;
-  guide: Guide;
+  user: User;
   startTime: string;
   endTime: string;
   guideConfirm: boolean;
@@ -47,20 +48,22 @@ interface Reservations {
   guideCancel: boolean;
   createdAt: string;
   serviceFee: number;
+  customerAgeRange: string;
 }
 
-interface UserReservationListProps {
+interface UpcomingReservationsProps {
   reservationList: Reservations[];
   selected: string;
 }
 
-export default function UserReservationList({
+export default function GuideReservationList({
   reservationList,
   selected,
-}: UserReservationListProps) {
+}: UpcomingReservationsProps) {
   const { toast } = useToast();
 
-  const [loading, setLoading] = useState(false);
+  const [rejectLoading, setRejectLoading] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const convertDate = (startTime: string) => {
     const userLocale = navigator.language.split("-")[0] || "ko"; // "ko" or "en" 같은 값만 남김
@@ -70,8 +73,8 @@ export default function UserReservationList({
       return formattedDate;
     }
   };
-  const handleContinueDialog = async (reservationId: number) => {
-    setLoading(true);
+  const handleReject = async (reservationId: number) => {
+    setRejectLoading(true);
     const { ok, error } = await cancelReservation(reservationId);
     if (!ok) {
       toast({
@@ -80,9 +83,24 @@ export default function UserReservationList({
       });
       return;
     }
-    setLoading(false);
+    setRejectLoading(false);
     window.location.reload();
   };
+
+  const handleConfirm = async (reservationId: number) => {
+    setConfirmLoading(true);
+    const { ok, error } = await confirmReservation(reservationId);
+    if (!ok) {
+      toast({
+        variant: "destructive",
+        title: error,
+      });
+      return;
+    }
+    setConfirmLoading(false);
+    window.location.reload();
+  };
+
   return (
     <div className="flex flex-col gap-5">
       {reservationList.map((reservation) => (
@@ -98,28 +116,55 @@ export default function UserReservationList({
                   <span className="font-semibold">예약 확정</span>
                 </div>
               ) : (
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button disabled={loading}>
-                      {loading ? "로딩 중..." : "예약 취소"}
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent className="max-w-sm">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        예약을 취소하시겠어요?
-                      </AlertDialogTitle>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>아니요</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={() => handleContinueDialog(reservation.id)}
+                <div className="flex flex-row gap-3">
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        disabled={rejectLoading || confirmLoading}
+                        variant={"outline"}
                       >
-                        확인
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                        {rejectLoading ? "로딩 중..." : "거절"}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="max-w-sm">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          예약을 거절하시겠어요?
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>아니요</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleReject(reservation.id)}
+                        >
+                          확인
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button disabled={rejectLoading || confirmLoading}>
+                        {confirmLoading ? "로딩 중..." : "수락"}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="max-w-sm">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          예약을 수락하시겠어요?
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>아니요</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleConfirm(reservation.id)}
+                        >
+                          확인
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
               )
             ) : selected === "completed" ? (
               <div className="flex items-center gap-2 bg-green-100 text-green-700 px-3 py-2 rounded-md">
@@ -134,21 +179,28 @@ export default function UserReservationList({
             )}
           </div>
           <div className="flex flex-row gap-3">
-            <div className="relative size-32 rounded-md overflow-hidden flex-shrink-0">
-              <Image
-                fill
-                src={`${reservation.guide.mainGuidePhoto.fileUrl}/mainphoto`}
-                alt={"guide main photo"}
-                className="object-cover"
-                sizes="128px"
-                priority
-              />
+            <div className="flex items-center h-32">
+              <Avatar className="size-16">
+                {reservation.user.avatar ? (
+                  <>
+                    <AvatarImage
+                      src={`${reservation.user.avatar}/avatar`}
+                      alt="@shadcn"
+                    />
+                    <AvatarFallback>
+                      <UserCircleIcon className="text-primary w-full h-full" />
+                    </AvatarFallback>
+                  </>
+                ) : (
+                  <UserCircleIcon className="text-primary w-full h-full" />
+                )}
+              </Avatar>
             </div>
             <div className="flex flex-col justify-between">
               <div>
-                <span className="mr-1">{reservation.guide.fullname}</span>
+                <span className="mr-1">{reservation.user.username}</span>
                 <span>
-                  <span>({calculateAge(reservation.guide.birthdate)}세)</span>
+                  <span>{`(${reservation.customerAgeRange})`}</span>
                 </span>
               </div>
               <div className="flex flex-row items-center">

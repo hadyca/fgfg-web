@@ -1,7 +1,7 @@
 "use client";
 
-import { deleteAccount } from "@/app/(main)/user-dashboard/(dashboard)/account/actions";
-import { PasswordType } from "@/app/(main)/user-dashboard/(dashboard)/account/schema";
+import { deleteAccount } from "@/app/(main)/user-dashboard/account/actions";
+import { PasswordType } from "@/app/(main)/user-dashboard/account/schema";
 import ErrorText from "@/components/errorText";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

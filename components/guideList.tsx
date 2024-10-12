@@ -86,8 +86,8 @@ export default function GuideList({ searchParams }: GuideListPros) {
               />
             </div>
             <div className="text-primary text-lg">
-              <span>{guide.fullname}</span>
-              <span> ({calculateAge(guide.birthdate)}세)</span>
+              <span className="mr-1">{guide.fullname}</span>
+              <span>({calculateAge(guide.birthdate)}세)</span>
             </div>
             <div className="text-sm">{guide.personality}</div>
             <div className="text-sm">{!guide.isActive ? "휴업 중" : null}</div>

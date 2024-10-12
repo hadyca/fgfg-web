@@ -1,28 +1,9 @@
 import { BIRTHDATE_REGEX, UNAVAILABLE_USERNAME } from "@/lib/constants";
+import LanguageOptionSchema from "@/lib/schema/languageOption";
+import unAvailableName from "@/lib/schema/unAvailableName";
 import validator from "validator";
+import { DateTime } from "luxon";
 import { z } from "zod";
-
-const unavailableName = (username: string) =>
-  !UNAVAILABLE_USERNAME.includes(username);
-
-const LanguageOptionSchema = z
-  .object({
-    id: z.number(),
-    language: z.string(),
-    level: z.string(),
-  })
-  .refine(
-    (data) => {
-      const hasLanguage = data.language.trim() !== "";
-      const hasLevel = data.level.trim() !== "";
-
-      // 둘 다 값이 있는 경우에만 유효
-      return (hasLanguage && hasLevel) || (!hasLanguage && !hasLevel);
-    },
-    {
-      message: "언어와 레벨은 둘 다 값이 있어야 합니다.",
-    }
-  );
 
 export const signUpGuideSchema = z.object({
   fullname: z
@@ -32,12 +13,26 @@ export const signUpGuideSchema = z.object({
     .toLowerCase()
     .min(1, "이름을 다시 확인 해주세요.")
     .max(30, { message: "최대 30자 까지 가능합니다." })
-    .refine(unavailableName, "사용할 수 없는 이름 입니다."),
+    .refine(unAvailableName, "사용할 수 없는 이름 입니다."),
   birthdate: z
     .string({
       required_error: "필수 항목 입니다.",
     })
-    .regex(BIRTHDATE_REGEX, "생년월일을 다시 확인해주세요."),
+    .regex(BIRTHDATE_REGEX, "생년월일을 다시 확인해주세요.")
+    .refine(
+      (date) => {
+        const today = DateTime.now().startOf("day");
+        const birthDate = DateTime.fromISO(date).startOf("day");
+
+        const minDate = today.minus({ years: 70 });
+        const maxDate = today.minus({ years: 15 });
+
+        return birthDate >= minDate && birthDate <= maxDate;
+      },
+      {
+        message: "생년월일을 다시 확인해주세요.",
+      }
+    ),
   height: z.string({ required_error: "필수 항목 입니다." }).refine(
     (val) => {
       const height = Number(val);

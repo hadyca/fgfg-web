@@ -1,10 +1,5 @@
 "use client";
 
-import { updateUsername } from "@/app/(main)/user-dashboard/account/actions";
-import {
-  usernameSchema,
-  UsernameType,
-} from "@/app/(main)/user-dashboard/account/schema";
 import ErrorText from "@/components/errorText";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,12 +7,17 @@ import { useToast } from "@/components/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import {
+  fullnameSchema,
+  FullnameType,
+} from "@/app/(main)/(onlyGuide)/guide-dashboard/profile/schema";
+import { updateFullanme } from "@/app/(main)/(onlyGuide)/guide-dashboard/profile/actions";
 
-interface UsernameFormProps {
-  username: string;
+interface FullnameFormProps {
+  fullname: string;
 }
 
-export default function UsernameForm({ username }: UsernameFormProps) {
+export default function FullnameForm({ fullname }: FullnameFormProps) {
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -25,51 +25,46 @@ export default function UsernameForm({ username }: UsernameFormProps) {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
-  } = useForm<UsernameType>({
-    resolver: zodResolver(usernameSchema),
+  } = useForm<FullnameType>({
+    resolver: zodResolver(fullnameSchema),
     defaultValues: {
-      username,
+      fullname,
     },
   });
 
-  const onValid = async (data: UsernameType) => {
-    if (username === data.username) {
+  const onValid = async (data: FullnameType) => {
+    if (fullname === data.fullname) {
       return;
     }
     setLoading(true);
     const formData = new FormData();
-    formData.append("username", data.username);
+    formData.append("fullname", data.fullname);
 
-    const result = await updateUsername(formData);
+    await updateFullanme(formData);
 
-    if (result?.type === "checkUsername") {
-      setError("username", { message: result.error });
-    } else {
-      toast({
-        description: "변경 되었습니다.",
-      });
-    }
+    toast({
+      description: "변경 되었습니다.",
+    });
+
     setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">유저명</div>
+      <div className="font-semibold mb-2">이름</div>
       <div className="flex flex-row justify-between items-center">
         <Input
           className="w-2/3"
           type="text"
-          placeholder="유저명"
           minLength={1}
           maxLength={30}
-          {...register("username")}
+          {...register("fullname")}
           required
         />
         <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
       </div>
-      {errors?.username ? <ErrorText text={errors.username.message!} /> : null}
+      {errors?.fullname ? <ErrorText text={errors.fullname.message!} /> : null}
     </form>
   );
 }
