@@ -21,9 +21,7 @@ export async function reserveGuide(
     return result.error.flatten();
   } else {
     const {
-      data: {
-        createReservation: { ok },
-      },
+      data: { createReservation },
     } = await client.mutate({
       mutation: CREATE_RESERVATION,
       variables: {
@@ -34,9 +32,6 @@ export async function reserveGuide(
       },
     });
 
-    if (!ok) {
-      redirect("/404");
-    }
-    return ok;
+    return createReservation;
   }
 }

@@ -14,6 +14,7 @@ export const CREATE_RESERVATION = gql`
       customerAgeRange: $customerAgeRange
     ) {
       ok
+      error
     }
   }
 `;

@@ -1,6 +1,5 @@
+import PhotosSchema from "@/lib/schema/PhotosSchema";
 import { z } from "zod";
-
-const PhotosSchema = z.object({ id: z.number(), url: z.string() });
 
 export const createGuideProfileSchema = z.object({
   guidePhotos: z

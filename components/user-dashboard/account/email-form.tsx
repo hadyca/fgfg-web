@@ -1,10 +1,10 @@
 "use client";
 
-import { updateEmail } from "@/app/(main)/user-dashboard/(dashboard)/account/actions";
+import { updateEmail } from "@/app/(main)/user-dashboard/account/actions";
 import {
   emailSchema,
   EmailType,
-} from "@/app/(main)/user-dashboard/(dashboard)/account/schema";
+} from "@/app/(main)/user-dashboard/account/schema";
 import ErrorText from "@/components/errorText";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,7 +48,7 @@ export default function EmailForm({ email }: EmailFormProps) {
       setError("email", { message: result.error });
     } else {
       toast({
-        description: "이메일이 업데이트 되었습니다.",
+        description: "변경 되었습니다.",
       });
     }
     setLoading(false);

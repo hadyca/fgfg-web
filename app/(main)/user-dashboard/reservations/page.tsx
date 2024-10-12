@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { getReservations } from "./actions";
-import UserReservations from "@/components/user-dashboard/reservations/user-Reservations";
+import UserReservations from "@/components/user-dashboard/reservations/user-reservations";
 import Link from "next/link";
 
 export default async function Reservations() {

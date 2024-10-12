@@ -21,11 +21,11 @@ export async function getReservations() {
 export async function cancelReservation(reservationId: number) {
   const {
     data: {
-      userCancelReservation: { ok },
+      userCancelReservation: { ok, error },
     },
   } = await client.mutate({
     mutation: USER_CANCEL_RESERVATION,
     variables: { reservationId },
   });
-  return ok;
+  return { ok, error };
 }

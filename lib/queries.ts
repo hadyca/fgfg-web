@@ -22,3 +22,25 @@ export const ME_QUERY = gql`
     }
   }
 `;
+
+export const SEE_MY_GUIDE = gql`
+  query seeMyGuide {
+    seeMyGuide {
+      fullname
+      birthdate
+      height
+      address
+      phone
+      language
+      guidePhotos {
+        id
+      }
+      personality
+      guideIntro
+      pickupPlaceMain
+      pickupPlaceLat
+      pickupPlaceLng
+      pickupPlaceDetail
+    }
+  }
+`;

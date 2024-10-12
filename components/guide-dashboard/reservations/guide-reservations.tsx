@@ -3,26 +3,21 @@
 import { useEffect, useState } from "react";
 import { Button } from "../../ui/button";
 import { DateTime } from "luxon";
-import UserReservationList from "./user-reservation-list";
 import {
   CalendarIcon,
   CheckCircleIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
+import GuideReservationList from "./guide-reservation-list";
 
-interface MainGuidePhoto {
-  fileUrl: string;
-}
-
-interface Guide {
-  fullname: string;
-  birthdate: string;
-  mainGuidePhoto: MainGuidePhoto;
+interface User {
+  avatar: string;
+  username: string;
 }
 
 interface Reservations {
   id: number;
-  guide: Guide;
+  user: User;
   startTime: string;
   endTime: string;
   guideConfirm: boolean;
@@ -30,15 +25,16 @@ interface Reservations {
   guideCancel: boolean;
   createdAt: string;
   serviceFee: number;
+  customerAgeRange: string;
 }
 
-interface UserReservationsProps {
+interface GuideReservationsProps {
   reservations: Reservations[];
 }
 
-export default function UserReservations({
+export default function GuideReservations({
   reservations,
-}: UserReservationsProps) {
+}: GuideReservationsProps) {
   const [selected, setSelected] = useState<string>("upcoming");
   const [upComingList, setUpComingList] = useState<Reservations[]>([]);
   const [completedList, setCompletedList] = useState<Reservations[]>([]);
@@ -98,7 +94,7 @@ export default function UserReservations({
       <div className="mt-3">
         {selected === "upcoming" ? (
           upComingList.length > 0 ? (
-            <UserReservationList
+            <GuideReservationList
               reservationList={upComingList}
               selected={selected}
             />
@@ -110,7 +106,7 @@ export default function UserReservations({
           )
         ) : selected === "completed" ? (
           completedList.length > 0 ? (
-            <UserReservationList
+            <GuideReservationList
               reservationList={completedList}
               selected={selected}
             />
@@ -121,7 +117,7 @@ export default function UserReservations({
             </div>
           )
         ) : canceledList.length > 0 ? (
-          <UserReservationList
+          <GuideReservationList
             reservationList={canceledList}
             selected={selected}
           />

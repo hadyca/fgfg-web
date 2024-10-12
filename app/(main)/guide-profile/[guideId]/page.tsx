@@ -57,6 +57,7 @@ export default async function guideProfile(props: GuideProfileProps) {
   if (!guide.seeGuide) {
     return notFound();
   }
+
   const filteredReservations = guide?.seeGuide?.reservations.filter(
     (reservation: Reservation) => {
       const now = DateTime.now().toISO();

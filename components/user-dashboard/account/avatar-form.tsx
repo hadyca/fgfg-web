@@ -1,7 +1,7 @@
 "use client";
 
 import { getUploadUrl } from "@/app/(main)/signup-guide/actions";
-import { updateAvatar } from "@/app/(main)/user-dashboard/(dashboard)/account/actions";
+import { updateAvatar } from "@/app/(main)/user-dashboard/account/actions";
 import ErrorText from "@/components/errorText";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";

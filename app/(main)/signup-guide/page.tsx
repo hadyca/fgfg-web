@@ -40,7 +40,6 @@ export default function SignUpGuide() {
   const [existError, setExistError] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
-  const [nextId, setNextId] = useState(2);
   const [isDialogOpen, setIsDialogOpen] = useState(false); // Dialog 상태 관리
 
   const router = useRouter();
@@ -162,15 +161,18 @@ export default function SignUpGuide() {
   };
 
   const handleAddLanguage = () => {
-    setValue("language", [
-      ...language,
-      { id: nextId, language: "", level: "" },
-    ]);
-    setNextId(nextId + 1);
+    const newId = language.length + 1; // 배열 길이 + 1을 ID로 사용
+    setValue("language", [...language, { id: newId, language: "", level: "" }]);
   };
 
   const handleRemoveLanguage = (id: number) => {
-    const newOptions = language.filter((item) => item.id !== id);
+    const newOptions = language
+      .filter((item) => item.id !== id) // 선택된 언어 삭제
+      .map((item, index) => ({
+        ...item,
+        id: index + 1, // 인덱스를 기반으로 ID를 재정렬
+      }));
+
     setValue("language", newOptions);
   };
 
@@ -300,16 +302,17 @@ export default function SignUpGuide() {
                   key={option.id}
                   className="flex flex-row gap-3 items-center"
                 >
-                  {/* 언어 선택 */}
                   <div>
                     <select
                       value={option.language}
                       onChange={(e) =>
                         handleLanguageChange(index, e.target.value)
                       }
-                      className="h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none"
+                      className={`h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
+                        option.language ? "" : "text-muted-foreground"
+                      }`}
                     >
-                      <option value="" disabled>
+                      <option value="" disabled hidden>
                         언어 선택
                       </option>
                       {getAvailableLanguages(index).map((lang) => (
@@ -317,27 +320,39 @@ export default function SignUpGuide() {
                           key={lang.name}
                           value={lang.name}
                           disabled={lang.disabled}
+                          className="text-black"
                         >
                           {lang.name}
                         </option>
                       ))}
                     </select>
                   </div>
-                  {/* 레벨 선택 */}
                   <div>
                     <select
                       value={option.level}
                       onChange={(e) => handleLevelChange(index, e.target.value)}
-                      className="h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none"
+                      className={`h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
+                        option.level ? "" : "text-muted-foreground"
+                      }`}
                     >
-                      <option value="" disabled>
+                      <option value="" disabled hidden>
                         레벨
                       </option>
-                      <option value="1">1(기초 수준)</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5(원어민 수준)</option>
+                      <option value="1" className="text-black">
+                        1(기초 수준)
+                      </option>
+                      <option value="2" className="text-black">
+                        2
+                      </option>
+                      <option value="3" className="text-black">
+                        3
+                      </option>
+                      <option value="4" className="text-black">
+                        4
+                      </option>
+                      <option value="5" className="text-black">
+                        5(원어민 수준)
+                      </option>
                     </select>
                   </div>
                   <MinusCircleIcon

@@ -1,10 +1,10 @@
 "use client";
 
-import { updatePassword } from "@/app/(main)/user-dashboard/(dashboard)/account/actions";
+import { updatePassword } from "@/app/(main)/user-dashboard/account/actions";
 import {
   passwordSchema,
   PasswordType,
-} from "@/app/(main)/user-dashboard/(dashboard)/account/schema";
+} from "@/app/(main)/user-dashboard/account/schema";
 import ErrorText from "@/components/errorText";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +42,7 @@ export default function PasswordForm() {
       setError("password", { message: result.error });
     } else {
       toast({
-        description: "비밀번호가 업데이트 되었습니다.",
+        description: "변경 되었습니다.",
       });
       reset();
     }
@@ -52,9 +52,9 @@ export default function PasswordForm() {
   return (
     <form onSubmit={handleSubmit(onValid)}>
       <div className="font-semibold mb-2">비밀번호</div>
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-col gap-2">
-          <div className="text-sm">현재 비밀번호</div>
+      <div className="flex flex-col gap-5">
+        <div className="flex flex-col">
+          <div className="text-sm mb-2">현재 비밀번호</div>
           <Input
             className="w-2/3"
             type="password"
@@ -66,8 +66,8 @@ export default function PasswordForm() {
             <ErrorText text={errors.password.message!} />
           ) : null}
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="text-sm">새 비밀번호</div>
+        <div className="flex flex-col">
+          <div className="text-sm mb-2">새 비밀번호</div>
           <Input
             className="w-2/3"
             type="password"
@@ -79,8 +79,9 @@ export default function PasswordForm() {
             <ErrorText text={errors.newPassword.message!} />
           ) : null}
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="text-sm">비밀번호 확인</div>
+
+        <div className="flex flex-col">
+          <div className="text-sm mb-2">비밀번호 확인</div>
           <div className="flex flex-row justify-between">
             <Input
               className="w-2/3"
