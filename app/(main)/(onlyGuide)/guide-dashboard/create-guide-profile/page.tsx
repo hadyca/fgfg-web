@@ -21,8 +21,9 @@ import { CreateGuideProfileType } from "./schema";
 import GuideProfileQandA from "@/components/guideProfileQandA";
 import { createGuideProfile } from "./actions";
 import GoogleMapApi from "@/components/googleMapApi";
-import { getUploadUrl } from "../../signup-guide/actions";
+
 import Spinner from "@/components/ui/spinner";
+import { getUploadUrl } from "@/app/(main)/signup-guide/actions";
 
 export default function CreateGuideProfile() {
   const [photoLoading, setPhotoLoading] = useState<boolean[]>(
@@ -38,6 +39,7 @@ export default function CreateGuideProfile() {
     handleSubmit,
     setValue,
     setError,
+    watch,
     getValues,
     formState: { errors },
   } = useForm<CreateGuideProfileType>({
@@ -49,10 +51,15 @@ export default function CreateGuideProfile() {
       pickupPlaceLng: 0,
     },
   });
+
+  const selectedPersonality = watch("personality");
+
   const onImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
+    const input = event.target;
+
     const {
       target: { files },
     } = event;
@@ -61,9 +68,12 @@ export default function CreateGuideProfile() {
     const typeOk = fileType ? ACCEPTED_IMAGE_TYPES.includes(fileType) : false;
     if (!typeOk) {
       setError("guidePhotos", { message: "이미지 파일을 선택해주세요." });
+      input.value = ""; // 선택한 파일 초기화
       return;
     }
     if (!files || files.length === 0) {
+      input.value = ""; // 선택한 파일 초기화
+
       return;
     }
     const file = files[0];
@@ -75,6 +85,7 @@ export default function CreateGuideProfile() {
       updatedPreviews[index] = url; // 항상 지정된 인덱스에 추가 혹은 대체
       return updatedPreviews;
     });
+
     setFiles((prev) => {
       const updatedFiles = [...prev];
       updatedFiles[index] = file; // 항상 지정된 인덱스에 추가 혹은 대체
@@ -110,25 +121,24 @@ export default function CreateGuideProfile() {
       const currentPhotos = getValues("guidePhotos"); // 현재 guidePhotos 배열을 가져옴
 
       const newPhoto = {
-        id: index + 1,
-        url: `https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/${id}`,
+        fileUrlOrder: index + 1,
+        fileUrl: `https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/${id}`,
       };
 
       const newPhotos = [...currentPhotos, newPhoto];
       setValue("guidePhotos", newPhotos);
-      const test = getValues("guidePhotos");
     }
+    input.value = ""; // 파일 선택 초기화
   };
 
   const onValid = async (data: CreateGuideProfileType) => {
     setLoading(true);
-
     await Promise.all(
       files.map(async (file, index) => {
         const url = uploadUrl[index];
 
-        if (!file || !url) {
-          setError("guidePhotos", { message: "사진을 업로드해주세요." });
+        //배열값 중간에 null이 있으면 그냥 pass
+        if (file === null) {
           return;
         }
 
@@ -144,20 +154,26 @@ export default function CreateGuideProfile() {
           setError("guidePhotos", {
             message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
           });
-          return;
+          throw new Error("업로드 실패");
         }
       })
     );
+    // 기존 fileUrlOrder 값으로 정렬한 후, 순서대로 재배열
+    const reorderedPhotos = data.guidePhotos
+      .sort((a, b) => a.fileUrlOrder - b.fileUrlOrder) // 기존 순서대로 정렬
+      .map((photo, index) => ({
+        ...photo,
+        fileUrlOrder: index + 1, // 정렬된 순서대로 1, 2, 3, 4 설정
+      }));
 
     const formData = new FormData();
-    formData.append("guidePhotos", JSON.stringify(data.guidePhotos));
+    formData.append("guidePhotos", JSON.stringify(reorderedPhotos));
     formData.append("personality", data.personality);
     formData.append("guideIntro", data.guideIntro);
     formData.append("pickupPlaceMain", data.pickupPlaceMain);
     formData.append("pickupPlaceLat", data.pickupPlaceLat.toString());
     formData.append("pickupPlaceLng", data.pickupPlaceLng.toString());
     formData.append("pickupPlaceDetail", data.pickupPlaceDetail);
-
     await createGuideProfile(formData);
 
     setLoading(false);
@@ -190,7 +206,7 @@ export default function CreateGuideProfile() {
     // guidePhotos 배열 업데이트 (해당 인덱스를 null로 설정)
     const currentPhotos = getValues("guidePhotos");
     const updatedGuidePhotos = currentPhotos.filter(
-      (photo) => photo.id !== index + 1
+      (photo) => photo.fileUrlOrder !== index + 1
     );
     setValue("guidePhotos", updatedGuidePhotos);
   };
@@ -272,24 +288,45 @@ export default function CreateGuideProfile() {
                   id="personality"
                   {...register("personality")}
                   required
-                  defaultValue=""
-                  className="border p-3 rounded-md text-sm w-56"
+                  defaultValue={""}
+                  value={selectedPersonality}
+                  className={`border p-3 rounded-md text-sm w-56 ${
+                    selectedPersonality ? "" : "text-muted-foreground"
+                  }`}
                 >
-                  <option value="" disabled className="text-muted-foreground">
+                  <option value="" disabled hidden>
                     성격을 선택해주세요
                   </option>
-                  <option value="귀엽고 발랄한">귀엽고 발랄한</option>
-                  <option value="섹시하고 매혹적인">섹시하고 매혹적인</option>
-                  <option value="엉뚱하고 독특한">엉뚱하고 독특한</option>
-                  <option value="활발하고 명랑한">활발하고 명랑한</option>
-                  <option value="차분하고 따뜻한">차분하고 따뜻한</option>
-                  <option value="친절하고 상냥한">친절하고 상냥한</option>
-                  <option value="긍정적이고 밝은">긍정적이고 밝은</option>
-                  <option value="유머러스하고 재치있는">
+                  <option value="귀엽고 발랄한" className="text-black">
+                    귀엽고 발랄한
+                  </option>
+                  <option value="섹시하고 매혹적인" className="text-black">
+                    섹시하고 매혹적인
+                  </option>
+                  <option value="엉뚱하고 독특한" className="text-black">
+                    엉뚱하고 독특한
+                  </option>
+                  <option value="활발하고 명랑한" className="text-black">
+                    활발하고 명랑한
+                  </option>
+                  <option value="차분하고 따뜻한" className="text-black">
+                    차분하고 따뜻한
+                  </option>
+                  <option value="친절하고 상냥한" className="text-black">
+                    친절하고 상냥한
+                  </option>
+                  <option value="긍정적이고 밝은" className="text-black">
+                    긍정적이고 밝은
+                  </option>
+                  <option value="유머러스하고 재치있는" className="text-black">
                     유머러스하고 재치있는
                   </option>
-                  <option value="지적이고 신중한">지적이고 신중한</option>
-                  <option value="매력적이고 세련된">매력적이고 세련된</option>
+                  <option value="지적이고 신중한" className="text-black">
+                    지적이고 신중한
+                  </option>
+                  <option value="매력적이고 세련된" className="text-black">
+                    매력적이고 세련된
+                  </option>
                 </select>
               </div>
             </div>

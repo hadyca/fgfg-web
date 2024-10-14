@@ -1,4 +1,3 @@
-import getUser from "@/lib/getUser";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import ProfileInfo from "@/components/guide-dashboard/profile/profile-info";
@@ -9,7 +8,7 @@ export default async function Profile() {
   return (
     <>
       <div className="flex flex-row items-center mb-2">
-        <Link href={"/user-dashboard"}>
+        <Link href={"/guide-dashboard"}>
           <span className="text-primary text-lg">가이드 관리</span>
         </Link>
         <ChevronRightIcon className="size-4" />

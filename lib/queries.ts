@@ -32,9 +32,14 @@ export const SEE_MY_GUIDE = gql`
       address
       phone
       language
-      guidePhotos {
+      mainGuidePhoto {
         id
       }
+      guidePhotos {
+        fileUrlOrder
+        fileUrl
+      }
+
       personality
       guideIntro
       pickupPlaceMain

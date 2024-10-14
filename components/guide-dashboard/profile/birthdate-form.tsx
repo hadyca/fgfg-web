@@ -12,12 +12,12 @@ import {
   BirthdateType,
   heightSchema,
   HeightType,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/profile/schema";
+} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import {
   updateBirthdate,
   updateFullanme,
   updateHeight,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/profile/actions";
+} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 
 interface BirthdateFormProps {
   birthdate: string;

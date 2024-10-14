@@ -18,6 +18,7 @@ interface Guide {
   birthdate: string;
   personality: string;
   mainGuidePhoto: MainGuidePhoto;
+  isApproved: boolean;
   isActive: boolean;
 }
 
