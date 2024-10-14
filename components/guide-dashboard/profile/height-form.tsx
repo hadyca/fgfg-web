@@ -10,8 +10,8 @@ import { useForm } from "react-hook-form";
 import {
   heightSchema,
   HeightType,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/profile/schema";
-import { updateHeight } from "@/app/(main)/(onlyGuide)/guide-dashboard/profile/actions";
+} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
+import { updateHeight } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 
 interface HeightFormProps {
   height: string;

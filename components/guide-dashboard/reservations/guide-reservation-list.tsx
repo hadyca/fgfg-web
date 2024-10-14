@@ -31,7 +31,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   cancelReservation,
   confirmReservation,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/reservations/actions";
+} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/reservations/actions";
 
 interface User {
   avatar: string;

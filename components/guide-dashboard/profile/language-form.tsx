@@ -9,8 +9,8 @@ import { useForm } from "react-hook-form";
 import {
   languageSchema,
   LanguageType,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/profile/schema";
-import { updateHeight } from "@/app/(main)/(onlyGuide)/guide-dashboard/profile/actions";
+} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
+import { updateLanguage } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { MinusCircleIcon } from "@heroicons/react/24/outline";
 import { LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";
@@ -31,7 +31,6 @@ export default function LanguageForm({
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
-  const [nextId, setNextId] = useState(2);
 
   const initialLanguage: LanguageInput[] =
     typeof originLanguage === "string"
@@ -49,9 +48,7 @@ export default function LanguageForm({
       language: initialLanguage,
     },
   });
-
   const language = watch("language");
-  console.log(language);
   const isAllLanguagesSelected =
     language.length >= LANGUAGE_OPTIONS_KOREAN.length;
 
@@ -94,19 +91,14 @@ export default function LanguageForm({
   };
 
   const onValid = async (data: LanguageType) => {
-    // if (height === data.height) {
-    //   return;
-    // }
-
     const filteredLanguageOptions = language.filter(
       (option) => option.language.trim() !== "" && option.level.trim() !== ""
     );
-
     setLoading(true);
     const formData = new FormData();
     formData.append("language", JSON.stringify(filteredLanguageOptions));
 
-    await updateHeight(formData);
+    await updateLanguage(formData);
 
     toast({
       description: "변경 되었습니다.",

@@ -1,5 +1,8 @@
 import { z } from "zod";
 
-const PhotosSchema = z.object({ id: z.number(), url: z.string() });
+const PhotosSchema = z.object({
+  fileUrlOrder: z.number(),
+  fileUrl: z.string(),
+});
 
 export default PhotosSchema;

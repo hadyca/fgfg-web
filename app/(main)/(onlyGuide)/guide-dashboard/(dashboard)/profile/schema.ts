@@ -109,7 +109,7 @@ export const guidePhotosSchema = z.object({
     .min(2, "2개 이상의 사진이 필요합니다.")
     .refine(
       (guidePhotos) =>
-        guidePhotos.some((photo) => photo !== null && photo.id === 1),
+        guidePhotos.some((photo) => photo !== null && photo.fileUrlOrder === 1),
       {
         message: "대표 사진을 추가해주세요.",
       }

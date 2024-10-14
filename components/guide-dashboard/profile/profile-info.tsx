@@ -1,13 +1,15 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import UsernameForm from "./fullname-form";
 import { Separator } from "@/components/ui/separator";
 import { EyeIcon } from "@heroicons/react/24/outline";
 import FullnameForm from "./fullname-form";
 import HeightForm from "./height-form";
 import BirthdateForm from "./birthdate-form";
 import LanguageForm from "./language-form";
+import AddressForm from "./address-form";
+import PhoneForm from "./phone-form";
+import GuidePhotosForm from "./guidePhotos-form";
 
 interface LanguageInput {
   id: number;
@@ -16,8 +18,8 @@ interface LanguageInput {
 }
 
 interface GuidePhotosInput {
-  id: number;
-  url: string;
+  fileUrlOrder: number;
+  fileUrl: string;
 }
 
 interface ProfileInfoProps {
@@ -61,6 +63,13 @@ export default function ProfileInfo({
         <HeightForm height={height} />
         <Separator />
         <LanguageForm language={language} />
+        <Separator />
+        <AddressForm address={address} />
+        <Separator />
+        <PhoneForm phone={phone} />
+        <Separator />
+        <GuidePhotosForm guidePhotos={guidePhotos} />
+        <Separator />
       </div>
       <Separator className="md:hidden my-10" />
       <div className="px-14">

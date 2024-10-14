@@ -9,7 +9,7 @@ export default async function Reservations() {
   return (
     <>
       <div className="flex flex-row items-center mb-2">
-        <Link href={"/user-dashboard"}>
+        <Link href={"/guide-dashboard"}>
           <span className="text-primary text-lg">가이드 관리</span>
         </Link>
         <ChevronRightIcon className="size-4" />

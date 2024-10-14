@@ -8,16 +8,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-  fullnameSchema,
-  FullnameType,
+  phoneSchema,
+  PhoneType,
 } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
-import { updateFullanme } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+import { updatePhone } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 
-interface FullnameFormProps {
-  fullname: string;
+interface PhoneFormProps {
+  phone: string;
 }
 
-export default function FullnameForm({ fullname }: FullnameFormProps) {
+export default function PhoneForm({ phone }: PhoneFormProps) {
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -26,22 +26,22 @@ export default function FullnameForm({ fullname }: FullnameFormProps) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FullnameType>({
-    resolver: zodResolver(fullnameSchema),
+  } = useForm<PhoneType>({
+    resolver: zodResolver(phoneSchema),
     defaultValues: {
-      fullname,
+      phone,
     },
   });
 
-  const onValid = async (data: FullnameType) => {
-    if (fullname === data.fullname) {
+  const onValid = async (data: PhoneType) => {
+    if (phone === data.phone) {
       return;
     }
     setLoading(true);
     const formData = new FormData();
-    formData.append("fullname", data.fullname);
+    formData.append("phone", data.phone);
 
-    await updateFullanme(formData);
+    await updatePhone(formData);
 
     toast({
       description: "변경 되었습니다.",
@@ -52,19 +52,12 @@ export default function FullnameForm({ fullname }: FullnameFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">이름</div>
+      <div className="font-semibold mb-2">핸드폰 번호</div>
       <div className="flex flex-row justify-between items-center">
-        <Input
-          className="w-2/3"
-          type="text"
-          minLength={1}
-          maxLength={30}
-          {...register("fullname")}
-          required
-        />
+        <Input className="w-2/3" type="text" {...register("phone")} required />
         <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
       </div>
-      {errors?.fullname ? <ErrorText text={errors.fullname.message!} /> : null}
+      {errors?.phone ? <ErrorText text={errors.phone.message!} /> : null}
     </form>
   );
 }

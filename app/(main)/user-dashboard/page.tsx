@@ -20,7 +20,7 @@ export default async function UserDashboard() {
       </div>
       <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
         <Link href={"/user-dashboard/reservations"}>
-          <Card className="shadow-md max-w-sm p-3">
+          <Card className="shadow-md p-3">
             <div className="h-32 flex flex-col justify-between">
               <CalendarDaysIcon className="size-10" strokeWidth={1.2} />
               <div>
@@ -33,7 +33,7 @@ export default async function UserDashboard() {
           </Card>
         </Link>
         <Link href={"/user-dashboard/account"}>
-          <Card className="shadow-md max-w-sm p-3">
+          <Card className="shadow-md p-3">
             <div className="h-32 flex flex-col justify-between">
               <IdentificationIcon className="size-10" strokeWidth={1.2} />
               <div>
