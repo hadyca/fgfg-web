@@ -2,6 +2,7 @@ import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import ProfileInfo from "@/components/guide-dashboard/profile/profile-info";
 import getGuide from "@/lib/getGuide";
+import { Button } from "@/components/ui/button";
 
 export default async function Profile() {
   const guide = await getGuide();

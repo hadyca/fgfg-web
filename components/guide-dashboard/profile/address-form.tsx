@@ -41,18 +41,24 @@ export default function AddressForm({ address }: AddressFormProps) {
     const formData = new FormData();
     formData.append("address", data.address);
 
-    await updateAddress(formData);
+    const { ok, error } = await updateAddress(formData);
 
-    toast({
-      description: "변경 되었습니다.",
-    });
-
+    if (!ok) {
+      toast({
+        variant: "destructive",
+        title: error,
+      });
+    } else {
+      toast({
+        description: "변경 되었습니다.",
+      });
+    }
     setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">주소</div>
+      <div className="font-semibold mb-2">거주지 주소</div>
       <div className="flex flex-row justify-between items-center">
         <Input
           className="w-2/3"

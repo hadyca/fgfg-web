@@ -10,12 +10,15 @@ import { ACCEPTED_IMAGE_TYPES } from "@/lib/constants";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useToast } from "@/components/hooks/use-toast";
 
 interface AvatarFormProps {
   avatar: string;
 }
 
 export default function AvatarForm({ avatar }: AvatarFormProps) {
+  const { toast } = useToast();
+
   const [avatarLoading, setAvatarLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [newAvatar, setNewAvatar] = useState("");
@@ -103,7 +106,20 @@ export default function AvatarForm({ avatar }: AvatarFormProps) {
 
     const formData = new FormData();
     formData.append("avatar", data.avatar);
-    await updateAvatar(formData);
+    const { ok, error } = await updateAvatar(formData);
+
+    if (!ok) {
+      toast({
+        variant: "destructive",
+        title: error,
+      });
+      return;
+    } else {
+      toast({
+        description: "변경 되었습니다.",
+      });
+    }
+
     setLoading(false);
     window.location.reload();
   };

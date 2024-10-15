@@ -26,6 +26,7 @@ interface Reservations {
   createdAt: string;
   serviceFee: number;
   customerAgeRange: string;
+  paymentIntentId: string;
 }
 
 interface GuideReservationsProps {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   useStripe,
   useElements,
@@ -40,6 +40,7 @@ interface CheckoutFormProps {
   email: string;
   startTime: string;
   endTime: string;
+  paymentIntentId: string;
 }
 
 export default function CheckoutForm({
@@ -52,13 +53,12 @@ export default function CheckoutForm({
   email,
   startTime,
   endTime,
+  paymentIntentId,
 }: CheckoutFormProps) {
   const { toast } = useToast();
   const stripe = useStripe();
   const elements = useElements();
 
-  const [errorMessage, setErrorMessage] = useState<string>();
-  const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(false);
   const [customerAgeRange, setCustomerAgeRange] = useState("");
 
@@ -73,18 +73,6 @@ export default function CheckoutForm({
   } = useForm<ReservationType>({
     resolver: zodResolver(reservationSchema),
   });
-
-  useEffect(() => {
-    fetch("/api/create-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ amount }),
-    })
-      .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
-  }, [amount]);
 
   const onValid = async (data: ReservationType) => {
     setLoading(true);
@@ -109,7 +97,7 @@ export default function CheckoutForm({
       formData.append("customerAgeRange", data.customerAgeRange);
       const [chatRoom, reserveResult] = await Promise.all([
         createChatRoom(formData, guideId), // 채팅방 생성
-        reserveGuide(formData, guideId, startTime, endTime), // 가이드 예약
+        reserveGuide(formData, guideId, startTime, endTime, paymentIntentId), // 가이드 예약
       ]);
 
       if (!reserveResult.ok) {
@@ -159,21 +147,21 @@ export default function CheckoutForm({
 
       const { error } = await stripe.confirmPayment({
         elements,
-        clientSecret,
         confirmParams: {
           return_url: `http://www.localhost:3000/payment-success?amount=${amount}`,
-          receipt_email: email,
         },
       });
 
       if (error) {
-        throw new Error(error.message);
+        console.log(error);
       }
+
+      toast({
+        description:
+          "예약 요청이 완료되었습니다. 가이드의 승인을 기다려주세요.",
+      });
     } catch (err) {
-      // 에러가 발생하면 여기서 처리하고 나머지 함수 실행 중지
-      setErrorMessage(
-        err instanceof Error ? err.message : "An unknown error occurred"
-      );
+      console.log(err);
       setLoading(false);
       return;
     }
@@ -181,14 +169,6 @@ export default function CheckoutForm({
     // 모든 작업이 성공적으로 완료되면 로딩 상태 해제
     setLoading(false);
   };
-
-  if (!clientSecret || !stripe || !elements) {
-    return (
-      <div className="flex items-center justify-center">
-        <Spinner />
-      </div>
-    );
-  }
 
   const handleStartTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value as any;
@@ -200,8 +180,7 @@ export default function CheckoutForm({
     <form onSubmit={handleSubmit(onValid)}>
       <div className="flex flex-col gap-3">
         <div className="text-xl font-semibold">결제 수단</div>
-        {clientSecret && <PaymentElement />}
-        {errorMessage && <div>{errorMessage}</div>}
+        <PaymentElement />
       </div>
       <Separator className="my-8" />
       <div className="flex flex-col gap-3">

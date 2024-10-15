@@ -46,6 +46,11 @@ export default function UsernameForm({ username }: UsernameFormProps) {
 
     if (result?.type === "checkUsername") {
       setError("username", { message: result.error });
+    } else if (!result.ok) {
+      toast({
+        variant: "destructive",
+        title: result.error,
+      });
     } else {
       toast({
         description: "변경 되었습니다.",

@@ -8,9 +8,14 @@ export async function POST(request: NextRequest) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
       currency: "krw",
-      automatic_payment_methods: { enabled: true },
+      payment_method_types: ["card"],
+      capture_method: "manual", // 결제 승인 후 나중에 결제
     });
-    return NextResponse.json({ clientSecret: paymentIntent.client_secret });
+
+    return NextResponse.json({
+      paymentIntentId: paymentIntent.id,
+      clientSecret: paymentIntent.client_secret,
+    });
   } catch (error) {
     console.error("Internal Error:", error);
     // Handle other errors (e.g., network issues, parsing errors)
