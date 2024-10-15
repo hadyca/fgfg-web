@@ -41,11 +41,18 @@ export default function HeightForm({ height }: HeightFormProps) {
     const formData = new FormData();
     formData.append("height", data.height);
 
-    await updateHeight(formData);
+    const { ok, error } = await updateHeight(formData);
 
-    toast({
-      description: "변경 되었습니다.",
-    });
+    if (!ok) {
+      toast({
+        variant: "destructive",
+        title: error,
+      });
+    } else {
+      toast({
+        description: "변경 되었습니다.",
+      });
+    }
 
     setLoading(false);
   };

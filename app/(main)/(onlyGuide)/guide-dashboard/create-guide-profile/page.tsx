@@ -288,9 +288,8 @@ export default function CreateGuideProfile() {
                   id="personality"
                   {...register("personality")}
                   required
-                  defaultValue={""}
-                  value={selectedPersonality}
-                  className={`border p-3 rounded-md text-sm w-56 ${
+                  value={selectedPersonality || ""}
+                  className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border p-3 rounded-md text-sm w-56 ${
                     selectedPersonality ? "" : "text-muted-foreground"
                   }`}
                 >

@@ -49,6 +49,7 @@ interface Reservations {
   createdAt: string;
   serviceFee: number;
   customerAgeRange: string;
+  paymentIntentId: string;
 }
 
 interface UpcomingReservationsProps {
@@ -87,8 +88,33 @@ export default function GuideReservationList({
     window.location.reload();
   };
 
-  const handleConfirm = async (reservationId: number) => {
+  const handleConfirm = async (
+    reservationId: number,
+    paymentIntentId: string
+  ) => {
     setConfirmLoading(true);
+    try {
+      const response = await fetch("/api/capture-payment-intent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ paymentIntentId }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert("결제가 성공적으로 완료되었습니다!");
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      console.error("결제 확정 오류:", error);
+      alert("결제 확정 중 문제가 발생했습니다.");
+      return;
+    }
+
     const { ok, error } = await confirmReservation(reservationId);
     if (!ok) {
       toast({
@@ -157,7 +183,12 @@ export default function GuideReservationList({
                       <AlertDialogFooter>
                         <AlertDialogCancel>아니요</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() => handleConfirm(reservation.id)}
+                          onClick={() =>
+                            handleConfirm(
+                              reservation.id,
+                              reservation.paymentIntentId
+                            )
+                          }
                         >
                           확인
                         </AlertDialogAction>

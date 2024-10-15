@@ -15,6 +15,7 @@ export const SEE_GUIDE_ALL_RESERVATIONS = gql`
       guideCancel
       serviceFee
       customerAgeRange
+      paymentIntentId
       createdAt
     }
   }

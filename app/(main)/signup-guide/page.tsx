@@ -308,7 +308,7 @@ export default function SignUpGuide() {
                       onChange={(e) =>
                         handleLanguageChange(index, e.target.value)
                       }
-                      className={`h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
+                      className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
                         option.language ? "" : "text-muted-foreground"
                       }`}
                     >
@@ -331,7 +331,7 @@ export default function SignUpGuide() {
                     <select
                       value={option.level}
                       onChange={(e) => handleLevelChange(index, e.target.value)}
-                      className={`h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
+                      className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
                         option.level ? "" : "text-muted-foreground"
                       }`}
                     >
@@ -374,7 +374,7 @@ export default function SignUpGuide() {
               )}
             </div>
             <div className="space-y-1">
-              <Label htmlFor="address">주소</Label>
+              <Label htmlFor="address">거주지 주소</Label>
               {errors?.address ? (
                 <ErrorText text={errors.address.message!} />
               ) : null}

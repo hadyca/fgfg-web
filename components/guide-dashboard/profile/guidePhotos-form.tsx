@@ -182,11 +182,18 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
     const formData = new FormData();
     formData.append("guidePhotos", JSON.stringify(reorderedPhotos));
 
-    await updateGuidePhotos(formData);
+    const { ok, error } = await updateGuidePhotos(formData);
 
-    toast({
-      description: "변경 되었습니다.",
-    });
+    if (!ok) {
+      toast({
+        variant: "destructive",
+        title: error,
+      });
+    } else {
+      toast({
+        description: "변경 되었습니다.",
+      });
+    }
 
     setLoading(false);
   };

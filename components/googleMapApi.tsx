@@ -17,17 +17,27 @@ const center = {
 };
 
 type GoogleMapApiProps = {
+  defaultLat?: number;
+  defaultLng?: number;
+  defaultMain?: string;
   onMarkerChange: (position: { lat: number; lng: number }) => void;
   onInputValueChange: (value: string) => void;
 };
 
 export default function GoogleMapApi({
+  defaultLat,
+  defaultLng,
+  defaultMain,
   onMarkerChange,
   onInputValueChange,
 }: GoogleMapApiProps) {
-  const [mapCenter, setMapCenter] = useState(center); // 지도 중심 좌표 상태
-  const [markerPosition, setMarkerPosition] = useState(center); // 마커 위치 상태
-  const [inputValue, setInputValue] = useState(""); // 입력 필드의 값 상태
+  const [mapCenter, setMapCenter] = useState(
+    defaultLat && defaultLng ? { lat: defaultLat, lng: defaultLng } : center
+  ); // 지도 중심 좌표 상태
+  const [markerPosition, setMarkerPosition] = useState(
+    defaultLat && defaultLng ? { lat: defaultLat, lng: defaultLng } : center
+  ); // 마커 위치 상태
+  const [inputValue, setInputValue] = useState(defaultMain ? defaultMain : ""); // 입력 필드의 값 상태
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null); // Autocomplete 참조를 위한 useRef
   const geocoderRef = useRef<google.maps.Geocoder | null>(null); // Geocoder 참조를 위한 useRef
   const validPlaceSelected = useRef(false); // 유효한 장소가 선택되었는지 확인하는 플래그
@@ -115,7 +125,7 @@ export default function GoogleMapApi({
         onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
         onPlaceChanged={onPlaceChanged}
       >
-        <div className="w-full">
+        <div className="w-full mb-2">
           <Input
             id="pickup-location"
             type="text"

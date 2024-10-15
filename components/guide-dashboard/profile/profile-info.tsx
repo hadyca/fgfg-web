@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { EyeIcon } from "@heroicons/react/24/outline";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import FullnameForm from "./fullname-form";
 import HeightForm from "./height-form";
 import BirthdateForm from "./birthdate-form";
@@ -10,6 +10,9 @@ import LanguageForm from "./language-form";
 import AddressForm from "./address-form";
 import PhoneForm from "./phone-form";
 import GuidePhotosForm from "./guidePhotos-form";
+import PersonalityForm from "./personality-form";
+import GuideIntroForm from "./guideIntro-form";
+import PickupPlaceForm from "./pickupPlace-form";
 
 interface LanguageInput {
   id: number;
@@ -30,7 +33,17 @@ interface ProfileInfoProps {
   phone: string;
   language: LanguageInput[];
   guidePhotos: GuidePhotosInput[];
-  personality: string;
+  personality:
+    | "귀엽고 발랄한"
+    | "섹시하고 매혹적인"
+    | "엉뚱하고 독특한"
+    | "활발하고 명랑한"
+    | "차분하고 따뜻한"
+    | "친절하고 상냥한"
+    | "긍정적이고 밝은"
+    | "유머러스하고 재치있는"
+    | "지적이고 신중한"
+    | "매력적이고 세련된";
   guideIntro: string;
   pickupPlaceMain: string;
   pickupPlaceLat: number;
@@ -70,6 +83,17 @@ export default function ProfileInfo({
         <Separator />
         <GuidePhotosForm guidePhotos={guidePhotos} />
         <Separator />
+        <PersonalityForm personality={personality} />
+        <Separator />
+        <GuideIntroForm guideIntro={guideIntro} />
+        <Separator />
+        <PickupPlaceForm
+          pickupPlaceMain={pickupPlaceMain}
+          pickupPlaceLat={pickupPlaceLat}
+          pickupPlaceLng={pickupPlaceLng}
+          pickupPlaceDetail={pickupPlaceDetail}
+        />
+        <Separator />
       </div>
       <Separator className="md:hidden my-10" />
       <div className="px-14">
@@ -79,7 +103,8 @@ export default function ProfileInfo({
             다른 사람에게 어떤 정보가 공개되나요?
           </div>
           <div className="text-muted-foreground">
-            유저명은 가이드와의 채팅 시 공개되며, 이메일은 공개되지 않습니다.
+            생년월일(나인만 공개), 거주지 주소, 핸드폰 번호는 비공개 정보이며
+            나머지 정보는 모두 공개 됩니다.
           </div>
         </Card>
       </div>

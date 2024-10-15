@@ -41,11 +41,18 @@ export default function FullnameForm({ fullname }: FullnameFormProps) {
     const formData = new FormData();
     formData.append("fullname", data.fullname);
 
-    await updateFullanme(formData);
+    const { ok, error } = await updateFullanme(formData);
 
-    toast({
-      description: "변경 되었습니다.",
-    });
+    if (!ok) {
+      toast({
+        variant: "destructive",
+        title: error,
+      });
+    } else {
+      toast({
+        description: "변경 되었습니다.",
+      });
+    }
 
     setLoading(false);
   };

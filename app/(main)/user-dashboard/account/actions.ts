@@ -17,7 +17,7 @@ export async function updateAvatar(formData: FormData) {
 
   const {
     data: {
-      editUserProfile: { ok },
+      editUserProfile: { ok, error },
     },
   } = await client.mutate({
     mutation: EDIT_USER_PROFILE,
@@ -25,10 +25,7 @@ export async function updateAvatar(formData: FormData) {
       avatar: data.avatar,
     },
   });
-  if (!ok) {
-    redirect("/404");
-  }
-  return;
+  return { ok, error };
 }
 
 export async function updateUsername(formData: FormData) {
@@ -54,11 +51,11 @@ export async function updateUsername(formData: FormData) {
   const result = usernameSchema.safeParse(data);
 
   if (!result.success) {
-    return { type: "zodSchema", error: "유효하지 않은 데이터 입니다." };
+    return { ok: false, error: "유효하지 않은 데이터 입니다." };
   } else {
     const {
       data: {
-        editUserProfile: { ok },
+        editUserProfile: { ok, error },
       },
     } = await client.mutate({
       mutation: EDIT_USER_PROFILE,
@@ -66,10 +63,7 @@ export async function updateUsername(formData: FormData) {
         username: result.data.username,
       },
     });
-    if (!ok) {
-      redirect("/404");
-    }
-    return;
+    return { ok, error };
   }
 }
 
@@ -96,11 +90,11 @@ export async function updateEmail(formData: FormData) {
   const result = emailSchema.safeParse(data);
 
   if (!result.success) {
-    return { type: "zodSchema", error: "유효하지 않은 데이터 입니다." };
+    return { ok: false, error: "유효하지 않은 데이터 입니다." };
   } else {
     const {
       data: {
-        editUserProfile: { ok },
+        editUserProfile: { ok, error },
       },
     } = await client.mutate({
       mutation: EDIT_USER_PROFILE,
@@ -108,10 +102,7 @@ export async function updateEmail(formData: FormData) {
         email: result.data.email,
       },
     });
-    if (!ok) {
-      redirect("/404");
-    }
-    return;
+    return { ok, error };
   }
 }
 
@@ -140,11 +131,11 @@ export async function updatePassword(formData: FormData) {
   const result = passwordSchema.safeParse(data);
 
   if (!result.success) {
-    return { type: "zodSchema", error: "유효하지 않은 데이터 입니다." };
+    return { ok: false, error: "유효하지 않은 데이터 입니다." };
   } else {
     const {
       data: {
-        editUserProfile: { ok },
+        editUserProfile: { ok, error },
       },
     } = await client.mutate({
       mutation: EDIT_USER_PROFILE,
@@ -152,25 +143,22 @@ export async function updatePassword(formData: FormData) {
         password: result.data.newPassword,
       },
     });
-    if (!ok) {
-      redirect("/404");
-    }
-    return;
+    return { ok, error };
   }
 }
 
 export async function deleteAccount() {
   const {
     data: {
-      deleteAccount: { ok },
+      deleteAccount: { ok, error },
     },
   } = await client.mutate({
     mutation: DELETE_ACCOUNT,
   });
   if (!ok) {
-    redirect("/404");
+    return { ok, error };
   }
   const session = await getSession();
   session.destroy();
-  return ok;
+  return { ok, error };
 }

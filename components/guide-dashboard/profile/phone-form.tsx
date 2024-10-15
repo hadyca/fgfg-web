@@ -41,12 +41,18 @@ export default function PhoneForm({ phone }: PhoneFormProps) {
     const formData = new FormData();
     formData.append("phone", data.phone);
 
-    await updatePhone(formData);
+    const { ok, error } = await updatePhone(formData);
 
-    toast({
-      description: "변경 되었습니다.",
-    });
-
+    if (!ok) {
+      toast({
+        variant: "destructive",
+        title: error,
+      });
+    } else {
+      toast({
+        description: "변경 되었습니다.",
+      });
+    }
     setLoading(false);
   };
 

@@ -1,13 +1,9 @@
 "use client";
 
 import { deleteAccount } from "@/app/(main)/user-dashboard/account/actions";
-import { PasswordType } from "@/app/(main)/user-dashboard/account/schema";
-import ErrorText from "@/components/errorText";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/hooks/use-toast";
 import { useState } from "react";
-import { PASSWORD_MIN_LENGTH } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -31,13 +27,20 @@ export default function DeleteAccountForm() {
 
   const handleSubmit = async () => {
     setLoading(true);
-    const ok = await deleteAccount();
-    if (ok) {
+    const { ok, error } = await deleteAccount();
+
+    if (!ok) {
+      toast({
+        variant: "destructive",
+        title: error,
+      });
+    } else {
       toast({
         description: "계정이 삭제 되었습니다.",
       });
       router.push("/");
     }
+
     setLoading(false);
   };
 

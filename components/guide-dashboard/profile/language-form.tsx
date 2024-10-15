@@ -98,11 +98,18 @@ export default function LanguageForm({
     const formData = new FormData();
     formData.append("language", JSON.stringify(filteredLanguageOptions));
 
-    await updateLanguage(formData);
+    const { ok, error } = await updateLanguage(formData);
 
-    toast({
-      description: "변경 되었습니다.",
-    });
+    if (!ok) {
+      toast({
+        variant: "destructive",
+        title: error,
+      });
+    } else {
+      toast({
+        description: "변경 되었습니다.",
+      });
+    }
 
     setLoading(false);
   };
@@ -121,7 +128,7 @@ export default function LanguageForm({
                 <select
                   value={option.language}
                   onChange={(e) => handleLanguageChange(index, e.target.value)}
-                  className={`h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
+                  className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
                     option.language ? "" : "text-muted-foreground"
                   }`}
                 >
@@ -144,7 +151,7 @@ export default function LanguageForm({
                 <select
                   value={option.level}
                   onChange={(e) => handleLevelChange(index, e.target.value)}
-                  className={`h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
+                  className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
                     option.level ? "" : "text-muted-foreground"
                   }`}
                 >

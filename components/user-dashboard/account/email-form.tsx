@@ -46,6 +46,11 @@ export default function EmailForm({ email }: EmailFormProps) {
 
     if (result?.type === "checkEmail") {
       setError("email", { message: result.error });
+    } else if (!result.ok) {
+      toast({
+        variant: "destructive",
+        title: result.error,
+      });
     } else {
       toast({
         description: "변경 되었습니다.",

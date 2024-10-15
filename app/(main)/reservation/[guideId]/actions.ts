@@ -9,7 +9,8 @@ export async function reserveGuide(
   formData: FormData,
   guideId: number,
   startTime: string,
-  endTime: string
+  endTime: string,
+  paymentIntentId: string
 ) {
   const data = {
     payload: formData.get("payload"),
@@ -29,6 +30,7 @@ export async function reserveGuide(
         startTime,
         endTime,
         customerAgeRange: result?.data?.customerAgeRange,
+        paymentIntentId,
       },
     });
 

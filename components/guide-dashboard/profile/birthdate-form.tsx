@@ -47,12 +47,18 @@ export default function BirthdateForm({ birthdate }: BirthdateFormProps) {
     const formData = new FormData();
     formData.append("birthdate", data.birthdate);
 
-    await updateBirthdate(formData);
+    const { ok, error } = await updateBirthdate(formData);
 
-    toast({
-      description: "변경 되었습니다.",
-    });
-
+    if (!ok) {
+      toast({
+        variant: "destructive",
+        title: error,
+      });
+    } else {
+      toast({
+        description: "변경 되었습니다.",
+      });
+    }
     setLoading(false);
   };
 
