@@ -106,7 +106,7 @@ export default async function guideProfile(props: GuideProfileProps) {
                     <span className="ml-1">(휴업 중)</span>
                   ) : null}
                 </div>
-                {!isMe ? (
+                {!isMe || guide?.seeGuide?.isActive ? (
                   <CreateChatRoomBtn
                     userId={user?.me?.id}
                     guideId={guideId}
@@ -152,6 +152,7 @@ export default async function guideProfile(props: GuideProfileProps) {
               guideId={guideId}
               searchParams={props.searchParams}
               reservations={filteredReservations}
+              isActive={guide?.seeGuide?.isActive}
             />
             <ReportForm guideId={guideId} />
           </div>

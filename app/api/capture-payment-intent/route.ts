@@ -6,7 +6,6 @@ export async function POST(request: NextRequest) {
     const { paymentIntentId } = await request.json();
 
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-    console.log(paymentIntent);
     if (paymentIntent.status !== "requires_capture") {
       throw new Error("결제를 캡처할 수 없는 상태입니다.");
     }

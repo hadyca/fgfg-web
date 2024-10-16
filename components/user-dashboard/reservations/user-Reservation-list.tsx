@@ -26,12 +26,14 @@ import {
 import { useState } from "react";
 import { cancelReservation } from "@/app/(main)/user-dashboard/reservations/actions";
 import { useToast } from "@/components/hooks/use-toast";
+import Link from "next/link";
 
 interface MainGuidePhoto {
   fileUrl: string;
 }
 
 interface Guide {
+  id: number;
   fullname: string;
   birthdate: string;
   mainGuidePhoto: MainGuidePhoto;
@@ -135,14 +137,16 @@ export default function UserReservationList({
           </div>
           <div className="flex flex-row gap-3">
             <div className="relative size-32 rounded-md overflow-hidden flex-shrink-0">
-              <Image
-                fill
-                src={`${reservation.guide.mainGuidePhoto.fileUrl}/mainphoto`}
-                alt={"guide main photo"}
-                className="object-cover"
-                sizes="128px"
-                priority
-              />
+              <Link href={`/guide-profile/${reservation.guide.id}`}>
+                <Image
+                  fill
+                  src={`${reservation.guide.mainGuidePhoto.fileUrl}/mainphoto`}
+                  alt={"guide main photo"}
+                  className="object-cover"
+                  sizes="128px"
+                  priority
+                />
+              </Link>
             </div>
             <div className="flex flex-col justify-between">
               <div>

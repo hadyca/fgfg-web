@@ -15,7 +15,7 @@ import {
   pickupPlaceSchema,
 } from "./schema";
 
-export async function updateFullanme(formData: FormData) {
+export async function updateFullname(formData: FormData) {
   const data = {
     fullname: formData.get("fullname"),
   };
@@ -264,4 +264,18 @@ export async function updatePickupPlace(formData: FormData) {
     });
     return { ok, error };
   }
+}
+
+export async function updateIsActive(isActive: boolean) {
+  const {
+    data: {
+      editGuideProfile: { ok, error },
+    },
+  } = await client.mutate({
+    mutation: EDIT_GUIDE_PROFILE,
+    variables: {
+      isActive: isActive,
+    },
+  });
+  return { ok, error };
 }

@@ -35,6 +35,7 @@ interface ReservationDateFormProps {
     endtime: string;
   };
   reservations: Reservation[];
+  isActive: boolean;
 }
 
 export default function ReservationDateForm(props: ReservationDateFormProps) {
@@ -82,6 +83,13 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
   }, [setValue, props]);
 
   const onValid = async (data: SearchGuideType) => {
+    if (!props.isActive) {
+      setError("startTime", {
+        type: "custom",
+        message: "휴업 중인 가이드는 예약이 불가능합니다.",
+      });
+      return;
+    }
     // 폼 데이터를 FormData 객체로 변환
     const formData = new FormData();
     formData.append("date", data.date);

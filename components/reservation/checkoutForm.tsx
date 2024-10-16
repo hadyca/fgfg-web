@@ -41,6 +41,7 @@ interface CheckoutFormProps {
   startTime: string;
   endTime: string;
   paymentIntentId: string;
+  clientSecret: string;
 }
 
 export default function CheckoutForm({
@@ -54,6 +55,7 @@ export default function CheckoutForm({
   startTime,
   endTime,
   paymentIntentId,
+  clientSecret,
 }: CheckoutFormProps) {
   const { toast } = useToast();
   const stripe = useStripe();
@@ -147,19 +149,16 @@ export default function CheckoutForm({
 
       const { error } = await stripe.confirmPayment({
         elements,
+        clientSecret,
         confirmParams: {
-          return_url: `http://www.localhost:3000/payment-success?amount=${amount}`,
+          return_url: `http://www.localhost:3000/payment-success`,
         },
       });
 
       if (error) {
         console.log(error);
+        return;
       }
-
-      toast({
-        description:
-          "예약 요청이 완료되었습니다. 가이드의 승인을 기다려주세요.",
-      });
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -206,7 +205,7 @@ export default function CheckoutForm({
             <ErrorText text={errors.customerAgeRange.message!} />
           ) : null}
           <select
-            className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
+            className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
               customerAgeRange ? "" : "text-muted-foreground"
             }`}
             value={customerAgeRange}

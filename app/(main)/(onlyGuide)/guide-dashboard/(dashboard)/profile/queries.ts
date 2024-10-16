@@ -15,6 +15,9 @@ export const EDIT_GUIDE_PROFILE = gql`
     $pickupPlaceLat: Float
     $pickupPlaceLng: Float
     $pickupPlaceDetail: String
+    $isActive: Boolean
+    $bankname: String
+    $bankAccount: String
   ) {
     editGuideProfile(
       fullname: $fullname
@@ -30,6 +33,9 @@ export const EDIT_GUIDE_PROFILE = gql`
       pickupPlaceLat: $pickupPlaceLat
       pickupPlaceLng: $pickupPlaceLng
       pickupPlaceDetail: $pickupPlaceDetail
+      isActive: $isActive
+      bankname: $bankname
+      bankAccount: $bankAccount
     ) {
       ok
       error

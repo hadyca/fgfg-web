@@ -15,6 +15,7 @@ interface MainGuidePhoto {
 }
 
 interface Guide {
+  id: number;
   fullname: string;
   birthdate: string;
   mainGuidePhoto: MainGuidePhoto;

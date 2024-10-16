@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import getGuide from "@/lib/getGuide";
 import {
+  BanknotesIcon,
   CalendarDaysIcon,
   IdentificationIcon,
 } from "@heroicons/react/24/outline";
@@ -43,6 +44,19 @@ export default async function GuideDashboard() {
                 <div>프로필</div>
                 <div className="text-muted-foreground">
                   프로필 정보를 수정할 수 있어요
+                </div>
+              </div>
+            </div>
+          </Card>
+        </Link>
+        <Link href={"/guide-dashboard/bank-account"}>
+          <Card className="shadow-md p-3">
+            <div className="h-32 flex flex-col justify-between">
+              <BanknotesIcon className="size-10" strokeWidth={1.2} />
+              <div>
+                <div>입금 계좌</div>
+                <div className="text-muted-foreground">
+                  입금 받을 계좌 정보를 수정 할 수 있어요
                 </div>
               </div>
             </div>

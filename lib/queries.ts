@@ -39,13 +39,15 @@ export const SEE_MY_GUIDE = gql`
         fileUrlOrder
         fileUrl
       }
-
       personality
       guideIntro
       pickupPlaceMain
       pickupPlaceLat
       pickupPlaceLng
       pickupPlaceDetail
+      isActive
+      bankname
+      bankAccount
     }
   }
 `;
