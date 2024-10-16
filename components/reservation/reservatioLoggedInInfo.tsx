@@ -5,6 +5,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 import Spinner from "../ui/spinner";
+import { GetReservationSkeletonBottom } from "@/app/(main)/reservation/[guideId]/skeleton";
 
 interface ReservationLoggedInInfoProps {
   isMe: boolean;
@@ -64,7 +65,6 @@ export default function ReservationLoggedInInfo({
     clientSecret,
     appearance,
   };
-
   return (
     <div>
       {clientSecret ? (
@@ -80,10 +80,11 @@ export default function ReservationLoggedInInfo({
             startTime={startTime}
             endTime={endTime}
             paymentIntentId={paymentIntentId}
+            clientSecret={clientSecret}
           />
         </Elements>
       ) : (
-        <Spinner />
+        <GetReservationSkeletonBottom />
       )}
     </div>
   );

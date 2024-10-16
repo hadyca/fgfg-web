@@ -10,14 +10,8 @@ import { useForm } from "react-hook-form";
 import {
   birthdateSchema,
   BirthdateType,
-  heightSchema,
-  HeightType,
 } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
-import {
-  updateBirthdate,
-  updateFullanme,
-  updateHeight,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+import { updateBirthdate } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 
 interface BirthdateFormProps {
   birthdate: string;

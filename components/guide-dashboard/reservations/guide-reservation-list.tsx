@@ -74,8 +74,31 @@ export default function GuideReservationList({
       return formattedDate;
     }
   };
-  const handleReject = async (reservationId: number) => {
+  const handleReject = async (
+    reservationId: number,
+    paymentIntentId: string
+  ) => {
     setRejectLoading(true);
+    try {
+      const response = await fetch("/api/cancel-payment-intent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ paymentIntentId }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      console.error("예약 거절 오류:", error);
+      return;
+    }
+
     const { ok, error } = await cancelReservation(reservationId);
     if (!ok) {
       toast({
@@ -105,13 +128,11 @@ export default function GuideReservationList({
       const result = await response.json();
 
       if (result.success) {
-        alert("결제가 성공적으로 완료되었습니다!");
       } else {
         throw new Error(result.error);
       }
     } catch (error) {
       console.error("결제 확정 오류:", error);
-      alert("결제 확정 중 문제가 발생했습니다.");
       return;
     }
 
@@ -161,7 +182,12 @@ export default function GuideReservationList({
                       <AlertDialogFooter>
                         <AlertDialogCancel>아니요</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() => handleReject(reservation.id)}
+                          onClick={() =>
+                            handleReject(
+                              reservation.id,
+                              reservation.paymentIntentId
+                            )
+                          }
                         >
                           확인
                         </AlertDialogAction>

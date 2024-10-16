@@ -11,7 +11,7 @@ import {
   fullnameSchema,
   FullnameType,
 } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
-import { updateFullanme } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+import { updateFullname } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 
 interface FullnameFormProps {
   fullname: string;
@@ -41,7 +41,7 @@ export default function FullnameForm({ fullname }: FullnameFormProps) {
     const formData = new FormData();
     formData.append("fullname", data.fullname);
 
-    const { ok, error } = await updateFullanme(formData);
+    const { ok, error } = await updateFullname(formData);
 
     if (!ok) {
       toast({

@@ -5,6 +5,7 @@ export const SEE_USER_ALL_RESERVATIONS = gql`
     seeUserAllReservations {
       id
       guide {
+        id
         mainGuidePhoto {
           fileUrl
         }

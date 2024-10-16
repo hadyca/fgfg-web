@@ -10,9 +10,9 @@ import {
   isValidISODate,
 } from "@/lib/utils";
 import { SERVICE_FEE } from "@/lib/constants";
-import ReservationLoggedInInfo from "@/components/reservation/reservatioLoggedInInfo";
 import ReservationCreateAccount from "@/components/reservation/reservationCreatAccount";
 import getUser from "@/lib/getUser";
+import ReservationLoggedInInfo from "@/components/reservation/reservatioLoggedInInfo";
 
 interface ReservationProps {
   params: {

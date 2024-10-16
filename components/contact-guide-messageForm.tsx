@@ -14,6 +14,7 @@ import { createChatRoom } from "@/app/(main)/contact-guide/[guideId]/actions";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { useToast } from "./hooks/use-toast";
 
 interface ContactGuideFormProps {
   guideId: number;
@@ -29,6 +30,7 @@ export default function ContactGuideForm({
   avatar,
 }: ContactGuideFormProps) {
   const router = useRouter();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const messageChannel = useRef<RealtimeChannel>();
   const otherUserChannel = useRef<RealtimeChannel>();
@@ -46,6 +48,14 @@ export default function ContactGuideForm({
     const formData = new FormData();
     formData.append("payload", data.payload);
     const chatRoom = await createChatRoom(formData, guideId);
+    if (!chatRoom) {
+      toast({
+        variant: "destructive",
+        title: "현재 활동을 잠시 중단한 가이드 입니다.",
+      });
+      return;
+    }
+
     messageChannel.current = supabase.channel(`room-${chatRoom.id}`);
     otherUserChannel.current = supabase.channel(`user-${chatRoom.otherUserId}`);
     const newMessage = {
