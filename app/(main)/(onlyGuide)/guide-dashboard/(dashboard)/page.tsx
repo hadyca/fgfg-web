@@ -4,6 +4,7 @@ import getGuide from "@/lib/getGuide";
 import {
   BanknotesIcon,
   CalendarDaysIcon,
+  ChartBarIcon,
   IdentificationIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -31,6 +32,19 @@ export default async function GuideDashboard() {
                 <div>가이드 예약</div>
                 <div className="text-muted-foreground">
                   신청온 예약들을 관리 할 수 있어요
+                </div>
+              </div>
+            </div>
+          </Card>
+        </Link>
+        <Link href={"/guide-dashboard/revenue"}>
+          <Card className="shadow-md p-3">
+            <div className="h-32 flex flex-col justify-between">
+              <ChartBarIcon className="size-10" strokeWidth={1.2} />
+              <div>
+                <div>수익</div>
+                <div className="text-muted-foreground">
+                  수익 내역과 미정산 금액을 확인 할 수 있어요
                 </div>
               </div>
             </div>

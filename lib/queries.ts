@@ -48,6 +48,15 @@ export const SEE_MY_GUIDE = gql`
       isActive
       bankname
       bankAccount
+      totalAmount
+      totalunTransferredAmount
+      totalReservations
+      totalGuideTime
+      oneMonthRevenue {
+        date
+        amount
+      }
+      totalThisMonthRevenue
     }
   }
 `;
