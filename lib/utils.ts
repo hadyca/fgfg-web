@@ -153,3 +153,15 @@ export function convertToVietnamISOToMonthDay(utcTime: string) {
     return formattedDate;
   }
 }
+
+export function formatToVND(number: number) {
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(number);
+}
+
+export function formatToVietnameseDate(isoString: string) {
+  const date = DateTime.fromISO(isoString);
+  return date.toFormat("dd/MM/yyyy");
+}

@@ -2,11 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import {
-  EyeIcon,
-  EyeSlashIcon,
-  LockClosedIcon,
-} from "@heroicons/react/24/outline";
+import { EyeIcon, LockClosedIcon } from "@heroicons/react/24/outline";
 import FullnameForm from "./fullname-form";
 import HeightForm from "./height-form";
 import BirthdateForm from "./birthdate-form";
