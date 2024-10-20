@@ -73,6 +73,7 @@ export default async function guideProfile(props: GuideProfileProps) {
 
   const parsedLanguage = JSON.parse(guide?.seeGuide?.language);
   const isMe = Boolean(guideId === user?.me?.guide?.id);
+
   return (
     <div className="max-w-6xl mx-auto my-10 px-6">
       <PhotoCarousel guidePhotos={guide?.seeGuide?.guidePhotos} />
@@ -106,7 +107,7 @@ export default async function guideProfile(props: GuideProfileProps) {
                     <span className="ml-1">(휴업 중)</span>
                   ) : null}
                 </div>
-                {!isMe || guide?.seeGuide?.isActive ? (
+                {!isMe && guide?.seeGuide?.isActive ? (
                   <CreateChatRoomBtn
                     userId={user?.me?.id}
                     guideId={guideId}
@@ -153,6 +154,7 @@ export default async function guideProfile(props: GuideProfileProps) {
               searchParams={props.searchParams}
               reservations={filteredReservations}
               isActive={guide?.seeGuide?.isActive}
+              isMe={isMe}
             />
             <ReportForm guideId={guideId} />
           </div>

@@ -14,6 +14,7 @@ import { updateBank } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)
 import { Separator } from "@/components/ui/separator";
 import { Card } from "@/components/ui/card";
 import {
+  CalendarIcon,
   ExclamationTriangleIcon,
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
@@ -180,6 +181,15 @@ export default function BankForm({ bankname, bankAccount }: BankFormProps) {
       <Separator className="md:hidden my-10" />
       <div className="px-14">
         <Card className="p-6">
+          <CalendarIcon className="size-16" strokeWidth={1.2} />
+          <div className="text-lg font-semibold mb-2">
+            고객이 결제를 마친 후, 정산은 언제 이루어지나요?
+          </div>
+          <div className="text-muted-foreground">
+            가이드님이 예약을 수락하면 고객의 결제가 진행되며, 이후 수수료를
+            제외한 금액이 보통 1~2주 이내에 이체됩니다.
+          </div>
+          <Separator className="my-6" />
           <ExclamationTriangleIcon className="size-16" strokeWidth={1.2} />
           <div className="text-lg font-semibold mb-2">
             계좌 번호를 잘못 입력한 경우, 다시 정산을 받을 수 있나요?

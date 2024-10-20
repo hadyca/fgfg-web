@@ -36,6 +36,7 @@ interface ReservationDateFormProps {
   };
   reservations: Reservation[];
   isActive: boolean;
+  isMe: boolean;
 }
 
 export default function ReservationDateForm(props: ReservationDateFormProps) {
@@ -87,6 +88,14 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
       setError("startTime", {
         type: "custom",
         message: "휴업 중인 가이드는 예약이 불가능합니다.",
+      });
+      return;
+    }
+
+    if (props.isMe) {
+      setError("startTime", {
+        type: "custom",
+        message: "본인 계정은 예약이 불가능합니다.",
       });
       return;
     }

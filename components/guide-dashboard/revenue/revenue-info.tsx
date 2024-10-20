@@ -39,7 +39,7 @@ interface OneMonthRevenue {
 
 interface RevenueInfoProps {
   totalAmount: number;
-  totalunTransferredAmount: number;
+  totalUnTransferredAmount: number;
   totalReservations: number;
   totalGuideTime: number;
   unTransferredRevenue: UnTransferredRevenue[];
@@ -64,7 +64,7 @@ const chartConfig = {
 
 export default function RevenueInfo({
   totalAmount,
-  totalunTransferredAmount,
+  totalUnTransferredAmount,
   totalReservations,
   totalGuideTime,
   unTransferredRevenue,
@@ -90,7 +90,7 @@ export default function RevenueInfo({
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {formatToVND(totalunTransferredAmount)}
+              {formatToVND(totalUnTransferredAmount)}
             </div>
           </CardContent>
         </Card>
@@ -162,11 +162,11 @@ export default function RevenueInfo({
             </ChartContainer>
           </CardContent>
         </Card>
-        <Card className="lg:col-span-4">
+        <Card className="lg:col-span-4 h-full">
           <CardHeader>
             <CardTitle>미정산 금액 리스트</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-8">
+          <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>

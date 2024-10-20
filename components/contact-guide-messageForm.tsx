@@ -51,7 +51,7 @@ export default function ContactGuideForm({
     if (!chatRoom) {
       toast({
         variant: "destructive",
-        title: "현재 활동을 잠시 중단한 가이드 입니다.",
+        title: "본인 계정이거나, 현재 활동을 잠시 중단한 가이드 입니다.",
       });
       return;
     }

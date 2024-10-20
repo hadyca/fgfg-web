@@ -49,7 +49,7 @@ export const SEE_MY_GUIDE = gql`
       bankname
       bankAccount
       totalAmount
-      totalunTransferredAmount
+      totalUnTransferredAmount
       totalReservations
       totalGuideTime
       oneMonthRevenue {

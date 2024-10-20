@@ -2,7 +2,6 @@
 
 import { client } from "@/lib/apolloClient";
 import { CREATE_RESERVATION } from "./queries";
-import { redirect } from "next/navigation";
 import { reservationSchema } from "./schema";
 
 export async function reserveGuide(

@@ -20,7 +20,7 @@ export default async function Revenue() {
       <div className="font-bold text-3xl mb-10">수익</div>
       <RevenueInfo
         totalAmount={guide?.seeMyGuide.totalAmount}
-        totalunTransferredAmount={guide?.seeMyGuide.totalunTransferredAmount}
+        totalUnTransferredAmount={guide?.seeMyGuide.totalUnTransferredAmount}
         totalReservations={guide?.seeMyGuide.totalReservations}
         totalGuideTime={guide?.seeMyGuide.totalGuideTime}
         oneMonthRevenue={guide?.seeMyGuide.oneMonthRevenue}

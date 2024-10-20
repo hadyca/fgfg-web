@@ -5,6 +5,7 @@ import {
   BanknotesIcon,
   CalendarDaysIcon,
   ChartBarIcon,
+  ClipboardDocumentCheckIcon,
   IdentificationIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
@@ -30,7 +31,7 @@ export default async function GuideDashboard() {
               <CalendarDaysIcon className="size-10" strokeWidth={1.2} />
               <div>
                 <div>가이드 예약</div>
-                <div className="text-muted-foreground">
+                <div className="text-muted-foreground text-sm">
                   신청온 예약들을 관리 할 수 있어요
                 </div>
               </div>
@@ -43,7 +44,7 @@ export default async function GuideDashboard() {
               <ChartBarIcon className="size-10" strokeWidth={1.2} />
               <div>
                 <div>수익</div>
-                <div className="text-muted-foreground">
+                <div className="text-muted-foreground text-sm">
                   수익 내역과 미정산 금액을 확인 할 수 있어요
                 </div>
               </div>
@@ -56,7 +57,7 @@ export default async function GuideDashboard() {
               <IdentificationIcon className="size-10" strokeWidth={1.2} />
               <div>
                 <div>프로필</div>
-                <div className="text-muted-foreground">
+                <div className="text-muted-foreground text-sm">
                   프로필 정보를 수정할 수 있어요
                 </div>
               </div>
@@ -69,8 +70,24 @@ export default async function GuideDashboard() {
               <BanknotesIcon className="size-10" strokeWidth={1.2} />
               <div>
                 <div>입금 계좌</div>
-                <div className="text-muted-foreground">
+                <div className="text-muted-foreground text-sm">
                   입금 받을 계좌 정보를 수정 할 수 있어요
+                </div>
+              </div>
+            </div>
+          </Card>
+        </Link>
+        <Link href={"/guide-dashboard/guide-manual"}>
+          <Card className="shadow-md p-3">
+            <div className="h-32 flex flex-col justify-between">
+              <ClipboardDocumentCheckIcon
+                className="size-10"
+                strokeWidth={1.2}
+              />
+              <div>
+                <div>가이드 매뉴얼</div>
+                <div className="text-muted-foreground text-sm">
+                  가이드를 위한 매뉴얼이에요
                 </div>
               </div>
             </div>
