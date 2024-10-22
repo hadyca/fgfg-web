@@ -290,8 +290,12 @@ export default function CheckoutForm({
         <div className="text-xl font-semibold">기본 규칙</div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            사용자는 가이드의 안내에 따라 안전하게 행동하고, 가이드가 안전하게
-            가이드를 진행할 수 있도록 협조합니다.
+            가이드가 안전하게 가이드를 진행할 수 있도록 협조 부탁드립니다.
+          </p>
+        </div>
+        <div className="relative pl-3">
+          <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
+            스킨쉽은 손잡기와 팔짱끼기만 허용 됩니다.
           </p>
         </div>
         <div className="relative pl-3">

@@ -28,7 +28,7 @@ export default function NavItemsPC({
   };
 
   return (
-    <div className="h-16 px-4 border-b border-b-border relative z-20 flex justify-between items-center">
+    <div className="max-w-6xl mx-auto h-16 px-4 relative z-20 flex justify-between items-center">
       <Link href="/" className="text-2xl font-bold text-primary">
         FGFG
       </Link>

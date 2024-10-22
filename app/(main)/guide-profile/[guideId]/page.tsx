@@ -71,7 +71,6 @@ export default async function guideProfile(props: GuideProfileProps) {
 
   const user = await getUser();
 
-  const parsedLanguage = JSON.parse(guide?.seeGuide?.language);
   const isMe = Boolean(guideId === user?.me?.guide?.id);
 
   return (
@@ -98,7 +97,7 @@ export default async function guideProfile(props: GuideProfileProps) {
               </Avatar>
               <div className="flex flex-row items-center">
                 <div className="mr-3">
-                  <span>가이드:</span>
+                  <span>가이드: </span>
                   <span className="font-semibold">
                     {guide?.seeGuide?.fullname}
                   </span>
@@ -129,13 +128,15 @@ export default async function guideProfile(props: GuideProfileProps) {
               <div>
                 <span>언어: </span>
                 <span>베트남어(원어민)</span>
-                {parsedLanguage
-                  ? parsedLanguage.map((language: Language, index: number) => (
-                      <span key={language.id}>
-                        , {language.language}lv{language.level}
-                        {index < parsedLanguage.length - 1 && ", "}
-                      </span>
-                    ))
+                {guide?.seeGuide?.language
+                  ? guide?.seeGuide?.language.map(
+                      (language: Language, index: number) => (
+                        <span key={language.id}>
+                          , {language.language}lv{language.level}
+                          {index < guide?.seeGuide?.language.length - 1 && ", "}
+                        </span>
+                      )
+                    )
                   : null}
               </div>
             </div>

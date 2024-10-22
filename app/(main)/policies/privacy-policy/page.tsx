@@ -92,7 +92,7 @@ export default function PrivacyPolicy() {
                 </tr>
                 <tr>
                   <td className="px-4 py-2 border-b">결제 처리</td>
-                  <td className="px-4 py-2 border-b">stripe</td>
+                  <td className="px-4 py-2 border-b">Stripe</td>
                   <td className="px-4 py-2 border-b">
                     신용카드를 통한 결제 처리
                   </td>

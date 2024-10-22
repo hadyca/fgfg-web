@@ -10,6 +10,7 @@ import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import AvatarDropMenu from "../avatarDropMenu";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
+import { Separator } from "../ui/separator";
 
 interface NavProps {
   userId?: number;
@@ -58,6 +59,7 @@ export default function HeaderSection({
           avatar={avatar}
           isApprovedGuide={isApprovedGuide}
         />
+        <Separator />
       </nav>
       {/* 모바일 네비게이션 메뉴 */}
       <nav className="md:hidden block">

@@ -1,4 +1,4 @@
-import { BIRTHDATE_REGEX, UNAVAILABLE_USERNAME } from "@/lib/constants";
+import { BIRTHDATE_REGEX } from "@/lib/constants";
 import LanguageOptionSchema from "@/lib/schema/languageOption";
 import unAvailableName from "@/lib/schema/unAvailableName";
 import validator from "validator";

@@ -9,7 +9,11 @@ export const SEE_GUIDE = gql`
       height
       personality
       guideIntro
-      language
+      language {
+        id
+        language
+        level
+      }
       mainGuidePhoto {
         id
         fileUrl

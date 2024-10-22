@@ -31,7 +31,11 @@ export const SEE_MY_GUIDE = gql`
       height
       address
       phone
-      language
+      language {
+        id
+        language
+        level
+      }
       mainGuidePhoto {
         id
       }
