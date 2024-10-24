@@ -6,7 +6,7 @@ import {
   GUIDE_CANCEL_RESERVATION,
   SEE_GUIDE_ALL_RESERVATIONS,
 } from "./queries";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 export async function getReservations() {
   const {
@@ -16,7 +16,7 @@ export async function getReservations() {
     fetchPolicy: "no-cache",
   });
   if (!seeGuideAllReservations) {
-    redirect("/404");
+    return notFound();
   }
   return seeGuideAllReservations;
 }

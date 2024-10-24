@@ -2,7 +2,7 @@
 
 import { client } from "@/lib/apolloClient";
 import { SEE_USER_ALL_RESERVATIONS, USER_CANCEL_RESERVATION } from "./queries";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 export async function getReservations() {
   const {
@@ -13,7 +13,7 @@ export async function getReservations() {
   });
 
   if (!seeUserAllReservations) {
-    redirect("/404");
+    return notFound();
   }
   return seeUserAllReservations;
 }

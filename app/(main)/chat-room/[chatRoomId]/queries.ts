@@ -71,6 +71,8 @@ export const SEE_CHAT_ROOM_RESERVATIONS = gql`
       startTime
       endTime
       guideConfirm
+      userCancel
+      guideCancel
     }
   }
 `;

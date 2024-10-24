@@ -21,6 +21,8 @@ interface Bills {
   startTime: string;
   endTime: string;
   guideConfirm: boolean;
+  userCancel: boolean;
+  guideCancel: boolean;
 }
 
 interface ChatMessageListProps {

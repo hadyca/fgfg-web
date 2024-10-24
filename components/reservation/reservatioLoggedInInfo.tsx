@@ -4,7 +4,6 @@ import CheckoutForm from "@/components/reservation/checkoutForm";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
-import Spinner from "../ui/spinner";
 import { GetReservationSkeletonBottom } from "@/app/(main)/reservation/[guideId]/skeleton";
 
 interface ReservationLoggedInInfoProps {
@@ -46,7 +45,7 @@ export default function ReservationLoggedInInfo({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ amount }),
+      body: JSON.stringify({ amount: 10000 }),
     })
       .then((res) => res.json())
       .then((data) => {

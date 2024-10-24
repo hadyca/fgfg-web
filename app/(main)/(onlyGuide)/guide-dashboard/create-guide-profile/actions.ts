@@ -3,7 +3,7 @@
 import { client } from "@/lib/apolloClient";
 import { createGuideProfileSchema } from "./schema";
 import { CREATE_GUIDE_PROFILE } from "./queries";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export async function createGuideProfile(formData: FormData) {
   const data = {
@@ -40,7 +40,7 @@ export async function createGuideProfile(formData: FormData) {
       },
     });
     if (!ok) {
-      redirect("/404");
+      return notFound();
     } else {
       redirect("/");
     }

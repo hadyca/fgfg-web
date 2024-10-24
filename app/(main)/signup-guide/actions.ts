@@ -4,7 +4,7 @@ import { client } from "@/lib/apolloClient";
 import { signUpGuideSchema } from "./schema";
 import { CREATE_GUIDE } from "./queries";
 import getUser from "@/lib/getUser";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 export async function userCheck() {
   const user = await getUser();
@@ -49,7 +49,7 @@ export async function signupGuide(formData: FormData) {
       },
     });
     if (!ok) {
-      redirect("/404");
+      return notFound();
     }
     return;
   }

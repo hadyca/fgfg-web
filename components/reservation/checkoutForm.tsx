@@ -17,7 +17,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorText from "../errorText";
 import { supabase } from "@/lib/supabaseClient";
 import { reserveGuide } from "@/app/(main)/reservation/[guideId]/actions";
-import Spinner from "../ui/spinner";
 import {
   reservationSchema,
   ReservationType,
@@ -30,6 +29,7 @@ import {
 } from "../ui/tooltip";
 import { useToast } from "../hooks/use-toast";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface CheckoutFormProps {
   amount: number;
@@ -46,7 +46,6 @@ interface CheckoutFormProps {
 }
 
 export default function CheckoutForm({
-  isMe,
   guideId,
   userId,
   username,
@@ -57,6 +56,7 @@ export default function CheckoutForm({
   paymentIntentId,
   clientSecret,
 }: CheckoutFormProps) {
+  const router = useRouter();
   const { toast } = useToast();
   const stripe = useStripe();
   const elements = useElements();
@@ -94,6 +94,24 @@ export default function CheckoutForm({
         throw new Error(submitError.message);
       }
 
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        clientSecret,
+        confirmParams: {
+          return_url: `http://www.localhost:3000/payment-success`,
+        },
+        redirect: "if_required",
+      });
+      console.log("최종페이", paymentIntent);
+      if (error) {
+        toast({
+          variant: "destructive",
+          title: "카드 정보를 다시 확인해주세요.",
+        });
+        setLoading(false);
+        return;
+      }
+
       const formData = new FormData();
       formData.append("payload", data.payload);
       formData.append("customerAgeRange", data.customerAgeRange);
@@ -101,6 +119,7 @@ export default function CheckoutForm({
         createChatRoom(formData, guideId), // 채팅방 생성
         reserveGuide(formData, guideId, startTime, endTime, paymentIntentId), // 가이드 예약
       ]);
+
       if (!reserveResult.ok) {
         toast({
           variant: "destructive",
@@ -145,19 +164,7 @@ export default function CheckoutForm({
           isRead: false,
         },
       });
-
-      const { error } = await stripe.confirmPayment({
-        elements,
-        clientSecret,
-        confirmParams: {
-          return_url: `http://www.localhost:3000/payment-success`,
-        },
-      });
-
-      if (error) {
-        console.log(error);
-        return;
-      }
+      router.push("/payment-success");
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -314,7 +321,7 @@ export default function CheckoutForm({
         <ClockIcon className="size-10" />
         <span>
           가이드가 24시간 이내 예약 요청을 수락하기 전까지는 예약이 아직 확정된
-          것이 아닙니다. 예약 확정 전까지는 요금이 청구되지 않습니다.
+          것이 아닙니다. 만약 예약이 거절된다면, 요금은 자동 환불 됩니다.
         </span>
       </div>
       <Separator className="my-8" />

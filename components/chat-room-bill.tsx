@@ -15,6 +15,8 @@ interface Bills {
   startTime: string;
   endTime: string;
   guideConfirm: boolean;
+  userCancel: boolean;
+  guideCancel: boolean;
 }
 
 interface ChatRoomBillProps {
@@ -33,6 +35,10 @@ export default function ChatRoomBill({ bills }: ChatRoomBillProps) {
                 <span>{bill.id} </span>
                 {bill.guideConfirm ? (
                   <span>(예약 확정)</span>
+                ) : bill.userCancel ? (
+                  <span>(예약 취소)</span>
+                ) : bill.guideCancel ? (
+                  <span>(예약 취소)</span>
                 ) : (
                   <span>(예약 미확정)</span>
                 )}
