@@ -6,10 +6,10 @@ import getUser from "./lib/getUser";
 const onlyLogoutUrls = new Set(["/login", "/create-account"]);
 
 //로그인 상태 - 가이드&일반 모두 접속 가능함
-const onlyLogInUrls = new Set(["/user-profile", "/signup-guide"]);
+const onlyLogInUrls = new Set(["/user-dashboard"]);
 
 //로그인 상태 - 가이드만 접속 가능
-const onlyGuideUrls = new Set(["/create-guide-profile", "/guide-dashboard"]);
+const onlyGuideUrls = new Set(["/add-guideid-session", "/guide-dashboard"]);
 
 export async function middleware(request: NextRequest) {
   const isOnlyLogoutPath = onlyLogoutUrls.has(request.nextUrl.pathname);

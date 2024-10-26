@@ -98,6 +98,12 @@ export default function MainIntro() {
           </p>
         </div>
       </div>
+      <div className="mt-10">
+        현재 베타 서비스를 제공하고 있습니다. 사용하시면서 불편한 점이나 개선할
+        점이 있으시면 언제든지 hadycas@gmail.com으로 피드백을 보내주세요.
+        여러분의 소중한 의견은 더 나은 서비스를 만드는 데 큰 도움이 됩니다. 많이
+        참여해 주세요!
+      </div>
     </section>
   );
 }

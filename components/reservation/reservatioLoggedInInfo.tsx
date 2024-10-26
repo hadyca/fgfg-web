@@ -45,7 +45,7 @@ export default function ReservationLoggedInInfo({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ amount: 10000 }),
+      body: JSON.stringify({ amount }),
     })
       .then((res) => res.json())
       .then((data) => {

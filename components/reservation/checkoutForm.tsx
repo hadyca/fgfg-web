@@ -320,7 +320,7 @@ export default function CheckoutForm({
       <div className="flex flex-row items-center gap-2">
         <ClockIcon className="size-10" />
         <span>
-          가이드가 24시간 이내 예약 요청을 수락하기 전까지는 예약이 아직 확정된
+          가이드가 48시간 이내 예약 요청을 수락하기 전까지는 예약이 아직 확정된
           것이 아닙니다. 만약 예약이 거절된다면, 요금은 자동 환불 됩니다.
         </span>
       </div>
