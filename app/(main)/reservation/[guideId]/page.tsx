@@ -120,9 +120,6 @@ export default async function Reservation(props: ReservationProps) {
                 </span>
                 <span>{formatCurrency(amount)}</span>
               </div>
-              <div className="text-sm text-muted-foreground mt-1">
-                해외 결제 수수료를 제외한 금액입니다.
-              </div>
             </div>
           </div>
         </Card>

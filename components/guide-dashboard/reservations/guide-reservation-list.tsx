@@ -49,7 +49,6 @@ interface Reservations {
   createdAt: string;
   serviceFee: number;
   customerAgeRange: string;
-  paymentIntentId: string;
 }
 
 interface UpcomingReservationsProps {
@@ -74,10 +73,7 @@ export default function GuideReservationList({
       return formattedDate;
     }
   };
-  const handleReject = async (
-    reservationId: number,
-    paymentIntentId: string
-  ) => {
+  const handleReject = async (reservationId: number) => {
     setRejectLoading(true);
     try {
       const response = await fetch("/api/cancel-payment-intent", {

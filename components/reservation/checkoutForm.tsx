@@ -1,11 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import {
-  useStripe,
-  useElements,
-  PaymentElement,
-} from "@stripe/react-stripe-js";
+
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
@@ -41,8 +37,6 @@ interface CheckoutFormProps {
   email: string;
   startTime: string;
   endTime: string;
-  paymentIntentId: string;
-  clientSecret: string;
 }
 
 export default function CheckoutForm({
@@ -53,13 +47,9 @@ export default function CheckoutForm({
   email,
   startTime,
   endTime,
-  paymentIntentId,
-  clientSecret,
 }: CheckoutFormProps) {
   const router = useRouter();
   const { toast } = useToast();
-  const stripe = useStripe();
-  const elements = useElements();
 
   const [loading, setLoading] = useState(false);
   const [customerAgeRange, setCustomerAgeRange] = useState("");
@@ -80,44 +70,12 @@ export default function CheckoutForm({
     setLoading(true);
 
     try {
-      // Stripe가 초기화되었는지 확인
-      if (!stripe || !elements) {
-        throw new Error("Stripe or Elements not initialized");
-      }
-
-      // 결제 폼 제출 및 Stripe 결제 먼저 처리
-      const submitResponse = await elements.submit();
-      const { error: submitError } = submitResponse || {};
-
-      // 결제 폼 제출 결과 확인
-      if (submitError) {
-        throw new Error(submitError.message);
-      }
-
-      const { error, paymentIntent } = await stripe.confirmPayment({
-        elements,
-        clientSecret,
-        confirmParams: {
-          return_url: `http://www.localhost:3000/payment-success`,
-        },
-        redirect: "if_required",
-      });
-      console.log("최종페이", paymentIntent);
-      if (error) {
-        toast({
-          variant: "destructive",
-          title: "카드 정보를 다시 확인해주세요.",
-        });
-        setLoading(false);
-        return;
-      }
-
       const formData = new FormData();
       formData.append("payload", data.payload);
       formData.append("customerAgeRange", data.customerAgeRange);
       const [chatRoom, reserveResult] = await Promise.all([
         createChatRoom(formData, guideId), // 채팅방 생성
-        reserveGuide(formData, guideId, startTime, endTime, paymentIntentId), // 가이드 예약
+        reserveGuide(formData, guideId, startTime, endTime), // 가이드 예약
       ]);
 
       if (!reserveResult.ok) {
@@ -164,7 +122,7 @@ export default function CheckoutForm({
           isRead: false,
         },
       });
-      router.push("/payment-success");
+      router.push(`/payment-success/${reserveResult.reservation.id}`);
     } catch (err) {
       console.log(err);
       setLoading(false);
@@ -184,8 +142,8 @@ export default function CheckoutForm({
   return (
     <form onSubmit={handleSubmit(onValid)}>
       <div className="flex flex-col gap-3">
-        <div className="text-xl font-semibold">결제 수단</div>
-        <PaymentElement />
+        <div className="text-xl font-semibold">결제 방법</div>
+        <span>예약 요청 후, 페이지 내용 참조 바랍니다.</span>
       </div>
       <Separator className="my-8" />
       <div className="flex flex-col gap-3">
@@ -340,7 +298,7 @@ export default function CheckoutForm({
           요청을 수락하면 표시된 요금에 대해 결제가 이루어짐에 동의합니다.
         </div>
       </div>
-      <Button disabled={!stripe || loading} className="w-full font-bold mt-3">
+      <Button disabled={loading} className="w-full font-bold mt-3">
         {!loading ? "예약 요청" : "로딩 중..."}
       </Button>
     </form>

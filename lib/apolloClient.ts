@@ -3,7 +3,7 @@ import { setContext } from "@apollo/client/link/context";
 import getSession from "./session";
 
 const httpLink = new HttpLink({
-  uri: "http://ec2-54-251-39-90.ap-southeast-1.compute.amazonaws.com",
+  uri: process.env.BACKEND_URL,
 });
 
 const authLink = setContext(async (_, { headers }) => {
