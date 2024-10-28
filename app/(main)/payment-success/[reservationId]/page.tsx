@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { CheckBadgeIcon } from "@heroicons/react/24/solid";
 import { Button } from "@/components/ui/button";
 
@@ -11,8 +10,6 @@ interface PaymentSuccessProps {
 }
 
 export default function PaymentSuccess({ params }: PaymentSuccessProps) {
-  const router = useRouter();
-
   return (
     <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
       <div className="w-2/3">
@@ -32,7 +29,9 @@ export default function PaymentSuccess({ params }: PaymentSuccessProps) {
             24시간 이내 추가 결제 진행을 하시지 않으면 예약은 자동 취소 됩니다.
             결제 후, 가이드의 승인을 기다려주세요.
           </div>
-          <Button onClick={() => router.push("/")}>홈으로 돌아가기</Button>
+          <Button>
+            <a href="/">홈으로 돌아가기</a>
+          </Button>
         </div>
       </div>
     </div>

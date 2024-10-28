@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import { ApolloWrapper } from "@/lib/apolloWrapper";
 import { Toaster } from "@/components/ui/toaster";
+import { headers } from "next/headers";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,6 +21,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userLang = headers().get("accept-language") || "en";
   return (
     <html lang="en">
       <body

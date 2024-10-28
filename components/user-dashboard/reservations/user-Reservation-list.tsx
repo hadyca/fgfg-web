@@ -27,6 +27,7 @@ import { useState } from "react";
 import { cancelReservation } from "@/app/(main)/user-dashboard/reservations/actions";
 import { useToast } from "@/components/hooks/use-toast";
 import Link from "next/link";
+import { useUserReservationStore } from "@/store/useUserReservationStore";
 
 interface MainGuidePhoto {
   fileUrl: string;
@@ -61,8 +62,8 @@ export default function UserReservationList({
   selected,
 }: UserReservationListProps) {
   const { toast } = useToast();
-
   const [loading, setLoading] = useState(false);
+  const { setCancel } = useUserReservationStore();
 
   const convertDate = (startTime: string) => {
     const userLocale = navigator.language.split("-")[0] || "ko"; // "ko" or "en" 같은 값만 남김
@@ -74,6 +75,7 @@ export default function UserReservationList({
   };
   const handleContinueDialog = async (reservationId: number) => {
     setLoading(true);
+
     const { ok, error } = await cancelReservation(reservationId);
     if (!ok) {
       toast({
@@ -82,8 +84,8 @@ export default function UserReservationList({
       });
       return;
     }
+    setCancel(reservationId);
     setLoading(false);
-    window.location.reload();
   };
   return (
     <div className="flex flex-col gap-5">

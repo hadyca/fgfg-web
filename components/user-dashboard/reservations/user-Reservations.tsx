@@ -9,6 +9,7 @@ import {
   CheckCircleIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
+import { useUserReservationStore } from "@/store/useUserReservationStore";
 
 interface MainGuidePhoto {
   fileUrl: string;
@@ -40,96 +41,82 @@ interface UserReservationsProps {
 export default function UserReservations({
   reservations,
 }: UserReservationsProps) {
-  const [selected, setSelected] = useState<string>("upcoming");
-  const [upComingList, setUpComingList] = useState<Reservations[]>([]);
-  const [completedList, setCompletedList] = useState<Reservations[]>([]);
-  const [canceledList, setCanceledList] = useState<Reservations[]>([]);
+  const { selectedTab, setSelectedTab, reservationList, setReservationList } =
+    useUserReservationStore();
 
   useEffect(() => {
     const now = DateTime.now().toISO();
 
-    const upcoming: Reservations[] = [];
-    const completed: Reservations[] = [];
-    const canceled: Reservations[] = [];
-
-    reservations.forEach((reservation) => {
+    const formattedReservations = reservations.map((reservation) => {
       if (
         (reservation.guideConfirm === false && now > reservation.startTime) ||
         reservation.userCancel ||
         reservation.guideCancel
       ) {
-        canceled.push(reservation);
+        return { ...reservation, status: "cancelled" };
       } else if (reservation.startTime > now) {
-        upcoming.push(reservation);
+        return { ...reservation, status: "upcoming" };
       } else {
-        completed.push(reservation);
+        return { ...reservation, status: "completed" };
       }
     });
 
-    setCanceledList(canceled);
-    setUpComingList(upcoming);
-    setCompletedList(completed);
-  }, [reservations]);
+    setReservationList(formattedReservations);
+  }, [reservations, setReservationList]);
+
+  const filteredReservations = reservationList.filter(
+    (reservation) => reservation.status === selectedTab
+  );
 
   return (
     <>
       <div className="flex justify-around gap-3">
         <Button
-          variant={selected === "upcoming" ? "secondary" : "ghost"}
-          onClick={() => setSelected("upcoming")}
+          variant={selectedTab === "upcoming" ? "secondary" : "ghost"}
+          onClick={() => setSelectedTab("upcoming")}
           className="w-full"
         >
           다가오는 예약
         </Button>
         <Button
-          variant={selected === "completed" ? "secondary" : "ghost"}
-          onClick={() => setSelected("completed")}
+          variant={selectedTab === "completed" ? "secondary" : "ghost"}
+          onClick={() => setSelectedTab("completed")}
           className="w-full"
         >
           완료된 예약
         </Button>
         <Button
-          variant={selected === "cancelled" ? "secondary" : "ghost"}
-          onClick={() => setSelected("cancelled")}
+          variant={selectedTab === "cancelled" ? "secondary" : "ghost"}
+          onClick={() => setSelectedTab("cancelled")}
           className="w-full"
         >
           취소된 예약
         </Button>
       </div>
       <div className="mt-3">
-        {selected === "upcoming" ? (
-          upComingList.length > 0 ? (
-            <UserReservationList
-              reservationList={upComingList}
-              selected={selected}
-            />
-          ) : (
-            <div className="flex flex-col items-center justify-center text-muted-foreground min-h-[50vh]">
-              <CalendarIcon className="h-10 w-10 mb-2 text-muted-foreground" />
-              <span className="text-lg">다가오는 예약이 없습니다.</span>
-            </div>
-          )
-        ) : selected === "completed" ? (
-          completedList.length > 0 ? (
-            <UserReservationList
-              reservationList={completedList}
-              selected={selected}
-            />
-          ) : (
-            <div className="flex flex-col items-center justify-center text-muted-foreground min-h-[50vh]">
-              <CheckCircleIcon className="h-10 w-10 mb-2 text-muted-foreground" />
-              <span className="text-lg">완료된 예약이 없습니다.</span>
-            </div>
-          )
-        ) : canceledList.length > 0 ? (
+        {filteredReservations.length > 0 ? (
           <UserReservationList
-            reservationList={canceledList}
-            selected={selected}
+            reservationList={filteredReservations}
+            selected={selectedTab}
           />
         ) : (
           <div className="flex flex-col items-center justify-center text-muted-foreground min-h-[50vh]">
-            <XCircleIcon className="h-10 w-10 mb-2 text-muted-foreground" />
-            <span className="text-lg">취소된 예약이 없습니다.</span>
+            {selectedTab === "upcoming" && (
+              <CalendarIcon className="h-10 w-10 mb-2 text-muted-foreground" />
+            )}
+            {selectedTab === "completed" && (
+              <CheckCircleIcon className="h-10 w-10 mb-2 text-muted-foreground" />
+            )}
+            {selectedTab === "cancelled" && (
+              <XCircleIcon className="h-10 w-10 mb-2 text-muted-foreground" />
+            )}
+            <span className="text-lg">
+              {selectedTab === "upcoming"
+                ? "다가오는 예약이 없습니다."
+                : selectedTab === "completed"
+                ? "완료된 예약이 없습니다."
+                : "취소된 예약이 없습니다."}
+            </span>
           </div>
         )}
       </div>

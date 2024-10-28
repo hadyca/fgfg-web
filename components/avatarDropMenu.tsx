@@ -44,13 +44,6 @@ export default function AvatarDropMenu({
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {/* {chatRoomId ? (
-          <Link href={`/chat-room/${chatRoomId}`}>
-            <DropdownMenuItem>
-              <span>메시지</span>
-            </DropdownMenuItem>
-          </Link>
-        ) : null} */}
         <Link href={`/chat-room/${chatRoomId}`}>
           <DropdownMenuItem>
             <span>메시지</span>

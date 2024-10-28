@@ -32,6 +32,7 @@ import {
   cancelReservation,
   confirmReservation,
 } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/reservations/actions";
+import { useGuideReservationStore } from "@/store/useGuideReservationStore";
 
 interface User {
   avatar: string;
@@ -64,6 +65,7 @@ export default function GuideReservationList({
 
   const [rejectLoading, setRejectLoading] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const { setReject, setConfirm } = useGuideReservationStore();
 
   const convertDate = (startTime: string) => {
     const userLocale = navigator.language.split("-")[0] || "ko"; // "ko" or "en" 같은 값만 남김
@@ -75,25 +77,6 @@ export default function GuideReservationList({
   };
   const handleReject = async (reservationId: number) => {
     setRejectLoading(true);
-    try {
-      const response = await fetch("/api/cancel-payment-intent", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ paymentIntentId }),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-      } else {
-        throw new Error(result.error);
-      }
-    } catch (error) {
-      console.error("예약 거절 오류:", error);
-      return;
-    }
 
     const { ok, error } = await cancelReservation(reservationId);
     if (!ok) {
@@ -103,35 +86,12 @@ export default function GuideReservationList({
       });
       return;
     }
+    setReject(reservationId);
     setRejectLoading(false);
-    window.location.reload();
   };
 
-  const handleConfirm = async (
-    reservationId: number,
-    paymentIntentId: string
-  ) => {
+  const handleConfirm = async (reservationId: number) => {
     setConfirmLoading(true);
-    try {
-      const response = await fetch("/api/capture-payment-intent", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ paymentIntentId }),
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-      } else {
-        throw new Error(result.error);
-      }
-    } catch (error) {
-      console.error("결제 확정 오류:", error);
-      return;
-    }
-
     const { ok, error } = await confirmReservation(reservationId);
     if (!ok) {
       toast({
@@ -140,10 +100,9 @@ export default function GuideReservationList({
       });
       return;
     }
+    setConfirm(reservationId);
     setConfirmLoading(false);
-    window.location.reload();
   };
-
   return (
     <div className="flex flex-col gap-5">
       {reservationList.map((reservation) => (
@@ -178,12 +137,7 @@ export default function GuideReservationList({
                       <AlertDialogFooter>
                         <AlertDialogCancel>아니요</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() =>
-                            handleReject(
-                              reservation.id,
-                              reservation.paymentIntentId
-                            )
-                          }
+                          onClick={() => handleReject(reservation.id)}
                         >
                           확인
                         </AlertDialogAction>
@@ -205,12 +159,7 @@ export default function GuideReservationList({
                       <AlertDialogFooter>
                         <AlertDialogCancel>아니요</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() =>
-                            handleConfirm(
-                              reservation.id,
-                              reservation.paymentIntentId
-                            )
-                          }
+                          onClick={() => handleConfirm(reservation.id)}
                         >
                           확인
                         </AlertDialogAction>

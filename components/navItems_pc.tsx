@@ -29,9 +29,9 @@ export default function NavItemsPC({
 
   return (
     <div className="max-w-6xl mx-auto h-16 px-4 relative z-20 flex justify-between items-center">
-      <Link href="/" className="text-2xl font-bold text-primary">
+      <a href="/" className="text-2xl font-bold text-primary">
         FGFG
-      </Link>
+      </a>
       <NavigationMenu className="list-none">
         <NavigationMenuItem className="flex flex-row items-center">
           <Link

@@ -48,13 +48,13 @@ export default async function ContactGuide({ params }: ContactGuideProps) {
           )}
         </Avatar>
       </div>
-      <Separator className="my-8" />
+      {/* <Separator className="my-8" />
       <div>
         <div className="text-xl">
           해당 가이드는 FGFG의 소중한 분입니다. 매너있는 채팅 부탁드립니다.
           (자주 묻는 질문 업데이트 예정...)
         </div>
-      </div>
+      </div> */}
       <Separator className="my-8" />
       <ContactGuideForm
         guideId={guideId}
