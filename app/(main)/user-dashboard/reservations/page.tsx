@@ -2,8 +2,8 @@ export const dynamic = "force-dynamic";
 
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { getReservations } from "./actions";
-import UserReservations from "@/components/user-dashboard/reservations/user-reservations";
 import Link from "next/link";
+import UserReservations from "@/components/user-dashboard/reservations/user-reservations";
 
 export default async function Reservations() {
   const reservations = await getReservations();
