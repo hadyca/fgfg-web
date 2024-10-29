@@ -9,7 +9,7 @@ import {
 
 const makeClient = () => {
   const httpLink = new HttpLink({
-    uri: process.env.BACKEND_URL,
+    uri: process.env.NEXT_PUBLIC_BACKEND_URL,
   });
   return new ApolloClient({
     cache: new InMemoryCache(),

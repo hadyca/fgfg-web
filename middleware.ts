@@ -9,7 +9,7 @@ const onlyLogoutUrls = new Set(["/login", "/create-account"]);
 const onlyLogInUrls = new Set(["/user-dashboard"]);
 
 //로그인 상태 - 가이드만 접속 가능
-const onlyGuideUrls = new Set(["/add-guideid-session", "/guide-dashboard"]);
+const onlyGuideUrls = new Set(["/guide-dashboard"]);
 
 export async function middleware(request: NextRequest) {
   const isOnlyLogoutPath = onlyLogoutUrls.has(request.nextUrl.pathname);
@@ -32,6 +32,8 @@ export async function middleware(request: NextRequest) {
     const user = await getUser();
     if (user?.me?.guide?.isApproved) {
       const originalUrl = request.nextUrl.pathname; // 원래 사용자가 가려던 URL
+      console.log(originalUrl);
+
       const redirectUrl = new URL("/add-guideid-session", request.url);
       redirectUrl.searchParams.set("redirect", originalUrl); // 원래 URL을 쿼리 파라미터로 추가
       return NextResponse.redirect(redirectUrl);
