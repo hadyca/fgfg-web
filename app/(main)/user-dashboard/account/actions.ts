@@ -2,7 +2,6 @@
 
 import { client } from "@/lib/apolloClient";
 import { CHECK_PASSWORD, DELETE_ACCOUNT, EDIT_USER_PROFILE } from "./queries";
-import { redirect } from "next/navigation";
 import {
   CHECK_EMAIL,
   CHECK_USERNAME,
