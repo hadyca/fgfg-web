@@ -27,6 +27,8 @@ interface Reservations {
   createdAt: string;
   serviceFee: number;
   customerAgeRange: string;
+  pickupPlaceMain: string;
+  pickupPlaceDetail: string;
 }
 
 interface GuideReservationsProps {

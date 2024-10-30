@@ -14,6 +14,8 @@ export const SEE_USER_ALL_RESERVATIONS = gql`
       }
       startTime
       endTime
+      pickupPlaceMain
+      pickupPlaceDetail
       guideConfirm
       userCancel
       guideCancel

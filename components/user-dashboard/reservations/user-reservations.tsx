@@ -32,6 +32,8 @@ interface Reservations {
   guideCancel: boolean;
   createdAt: string;
   serviceFee: number;
+  pickupPlaceMain: string;
+  pickupPlaceDetail: string;
 }
 
 interface UserReservationsProps {

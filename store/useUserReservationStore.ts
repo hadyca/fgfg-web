@@ -21,6 +21,8 @@ interface Reservation {
   guideCancel: boolean;
   createdAt: string;
   serviceFee: number;
+  pickupPlaceMain: string;
+  pickupPlaceDetail: string;
   status?: string;
 }
 

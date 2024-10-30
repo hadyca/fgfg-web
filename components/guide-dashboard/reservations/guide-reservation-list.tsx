@@ -50,6 +50,8 @@ interface Reservations {
   createdAt: string;
   serviceFee: number;
   customerAgeRange: string;
+  pickupPlaceMain: string;
+  pickupPlaceDetail: string;
 }
 
 interface UpcomingReservationsProps {
@@ -106,7 +108,7 @@ export default function GuideReservationList({
   return (
     <div className="flex flex-col gap-5">
       {reservationList.map((reservation) => (
-        <Card key={reservation.id} className="shadow-md max-w-full p-6 h-60">
+        <Card key={reservation.id} className="shadow-md max-w-full p-6 h-fit">
           <div className="flex flex-row items-center justify-between mb-3">
             <span className="text-sm text-muted-foreground">
               예약번호:{reservation.id}
@@ -180,8 +182,8 @@ export default function GuideReservationList({
               </div>
             )}
           </div>
-          <div className="flex flex-row gap-3">
-            <div className="flex items-center h-32">
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center">
               <Avatar className="size-16">
                 {reservation.user.avatar ? (
                   <>
@@ -198,40 +200,55 @@ export default function GuideReservationList({
                 )}
               </Avatar>
             </div>
-            <div className="flex flex-col justify-between">
-              <div>
-                <span className="mr-1">{reservation.user.username}</span>
-                <span>
-                  <span>{`(${reservation.customerAgeRange})`}</span>
+            <div>
+              <div className="font-semibold">유저명</div>
+              <span className="mr-1">{reservation.user.username}</span>
+              <span>
+                <span>{`(${reservation.customerAgeRange})`}</span>
+              </span>
+            </div>
+            <div>
+              <div className="font-semibold">예약 날짜</div>
+              <span>{convertDate(reservation.startTime)}</span>
+            </div>
+            <div>
+              <div className="font-semibold">예약 시간</div>
+              <span>
+                {`${convertToVietnamTime(
+                  reservation.startTime
+                )} ~ ${convertToVietnamTime(reservation.endTime)}`}
+              </span>
+            </div>
+            <div>
+              <div className="font-semibold">픽업 위치</div>
+              <div className="flex flex-col">
+                <div>
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                      reservation.pickupPlaceMain
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary underline"
+                  >
+                    <span>{reservation.pickupPlaceMain}</span>
+                  </a>
+                </div>
+                <span className="text-sm text-muted-foreground">
+                  {reservation.pickupPlaceDetail}
                 </span>
               </div>
-              <div className="flex flex-row items-center">
-                <div className="flex flex-col items-center border-r border-gray-300 pr-4">
-                  <span>예약 날짜</span>
-                  <span>{convertDate(reservation.startTime)}</span>
-                </div>
-                <div className="flex flex-col items-center pl-4">
-                  <span>예약 시간</span>
-                  <div>
-                    <span>{convertToVietnamTime(reservation.startTime)}</span>
-                    <span>~</span>
-                    <span>{convertToVietnamTime(reservation.endTime)}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-row">
-                <div className="pr-2">요금:</div>
-                <div>
-                  <div className="flex justify-between">
-                    <span className="underline">
-                      {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTimeISO(
-                        reservation.startTime,
-                        reservation.endTime
-                      )}시간`}
-                    </span>
-                    <span>={formatCurrency(reservation.serviceFee)}</span>
-                  </div>
-                </div>
+            </div>
+            <div>
+              <div className="font-semibold">요금</div>
+              <div>
+                <span className="underline">
+                  {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTimeISO(
+                    reservation.startTime,
+                    reservation.endTime
+                  )}시간`}
+                </span>
+                <span>={formatCurrency(reservation.serviceFee)}</span>
               </div>
             </div>
           </div>

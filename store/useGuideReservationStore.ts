@@ -16,6 +16,8 @@ interface Reservation {
   createdAt: string;
   serviceFee: number;
   customerAgeRange: string;
+  pickupPlaceMain: string;
+  pickupPlaceDetail: string;
   status?: string;
 }
 
@@ -37,7 +39,7 @@ export const useGuideReservationStore = create<ReservationState>((set) => ({
     set((state) => ({
       reservationList: state.reservationList.map((reservation) =>
         reservation.id === id
-          ? { ...reservation, guideConfirm: true, status: "completed" }
+          ? { ...reservation, guideConfirm: true }
           : reservation
       ),
     })),

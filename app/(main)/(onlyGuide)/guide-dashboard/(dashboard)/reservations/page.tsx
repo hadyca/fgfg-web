@@ -13,7 +13,6 @@ export const metadata = {
 
 export default async function Reservations() {
   const reservations = await getReservations();
-
   return (
     <>
       <div className="flex flex-row items-center mb-2">
