@@ -3,6 +3,12 @@ import Link from "next/link";
 import ProfileInfo from "@/components/guide-dashboard/profile/profile-info";
 import getGuide from "@/lib/getGuide";
 
+export const metadata = {
+  title: "프로필",
+  description:
+    "가이드 프로필 정보를 수정하고 관리하세요. 개인 소개, 언어 능력, 사진 등을 업데이트하여 더 나은 서비스를 제공할 수 있습니다.",
+};
+
 export default async function Profile() {
   const guide = await getGuide();
   return (

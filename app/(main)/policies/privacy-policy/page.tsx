@@ -1,3 +1,9 @@
+export const metadata = {
+  title: "개인 정보 취급 방침",
+  description:
+    "FGFG 서비스의 개인 정보 보호 및 처리 방침을 확인하세요. 사용자의 개인 정보를 안전하게 보호하며, 수집, 이용, 저장, 공유 방식에 대해 투명하게 안내드립니다.",
+};
+
 export default function PrivacyPolicy() {
   return (
     <div className="max-w-4xl mx-auto my-10 px-6">

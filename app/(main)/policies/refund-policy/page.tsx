@@ -1,3 +1,9 @@
+export const metadata = {
+  title: "취소 및 환불 정책",
+  description:
+    "FGFG 서비스의 취소 및 환불 정책을 확인하세요. 예약 취소, 변경, 환불 절차 및 조건에 대해 명확하게 안내드립니다.",
+};
+
 export default function RefundPolicy() {
   return (
     <div className="max-w-4xl mx-auto my-10 px-6">

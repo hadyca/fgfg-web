@@ -4,6 +4,12 @@ import getGuide from "@/lib/getGuide";
 import RevenueInfo from "@/components/guide-dashboard/revenue/revenue-info";
 import { getUntransferredRevenue } from "./action";
 
+export const metadata = {
+  title: "수익",
+  description:
+    "가이드 활동을 통해 얻은 수익을 확인하고 관리하세요. 정산 내역, 지급 상태, 누적 수익 등을 한눈에 파악할 수 있습니다.",
+};
+
 export default async function Revenue() {
   const guide = await getGuide();
   const unTransferredRevenue = await getUntransferredRevenue();

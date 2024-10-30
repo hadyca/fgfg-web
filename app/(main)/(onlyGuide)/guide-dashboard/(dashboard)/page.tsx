@@ -10,6 +10,12 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
+export const metadata = {
+  title: "대쉬보드",
+  description:
+    "FGFG 가이드 계정 정보와 설정을 관리하세요. 가이드 정보 수정, 예약 내역 확인 등 다양한 계정 관리 옵션을 제공합니다.",
+};
+
 export default async function GuideDashboard() {
   const guide = await getGuide();
 

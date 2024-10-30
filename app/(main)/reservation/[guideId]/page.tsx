@@ -24,6 +24,12 @@ interface ReservationProps {
   };
 }
 
+export const metadata = {
+  title: "예약",
+  description:
+    "예약 내용을 확인하고 최종 확정하세요. 일정과 정보를 검토한 후 예약을 완료할 수 있습니다.",
+};
+
 export default async function Reservation(props: ReservationProps) {
   const guideId = Number(props.params.guideId);
   if (isNaN(guideId)) {

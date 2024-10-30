@@ -3,6 +3,11 @@ import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import AccountInfo from "@/components/user-dashboard/account/account-info";
 
+export const metadata = {
+  title: "계정",
+  description: "FGFG 계정 정보를 관리하세요.",
+};
+
 export default async function Account() {
   const user = await getUser();
   return (

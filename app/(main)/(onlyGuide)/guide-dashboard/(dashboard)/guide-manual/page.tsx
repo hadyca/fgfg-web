@@ -1,6 +1,12 @@
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
+export const metadata = {
+  title: "가이드 매뉴얼",
+  description:
+    "FGFG 가이드를 위한 매뉴얼을 확인하세요. 서비스 제공 절차, 고객 응대 방법, 유의 사항 등 성공적인 가이드를 위한 정보를 제공합니다.",
+};
+
 export default async function GuideManual() {
   return (
     <>

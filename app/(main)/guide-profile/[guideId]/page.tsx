@@ -23,6 +23,7 @@ import {
 import getUser from "@/lib/getUser";
 import CreateChatRoomBtn from "@/components/guide-profile/createChatRoomBtn";
 import { DateTime } from "luxon";
+import { Metadata } from "next";
 
 interface GuideProfileProps {
   params: {
@@ -48,9 +49,24 @@ interface Reservation {
   guideCancel: boolean;
 }
 
-export const metadata = {
-  title: "프로필",
-};
+export async function generateMetadata({
+  params,
+}: GuideProfileProps): Promise<Metadata> {
+  const guideId = Number(params.guideId);
+  if (isNaN(guideId)) {
+    return { title: "가이드를 찾을 수 없습니다" };
+  }
+
+  const guide = await getGuide(guideId);
+  if (!guide?.seeGuide) {
+    return { title: "가이드를 찾을 수 없습니다" };
+  }
+
+  return {
+    title: guide.seeGuide.fullname,
+    description: `${guide.seeGuide.fullname}님의 프로필 내용을 확인하고, 예약을 진행해보세요!`,
+  };
+}
 
 export default async function guideProfile(props: GuideProfileProps) {
   const guideId = Number(props.params.guideId);

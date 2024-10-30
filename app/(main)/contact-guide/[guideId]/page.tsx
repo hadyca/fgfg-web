@@ -12,6 +12,12 @@ interface ContactGuideProps {
   };
 }
 
+export const metadata = {
+  title: "메시지 보내기",
+  description:
+    "FGFG 서비스에서 가이드와 직접 메시지를 주고받고 소통하세요. 여행 일정과 픽업 위치를 쉽게 조율할 수 있습니다.",
+};
+
 export default async function ContactGuide({ params }: ContactGuideProps) {
   const guideId = Number(params.guideId);
   if (isNaN(guideId)) {

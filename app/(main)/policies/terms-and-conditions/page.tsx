@@ -1,3 +1,9 @@
+export const metadata = {
+  title: "이용약관",
+  description:
+    "FGFG 서비스 이용약관을 확인하세요. 서비스 이용 시 필요한 규정과 조건을 안내드리며, 이용자와의 신뢰와 안전을 보장합니다.",
+};
+
 export default function TermsAndConditions() {
   return (
     <div className="max-w-4xl mx-auto my-10 px-6">
