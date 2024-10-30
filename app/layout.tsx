@@ -12,8 +12,11 @@ const fontSans = FontSans({
 });
 
 export const metadata: Metadata = {
-  title: "FGFG",
-  description: "당신을 위한 최고의 외국 여친 가이드 서비스, FGFG에서 만나요!",
+  title: {
+    template: "%s - FGFG Foreign GirlFriend Guide",
+    default: "FGFG Foreign GirlFriend Guide",
+  },
+  description: "당신만을 위한 최고의 외국 여친 가이드 서비스, FGFG에서 만나요!",
 };
 
 export default async function RootLayout({
