@@ -14,6 +14,9 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   title: "FGFG",
   description: "외국 여자친구 가이드 서비스",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default async function RootLayout({
