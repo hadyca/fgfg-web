@@ -13,7 +13,7 @@ const fontSans = FontSans({
 
 export const metadata: Metadata = {
   title: "FGFG",
-  description: "외국 여자친구 가이드 서비스",
+  description: "당신을 위한 최고의 외국 여친 가이드 서비스, FGFG에서 만나요!",
 };
 
 export default async function RootLayout({

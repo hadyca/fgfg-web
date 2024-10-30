@@ -48,6 +48,10 @@ interface Reservation {
   guideCancel: boolean;
 }
 
+export const metadata = {
+  title: "프로필",
+};
+
 export default async function guideProfile(props: GuideProfileProps) {
   const guideId = Number(props.params.guideId);
   if (isNaN(guideId)) {

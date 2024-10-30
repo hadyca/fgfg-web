@@ -13,10 +13,6 @@ import ErrorText from "@/components/errorText";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 
-export const metadata = {
-  title: "회원가입",
-};
-
 export default function CreateAccount() {
   const [loading, setLoading] = useState(false);
 
