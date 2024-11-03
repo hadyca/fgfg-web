@@ -65,7 +65,7 @@ export default function AvatarDropMenu({
         </Link>
         <Link href="/user-dashboard">
           <DropdownMenuItem>
-            <span>대쉬보드</span>
+            <span>대시보드</span>
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />

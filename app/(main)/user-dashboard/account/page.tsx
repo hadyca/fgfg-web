@@ -14,7 +14,7 @@ export default async function Account() {
     <>
       <div className="flex flex-row items-center mb-2">
         <Link href={"/user-dashboard"}>
-          <span className="text-primary text-lg">대쉬보드</span>
+          <span className="text-primary text-lg">대시보드</span>
         </Link>
         <ChevronRightIcon className="size-4" />
         <span className="text-lg">계정</span>
