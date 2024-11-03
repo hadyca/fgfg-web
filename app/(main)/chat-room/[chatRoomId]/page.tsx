@@ -7,7 +7,7 @@ import ChatRoomList from "@/components/chat-room-list";
 import { useEffect, useRef, useState } from "react";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
 import useMediaQuery from "@/components/hooks/useMediaQuery";
-import { motion, AnimatePresence } from "framer-motion"; // framer-motion 임포트
+import { motion, AnimatePresence } from "framer-motion";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
@@ -27,7 +27,6 @@ const variants = {
 export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
   const [otherUserId, setOtherUserId] = useState();
   const [user, setUser] = useState<{ me: any } | undefined>(undefined);
-  const [bills, setBills] = useState([]);
   const [username, setUsername] = useState("");
   const [showChatMessageList, setShowChatMessageList] = useState(true); // 메시지 리스트 보여줄지 여부 상태
 
@@ -43,7 +42,13 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
   const setInitialMessagesLoading = useChatRoomStore(
     (state) => state.setInitialMessagesLoading
   );
+
+  const setInitialBillsLoading = useChatRoomStore(
+    (state) => state.setInitialBillsLoading
+  );
+
   const setMessages = useChatRoomStore((state) => state.setMessages);
+  const setBills = useChatRoomStore((state) => state.setBills);
   const setChatRooms = useChatRoomStore((state) => state.setChatRooms);
   const updateLastMessageInRoom = useChatRoomStore(
     (state) => state.updateLastMessageInRoom
@@ -124,9 +129,11 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
         setUser(currentUser);
         setMessages(chatRoomId, messages);
         setChatRooms(fetchedChatRooms.seeChatRooms);
-        setBills(bills);
+        setBills(chatRoomId, bills);
+
         setInitialChatRoomsLoading(false);
         setInitialMessagesLoading(chatRoomId, false);
+        setInitialBillsLoading(chatRoomId, false);
       } catch (error) {
         console.error("Error fetching chat data:", error);
       }
@@ -146,7 +153,6 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
             userId={user?.me?.id}
             username={username}
             avatar={user?.me?.avatar}
-            bills={bills}
             messageChannel={messageChannel.current}
             otherUserChannel={otherUserChannel.current}
           />
@@ -178,7 +184,6 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
                   userId={user?.me?.id}
                   username={username}
                   avatar={user?.me?.avatar}
-                  bills={bills}
                   messageChannel={messageChannel.current}
                   otherUserChannel={otherUserChannel.current}
                 />

@@ -73,6 +73,9 @@ export const SEE_CHAT_ROOM_RESERVATIONS = gql`
       guideConfirm
       userCancel
       guideCancel
+      pickupPlaceMain
+      pickupPlaceDetail
+      isDeposited
     }
   }
 `;

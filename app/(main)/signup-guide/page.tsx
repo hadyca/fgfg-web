@@ -203,6 +203,9 @@ export default function SignUpGuide() {
       <Card className="w-full max-w-2xl my-10 pb-4 shadow-md">
         <CardHeader>
           <CardTitle>가이드 가입</CardTitle>
+          <span className="text-sm text-muted-foreground">
+            *표시된 항목은 운영자만 볼 수 있습니다.
+          </span>
         </CardHeader>
         <form onSubmit={handleSubmit(onValid)} className="flex flex-col px-7">
           <div className="flex flex-col gap-5">
@@ -221,7 +224,7 @@ export default function SignUpGuide() {
             </div>
             <div className="space-y-1">
               <Label htmlFor="resumePhoto">
-                <span>이력서 사진 </span>
+                <span>*이력서 사진 </span>
                 <span className="text-sm text-muted-foreground">
                   (※얼굴이 잘 보이는 사진으로 등록해주세요.)
                 </span>

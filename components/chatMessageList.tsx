@@ -10,27 +10,19 @@ import {
 } from "@/app/(main)/chat-room/[chatRoomId]/actions";
 import { DateTime } from "luxon";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
-import { GetMessageSkeleton } from "@/app/(main)/chat-room/[chatRoomId]/skeleton";
+import BillsSkeleton, {
+  GetMessageSkeleton,
+} from "@/app/(main)/chat-room/[chatRoomId]/skeleton";
 import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Button } from "./ui/button";
 import ChatRoomBill from "./chat-room-bill";
 import { useToast } from "./hooks/use-toast";
-
-interface Bills {
-  id: number;
-  startTime: string;
-  endTime: string;
-  guideConfirm: boolean;
-  userCancel: boolean;
-  guideCancel: boolean;
-}
 
 interface ChatMessageListProps {
   userId: number;
   chatRoomId: string;
   username: string;
   avatar: string;
-  bills: Bills[];
   messageChannel: RealtimeChannel | undefined;
   otherUserChannel: RealtimeChannel | undefined;
 }
@@ -40,7 +32,6 @@ export default function ChatMessageList({
   chatRoomId,
   username,
   avatar,
-  bills,
   messageChannel,
   otherUserChannel,
 }: ChatMessageListProps) {
@@ -60,10 +51,16 @@ export default function ChatMessageList({
   const initialMessagesLoading = useChatRoomStore(
     (state) => state.initialMessagesLoading
   );
-  const messages = useChatRoomStore((state) => state.messages);
 
+  const initialBillsLoading = useChatRoomStore(
+    (state) => state.initialBillsLoading
+  );
+
+  const messages = useChatRoomStore((state) => state.messages);
   const currentRoomMessages = messages[chatRoomId] || [];
-  const currentRoomLoading = initialMessagesLoading[chatRoomId] ?? true; // 기본적으로 로딩 상태는 true
+  const messagesLoading = initialMessagesLoading[chatRoomId] ?? true; // 기본적으로 로딩 상태는 true
+
+  const billsLoading = initialBillsLoading[chatRoomId] ?? true; // 기본적으로 로딩 상태는 true
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -169,20 +166,18 @@ export default function ChatMessageList({
                 예약 보기
               </Button>
             </DrawerTrigger>
-            <DrawerContent className="h-1/2">
-              {bills.length > 0 ? (
-                <ChatRoomBill bills={bills} />
+            <DrawerContent className="h-2/3">
+              {billsLoading ? (
+                <BillsSkeleton />
               ) : (
-                <div className="flex justify-center items-center h-full">
-                  예약 정보가 없습니다.
-                </div>
+                <ChatRoomBill chatRoomId={chatRoomId} />
               )}
             </DrawerContent>
           </Drawer>
         </div>
       </div>
       <div className="h-full py-4 px-5 overflow-y-auto">
-        {currentRoomLoading ? (
+        {messagesLoading ? (
           <GetMessageSkeleton />
         ) : (
           <>

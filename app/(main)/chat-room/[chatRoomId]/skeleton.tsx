@@ -41,3 +41,38 @@ export function GetChatRoomsSkeleton() {
     </div>
   );
 }
+
+export default function BillsSkeleton() {
+  return (
+    <div className="overflow-y-auto flex justify-center">
+      <div className="min-w-[560px] gap-5 my-8 p-5">
+        <Card className="p-6 mx-10 shadow-md rounded-lg">
+          <div className="flex flex-col gap-3">
+            <Skeleton className="h-4 w-3/4 mb-2" />
+            <Skeleton className="h-6 w-1/2 mb-4" />
+            <div>
+              <Skeleton className="h-4 w-1/4 mb-2" />
+              <Skeleton className="h-4 w-1/3" />
+            </div>
+            <div>
+              <Skeleton className="h-4 w-1/4 mb-2" />
+              <Skeleton className="h-4 w-2/3" />
+            </div>
+            <div>
+              <Skeleton className="h-4 w-1/4 mb-2" />
+              <Skeleton className="h-4 w-full" />
+            </div>
+          </div>
+          <div className="my-6 border-t border-gray-300"></div>
+          <div className="flex flex-col gap-3">
+            <Skeleton className="h-6 w-1/3 mb-4" />
+            <div className="flex justify-between">
+              <Skeleton className="h-4 w-1/4" />
+              <Skeleton className="h-4 w-1/6" />
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  );
+}

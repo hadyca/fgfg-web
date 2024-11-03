@@ -147,12 +147,12 @@ export default async function guideProfile(props: GuideProfileProps) {
               </div>
               <div>
                 <span>언어: </span>
-                <span>베트남어(원어민)</span>
+                <span>베트남어(원어민), </span>
                 {guide?.seeGuide?.language
                   ? guide?.seeGuide?.language.map(
                       (language: Language, index: number) => (
                         <span key={language.id}>
-                          , {language.language}lv{language.level}
+                          {language.language}lv{language.level}
                           {index < guide?.seeGuide?.language.length - 1 && ", "}
                         </span>
                       )
@@ -208,7 +208,7 @@ export default async function guideProfile(props: GuideProfileProps) {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary underline"
+              className="text-primary"
             >
               <span>{guide?.seeGuide?.pickupPlaceMain}</span>
             </a>

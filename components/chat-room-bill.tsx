@@ -9,25 +9,28 @@ import {
 } from "@/lib/utils";
 import { Separator } from "./ui/separator";
 import { SERVICE_FEE } from "@/lib/constants";
-
-interface Bills {
-  id: number;
-  startTime: string;
-  endTime: string;
-  guideConfirm: boolean;
-  userCancel: boolean;
-  guideCancel: boolean;
-}
+import { useChatRoomStore } from "@/store/useChatRoomStore";
 
 interface ChatRoomBillProps {
-  bills: Bills[];
+  chatRoomId: string;
 }
 
-export default function ChatRoomBill({ bills }: ChatRoomBillProps) {
+export default function ChatRoomBill({ chatRoomId }: ChatRoomBillProps) {
+  const bills = useChatRoomStore((state) => state.bills);
+  const currentRoomBills = bills[chatRoomId] || [];
+
+  if (currentRoomBills.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        예약 정보가 없습니다.
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-y-auto flex justify-center">
-      <div className="min-w-[560px] flex flex-col gap-5 my-8">
-        {bills.map((bill, index) => (
+      <div className="min-w-[560px] flex flex-col gap-5 my-8 p-5">
+        {currentRoomBills.map((bill, index) => (
           <Card key={index} className="mx-10 shadow-md p-6">
             <div className="flex flex-col gap-3">
               <div className="text-sm text-muted-foreground">
@@ -44,7 +47,7 @@ export default function ChatRoomBill({ bills }: ChatRoomBillProps) {
                 )}
               </div>
               <div className="text-xl font-semibold">
-                <span>예약 정보 </span>
+                <span>예약 정보</span>
               </div>
               <div>
                 <div>날짜</div>
@@ -57,6 +60,26 @@ export default function ChatRoomBill({ bills }: ChatRoomBillProps) {
                 <div>
                   <span>{convertToVietnamTime(bill.startTime)}~</span>
                   <span>{convertToVietnamTime(bill.endTime)}</span>
+                </div>
+              </div>
+              <div>
+                <div>픽업 위치</div>
+                <div className="flex flex-col">
+                  <div>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        bill.pickupPlaceMain
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary"
+                    >
+                      <span>{bill.pickupPlaceMain}</span>
+                    </a>
+                  </div>
+                  <span className="text-sm text-muted-foreground">
+                    {bill.pickupPlaceDetail}
+                  </span>
                 </div>
               </div>
             </div>

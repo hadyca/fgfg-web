@@ -23,6 +23,18 @@ interface Message {
   isMyMessage: boolean;
 }
 
+interface Bill {
+  id: number;
+  startTime: string;
+  endTime: string;
+  guideConfirm: boolean;
+  userCancel: boolean;
+  guideCancel: boolean;
+  pickupPlaceMain: string;
+  pickupPlaceDetail: string;
+  isDeposited: boolean;
+}
+
 interface ChatRoomState {
   //1. chatRooms관련
   chatRooms: ChatRoom[];
@@ -44,6 +56,11 @@ interface ChatRoomState {
   initialMessagesLoading: Record<string, boolean>; // 각 채팅방별로 로딩 상태 관리
   setInitialMessagesLoading: (chatRoomId: string, loading: boolean) => void;
   setMessages: (chatRoomId: string, newMessages: Message[]) => void;
+
+  bills: Record<string, Bill[]>;
+  initialBillsLoading: Record<string, boolean>;
+  setInitialBillsLoading: (chatRoomId: string, loading: boolean) => void;
+  setBills: (chatRoomId: string, newBills: Bill[]) => void;
 }
 
 export const useChatRoomStore = create<ChatRoomState>((set) => ({
@@ -127,6 +144,22 @@ export const useChatRoomStore = create<ChatRoomState>((set) => ({
       messages: {
         ...state.messages,
         [chatRoomId]: newMessages,
+      },
+    })),
+  initialBillsLoading: {},
+  bills: {},
+  setInitialBillsLoading: (chatRoomId, loading = true) =>
+    set((state) => ({
+      initialBillsLoading: {
+        ...state.initialBillsLoading,
+        [chatRoomId]: loading,
+      },
+    })),
+  setBills: (chatRoomId, newBills) =>
+    set((state) => ({
+      bills: {
+        ...state.bills,
+        [chatRoomId]: newBills,
       },
     })),
 }));
