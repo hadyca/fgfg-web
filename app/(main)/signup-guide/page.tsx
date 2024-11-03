@@ -204,13 +204,14 @@ export default function SignUpGuide() {
         <CardHeader>
           <CardTitle>가이드 가입</CardTitle>
           <span className="text-sm text-muted-foreground">
-            *표시된 항목은 운영자만 볼 수 있습니다.
+            *표시된 항목은 공개 정보 입니다. 그 외 항목은 운영자만 볼 수
+            있습니다.
           </span>
         </CardHeader>
         <form onSubmit={handleSubmit(onValid)} className="flex flex-col px-7">
           <div className="flex flex-col gap-5">
             <div className="space-y-1">
-              <Label htmlFor="fullname">이름</Label>
+              <Label htmlFor="fullname">*이름</Label>
               {errors?.fullname ? (
                 <ErrorText text={errors.fullname.message!} />
               ) : null}
@@ -270,7 +271,7 @@ export default function SignUpGuide() {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="birthdate">생년월일</Label>
+              <Label htmlFor="birthdate">*생년월일 (생년만 공개됨)</Label>
               {errors?.birthdate ? (
                 <ErrorText text={errors.birthdate.message!} />
               ) : null}
@@ -283,7 +284,7 @@ export default function SignUpGuide() {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="birthdate">키(cm)</Label>
+              <Label htmlFor="birthdate">*키(cm)</Label>
               {errors?.height ? (
                 <ErrorText text={errors.height.message!} />
               ) : null}
@@ -296,7 +297,7 @@ export default function SignUpGuide() {
               />
             </div>
             <div className="space-y-1">
-              <Label>외국어 능력</Label>
+              <Label>*외국어 능력</Label>
               {errors?.language ? (
                 <ErrorText text={errors?.language[0]?.message!} />
               ) : null}
