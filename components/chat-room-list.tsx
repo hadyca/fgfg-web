@@ -73,7 +73,6 @@ export default function ChatRoomList({
     }
     setIsAlertDialogOpen(false);
   };
-
   return (
     <div className="md:w-[576px] px-10 pt-5 overflow-y-auto flex flex-col h-full">
       {initialChatRoomsLoading ? (

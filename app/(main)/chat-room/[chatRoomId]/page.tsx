@@ -110,6 +110,9 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setInitialMessagesLoading(chatRoomId, true);
+        setInitialBillsLoading(chatRoomId, true);
+
         // 다른 유저 검증용
         const chatRoom = await getChatRoom(chatRoomId);
 
@@ -139,7 +142,7 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
       }
     };
     fetchData();
-    //아래는 경고 eslint경고 문구 제거 주석 (zustand 의존성 배열에 추가 안해도됨)
+    // 아래는 경고 eslint경고 문구 제거 주석 (zustand 의존성 배열에 추가 안해도됨)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatRoomId]);
 
