@@ -9,7 +9,6 @@ export default async function HomeLayout({
 }) {
   const user = await getUser();
   const chatRooms = await getChatRooms();
-
   return (
     <>
       <HeaderSection

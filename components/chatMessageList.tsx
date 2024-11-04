@@ -49,18 +49,12 @@ export default function ChatMessageList({
   );
 
   const initialMessagesLoading = useChatRoomStore(
-    (state) => state.initialMessagesLoading
+    (state) => state.initialMessagesLoading[chatRoomId] ?? true
   );
 
-  const initialBillsLoading = useChatRoomStore(
-    (state) => state.initialBillsLoading
-  );
-
+  const setMessages = useChatRoomStore((state) => state.setMessages);
   const messages = useChatRoomStore((state) => state.messages);
   const currentRoomMessages = messages[chatRoomId] || [];
-  const messagesLoading = initialMessagesLoading[chatRoomId] ?? true; // 기본적으로 로딩 상태는 true
-
-  const billsLoading = initialBillsLoading[chatRoomId] ?? true; // 기본적으로 로딩 상태는 true
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -85,13 +79,16 @@ export default function ChatMessageList({
     };
 
     setMessage("");
+    setMessages(chatRoomId, [newMessage]);
 
+    updateLastMessageInRoom(chatRoomId, message, newMessage.createdAt);
     //상대방 채팅방에 전달 하는 정보
     messageChannel?.send({
       type: "broadcast",
       event: "message",
       payload: newMessage,
     });
+
     const ok = await saveMessage(chatRoomId, message);
     if (!ok) {
       toast({
@@ -99,6 +96,7 @@ export default function ChatMessageList({
       });
       return;
     }
+
     otherUserChannel?.send({
       type: "broadcast",
       event: "message",
@@ -111,7 +109,6 @@ export default function ChatMessageList({
         isRead: false,
       },
     });
-    updateLastMessageInRoom(chatRoomId, message, newMessage.createdAt);
   };
 
   // 날짜 헤더 표시 함수
@@ -132,12 +129,14 @@ export default function ChatMessageList({
 
   // 처음 렌더링 시 스크롤을 맨 아래로 이동
   useEffect(() => {
-    setTimeout(() => {
-      if (messagesEndRef.current) {
-        messagesEndRef.current.scrollIntoView();
-      }
-    }, 100);
-  }, []);
+    if (!initialMessagesLoading) {
+      setTimeout(() => {
+        if (messagesEndRef.current) {
+          messagesEndRef.current.scrollIntoView();
+        }
+      }, 100);
+    }
+  }, [initialMessagesLoading]); // 상태 값만 참조하도록 함
 
   useEffect(() => {
     updateIsReadInRoom(chatRoomId, true);
@@ -155,7 +154,6 @@ export default function ChatMessageList({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatRoomId, messages]);
-
   return (
     <div className="flex flex-col w-full md:border-l h-full">
       <div className="sticky top-0 bg-white px-5 py-3 border-b z-10">
@@ -167,7 +165,7 @@ export default function ChatMessageList({
               </Button>
             </DrawerTrigger>
             <DrawerContent className="h-2/3">
-              {billsLoading ? (
+              {initialMessagesLoading ? (
                 <BillsSkeleton />
               ) : (
                 <ChatRoomBill chatRoomId={chatRoomId} />
@@ -177,7 +175,7 @@ export default function ChatMessageList({
         </div>
       </div>
       <div className="h-full py-4 px-5 overflow-y-auto">
-        {messagesLoading ? (
+        {initialMessagesLoading ? (
           <GetMessageSkeleton />
         ) : (
           <>
@@ -195,7 +193,7 @@ export default function ChatMessageList({
               const showDateHeader = previousMessageDate !== currentMessageDate;
 
               return (
-                <div key={message.id}>
+                <div key={`${message.id}-${index}`}>
                   {showDateHeader && (
                     <div className="text-center my-4">
                       <span className="text-secondary-foreground text-sm bg-secondary px-3 py-1 rounded-full">
@@ -203,7 +201,6 @@ export default function ChatMessageList({
                       </span>
                     </div>
                   )}
-
                   <div
                     className={`flex gap-2 items-start ${
                       message.isMyMessage ? "justify-end" : ""

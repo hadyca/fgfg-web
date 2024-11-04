@@ -58,8 +58,6 @@ interface ChatRoomState {
   setMessages: (chatRoomId: string, newMessages: Message[]) => void;
 
   bills: Record<string, Bill[]>;
-  initialBillsLoading: Record<string, boolean>;
-  setInitialBillsLoading: (chatRoomId: string, loading: boolean) => void;
   setBills: (chatRoomId: string, newBills: Bill[]) => void;
 }
 
@@ -122,6 +120,7 @@ export const useChatRoomStore = create<ChatRoomState>((set) => ({
         chatRoom.id === chatRoomId ? { ...chatRoom, isRead } : chatRoom
       ),
     })),
+
   removeChatRoom: (chatRoomId) =>
     set((state) => ({
       chatRooms: state.chatRooms.filter(
@@ -140,21 +139,28 @@ export const useChatRoomStore = create<ChatRoomState>((set) => ({
       },
     })),
   setMessages: (chatRoomId, newMessages) =>
-    set((state) => ({
-      messages: {
-        ...state.messages,
-        [chatRoomId]: newMessages,
-      },
-    })),
+    set((state) => {
+      const existingMessages = state.messages[chatRoomId] || [];
+      return {
+        messages: {
+          ...state.messages,
+          [chatRoomId]: [
+            ...existingMessages,
+            ...(Array.isArray(newMessages) ? newMessages : [newMessages]),
+          ],
+        },
+      };
+    }),
+  // setMessages: (chatRoomId, newMessages) =>
+  //   set((state) => ({
+  //     messages: {
+  //       ...state.messages,
+  //       [chatRoomId]: newMessages,
+  //     },
+  //   })),
+
   initialBillsLoading: {},
   bills: {},
-  setInitialBillsLoading: (chatRoomId, loading = true) =>
-    set((state) => ({
-      initialBillsLoading: {
-        ...state.initialBillsLoading,
-        [chatRoomId]: loading,
-      },
-    })),
   setBills: (chatRoomId, newBills) =>
     set((state) => ({
       bills: {
