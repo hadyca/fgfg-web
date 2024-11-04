@@ -151,13 +151,6 @@ export const useChatRoomStore = create<ChatRoomState>((set) => ({
         },
       };
     }),
-  // setMessages: (chatRoomId, newMessages) =>
-  //   set((state) => ({
-  //     messages: {
-  //       ...state.messages,
-  //       [chatRoomId]: newMessages,
-  //     },
-  //   })),
 
   initialBillsLoading: {},
   bills: {},

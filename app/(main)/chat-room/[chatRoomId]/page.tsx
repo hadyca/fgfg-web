@@ -1,6 +1,6 @@
 "use client";
 
-import { getBills, getChatRoom, getChatRooms, getMessages } from "./actions";
+import { getBills, getChatRoom, getMessages } from "./actions";
 import getUser from "@/lib/getUser";
 import ChatMessageList from "@/components/chatMessageList";
 import ChatRoomList from "@/components/chat-room-list";
@@ -36,24 +36,17 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
 
   const isMediumScreen = useMediaQuery("(min-width: 768px)"); // md 크기 기준으로 실시간 감지
 
-  const setInitialChatRoomsLoading = useChatRoomStore(
-    (state) => state.setInitialChatRoomsLoading
-  );
-  const setInitialMessagesLoading = useChatRoomStore(
-    (state) => state.setInitialMessagesLoading
-  );
+  const {
+    setInitialChatRoomsLoading,
+    setInitialMessagesLoading,
+    setMessages,
+    setBills,
+    updateLastMessageInRoom,
+    updateIsReadInRoom,
+    messages,
+  } = useChatRoomStore();
 
-  const setMessages = useChatRoomStore((state) => state.setMessages);
-  const setBills = useChatRoomStore((state) => state.setBills);
-  const setChatRooms = useChatRoomStore((state) => state.setChatRooms);
-  const updateLastMessageInRoom = useChatRoomStore(
-    (state) => state.updateLastMessageInRoom
-  );
-  const updateIsReadInRoom = useChatRoomStore(
-    (state) => state.updateIsReadInRoom
-  );
-  // const messages = useChatRoomStore((state) => state.messages);
-  // const currentRoomMessages = messages[chatRoomId] || [];
+  const currentRoomMessages = messages[chatRoomId] || [];
 
   useEffect(() => {
     myChannel.current = supabase.channel(`user-${user?.me?.id}`);
@@ -90,14 +83,13 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
           payload: payload.payload.payload,
           createdAt: payload.payload.createdAt,
           user: payload.payload.user,
-          isMyMessage: payload.payload.user.id === user?.me?.id ? true : false, //내꺼면 true, 내꺼 아니면 false
+          isMyMessage: false,
         };
         setMessages(chatRoomId, [receivedMessage]);
       })
       .subscribe();
 
     return () => {
-      console.log("채팅 연결 끊킴");
       otherUserChannel.current?.unsubscribe();
       messageChannel.current?.unsubscribe();
     };
@@ -112,16 +104,12 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
         // 다른 유저 검증용
         const chatRoom = await getChatRoom(chatRoomId);
         setOtherUserId(chatRoom.seeChatRoom.otherUserId);
-        // if (currentRoomMessages.length > 0) {
-        //   console.log("zustand 사용");
-        // } else {
-        //   const messages = await getMessages(chatRoomId);
-        //   setMessages(chatRoomId, messages);
-        // }
-        const messages = await getMessages(chatRoomId);
-        setMessages(chatRoomId, messages);
-        const fetchedChatRooms = await getChatRooms();
-        setChatRooms(fetchedChatRooms.seeChatRooms);
+
+        if (currentRoomMessages.length === 0) {
+          const messages = await getMessages(chatRoomId);
+          setMessages(chatRoomId, messages);
+        }
+
         const currentUser = await getUser();
         if (chatRoom.seeChatRoom.normalUserId === currentUser?.me.id) {
           setUsername(currentUser?.me.username);

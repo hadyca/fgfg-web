@@ -11,15 +11,54 @@ import AvatarDropMenu from "../avatarDropMenu";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
 import { Separator } from "../ui/separator";
+import { useChatRoomStore } from "@/store/useChatRoomStore";
+import { useUserStore } from "@/store/useUserStore";
+
+interface Guide {
+  id: number;
+  fullname: string;
+  isApproved: string;
+}
+
+interface Users {
+  id: number;
+}
+
+interface userChatRooms {
+  id: string;
+  otherUserId: number;
+  users: Users[];
+}
+
+interface User {
+  id: number;
+  username: string;
+  avatar: string;
+  email: string;
+  guide: Guide;
+  chatRooms: userChatRooms[];
+}
+interface ChatRooms {
+  id: string;
+  avatar: string;
+  usernameOrFullname: string;
+  lastMessage: string;
+  createdAt: string;
+  isRead: boolean;
+}
 
 interface NavProps {
   userId?: number;
+  me: User;
+  chatRooms: ChatRooms[];
   chatRoomId?: string;
   avatar?: string;
   isApprovedGuide?: boolean;
 }
 
 export default function HeaderSection({
+  me,
+  chatRooms,
   userId,
   chatRoomId,
   avatar,
@@ -28,20 +67,39 @@ export default function HeaderSection({
   const [isOpen, setIsOpen] = useState(false);
   const [newChatRoomId, setNewChatRoomId] = useState("");
   const myChannel = useRef<RealtimeChannel>();
+  const { user, setUser } = useUserStore();
+  const { setChatRooms } = useChatRoomStore();
 
   useEffect(() => {
-    myChannel.current = supabase.channel(`user-${userId}`);
-    myChannel.current
-      .on("broadcast", { event: "message" }, (payload) => {
-        setNewChatRoomId(payload.payload.chatRoomId);
-      })
-      .subscribe();
+    setUser(me);
+    // myChannel.current = supabase.channel(`user-${user?.id}`);
+    // myChannel.current
+    //   .on("broadcast", { event: "message" }, (payload) => {
+    //     setNewChatRoomId(payload.payload.chatRoomId);
+    //   })
+    //   .subscribe();
 
-    return () => {
-      myChannel.current?.unsubscribe();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, newChatRoomId]);
+    // return () => {
+    //   myChannel.current?.unsubscribe();
+    // };
+  }, [me, user?.id, setUser]);
+
+  useEffect(() => {
+    setChatRooms(chatRooms);
+  }, [chatRooms, setChatRooms]);
+
+  // useEffect(() => {
+  //   myChannel.current = supabase.channel(`user-${userId}`);
+  //   myChannel.current
+  //     .on("broadcast", { event: "message" }, (payload) => {
+  //       setNewChatRoomId(payload.payload.chatRoomId);
+  //     })
+  //     .subscribe();
+
+  //   return () => {
+  //     myChannel.current?.unsubscribe();
+  //   };
+  // }, [userId]);
 
   const handleLinkClick = () => {
     setIsOpen(false); // 링크 클릭 시 Sheet 닫기

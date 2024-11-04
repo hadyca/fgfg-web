@@ -41,19 +41,15 @@ export default function ChatMessageList({
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null); // 메시지 끝의 ref
 
-  const updateLastMessageInRoom = useChatRoomStore(
-    (state) => state.updateLastMessageInRoom
-  );
-  const updateIsReadInRoom = useChatRoomStore(
-    (state) => state.updateIsReadInRoom
-  );
+  const {
+    updateLastMessageInRoom,
+    updateIsReadInRoom,
+    setMessages,
+    messages,
+    initialMessagesLoading,
+  } = useChatRoomStore();
 
-  const initialMessagesLoading = useChatRoomStore(
-    (state) => state.initialMessagesLoading[chatRoomId] ?? true
-  );
-
-  const setMessages = useChatRoomStore((state) => state.setMessages);
-  const messages = useChatRoomStore((state) => state.messages);
+  const isInitialMessagesLoading = initialMessagesLoading[chatRoomId] ?? true;
   const currentRoomMessages = messages[chatRoomId] || [];
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,7 +161,7 @@ export default function ChatMessageList({
               </Button>
             </DrawerTrigger>
             <DrawerContent className="h-2/3">
-              {initialMessagesLoading ? (
+              {isInitialMessagesLoading ? (
                 <BillsSkeleton />
               ) : (
                 <ChatRoomBill chatRoomId={chatRoomId} />
@@ -175,7 +171,7 @@ export default function ChatMessageList({
         </div>
       </div>
       <div className="h-full py-4 px-5 overflow-y-auto">
-        {initialMessagesLoading ? (
+        {isInitialMessagesLoading ? (
           <GetMessageSkeleton />
         ) : (
           <>
