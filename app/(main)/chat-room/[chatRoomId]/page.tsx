@@ -11,7 +11,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import { useUserStore } from "@/store/useUserStore";
 
 interface ChatRoomProps {
   params: {
@@ -27,8 +26,8 @@ const variants = {
 
 export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
   const [otherUserId, setOtherUserId] = useState();
-  // const [user, setUser] = useState<{ me: any } | undefined>(undefined);
-  const [username, setUsername] = useState<string | undefined>();
+  const [user, setUser] = useState<{ me: any } | undefined>(undefined);
+  const [username, setUsername] = useState("");
   const [showChatMessageList, setShowChatMessageList] = useState(true); // 메시지 리스트 보여줄지 여부 상태
 
   const myChannel = useRef<RealtimeChannel>();
@@ -49,10 +48,9 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
     messages,
     chatRooms,
   } = useChatRoomStore();
-  const { user } = useUserStore();
 
   useEffect(() => {
-    myChannel.current = supabase.channel(`user-${user?.id}`);
+    myChannel.current = supabase.channel(`user-${user?.me?.id}`);
     myChannel.current
       .on("broadcast", { event: "message" }, (payload) => {
         updateLastMessageInRoom(
@@ -72,7 +70,7 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
       myChannel.current?.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, chatRoomId]);
+  }, [user?.me?.id, chatRoomId]);
 
   useEffect(() => {
     //상대 채널 구독
@@ -109,28 +107,26 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
         setOtherUserId(chatRoom.seeChatRoom.otherUserId);
 
         const currentRoomMessages = messages[chatRoomId] || [];
-        const isExistChatroom = chatRooms.some(
-          (chatRoom) => chatRoom.id === chatRoomId
-        );
-        if (!isExistChatroom) {
-          const chatRooms = await getChatRooms();
-          setChatRooms(chatRooms?.seeChatRooms);
-        }
+
+        const chatRooms = await getChatRooms();
+        setChatRooms(chatRooms?.seeChatRooms);
 
         if (currentRoomMessages.length === 0) {
           const fetchedMessages = await getMessages(chatRoomId);
           setInitialMessages(chatRoomId, fetchedMessages);
         }
 
-        if (chatRoom.seeChatRoom.normalUserId === user?.id) {
-          setUsername(user?.username);
+        const currentUser = await getUser();
+        if (chatRoom.seeChatRoom.normalUserId === currentUser?.me.id) {
+          setUsername(currentUser?.me.username);
         } else {
-          setUsername(user?.guide.fullname);
+          setUsername(currentUser?.me?.guide.fullname);
         }
 
         //예약 영수증 보기
         const bills = await getBills(chatRoomId);
 
+        setUser(currentUser);
         setBills(chatRoomId, bills);
 
         setInitialChatRoomsLoading(false);
@@ -148,12 +144,12 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
     <>
       {isMediumScreen ? (
         <div className="flex flex-row w-full h-[calc(100vh-4rem)]">
-          <ChatRoomList chatRoomId={chatRoomId} userId={user?.id} />
+          <ChatRoomList chatRoomId={chatRoomId} userId={user?.me?.id} />
           <ChatMessageList
             chatRoomId={chatRoomId}
-            userId={user?.id}
+            userId={user?.me?.id}
             username={username}
-            avatar={user?.avatar}
+            avatar={user?.me?.avatar}
             messageChannel={messageChannel.current}
             otherUserChannel={otherUserChannel.current}
           />

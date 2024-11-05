@@ -19,7 +19,7 @@ interface ChatRooms {
 interface User {
   id: number;
   username: string;
-  avatar: string;
+  avatar?: string;
   email: string;
   guide: Guide;
   chatRooms: ChatRooms[];

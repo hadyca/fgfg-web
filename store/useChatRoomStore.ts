@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 interface ChatRoom {
   id: string;
-  avatar: string;
+  avatar?: string;
   usernameOrFullname: string;
   lastMessage: string;
   createdAt: string;

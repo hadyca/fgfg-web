@@ -19,10 +19,10 @@ import ChatRoomBill from "./chat-room-bill";
 import { useToast } from "./hooks/use-toast";
 
 interface ChatMessageListProps {
-  userId: number | undefined;
-  chatRoomId: string | undefined;
-  username: string | undefined;
-  avatar: string | undefined;
+  userId: number;
+  chatRoomId: string;
+  username: string;
+  avatar: string;
   messageChannel: RealtimeChannel | undefined;
   otherUserChannel: RealtimeChannel | undefined;
 }
