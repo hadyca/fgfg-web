@@ -11,19 +11,19 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { logout } from "@/lib/sharedActions";
+import { useUserStore } from "@/store/useUserStore";
+import { useChatRoomStore } from "@/store/useChatRoomStore";
 
 interface AvatarDropMenuProps {
-  avatar?: string;
   chatRoomId?: string;
-  isApprovedGuide?: boolean;
 }
 
-export default function AvatarDropMenu({
-  avatar,
-  chatRoomId,
-  isApprovedGuide,
-}: AvatarDropMenuProps) {
+export default function AvatarDropMenu({ chatRoomId }: AvatarDropMenuProps) {
+  const { chatRooms } = useChatRoomStore();
+  const { user, clearUser } = useUserStore();
+
   const handleLogout = async () => {
+    clearUser();
     await logout();
   };
 
@@ -31,9 +31,9 @@ export default function AvatarDropMenu({
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none">
         <Avatar>
-          {avatar ? (
+          {user?.avatar ? (
             <>
-              <AvatarImage src={`${avatar}/avatar`} alt="@shadcn" />
+              <AvatarImage src={`${user.avatar}/avatar`} alt="@shadcn" />
               <AvatarFallback>
                 <UserCircleIcon className="text-primary w-full h-full" />
               </AvatarFallback>
@@ -44,12 +44,20 @@ export default function AvatarDropMenu({
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <Link href={`/chat-room/${chatRoomId}`}>
+        <Link
+          href={`/chat-room/${
+            chatRoomId
+              ? chatRoomId
+              : chatRooms?.length > 0
+              ? chatRooms[0].id
+              : ""
+          }`}
+        >
           <DropdownMenuItem>
             <span>메시지</span>
           </DropdownMenuItem>
         </Link>
-        {!isApprovedGuide ? (
+        {!user?.guide?.isApproved ? (
           <>
             <Link href="/user-dashboard/reservations">
               <DropdownMenuItem>
@@ -69,7 +77,7 @@ export default function AvatarDropMenu({
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
-        {isApprovedGuide ? (
+        {user?.guide?.isApproved ? (
           <>
             <Link href="/guide-dashboard">
               <DropdownMenuItem>

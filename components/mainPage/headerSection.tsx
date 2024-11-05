@@ -33,14 +33,12 @@ interface userChatRooms {
 interface User {
   id: number;
   username: string;
-  avatar: string;
   email: string;
   guide: Guide;
   chatRooms: userChatRooms[];
 }
 interface ChatRooms {
   id: string;
-  avatar: string;
   usernameOrFullname: string;
   lastMessage: string;
   createdAt: string;
@@ -48,20 +46,16 @@ interface ChatRooms {
 }
 
 interface NavProps {
-  userId?: number;
   me: User;
   chatRooms: ChatRooms[];
-  chatRoomId?: string;
-  avatar?: string;
-  isApprovedGuide?: boolean;
+  userId: number;
+  isApprovedGuide: boolean;
 }
 
 export default function HeaderSection({
   me,
   chatRooms,
   userId,
-  chatRoomId,
-  avatar,
   isApprovedGuide,
 }: NavProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,37 +63,23 @@ export default function HeaderSection({
   const myChannel = useRef<RealtimeChannel>();
   const { user, setUser } = useUserStore();
   const { setChatRooms } = useChatRoomStore();
-
   useEffect(() => {
     setUser(me);
-    // myChannel.current = supabase.channel(`user-${user?.id}`);
-    // myChannel.current
-    //   .on("broadcast", { event: "message" }, (payload) => {
-    //     setNewChatRoomId(payload.payload.chatRoomId);
-    //   })
-    //   .subscribe();
+    myChannel.current = supabase.channel(`user-${user?.id}`);
+    myChannel.current
+      .on("broadcast", { event: "message" }, (payload) => {
+        setNewChatRoomId(payload.payload.chatRoomId);
+      })
+      .subscribe();
 
-    // return () => {
-    //   myChannel.current?.unsubscribe();
-    // };
+    return () => {
+      myChannel.current?.unsubscribe();
+    };
   }, [me, user?.id, setUser]);
 
   useEffect(() => {
     setChatRooms(chatRooms);
   }, [chatRooms, setChatRooms]);
-
-  // useEffect(() => {
-  //   myChannel.current = supabase.channel(`user-${userId}`);
-  //   myChannel.current
-  //     .on("broadcast", { event: "message" }, (payload) => {
-  //       setNewChatRoomId(payload.payload.chatRoomId);
-  //     })
-  //     .subscribe();
-
-  //   return () => {
-  //     myChannel.current?.unsubscribe();
-  //   };
-  // }, [userId]);
 
   const handleLinkClick = () => {
     setIsOpen(false); // 링크 클릭 시 Sheet 닫기
@@ -110,11 +90,8 @@ export default function HeaderSection({
       {/* 데스크탑 네비게이션 메뉴 */}
       <nav className="md:block hidden">
         <NavItemsPC
+          chatRoomId={newChatRoomId && newChatRoomId}
           userId={userId}
-          chatRoomId={
-            newChatRoomId ? newChatRoomId : chatRoomId ? chatRoomId : ""
-          }
-          avatar={avatar}
           isApprovedGuide={isApprovedGuide}
         />
         <Separator />
@@ -128,11 +105,7 @@ export default function HeaderSection({
                 <Bars3Icon className="w-6 h-6" />
               </SheetTrigger>
               <SheetContent side={"left"} className="w-1/2">
-                <NavItemsMobile
-                  userId={userId}
-                  isApprovedGuide={isApprovedGuide}
-                  onLinkClick={handleLinkClick}
-                />
+                <NavItemsMobile onLinkClick={handleLinkClick} />
               </SheetContent>
             </Sheet>
           </div>
@@ -143,14 +116,8 @@ export default function HeaderSection({
             FGFG
           </Link>
           <div className="flex-1 flex justify-end">
-            {userId ? (
-              <AvatarDropMenu
-                chatRoomId={
-                  newChatRoomId ? newChatRoomId : chatRoomId ? chatRoomId : ""
-                }
-                avatar={avatar}
-                isApprovedGuide={isApprovedGuide}
-              />
+            {user ? (
+              <AvatarDropMenu />
             ) : (
               <Link
                 href="/create-account"

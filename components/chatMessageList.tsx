@@ -19,10 +19,10 @@ import ChatRoomBill from "./chat-room-bill";
 import { useToast } from "./hooks/use-toast";
 
 interface ChatMessageListProps {
-  userId: number;
-  chatRoomId: string;
-  username: string;
-  avatar: string;
+  userId: number | undefined;
+  chatRoomId: string | undefined;
+  username: string | undefined;
+  avatar: string | undefined;
   messageChannel: RealtimeChannel | undefined;
   otherUserChannel: RealtimeChannel | undefined;
 }
@@ -125,14 +125,14 @@ export default function ChatMessageList({
 
   // 처음 렌더링 시 스크롤을 맨 아래로 이동
   useEffect(() => {
-    if (!initialMessagesLoading) {
+    if (!isInitialMessagesLoading) {
       setTimeout(() => {
         if (messagesEndRef.current) {
           messagesEndRef.current.scrollIntoView();
         }
       }, 100);
     }
-  }, [initialMessagesLoading]); // 상태 값만 참조하도록 함
+  }, [isInitialMessagesLoading]); // 상태 값만 참조하도록 함
 
   useEffect(() => {
     updateIsReadInRoom(chatRoomId, true);

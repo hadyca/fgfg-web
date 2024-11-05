@@ -22,7 +22,7 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 
 interface ChatRoomListProps {
   chatRoomId: string;
-  userId: number;
+  userId: number | undefined;
   setShowChatMessageList?: (value: boolean) => void;
 }
 
@@ -34,13 +34,8 @@ export default function ChatRoomList({
   const [deleteChatRoomId, setDeleteChatRoomId] = useState("");
   const router = useRouter();
 
-  const initialChatRoomsLoading = useChatRoomStore(
-    (state) => state.initialChatRoomsLoading
-  );
-
-  const chatRooms = useChatRoomStore((state) => state.chatRooms);
-
-  const removeChatRoom = useChatRoomStore((state) => state.removeChatRoom);
+  const { removeChatRoom, initialChatRoomsLoading, chatRooms } =
+    useChatRoomStore();
 
   const handleRoomClick = (chatRoomId: string) => {
     router.push(`/chat-room/${chatRoomId}`);
@@ -59,7 +54,7 @@ export default function ChatRoomList({
     setIsAlertDialogOpen(false);
   };
 
-  const handleContinueDialog = async (deleteChatRoomId: string) => {
+  const handleDelete = async (deleteChatRoomId: string) => {
     await outChatRoom(deleteChatRoomId);
     const updatedChatRooms = chatRooms.filter(
       (chatRoom) => chatRoom.id !== deleteChatRoomId
@@ -144,9 +139,7 @@ export default function ChatRoomList({
             <AlertDialogCancel onClick={handleCloseDialog}>
               취소
             </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => handleContinueDialog(deleteChatRoomId)}
-            >
+            <AlertDialogAction onClick={() => handleDelete(deleteChatRoomId)}>
               나가기
             </AlertDialogAction>
           </AlertDialogFooter>

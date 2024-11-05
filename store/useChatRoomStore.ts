@@ -55,6 +55,7 @@ interface ChatRoomState {
   messages: Record<string, Message[]>; // 각 채팅방의 메시지를 저장하는 객체
   initialMessagesLoading: Record<string, boolean>; // 각 채팅방별로 로딩 상태 관리
   setInitialMessagesLoading: (chatRoomId: string, loading: boolean) => void;
+  setInitialMessages: (chatRoomId: string, newMessages: Message[]) => void;
   setMessages: (chatRoomId: string, newMessages: Message[]) => void;
 
   bills: Record<string, Bill[]>;
@@ -138,16 +139,22 @@ export const useChatRoomStore = create<ChatRoomState>((set) => ({
         [chatRoomId]: loading,
       },
     })),
+  setInitialMessages: (chatRoomId, newMessages) =>
+    set((state) => {
+      return {
+        messages: {
+          ...state.messages,
+          [chatRoomId]: newMessages,
+        },
+      };
+    }),
   setMessages: (chatRoomId, newMessages) =>
     set((state) => {
       const existingMessages = state.messages[chatRoomId] || [];
       return {
         messages: {
           ...state.messages,
-          [chatRoomId]: [
-            ...existingMessages,
-            ...(Array.isArray(newMessages) ? newMessages : [newMessages]),
-          ],
+          [chatRoomId]: [...existingMessages, ...newMessages],
         },
       };
     }),

@@ -87,8 +87,7 @@ export default function ContactGuideForm({
         isRead: false,
       },
     });
-    // router.push(`/chat-room/${chatRoom.id}`);
-    router.push("/");
+    router.push(`/chat-room/${chatRoom.id}`);
     setLoading(false);
   };
 

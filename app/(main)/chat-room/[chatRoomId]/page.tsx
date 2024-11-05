@@ -1,6 +1,6 @@
 "use client";
 
-import { getBills, getChatRoom, getMessages } from "./actions";
+import { getBills, getChatRoom, getChatRooms, getMessages } from "./actions";
 import getUser from "@/lib/getUser";
 import ChatMessageList from "@/components/chatMessageList";
 import ChatRoomList from "@/components/chat-room-list";
@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { useUserStore } from "@/store/useUserStore";
 
 interface ChatRoomProps {
   params: {
@@ -26,8 +27,8 @@ const variants = {
 
 export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
   const [otherUserId, setOtherUserId] = useState();
-  const [user, setUser] = useState<{ me: any } | undefined>(undefined);
-  const [username, setUsername] = useState("");
+  // const [user, setUser] = useState<{ me: any } | undefined>(undefined);
+  const [username, setUsername] = useState<string | undefined>();
   const [showChatMessageList, setShowChatMessageList] = useState(true); // 메시지 리스트 보여줄지 여부 상태
 
   const myChannel = useRef<RealtimeChannel>();
@@ -40,16 +41,18 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
     setInitialChatRoomsLoading,
     setInitialMessagesLoading,
     setMessages,
+    setInitialMessages,
     setBills,
     updateLastMessageInRoom,
     updateIsReadInRoom,
+    setChatRooms,
     messages,
+    chatRooms,
   } = useChatRoomStore();
-
-  const currentRoomMessages = messages[chatRoomId] || [];
+  const { user } = useUserStore();
 
   useEffect(() => {
-    myChannel.current = supabase.channel(`user-${user?.me?.id}`);
+    myChannel.current = supabase.channel(`user-${user?.id}`);
     myChannel.current
       .on("broadcast", { event: "message" }, (payload) => {
         updateLastMessageInRoom(
@@ -69,7 +72,7 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
       myChannel.current?.unsubscribe();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.me?.id, chatRoomId]);
+  }, [user, chatRoomId]);
 
   useEffect(() => {
     //상대 채널 구독
@@ -105,22 +108,29 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
         const chatRoom = await getChatRoom(chatRoomId);
         setOtherUserId(chatRoom.seeChatRoom.otherUserId);
 
-        if (currentRoomMessages.length === 0) {
-          const messages = await getMessages(chatRoomId);
-          setMessages(chatRoomId, messages);
+        const currentRoomMessages = messages[chatRoomId] || [];
+        const isExistChatroom = chatRooms.some(
+          (chatRoom) => chatRoom.id === chatRoomId
+        );
+        if (!isExistChatroom) {
+          const chatRooms = await getChatRooms();
+          setChatRooms(chatRooms?.seeChatRooms);
         }
 
-        const currentUser = await getUser();
-        if (chatRoom.seeChatRoom.normalUserId === currentUser?.me.id) {
-          setUsername(currentUser?.me.username);
+        if (currentRoomMessages.length === 0) {
+          const fetchedMessages = await getMessages(chatRoomId);
+          setInitialMessages(chatRoomId, fetchedMessages);
+        }
+
+        if (chatRoom.seeChatRoom.normalUserId === user?.id) {
+          setUsername(user?.username);
         } else {
-          setUsername(currentUser?.me?.guide.fullname);
+          setUsername(user?.guide.fullname);
         }
 
         //예약 영수증 보기
         const bills = await getBills(chatRoomId);
 
-        setUser(currentUser);
         setBills(chatRoomId, bills);
 
         setInitialChatRoomsLoading(false);
@@ -138,12 +148,12 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
     <>
       {isMediumScreen ? (
         <div className="flex flex-row w-full h-[calc(100vh-4rem)]">
-          <ChatRoomList chatRoomId={chatRoomId} userId={user?.me?.id} />
+          <ChatRoomList chatRoomId={chatRoomId} userId={user?.id} />
           <ChatMessageList
             chatRoomId={chatRoomId}
-            userId={user?.me?.id}
+            userId={user?.id}
             username={username}
-            avatar={user?.me?.avatar}
+            avatar={user?.avatar}
             messageChannel={messageChannel.current}
             otherUserChannel={otherUserChannel.current}
           />
