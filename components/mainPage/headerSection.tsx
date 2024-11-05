@@ -13,6 +13,7 @@ import { supabase } from "@/lib/supabaseClient";
 import { Separator } from "../ui/separator";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
 import { useUserStore } from "@/store/useUserStore";
+import { useUnreadStore } from "@/store/useUnReadStore";
 
 interface Guide {
   id: number;
@@ -63,19 +64,22 @@ export default function HeaderSection({
   const myChannel = useRef<RealtimeChannel>();
   const { user, setUser } = useUserStore();
   const { setChatRooms } = useChatRoomStore();
+  const { setIsUnread } = useUnreadStore();
+
   useEffect(() => {
     setUser(me);
     myChannel.current = supabase.channel(`user-${user?.id}`);
     myChannel.current
       .on("broadcast", { event: "message" }, (payload) => {
         setNewChatRoomId(payload.payload.chatRoomId);
+        setIsUnread(true);
       })
       .subscribe();
 
     return () => {
       myChannel.current?.unsubscribe();
     };
-  }, [me, user?.id, setUser]);
+  }, [me, user?.id, setUser, setIsUnread]);
 
   useEffect(() => {
     setChatRooms(chatRooms);
@@ -117,7 +121,7 @@ export default function HeaderSection({
           </Link>
           <div className="flex-1 flex justify-end">
             {user ? (
-              <AvatarDropMenu />
+              <AvatarDropMenu chatRoomId={newChatRoomId && newChatRoomId} />
             ) : (
               <Link
                 href="/create-account"

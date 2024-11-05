@@ -1,6 +1,12 @@
 "use client";
 
-import { getBills, getChatRoom, getChatRooms, getMessages } from "./actions";
+import {
+  getBills,
+  getChatRoom,
+  getChatRooms,
+  getMessages,
+  updateIsRead,
+} from "./actions";
 import getUser from "@/lib/getUser";
 import ChatMessageList from "@/components/chatMessageList";
 import ChatRoomList from "@/components/chat-room-list";
@@ -46,7 +52,6 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
     updateIsReadInRoom,
     setChatRooms,
     messages,
-    chatRooms,
   } = useChatRoomStore();
 
   useEffect(() => {

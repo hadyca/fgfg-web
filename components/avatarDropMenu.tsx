@@ -13,50 +13,74 @@ import Link from "next/link";
 import { logout } from "@/lib/sharedActions";
 import { useUserStore } from "@/store/useUserStore";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
+import { useEffect, useState } from "react";
+import { useUnreadStore } from "@/store/useUnReadStore";
+import { useRouter } from "next/navigation";
 
 interface AvatarDropMenuProps {
   chatRoomId?: string;
 }
 
 export default function AvatarDropMenu({ chatRoomId }: AvatarDropMenuProps) {
+  const router = useRouter();
+
   const { chatRooms } = useChatRoomStore();
   const { user, clearUser } = useUserStore();
-
+  const { isUnread: realTimeUnread, setIsUnread: setRealTimeUnread } =
+    useUnreadStore();
+  const [isUnread, setIsUnread] = useState(false);
   const handleLogout = async () => {
     clearUser();
     await logout();
   };
 
+  useEffect(() => {
+    const isExistUnRead = chatRooms.some(
+      (chatRoom: any) => chatRoom.isRead === false
+    );
+    setIsUnread(isExistUnRead);
+  }, [chatRooms]);
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setRealTimeUnread(false);
+    const targetUrl = `/chat-room/${
+      chatRoomId ? chatRoomId : chatRooms?.length > 0 ? chatRooms[0].id : ""
+    }`;
+
+    router.push(targetUrl);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none">
-        <Avatar>
-          {user?.avatar ? (
-            <>
-              <AvatarImage src={`${user.avatar}/avatar`} alt="@shadcn" />
-              <AvatarFallback>
-                <UserCircleIcon className="text-primary w-full h-full" />
-              </AvatarFallback>
-            </>
-          ) : (
-            <UserCircleIcon className="text-primary w-full h-full" />
+        <div className="relative">
+          <Avatar>
+            {user?.avatar ? (
+              <>
+                <AvatarImage src={`${user.avatar}/avatar`} alt="@shadcn" />
+                <AvatarFallback>
+                  <UserCircleIcon className="text-primary w-full h-full" />
+                </AvatarFallback>
+              </>
+            ) : (
+              <UserCircleIcon className="text-primary w-full h-full" />
+            )}
+          </Avatar>
+          {(isUnread || realTimeUnread) && (
+            <span>
+              <span className="absolute top-0 -left-1 w-2 h-2 bg-primary rounded-full animate-ping"></span>
+              <span className="absolute top-0 -left-1 w-2 h-2 inline-flex rounded-full bg-primary"></span>
+            </span>
           )}
-        </Avatar>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <Link
-          href={`/chat-room/${
-            chatRoomId
-              ? chatRoomId
-              : chatRooms?.length > 0
-              ? chatRooms[0].id
-              : ""
-          }`}
-        >
+        <div onClick={handleClick}>
           <DropdownMenuItem>
             <span>메시지</span>
           </DropdownMenuItem>
-        </Link>
+        </div>
         {!user?.guide?.isApproved ? (
           <>
             <Link href="/user-dashboard/reservations">

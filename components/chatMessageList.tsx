@@ -142,14 +142,11 @@ export default function ChatMessageList({
       if (messagesEndRef.current) {
         messagesEndRef.current.scrollIntoView();
       }
-
-      await updateIsRead(chatRoomId);
     };
 
     updateReadStatus();
+  }, [chatRoomId, updateIsReadInRoom, message]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatRoomId, messages]);
   return (
     <div className="flex flex-col w-full md:border-l h-full">
       <div className="sticky top-0 bg-white px-5 py-3 border-b z-10">
