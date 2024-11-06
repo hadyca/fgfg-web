@@ -6,8 +6,8 @@ import {
 } from "@/components/ui/navigation-menu";
 
 interface NavItemsProps {
-  userId?: number;
-  isApprovedGuide?: Boolean;
+  userId: number;
+  isApprovedGuide: Boolean;
   onLinkClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 

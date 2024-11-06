@@ -20,6 +20,7 @@ export async function getChatRoom(chatRoomId: String) {
     },
     fetchPolicy: "no-cache",
   });
+
   if (!data.seeChatRoom) {
     redirect("/");
   }

@@ -17,6 +17,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import getSession from "@/lib/session";
 
 interface ChatRoomProps {
   params: {
@@ -106,14 +107,14 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
     const fetchData = async () => {
       try {
         setInitialMessagesLoading(chatRoomId, true);
-
-        // 다른 유저 검증용
+        // 다른 유저id 확인용
         const chatRoom = await getChatRoom(chatRoomId);
         setOtherUserId(chatRoom.seeChatRoom.otherUserId);
 
         const currentRoomMessages = messages[chatRoomId] || [];
 
         const chatRooms = await getChatRooms();
+        console.log(chatRooms);
         setChatRooms(chatRooms?.seeChatRooms);
 
         if (currentRoomMessages.length === 0) {

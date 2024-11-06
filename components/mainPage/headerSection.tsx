@@ -109,7 +109,11 @@ export default function HeaderSection({
                 <Bars3Icon className="w-6 h-6" />
               </SheetTrigger>
               <SheetContent side={"left"} className="w-1/2">
-                <NavItemsMobile onLinkClick={handleLinkClick} />
+                <NavItemsMobile
+                  onLinkClick={handleLinkClick}
+                  userId={userId}
+                  isApprovedGuide={isApprovedGuide}
+                />
               </SheetContent>
             </Sheet>
           </div>
@@ -120,7 +124,7 @@ export default function HeaderSection({
             FGFG
           </Link>
           <div className="flex-1 flex justify-end">
-            {user ? (
+            {userId ? (
               <AvatarDropMenu chatRoomId={newChatRoomId && newChatRoomId} />
             ) : (
               <Link

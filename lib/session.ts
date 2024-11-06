@@ -6,7 +6,7 @@ interface SessionContent {
   guideId?: number;
 }
 
-export default function getSession() {
+export default async function getSession() {
   return getIronSession<SessionContent>(cookies(), {
     cookieName: "fgfg-cookie",
     password: process.env.COOKIE_PASSWORD!,

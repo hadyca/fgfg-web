@@ -35,7 +35,7 @@ export default function AvatarDropMenu({ chatRoomId }: AvatarDropMenuProps) {
   };
 
   useEffect(() => {
-    const isExistUnRead = chatRooms.some(
+    const isExistUnRead = chatRooms?.some(
       (chatRoom: any) => chatRoom.isRead === false
     );
     setIsUnread(isExistUnRead);

@@ -123,8 +123,10 @@ export default function ChatMessageList({
     return DateTime.fromISO(date).toLocaleString(DateTime.TIME_SIMPLE);
   };
 
-  // 처음 렌더링 시 스크롤을 맨 아래로 이동
+  // 처음 렌더링 시 스크롤을 맨 아래로 이동 + 내 화면 isRead를 true로 처리
   useEffect(() => {
+    updateIsReadInRoom(chatRoomId, true);
+
     if (!isInitialMessagesLoading) {
       setTimeout(() => {
         if (messagesEndRef.current) {
@@ -132,20 +134,14 @@ export default function ChatMessageList({
         }
       }, 100);
     }
-  }, [isInitialMessagesLoading]); // 상태 값만 참조하도록 함
+  }, [isInitialMessagesLoading, updateIsReadInRoom, chatRoomId]); // 상태 값만 참조하도록 함
 
+  //채팅 입력 후, 화면 아래로 스크롤
   useEffect(() => {
-    updateIsReadInRoom(chatRoomId, true);
-
-    //
-    const updateReadStatus = async () => {
-      if (messagesEndRef.current) {
-        messagesEndRef.current.scrollIntoView();
-      }
-    };
-
-    updateReadStatus();
-  }, [chatRoomId, updateIsReadInRoom, message]);
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView();
+    }
+  }, [messages]);
 
   return (
     <div className="flex flex-col w-full md:border-l h-full">
