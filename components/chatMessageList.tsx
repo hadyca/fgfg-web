@@ -4,10 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { ArrowUpCircleIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import {
-  saveMessage,
-  updateIsRead,
-} from "@/app/(main)/chat-room/[chatRoomId]/actions";
+import { saveMessage } from "@/app/(main)/chat-room/[chatRoomId]/actions";
 import { DateTime } from "luxon";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
 import BillsSkeleton, {
@@ -32,7 +29,6 @@ export default function ChatMessageList({
   chatRoomId,
   username,
   avatar,
-  messageChannel,
   otherUserChannel,
 }: ChatMessageListProps) {
   const { toast } = useToast();
@@ -42,8 +38,8 @@ export default function ChatMessageList({
   const messagesEndRef = useRef<HTMLDivElement | null>(null); // 메시지 끝의 ref
 
   const {
-    updateLastMessageInRoom,
-    updateIsReadInRoom,
+    setLastMessage,
+    setIsRead,
     setMessages,
     messages,
     initialMessagesLoading,
@@ -76,30 +72,29 @@ export default function ChatMessageList({
 
     setMessage("");
     setMessages(chatRoomId, [newMessage]);
+    setLastMessage(chatRoomId, message, newMessage.createdAt);
 
-    updateLastMessageInRoom(chatRoomId, message, newMessage.createdAt);
-    //상대방 채팅방에 전달 하는 정보
-    messageChannel?.send({
-      type: "broadcast",
-      event: "message",
-      payload: newMessage,
-    });
-
-    const ok = await saveMessage(chatRoomId, message);
+    const { ok, error, messageId } = await saveMessage(chatRoomId, message);
     if (!ok) {
       toast({
-        description: "탈퇴한 회원입니다.",
+        description: error,
       });
       return;
     }
-
     otherUserChannel?.send({
       type: "broadcast",
       event: "message",
       payload: {
+        id: messageId,
         chatRoomId,
         message,
-        createdAt: newMessage.createdAt,
+        user: {
+          id: userId,
+          username,
+          avatar,
+        },
+        isMyMessage: true,
+        createdAt: new Date().toISOString(),
         avatar,
         usernameOrFullname: username,
         isRead: false,
@@ -125,7 +120,7 @@ export default function ChatMessageList({
 
   // 처음 렌더링 시 스크롤을 맨 아래로 이동 + 내 화면 isRead를 true로 처리
   useEffect(() => {
-    updateIsReadInRoom(chatRoomId, true);
+    setIsRead(chatRoomId, true);
 
     if (!isInitialMessagesLoading) {
       setTimeout(() => {
@@ -134,7 +129,7 @@ export default function ChatMessageList({
         }
       }, 100);
     }
-  }, [isInitialMessagesLoading, updateIsReadInRoom, chatRoomId]); // 상태 값만 참조하도록 함
+  }, [isInitialMessagesLoading, setIsRead, chatRoomId]); // 상태 값만 참조하도록 함
 
   //채팅 입력 후, 화면 아래로 스크롤
   useEffect(() => {

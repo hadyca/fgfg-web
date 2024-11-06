@@ -4,11 +4,12 @@ import { client } from "@/lib/apolloClient";
 import {
   CREATE_MESSAGE,
   DELETE_CHAT_ROOM,
+  READ_ALL_MESSAGES,
+  READ_ONE_MESSAGE,
   SEE_CHAT_ROOM,
   SEE_CHAT_ROOM_RESERVATIONS,
   SEE_CHAT_ROOMS,
   SEE_MESSAGES,
-  UPDATE_ISREAD,
 } from "./queries";
 import { redirect } from "next/navigation";
 
@@ -52,7 +53,7 @@ export async function getChatRooms() {
 export async function saveMessage(chatRoomId: string, payload: string) {
   const {
     data: {
-      createMessage: { ok },
+      createMessage: { ok, error, messageId },
     },
   } = await client.mutate({
     mutation: CREATE_MESSAGE,
@@ -61,14 +62,25 @@ export async function saveMessage(chatRoomId: string, payload: string) {
       payload,
     },
   });
-  return ok;
+  return { ok, error, messageId };
 }
 
-export async function updateIsRead(chatRoomId: string) {
+export async function readAllMessages(chatRoomId: string) {
   await client.mutate({
-    mutation: UPDATE_ISREAD,
+    mutation: READ_ALL_MESSAGES,
     variables: {
       chatRoomId,
+    },
+  });
+  return;
+}
+
+export async function readOneMessage(chatRoomId: string, messageId: number) {
+  await client.mutate({
+    mutation: READ_ONE_MESSAGE,
+    variables: {
+      chatRoomId,
+      messageId,
     },
   });
   return;

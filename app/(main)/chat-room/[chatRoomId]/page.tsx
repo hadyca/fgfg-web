@@ -5,7 +5,8 @@ import {
   getChatRoom,
   getChatRooms,
   getMessages,
-  updateIsRead,
+  readAllMessages,
+  readOneMessage,
 } from "./actions";
 import getUser from "@/lib/getUser";
 import ChatMessageList from "@/components/chatMessageList";
@@ -17,7 +18,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabaseClient";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import getSession from "@/lib/session";
 
 interface ChatRoomProps {
   params: {
@@ -49,59 +49,51 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
     setMessages,
     setInitialMessages,
     setBills,
-    updateLastMessageInRoom,
-    updateIsReadInRoom,
+    setLastMessage,
+    setIsRead,
     setChatRooms,
     messages,
   } = useChatRoomStore();
 
   useEffect(() => {
     myChannel.current = supabase.channel(`user-${user?.me?.id}`);
+    otherUserChannel.current = supabase.channel(`user-${otherUserId}`);
     myChannel.current
-      .on("broadcast", { event: "message" }, (payload) => {
-        updateLastMessageInRoom(
+      .on("broadcast", { event: "message" }, async (payload) => {
+        setLastMessage(
           payload.payload.chatRoomId,
           payload.payload.message,
           payload.payload.createdAt,
-          payload.payload.avatar,
+          payload.payload.user.avatar,
           payload.payload.usernameOrFullname
         );
-
-        const isSameRoom = Boolean(chatRoomId === payload.payload.chatRoomId);
-        updateIsReadInRoom(payload.payload.chatRoomId, isSameRoom);
-      })
-      .subscribe();
-
-    return () => {
-      myChannel.current?.unsubscribe();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.me?.id, chatRoomId]);
-
-  useEffect(() => {
-    //상대 채널 구독
-    otherUserChannel.current = supabase.channel(`user-${otherUserId}`);
-    //채팅방 채널 구독 (채팅방 실시간용)
-    messageChannel.current = supabase.channel(`room-${chatRoomId}`);
-    messageChannel.current
-      .on("broadcast", { event: "message" }, (payload) => {
         const receivedMessage = {
           id: payload.payload.id,
-          payload: payload.payload.payload,
+          payload: payload.payload.message,
           createdAt: payload.payload.createdAt,
           user: payload.payload.user,
           isMyMessage: false,
         };
-        setMessages(chatRoomId, [receivedMessage]);
+        setMessages(payload.payload.chatRoomId, [receivedMessage]);
+        if (chatRoomId === payload.payload.chatRoomId) {
+          setIsRead(chatRoomId, true);
+          await readOneMessage(chatRoomId, payload.payload.id);
+        }
       })
       .subscribe();
 
     return () => {
       otherUserChannel.current?.unsubscribe();
-      messageChannel.current?.unsubscribe();
+      myChannel.current?.unsubscribe();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatRoomId, otherUserId, isMediumScreen, showChatMessageList]);
+  }, [
+    user?.me?.id,
+    chatRoomId,
+    otherUserId,
+    setIsRead,
+    setLastMessage,
+    setMessages,
+  ]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -114,8 +106,9 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
         const currentRoomMessages = messages[chatRoomId] || [];
 
         const chatRooms = await getChatRooms();
-        console.log(chatRooms);
         setChatRooms(chatRooms?.seeChatRooms);
+        // 전체 채팅방 읽기
+        await readAllMessages(chatRoomId);
 
         if (currentRoomMessages.length === 0) {
           const fetchedMessages = await getMessages(chatRoomId);

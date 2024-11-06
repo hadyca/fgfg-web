@@ -8,7 +8,6 @@ const httpLink = new HttpLink({
 
 const authLink = setContext(async (_, { headers }) => {
   const session = await getSession();
-  console.log(session.token);
   return {
     headers: {
       ...headers,

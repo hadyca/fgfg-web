@@ -31,6 +31,8 @@ export const CREATE_MESSAGE = gql`
   mutation createMessage($chatRoomId: String!, $payload: String!) {
     createMessage(chatRoomId: $chatRoomId, payload: $payload) {
       ok
+      error
+      messageId
     }
   }
 `;
@@ -48,9 +50,17 @@ export const SEE_CHAT_ROOMS = gql`
   }
 `;
 
-export const UPDATE_ISREAD = gql`
-  mutation updateIsRead($chatRoomId: String!) {
-    updateIsRead(chatRoomId: $chatRoomId) {
+export const READ_ALL_MESSAGES = gql`
+  mutation readAllMessages($chatRoomId: String!) {
+    readAllMessages(chatRoomId: $chatRoomId) {
+      ok
+    }
+  }
+`;
+
+export const READ_ONE_MESSAGE = gql`
+  mutation readOneMessage($chatRoomId: String!, $messageId: Int!) {
+    readOneMessage(chatRoomId: $chatRoomId, messageId: $messageId) {
       ok
     }
   }
