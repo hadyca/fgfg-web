@@ -38,7 +38,7 @@ export default async function GuideDashboard() {
               <div>
                 <div>가이드 예약</div>
                 <div className="text-muted-foreground text-sm">
-                  신청온 예약들을 관리 할 수 있어요
+                  예약들을 관리 할 수 있어요
                 </div>
               </div>
             </div>

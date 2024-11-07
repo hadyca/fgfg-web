@@ -49,21 +49,21 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
     setMessages,
     setInitialMessages,
     setBills,
-    setLastMessage,
-    setIsRead,
+    setChatRoom,
     setChatRooms,
     messages,
   } = useChatRoomStore();
 
   useEffect(() => {
-    myChannel.current = supabase.channel(`user-${user?.me?.id}`);
     otherUserChannel.current = supabase.channel(`user-${otherUserId}`);
+    myChannel.current = supabase.channel(`user-${user?.me?.id}`);
     myChannel.current
       .on("broadcast", { event: "message" }, async (payload) => {
-        setLastMessage(
+        setChatRoom(
           payload.payload.chatRoomId,
           payload.payload.message,
           payload.payload.createdAt,
+          chatRoomId === payload.payload.chatRoomId,
           payload.payload.user.avatar,
           payload.payload.usernameOrFullname
         );
@@ -76,7 +76,6 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
         };
         setMessages(payload.payload.chatRoomId, [receivedMessage]);
         if (chatRoomId === payload.payload.chatRoomId) {
-          setIsRead(chatRoomId, true);
           await readOneMessage(chatRoomId, payload.payload.id);
         }
       })
@@ -86,37 +85,31 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
       otherUserChannel.current?.unsubscribe();
       myChannel.current?.unsubscribe();
     };
-  }, [
-    user?.me?.id,
-    chatRoomId,
-    otherUserId,
-    setIsRead,
-    setLastMessage,
-    setMessages,
-  ]);
+  }, [user?.me?.id, chatRoomId, otherUserId, setChatRoom, setMessages]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setInitialMessagesLoading(chatRoomId, true);
-        // 다른 유저id 확인용
-        const chatRoom = await getChatRoom(chatRoomId);
-        setOtherUserId(chatRoom.seeChatRoom.otherUserId);
-
-        const currentRoomMessages = messages[chatRoomId] || [];
-
-        const chatRooms = await getChatRooms();
-        setChatRooms(chatRooms?.seeChatRooms);
-        // 전체 채팅방 읽기
+        // 해당 채팅방 isRead: true 처리
         await readAllMessages(chatRoomId);
 
+        // 다른 유저id 확인용
+        const chatRoom = await getChatRoom(chatRoomId);
+        setOtherUserId(chatRoom.otherUserId);
+
+        // 전체 채팅방 읽기
+        const chatRooms = await getChatRooms();
+        setChatRooms(chatRooms);
+
+        const currentRoomMessages = messages[chatRoomId] || [];
         if (currentRoomMessages.length === 0) {
           const fetchedMessages = await getMessages(chatRoomId);
           setInitialMessages(chatRoomId, fetchedMessages);
         }
 
         const currentUser = await getUser();
-        if (chatRoom.seeChatRoom.normalUserId === currentUser?.me.id) {
+        if (chatRoom.normalUserId === currentUser?.me.id) {
           setUsername(currentUser?.me.username);
         } else {
           setUsername(currentUser?.me?.guide.fullname);

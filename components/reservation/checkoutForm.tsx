@@ -44,7 +44,6 @@ export default function CheckoutForm({
   userId,
   username,
   avatar,
-  email,
   startTime,
   endTime,
 }: CheckoutFormProps) {
@@ -54,7 +53,6 @@ export default function CheckoutForm({
   const [loading, setLoading] = useState(false);
   const [customerAgeRange, setCustomerAgeRange] = useState("");
 
-  const messageChannel = useRef<RealtimeChannel>();
   const otherUserChannel = useRef<RealtimeChannel>();
 
   const {
@@ -73,10 +71,11 @@ export default function CheckoutForm({
       const formData = new FormData();
       formData.append("payload", data.payload);
       formData.append("customerAgeRange", data.customerAgeRange);
-      const [chatRoom, reserveResult] = await Promise.all([
-        createChatRoom(formData, guideId), // 채팅방 생성
-        reserveGuide(formData, guideId, startTime, endTime), // 가이드 예약
-      ]);
+      const [{ ok, error, chatRoom, messageId }, reserveResult] =
+        await Promise.all([
+          createChatRoom(formData, guideId), // 채팅방 생성
+          reserveGuide(formData, guideId, startTime, endTime), // 가이드 예약
+        ]);
 
       if (!reserveResult.ok) {
         toast({
@@ -87,37 +86,25 @@ export default function CheckoutForm({
       }
 
       // 채널 생성 후 메시지 전송
-      messageChannel.current = supabase.channel(`room-${chatRoom.id}`);
       otherUserChannel.current = supabase.channel(
         `user-${chatRoom.otherUserId}`
       );
 
-      const newMessage = {
-        id: Date.now(),
-        payload: data.payload,
-        createdAt: new Date().toISOString(),
-        user: {
-          id: userId,
-          username,
-          avatar,
-        },
-        isMyMessage: true,
-      };
-
-      // 상대방 채팅방에 메시지 전달
-      messageChannel.current?.send({
-        type: "broadcast",
-        event: "message",
-        payload: newMessage,
-      });
-
-      otherUserChannel.current?.send({
+      otherUserChannel.current.send({
         type: "broadcast",
         event: "message",
         payload: {
+          id: messageId,
           chatRoomId: chatRoom.id,
           message: data.payload,
-          createdAt: newMessage.createdAt,
+          user: {
+            id: userId,
+            username,
+            avatar,
+          },
+          isMyMessage: true,
+          createdAt: new Date().toISOString(),
+          avatar,
           usernameOrFullname: username,
           isRead: false,
         },

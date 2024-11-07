@@ -41,12 +41,12 @@ interface ChatRoomState {
   initialChatRoomsLoading: boolean;
   setInitialChatRoomsLoading: (loading: boolean) => void;
   setChatRooms: (rooms: ChatRoom[]) => void;
-  setIsRead: (chatRoomId: string, isRead: boolean) => void; // 여기에 추가
   removeChatRoom: (chatRoomId: string) => void;
-  setLastMessage: (
+  setChatRoom: (
     chatRoomId: string,
     lastMessage: string,
     createdAt: string,
+    isRead: boolean,
     avatar?: string,
     usernameOrFullname?: string
   ) => void;
@@ -70,10 +70,11 @@ export const useChatRoomStore = create<ChatRoomState>((set) => ({
     set({ initialChatRoomsLoading: loading }),
   setChatRooms: (chatRoom) => set({ chatRooms: chatRoom }),
   // 특정 채팅방의 마지막 메시지를 업데이트하는 로직
-  setLastMessage: (
+  setChatRoom: (
     chatRoomId,
     lastMessage,
     createdAt,
+    isRead,
     avatar,
     usernameOrFullname
   ) =>
@@ -90,7 +91,7 @@ export const useChatRoomStore = create<ChatRoomState>((set) => ({
           usernameOrFullname: usernameOrFullname || "Unknown", // 이름이 없으면 "Unknown"으로 설정
           lastMessage,
           createdAt,
-          isRead: false,
+          isRead,
         };
         return {
           chatRooms: [...state.chatRooms, newChatRoom].sort(
@@ -105,7 +106,7 @@ export const useChatRoomStore = create<ChatRoomState>((set) => ({
         chatRooms: state.chatRooms
           .map((chatRoom) =>
             chatRoom.id === chatRoomId
-              ? { ...chatRoom, lastMessage, createdAt }
+              ? { ...chatRoom, lastMessage, createdAt, isRead }
               : chatRoom
           )
           .sort(
@@ -114,13 +115,6 @@ export const useChatRoomStore = create<ChatRoomState>((set) => ({
           ),
       };
     }),
-  // 특정 채팅방의 isRead 값을 true로 업데이트하는 로직
-  setIsRead: (chatRoomId, isRead) =>
-    set((state) => ({
-      chatRooms: state.chatRooms.map((chatRoom) =>
-        chatRoom.id === chatRoomId ? { ...chatRoom, isRead } : chatRoom
-      ),
-    })),
 
   removeChatRoom: (chatRoomId) =>
     set((state) => ({

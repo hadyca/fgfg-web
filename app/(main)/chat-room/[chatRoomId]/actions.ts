@@ -14,7 +14,9 @@ import {
 import { redirect } from "next/navigation";
 
 export async function getChatRoom(chatRoomId: String) {
-  const { data } = await client.query({
+  const {
+    data: { seeChatRoom },
+  } = await client.query({
     query: SEE_CHAT_ROOM,
     variables: {
       chatRoomId,
@@ -22,10 +24,10 @@ export async function getChatRoom(chatRoomId: String) {
     fetchPolicy: "no-cache",
   });
 
-  if (!data.seeChatRoom) {
+  if (!seeChatRoom) {
     redirect("/");
   }
-  return data;
+  return seeChatRoom;
 }
 
 export async function getMessages(chatRoomId: String) {
@@ -43,11 +45,13 @@ export async function getMessages(chatRoomId: String) {
 }
 
 export async function getChatRooms() {
-  const { data } = await client.query({
+  const {
+    data: { seeChatRooms },
+  } = await client.query({
     query: SEE_CHAT_ROOMS,
     fetchPolicy: "no-cache",
   });
-  return data;
+  return seeChatRooms;
 }
 
 export async function saveMessage(chatRoomId: string, payload: string) {

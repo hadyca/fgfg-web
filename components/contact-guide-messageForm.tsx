@@ -32,8 +32,7 @@ export default function ContactGuideForm({
   const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const messageChannel = useRef<RealtimeChannel>();
-  const otherUserChannel = useRef<RealtimeChannel>();
+  const otherUserChannel = useRef<RealtimeChannel | undefined>();
 
   const {
     register,
@@ -47,46 +46,42 @@ export default function ContactGuideForm({
     setLoading(true);
     const formData = new FormData();
     formData.append("payload", data.payload);
-    const chatRoom = await createChatRoom(formData, guideId);
-    if (!chatRoom) {
+    const { ok, error, chatRoom, messageId } = await createChatRoom(
+      formData,
+      guideId
+    );
+    if (!ok) {
       toast({
         variant: "destructive",
-        title: "본인 계정이거나, 현재 활동을 잠시 중단한 가이드 입니다.",
+        title: error,
       });
       return;
     }
 
-    messageChannel.current = supabase.channel(`room-${chatRoom.id}`);
     otherUserChannel.current = supabase.channel(`user-${chatRoom.otherUserId}`);
-    const newMessage = {
-      id: Date.now(),
-      payload: data.payload,
-      createdAt: new Date().toISOString(),
-      user: {
-        id: userId,
-        username,
-        avatar,
-      },
-      isMyMessage: true,
-    };
-    //상대방 채팅방에 전달 하는 정보
-    messageChannel.current?.send({
-      type: "broadcast",
-      event: "message",
-      payload: newMessage,
-    });
 
-    otherUserChannel.current?.send({
-      type: "broadcast",
-      event: "message",
-      payload: {
-        chatRoomId: chatRoom.id,
-        message: data.payload,
-        createdAt: newMessage.createdAt,
-        usernameOrFullname: username,
-        isRead: false,
-      },
-    });
+    if (otherUserChannel.current) {
+      otherUserChannel.current.send({
+        type: "broadcast",
+        event: "message",
+        payload: {
+          id: messageId,
+          chatRoomId: chatRoom.id,
+          message: data.payload,
+          user: {
+            id: userId,
+            username,
+            avatar,
+          },
+          isMyMessage: true,
+          createdAt: new Date().toISOString(),
+          avatar,
+          usernameOrFullname: username,
+          isRead: false,
+        },
+      });
+    }
+
     router.push(`/chat-room/${chatRoom.id}`);
     setLoading(false);
   };

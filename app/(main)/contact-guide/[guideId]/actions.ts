@@ -12,10 +12,15 @@ export async function createChatRoom(formData: FormData, guideId: number) {
   };
   const result = contactGuideSchema.safeParse(data);
   if (!result.success) {
-    return result.error.flatten();
+    return {
+      ok: false,
+      error: "입력 오류",
+    };
   } else {
     const {
-      data: { createChatRoom },
+      data: {
+        createChatRoom: { ok, error, chatRoom, messageId },
+      },
     } = await client.mutate({
       mutation: CREATE_CHAT_ROOM,
       variables: {
@@ -26,6 +31,6 @@ export async function createChatRoom(formData: FormData, guideId: number) {
     if (!data) {
       return notFound();
     }
-    return createChatRoom;
+    return { ok, error, chatRoom, messageId };
   }
 }

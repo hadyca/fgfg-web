@@ -37,17 +37,11 @@ export default function ChatMessageList({
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null); // 메시지 끝의 ref
 
-  const {
-    setLastMessage,
-    setIsRead,
-    setMessages,
-    messages,
-    initialMessagesLoading,
-  } = useChatRoomStore();
+  const { setChatRoom, setMessages, messages, initialMessagesLoading } =
+    useChatRoomStore();
 
   const isInitialMessagesLoading = initialMessagesLoading[chatRoomId] ?? true;
   const currentRoomMessages = messages[chatRoomId] || [];
-
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
@@ -72,7 +66,7 @@ export default function ChatMessageList({
 
     setMessage("");
     setMessages(chatRoomId, [newMessage]);
-    setLastMessage(chatRoomId, message, newMessage.createdAt);
+    setChatRoom(chatRoomId, message, newMessage.createdAt, true);
 
     const { ok, error, messageId } = await saveMessage(chatRoomId, message);
     if (!ok) {
@@ -120,8 +114,6 @@ export default function ChatMessageList({
 
   // 처음 렌더링 시 스크롤을 맨 아래로 이동 + 내 화면 isRead를 true로 처리
   useEffect(() => {
-    setIsRead(chatRoomId, true);
-
     if (!isInitialMessagesLoading) {
       setTimeout(() => {
         if (messagesEndRef.current) {
@@ -129,7 +121,7 @@ export default function ChatMessageList({
         }
       }, 100);
     }
-  }, [isInitialMessagesLoading, setIsRead, chatRoomId]); // 상태 값만 참조하도록 함
+  }, [isInitialMessagesLoading, chatRoomId]); // 상태 값만 참조하도록 함
 
   //채팅 입력 후, 화면 아래로 스크롤
   useEffect(() => {
@@ -239,12 +231,16 @@ export default function ChatMessageList({
             required
             onChange={onChange}
             value={message}
+            disabled={isInitialMessagesLoading}
             className="rounded-full w-full h-10 border border-neutral-300 px-5 placeholder:text-neutral-400 focus:outline-none"
             type="text"
             name="message"
             placeholder="Write a message..."
           />
-          <button className="absolute right-5">
+          <button
+            className="absolute right-5"
+            disabled={isInitialMessagesLoading}
+          >
             <ArrowUpCircleIcon className="size-10 text-orange-500 transition-colors hover:text-orange-300" />
           </button>
         </form>

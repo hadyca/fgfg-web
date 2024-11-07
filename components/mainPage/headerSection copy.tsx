@@ -9,6 +9,7 @@ import NavItemsMobile from "./navItems_mobile";
 import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import AvatarDropMenu from "./avatarDropMenu";
 import { Separator } from "../ui/separator";
+import { useChatRoomStore } from "@/store/useChatRoomStore";
 import { useUserStore } from "@/store/useUserStore";
 
 interface Guide {
@@ -34,28 +35,38 @@ interface User {
   guide: Guide;
   chatRooms: userChatRooms[];
 }
+interface ChatRooms {
+  id: string;
+  usernameOrFullname: string;
+  lastMessage: string;
+  createdAt: string;
+  isRead: boolean;
+}
 
 interface NavProps {
   me: User;
-  chatRoomId: string;
-  isExistUnRead: boolean;
+  chatRooms: ChatRooms[];
   userId: number;
   isApprovedGuide: boolean;
 }
 
 export default function HeaderSection({
   me,
-  chatRoomId,
-  isExistUnRead,
+  chatRooms,
   userId,
   isApprovedGuide,
 }: NavProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { setUser } = useUserStore();
+  const { setChatRooms } = useChatRoomStore();
 
   useEffect(() => {
     setUser(me);
   }, [me, setUser]);
+
+  useEffect(() => {
+    setChatRooms(chatRooms);
+  }, [chatRooms, setChatRooms]);
 
   const handleLinkClick = () => {
     setIsOpen(false); // 링크 클릭 시 Sheet 닫기
@@ -65,12 +76,7 @@ export default function HeaderSection({
     <header>
       {/* 데스크탑 네비게이션 메뉴 */}
       <nav className="md:block hidden">
-        <NavItemsPC
-          userId={userId}
-          isApprovedGuide={isApprovedGuide}
-          chatRoomId={chatRoomId}
-          isExistUnRead={isExistUnRead}
-        />
+        <NavItemsPC userId={userId} isApprovedGuide={isApprovedGuide} />
         <Separator />
       </nav>
       {/* 모바일 네비게이션 메뉴 */}
@@ -98,10 +104,7 @@ export default function HeaderSection({
           </Link>
           <div className="flex-1 flex justify-end">
             {userId ? (
-              <AvatarDropMenu
-                chatRoomId={chatRoomId}
-                isExistUnRead={isExistUnRead}
-              />
+              <AvatarDropMenu />
             ) : (
               <Link
                 href="/create-account"

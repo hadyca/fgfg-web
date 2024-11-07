@@ -36,7 +36,6 @@ export default function ChatRoomList({
 
   const { removeChatRoom, initialChatRoomsLoading, chatRooms } =
     useChatRoomStore();
-
   const handleRoomClick = (chatRoomId: string) => {
     router.push(`/chat-room/${chatRoomId}`);
     if (setShowChatMessageList) {
