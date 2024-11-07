@@ -9,9 +9,10 @@ export default async function HomeLayout({
 }) {
   const user = await getUser();
   const chatRooms = await getChatRooms();
+
   const chatRoomId =
-    chatRooms.length > 0
-      ? chatRooms.reduce((latest: any, chatRoom: any) =>
+    chatRooms?.length > 0
+      ? chatRooms?.reduce((latest: any, chatRoom: any) =>
           new Date(chatRoom.createdAt) > new Date(latest.createdAt)
             ? chatRoom
             : latest
