@@ -107,7 +107,7 @@ export default function ProfileInfo({
             다른 사람에게 어떤 정보가 공개되나요?
           </div>
           <div className="text-muted-foreground">
-            생년월일(나인만 공개), 거주지 주소, 핸드폰 번호는 비공개 정보이며
+            생년월일(나이만 공개), 거주지 주소, 핸드폰 번호는 비공개 정보이며
             나머지 정보는 모두 공개 됩니다.
           </div>
           <Separator className="my-6" />

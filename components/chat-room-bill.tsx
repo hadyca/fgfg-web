@@ -10,6 +10,8 @@ import {
 import { Separator } from "./ui/separator";
 import { SERVICE_FEE } from "@/lib/constants";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
+import { useEffect, useState } from "react";
+import { DateTime } from "luxon";
 
 interface ChatRoomBillProps {
   chatRoomId: string;
@@ -38,9 +40,10 @@ export default function ChatRoomBill({ chatRoomId }: ChatRoomBillProps) {
                 <span>{bill.id} </span>
                 {bill.guideConfirm ? (
                   <span>(예약 확정)</span>
-                ) : bill.userCancel ? (
-                  <span>(예약 취소)</span>
-                ) : bill.guideCancel ? (
+                ) : (bill.guideConfirm === false &&
+                    DateTime.now().toISO() > bill.startTime) ||
+                  bill.userCancel ||
+                  bill.guideCancel ? (
                   <span>(예약 취소)</span>
                 ) : (
                   <span>(예약 미확정)</span>
