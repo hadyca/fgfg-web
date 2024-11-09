@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
 import { Button } from "../../ui/button";
-import { DateTime } from "luxon";
 import {
   CalendarIcon,
   CheckCircleIcon,
@@ -11,55 +9,11 @@ import {
 import GuideReservationList from "./guide-reservation-list";
 import { useGuideReservationStore } from "@/store/useGuideReservationStore";
 
-interface User {
-  avatar: string;
-  username: string;
-}
-
-interface Reservations {
-  id: number;
-  user: User;
-  startTime: string;
-  endTime: string;
-  guideConfirm: boolean;
-  userCancel: boolean;
-  guideCancel: boolean;
-  createdAt: string;
-  serviceFee: number;
-  customerAgeRange: string;
-  pickupPlaceMain: string;
-  pickupPlaceDetail: string;
-}
-
-interface GuideReservationsProps {
-  reservations: Reservations[];
-}
-
-export default function GuideReservations({
-  reservations,
-}: GuideReservationsProps) {
-  const { selectedTab, setSelectedTab, reservationList, setReservationList } =
+export default function GuideReservations() {
+  const { selectedTab, setSelectedTab, reservations } =
     useGuideReservationStore();
 
-  useEffect(() => {
-    const now = DateTime.now().toISO();
-    const formattedReservations = reservations.map((reservation: any) => {
-      if (
-        (reservation.guideConfirm === false && now > reservation.startTime) ||
-        reservation.userCancel ||
-        reservation.guideCancel
-      ) {
-        return { ...reservation, status: "cancelled" };
-      } else if (reservation.startTime > now) {
-        return { ...reservation, status: "upcoming" };
-      } else {
-        return { ...reservation, status: "completed" };
-      }
-    });
-    setReservationList(formattedReservations);
-  }, [reservations, setReservationList]);
-
-  const filteredReservations = reservationList.filter(
+  const filteredReservations = reservations.filter(
     (reservation: any) => reservation.status === selectedTab
   );
 
@@ -91,7 +45,7 @@ export default function GuideReservations({
       <div className="mt-3">
         {filteredReservations.length > 0 ? (
           <GuideReservationList
-            reservationList={filteredReservations}
+            reservations={filteredReservations}
             selected={selectedTab}
           />
         ) : (

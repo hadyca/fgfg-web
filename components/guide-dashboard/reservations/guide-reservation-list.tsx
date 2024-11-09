@@ -55,12 +55,12 @@ interface Reservations {
 }
 
 interface UpcomingReservationsProps {
-  reservationList: Reservations[];
+  reservations: Reservations[];
   selected: string;
 }
 
 export default function GuideReservationList({
-  reservationList,
+  reservations,
   selected,
 }: UpcomingReservationsProps) {
   const { toast } = useToast();
@@ -107,7 +107,7 @@ export default function GuideReservationList({
   };
   return (
     <div className="flex flex-col gap-5">
-      {reservationList.map((reservation) => (
+      {reservations.map((reservation) => (
         <Card key={reservation.id} className="shadow-md max-w-full p-6 h-fit">
           <div className="flex flex-row items-center justify-between mb-3">
             <span className="text-sm text-muted-foreground">

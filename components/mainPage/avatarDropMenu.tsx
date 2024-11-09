@@ -12,6 +12,7 @@ import { UserCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { logout } from "@/lib/sharedActions";
 import { useUserStore } from "@/store/useUserStore";
+import { useGuideReservationStore } from "@/store/useGuideReservationStore";
 
 interface AvatarDropMenuProps {
   chatRoomId: string;
@@ -23,6 +24,7 @@ export default function AvatarDropMenu({
   isExistUnRead,
 }: AvatarDropMenuProps) {
   const { user, clearUser } = useUserStore();
+  const { countPendingReservations } = useGuideReservationStore();
 
   const handleLogout = async () => {
     clearUser();
@@ -45,7 +47,7 @@ export default function AvatarDropMenu({
               <UserCircleIcon className="text-primary w-full h-full" />
             )}
           </Avatar>
-          {isExistUnRead && (
+          {(isExistUnRead || countPendingReservations > 0) && (
             <span>
               <span className="absolute top-0 -left-1 w-2 h-2 bg-primary rounded-full animate-ping"></span>
               <span className="absolute top-0 -left-1 w-2 h-2 inline-flex rounded-full bg-primary"></span>
@@ -88,7 +90,12 @@ export default function AvatarDropMenu({
           <>
             <Link href="/guide-dashboard/reservations">
               <DropdownMenuItem>
-                <div>가이드 예약</div>
+                <div className="flex items-center gap-1">
+                  <div>가이드 예약</div>
+                  {countPendingReservations > 0 ? (
+                    <span className="w-2 h-2 rounded-full bg-primary"></span>
+                  ) : null}
+                </div>
               </DropdownMenuItem>
             </Link>
             <Link href="/guide-dashboard">

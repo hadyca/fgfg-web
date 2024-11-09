@@ -10,6 +10,8 @@ import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import AvatarDropMenu from "./avatarDropMenu";
 import { Separator } from "../ui/separator";
 import { useUserStore } from "@/store/useUserStore";
+import { useGuideReservationStore } from "@/store/useGuideReservationStore";
+import { DateTime } from "luxon";
 
 interface Guide {
   id: number;
@@ -35,9 +37,30 @@ interface User {
   chatRooms: userChatRooms[];
 }
 
+interface ReservationUser {
+  avatar: string;
+  username: string;
+}
+
+interface Reservations {
+  id: number;
+  user: ReservationUser;
+  startTime: string;
+  endTime: string;
+  guideConfirm: boolean;
+  userCancel: boolean;
+  guideCancel: boolean;
+  createdAt: string;
+  serviceFee: number;
+  customerAgeRange: string;
+  pickupPlaceMain: string;
+  pickupPlaceDetail: string;
+}
+
 interface NavProps {
   me: User;
   chatRoomId: string;
+  reservations: Reservations[];
   isExistUnRead: boolean;
   userId: number;
   isApprovedGuide: boolean;
@@ -46,16 +69,38 @@ interface NavProps {
 export default function HeaderSection({
   me,
   chatRoomId,
+  reservations,
   isExistUnRead,
   userId,
   isApprovedGuide,
 }: NavProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { setUser } = useUserStore();
+  const { setReservations, setCountPendingReservations } =
+    useGuideReservationStore();
 
   useEffect(() => {
     setUser(me);
   }, [me, setUser]);
+
+  useEffect(() => {
+    const now = DateTime.now().toISO();
+    const formattedReservations = reservations.map((reservation: any) => {
+      if (
+        (reservation.guideConfirm === false && now > reservation.startTime) ||
+        reservation.userCancel ||
+        reservation.guideCancel
+      ) {
+        return { ...reservation, status: "cancelled" };
+      } else if (reservation.startTime > now) {
+        return { ...reservation, status: "upcoming" };
+      } else {
+        return { ...reservation, status: "completed" };
+      }
+    });
+    setReservations(formattedReservations);
+    setCountPendingReservations(formattedReservations);
+  }, [reservations, setReservations, setCountPendingReservations]);
 
   const handleLinkClick = () => {
     setIsOpen(false); // 링크 클릭 시 Sheet 닫기

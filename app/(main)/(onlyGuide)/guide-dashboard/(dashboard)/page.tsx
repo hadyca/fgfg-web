@@ -1,9 +1,9 @@
+import GuideReservationsCard from "@/components/guide-reservations-card";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import getGuide from "@/lib/getGuide";
 import {
   BanknotesIcon,
-  CalendarDaysIcon,
   ChartBarIcon,
   ClipboardDocumentCheckIcon,
   IdentificationIcon,
@@ -33,15 +33,7 @@ export default async function GuideDashboard() {
       <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
         <Link href={"/guide-dashboard/reservations"}>
           <Card className="shadow-md p-3">
-            <div className="h-32 flex flex-col justify-between">
-              <CalendarDaysIcon className="size-10" strokeWidth={1.2} />
-              <div>
-                <div>가이드 예약</div>
-                <div className="text-muted-foreground text-sm">
-                  예약들을 관리 할 수 있어요
-                </div>
-              </div>
-            </div>
+            <GuideReservationsCard />
           </Card>
         </Link>
         <Link href={"/guide-dashboard/revenue"}>
