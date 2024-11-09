@@ -13,11 +13,10 @@ const fontSans = FontSans({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s - FGFG(프지프지) Foreign GirlFriend Guide",
-    default: "FGFG(프지프지) Foreign GirlFriend Guide",
+    template: "%s - FGFG Foreign GirlFriend Guide",
+    default: "FGFG Foreign GirlFriend Guide",
   },
-  description:
-    "당신만을 위한 최고의 외국 여친 가이드 서비스, FGFG(프지프지)에서 만나요!",
+  description: "당신만을 위한 최고의 외국 여친 가이드 서비스, FGFG에서 만나요!",
 };
 
 export default async function RootLayout({
@@ -25,7 +24,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userLang = headers().get("accept-language") || "en";
+  // const userLang = headers().get("accept-language") || "en";
   return (
     <html lang="en">
       <body
