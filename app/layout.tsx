@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s - FGFG Foreign GirlFriend Guide",
     default: "FGFG Foreign GirlFriend Guide",
   },
-  description: "당신만의 베트남 여친 가이드 서비스, FGFG",
+  description: "당신만의 베트남 여친 서비스, FGFG",
   keywords: [
     "fgfg",
     "FGFG",
@@ -31,6 +31,9 @@ export const metadata: Metadata = {
     "베트남 여자",
     "렌탈 여친",
     "프지프지",
+    "베트남 국제 커플",
+    "베트남 여자 친구 서비스",
+    "FGFG 가이드 서비스",
   ],
 };
 
