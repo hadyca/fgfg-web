@@ -16,7 +16,20 @@ export const metadata: Metadata = {
     template: "%s - FGFG Foreign GirlFriend Guide",
     default: "FGFG Foreign GirlFriend Guide",
   },
-  description: "당신만을 위한 최고의 외국 여친 가이드 서비스, FGFG에서 만나요!",
+  description: "베트남 여친 가이드 서비스, FGFG에서 만나요!",
+  keywords: [
+    "FGFG",
+    "FGFG Global",
+    "Foreign Girlfriend Guide",
+    "국제결혼",
+    "국제연애",
+    "국제커플",
+    "베트남",
+    "베트남 여친",
+    "베트남 연애",
+    "베트남 여자",
+    "렌탈 여친",
+  ],
 };
 
 export default async function RootLayout({
