@@ -4,8 +4,7 @@ import MainIntro from "@/components/mainPage/mainIntro";
 
 export const metadata = {
   title: {
-    absolute:
-      "FGFG Foreign GirlFriend Guide - 당신만을 위한 최고의 외국 여친 가이드, 베트남에서 시작합니다.",
+    absolute: "FGFG Foreign GirlFriend Guide - 당신만의 베트남 여친 가이드",
   },
 };
 export default function Home() {
