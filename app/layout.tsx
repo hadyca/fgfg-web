@@ -30,6 +30,7 @@ export const metadata: Metadata = {
     "베트남 연애",
     "베트남 여자",
     "렌탈 여친",
+    "프지프지",
   ],
 };
 
