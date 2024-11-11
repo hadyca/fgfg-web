@@ -12,6 +12,7 @@ import { Separator } from "../ui/separator";
 import { useUserStore } from "@/store/useUserStore";
 import { useGuideReservationStore } from "@/store/useGuideReservationStore";
 import { DateTime } from "luxon";
+import { useChatRoomStore } from "@/store/useChatRoomStore";
 
 interface Guide {
   id: number;
@@ -57,31 +58,43 @@ interface Reservations {
   pickupPlaceDetail: string;
 }
 
+interface ChatRooms {
+  id: string;
+  avatar?: string;
+  usernameOrFullname: string;
+  lastMessage: string;
+  createdAt: string;
+  isRead: boolean;
+}
+
 interface NavProps {
   me: User;
-  chatRoomId: string;
+  chatRooms: ChatRooms[];
   reservations: Reservations[];
-  isExistUnRead: boolean;
   userId: number;
   isApprovedGuide: boolean;
 }
 
 export default function HeaderSection({
   me,
-  chatRoomId,
+  chatRooms,
   reservations,
-  isExistUnRead,
   userId,
   isApprovedGuide,
 }: NavProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { setUser } = useUserStore();
+  const { setChatRooms } = useChatRoomStore();
   const { setReservations, setCountPendingReservations } =
     useGuideReservationStore();
 
   useEffect(() => {
     setUser(me);
   }, [me, setUser]);
+
+  useEffect(() => {
+    setChatRooms(chatRooms);
+  }, [chatRooms, setChatRooms]);
 
   useEffect(() => {
     const now = DateTime.now().toISO();
@@ -110,12 +123,7 @@ export default function HeaderSection({
     <header>
       {/* 데스크탑 네비게이션 메뉴 */}
       <nav className="md:block hidden">
-        <NavItemsPC
-          userId={userId}
-          isApprovedGuide={isApprovedGuide}
-          chatRoomId={chatRoomId}
-          isExistUnRead={isExistUnRead}
-        />
+        <NavItemsPC userId={userId} isApprovedGuide={isApprovedGuide} />
         <Separator />
       </nav>
       {/* 모바일 네비게이션 메뉴 */}
@@ -143,10 +151,7 @@ export default function HeaderSection({
           </Link>
           <div className="flex-1 flex justify-end">
             {userId ? (
-              <AvatarDropMenu
-                chatRoomId={chatRoomId}
-                isExistUnRead={isExistUnRead}
-              />
+              <AvatarDropMenu />
             ) : (
               <Link
                 href="/create-account"

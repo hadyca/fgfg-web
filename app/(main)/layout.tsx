@@ -19,25 +19,12 @@ export default async function HomeLayout({
     reservations = await getReservations();
   }
 
-  const chatRoomId =
-    chatRooms?.length > 0
-      ? chatRooms?.reduce((latest: any, chatRoom: any) =>
-          new Date(chatRoom.createdAt) > new Date(latest.createdAt)
-            ? chatRoom
-            : latest
-        ).id
-      : "";
-  const isExistUnRead = chatRooms?.some(
-    (chatRoom: any) => chatRoom.isRead === false
-  );
-
   return (
     <>
       <HeaderSection
         me={user?.me}
-        chatRoomId={chatRoomId}
+        chatRooms={chatRooms}
         reservations={reservations}
-        isExistUnRead={isExistUnRead}
         userId={user?.me?.id}
         isApprovedGuide={user?.me?.guide?.isApproved}
       />

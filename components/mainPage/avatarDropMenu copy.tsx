@@ -13,32 +13,18 @@ import Link from "next/link";
 import { logout } from "@/lib/sharedActions";
 import { useUserStore } from "@/store/useUserStore";
 import { useGuideReservationStore } from "@/store/useGuideReservationStore";
-import { useChatRoomStore } from "@/store/useChatRoomStore";
-import { useEffect, useState } from "react";
 
-export default function AvatarDropMenu() {
-  const [isExistUnread, setIsExistUnread] = useState(false);
-  const [lastChatRoomId, setLastChatRoomId] = useState("");
-  const { chatRooms } = useChatRoomStore();
+interface AvatarDropMenuProps {
+  chatRoomId: string;
+  isExistUnRead: boolean;
+}
+
+export default function AvatarDropMenu({
+  chatRoomId,
+  isExistUnRead,
+}: AvatarDropMenuProps) {
   const { user, clearUser } = useUserStore();
   const { countPendingReservations } = useGuideReservationStore();
-
-  useEffect(() => {
-    const isExistUnread = chatRooms?.some(
-      (chatRoom: any) => chatRoom.isRead === false
-    );
-    setIsExistUnread(isExistUnread);
-
-    const lastChatRoomId =
-      chatRooms?.length > 0
-        ? chatRooms?.reduce((latest: any, chatRoom: any) =>
-            new Date(chatRoom.createdAt) > new Date(latest.createdAt)
-              ? chatRoom
-              : latest
-          ).id
-        : "";
-    setLastChatRoomId(lastChatRoomId);
-  }, [chatRooms]);
 
   const handleLogout = async () => {
     clearUser();
@@ -61,7 +47,7 @@ export default function AvatarDropMenu() {
               <UserCircleIcon className="text-primary w-full h-full" />
             )}
           </Avatar>
-          {(isExistUnread || countPendingReservations > 0) && (
+          {(isExistUnRead || countPendingReservations > 0) && (
             <span>
               <span className="absolute top-0 -left-1 w-2 h-2 bg-primary rounded-full animate-ping"></span>
               <span className="absolute top-0 -left-1 w-2 h-2 inline-flex rounded-full bg-primary"></span>
@@ -70,11 +56,11 @@ export default function AvatarDropMenu() {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <Link href={`/chat-room/${lastChatRoomId}`}>
+        <Link href={`/chat-room/${chatRoomId}`}>
           <DropdownMenuItem>
             <div className="flex items-center gap-1">
               <div>메시지</div>
-              {isExistUnread ? (
+              {isExistUnRead ? (
                 <span className="w-2 h-2 rounded-full bg-primary"></span>
               ) : null}
             </div>
