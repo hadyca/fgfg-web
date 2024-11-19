@@ -4,7 +4,7 @@ import MainIntro from "@/components/mainPage/mainIntro";
 
 export const metadata = {
   title: {
-    absolute: "FGFG Foreign GirlFriend Guide - 당신만의 베트남 여친 가이드",
+    absolute: "프지프지 FGFG - 베트남 여친 가이드",
   },
 };
 export default function Home() {
