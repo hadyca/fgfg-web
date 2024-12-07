@@ -32,6 +32,7 @@ interface GuideListPros {
 export default function GuideList({ searchParams }: GuideListPros) {
   const [guides, setGuides] = useState<Guide[]>([]);
   const [loading, setLoading] = useState(true);
+  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const fetchGuides = async () => {
@@ -78,15 +79,25 @@ export default function GuideList({ searchParams }: GuideListPros) {
             }
             className="w-full flex flex-col items-center"
           >
-            <div className="relative w-60 h-72 rounded-md overflow-hidden">
-              <Image
-                fill
-                src={`${guide.mainGuidePhoto.fileUrl}/mainphoto`}
-                alt={"guide main photo"}
-                className="object-cover transform transition-transform duration-300 ease-in-out group-hover:scale-110"
-                sizes="240px"
-                priority
-              />
+            <div className="relative w-60 h-72 rounded-md overflow-hidden bg-gray-100">
+              {imageErrors[guide.id] ? (
+                <div className="absolute inset-0 flex items-center justify-center text-gray-500">
+                  이미지를 불러올 수 없습니다
+                </div>
+              ) : (
+                <Image
+                  fill
+                  src={`${guide.mainGuidePhoto.fileUrl}/mainphoto`}
+                  alt={"guide main photo"}
+                  className="object-cover transform transition-transform duration-300 ease-in-out group-hover:scale-110"
+                  sizes="240px"
+                  priority
+                  onError={() => {
+                    setImageErrors((prev) => ({ ...prev, [guide.id]: true }));
+                  }}
+                  unoptimized={true}
+                />
+              )}
             </div>
             <div className="text-primary text-lg">
               <span className="mr-1">{guide.fullname}</span>
