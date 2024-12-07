@@ -1,4 +1,5 @@
 "use server";
+
 import getSession from "./session";
 import { client } from "./apolloClient";
 import { ME_QUERY } from "./queries";
@@ -8,6 +9,7 @@ export default async function getUser() {
   if (!session.token) {
     return;
   }
+
   const {
     data: { me },
   } = await client.query({

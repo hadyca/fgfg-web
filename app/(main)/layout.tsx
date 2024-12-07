@@ -3,6 +3,7 @@ import { getChatRooms } from "./chat-room/[chatRoomId]/actions";
 import HeaderSection from "@/components/mainPage/headerSection";
 import { getReservations } from "./(onlyGuide)/guide-dashboard/(dashboard)/reservations/actions";
 import getSession from "@/lib/session";
+import { logout } from "@/lib/sharedActions";
 
 export default async function HomeLayout({
   children,
@@ -10,6 +11,7 @@ export default async function HomeLayout({
   children: React.ReactNode;
 }) {
   const user = await getUser();
+
   const chatRooms = await getChatRooms();
   const session = await getSession();
 
