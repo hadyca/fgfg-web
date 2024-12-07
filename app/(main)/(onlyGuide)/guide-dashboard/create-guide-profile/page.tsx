@@ -1,6 +1,8 @@
 "use client";
 
 import ErrorText from "@/components/errorText";
+import { useToast } from "@/components/hooks/use-toast";
+
 import {
   Card,
   CardDescription,
@@ -26,6 +28,8 @@ import Spinner from "@/components/ui/spinner";
 import { getUploadUrl } from "@/app/(main)/signup-guide/actions";
 
 export default function CreateGuideProfile() {
+  const { toast } = useToast();
+
   const [photoLoading, setPhotoLoading] = useState<boolean[]>(
     Array(8).fill(false)
   );
@@ -133,50 +137,54 @@ export default function CreateGuideProfile() {
 
   const onValid = async (data: CreateGuideProfileType) => {
     setLoading(true);
-    await Promise.all(
-      files.map(async (file, index) => {
-        const url = uploadUrl[index];
 
-        //배열값 중간에 null이 있으면 그냥 pass
-        if (file === null) {
-          return;
-        }
+    try {
+      await Promise.all(
+        files.map(async (file, index) => {
+          const url = uploadUrl[index];
 
-        const cloudflareForm = new FormData();
-        cloudflareForm.append("file", file);
+          if (file === null) return;
 
-        const response = await fetch(url, {
-          method: "POST",
-          body: cloudflareForm,
-        });
+          const cloudflareForm = new FormData();
+          cloudflareForm.append("file", file);
 
-        if (response.status !== 200) {
-          setError("guidePhotos", {
-            message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
+          const response = await fetch(url, {
+            method: "POST",
+            body: cloudflareForm,
           });
-          throw new Error("업로드 실패");
-        }
-      })
-    );
-    // 기존 fileUrlOrder 값으로 정렬한 후, 순서대로 재배열
-    const reorderedPhotos = data.guidePhotos
-      .sort((a, b) => a.fileUrlOrder - b.fileUrlOrder) // 기존 순서대로 정렬
-      .map((photo, index) => ({
-        ...photo,
-        fileUrlOrder: index + 1, // 정렬된 순서대로 1, 2, 3, 4 설정
-      }));
 
-    const formData = new FormData();
-    formData.append("guidePhotos", JSON.stringify(reorderedPhotos));
-    formData.append("personality", data.personality);
-    formData.append("guideIntro", data.guideIntro);
-    formData.append("pickupPlaceMain", data.pickupPlaceMain);
-    formData.append("pickupPlaceLat", data.pickupPlaceLat.toString());
-    formData.append("pickupPlaceLng", data.pickupPlaceLng.toString());
-    formData.append("pickupPlaceDetail", data.pickupPlaceDetail);
-    await createGuideProfile(formData);
+          if (response.status !== 200) {
+            throw new Error("이미지 업로드에 실패했습니다.");
+          }
+        })
+      );
 
-    setLoading(false);
+      // 이미지 업로드 성공 시에만 실행되는 코드
+      const reorderedPhotos = data.guidePhotos
+        .sort((a, b) => a.fileUrlOrder - b.fileUrlOrder)
+        .map((photo, index) => ({
+          ...photo,
+          fileUrlOrder: index + 1,
+        }));
+
+      const formData = new FormData();
+      formData.append("guidePhotos", JSON.stringify(reorderedPhotos));
+      formData.append("personality", data.personality);
+      formData.append("guideIntro", data.guideIntro);
+      formData.append("pickupPlaceMain", data.pickupPlaceMain);
+      formData.append("pickupPlaceLat", data.pickupPlaceLat.toString());
+      formData.append("pickupPlaceLng", data.pickupPlaceLng.toString());
+      formData.append("pickupPlaceDetail", data.pickupPlaceDetail);
+
+      await createGuideProfile(formData);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "프로필 생성에 실패했습니다. 나중에 다시 시도해주세요.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDeleteImage = (index: number, e: React.MouseEvent) => {

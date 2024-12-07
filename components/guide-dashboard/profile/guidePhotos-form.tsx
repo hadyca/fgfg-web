@@ -145,57 +145,62 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
 
   const onValid = async (data: GuidePhotosType) => {
     setLoading(true);
+    try {
+      await Promise.all(
+        files.map(async (file, index) => {
+          const url = uploadUrl[index];
+          //배열값 중간에 undefine이나, null이 있으면 그냥 pass
+          if (file == null || undefined) {
+            return;
+          }
 
-    await Promise.all(
-      files.map(async (file, index) => {
-        const url = uploadUrl[index];
-        //배열값 중간에 undefine이나, null이 있으면 그냥 pass
-        if (file == null || undefined) {
-          return;
-        }
+          const cloudflareForm = new FormData();
+          cloudflareForm.append("file", file);
 
-        const cloudflareForm = new FormData();
-        cloudflareForm.append("file", file);
-
-        const response = await fetch(url, {
-          method: "POST",
-          body: cloudflareForm,
-        });
-
-        if (response.status !== 200) {
-          setError("guidePhotos", {
-            message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
+          const response = await fetch(url, {
+            method: "POST",
+            body: cloudflareForm,
           });
-          return;
-        }
-      })
-    );
 
-    // 기존 fileUrlOrder 값으로 정렬한 후, 순서대로 재배열
-    const reorderedPhotos = data.guidePhotos
-      .sort((a, b) => a.fileUrlOrder - b.fileUrlOrder) // 기존 순서대로 정렬
-      .map((photo, index) => ({
-        ...photo,
-        fileUrlOrder: index + 1, // 정렬된 순서대로 1, 2, 3, 4 설정
-      }));
+          if (response.status !== 200) {
+            setError("guidePhotos", {
+              message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
+            });
+            return;
+          }
+        })
+      );
 
-    const formData = new FormData();
-    formData.append("guidePhotos", JSON.stringify(reorderedPhotos));
+      // 기존 fileUrlOrder 값으로 정렬한 후, 순서대로 재배열
+      const reorderedPhotos = data.guidePhotos
+        .sort((a, b) => a.fileUrlOrder - b.fileUrlOrder) // 기존 순서대로 정렬
+        .map((photo, index) => ({
+          ...photo,
+          fileUrlOrder: index + 1, // 정렬된 순서대로 1, 2, 3, 4 설정
+        }));
 
-    const { ok, error } = await updateGuidePhotos(formData);
+      const formData = new FormData();
+      formData.append("guidePhotos", JSON.stringify(reorderedPhotos));
 
-    if (!ok) {
-      toast({
-        variant: "destructive",
-        title: error,
+      const { ok, error } = await updateGuidePhotos(formData);
+
+      if (!ok) {
+        toast({
+          variant: "destructive",
+          title: error,
+        });
+      } else {
+        toast({
+          description: "변경 되었습니다.",
+        });
+      }
+    } catch (error) {
+      setError("guidePhotos", {
+        message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
       });
-    } else {
-      toast({
-        description: "변경 되었습니다.",
-      });
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   const handleDeleteImage = (index: number, e: React.MouseEvent) => {
