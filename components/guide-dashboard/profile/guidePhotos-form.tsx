@@ -163,10 +163,7 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
           });
 
           if (response.status !== 200) {
-            setError("guidePhotos", {
-              message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
-            });
-            return;
+            throw new Error("이미지 업로드에 실패했습니다.");
           }
         })
       );
