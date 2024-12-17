@@ -5,7 +5,6 @@ import LocaleSwitcherSelect from "./local-switcher-select";
 
 export default function LocaleSwitcher() {
   const locale = useLocale();
-  console.log(locale);
 
   return (
     <div className="flex items-center gap-2">
