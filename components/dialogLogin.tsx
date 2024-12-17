@@ -8,8 +8,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorText from "@/components/errorText";
-import { loginSchema, LoginType } from "@/app/(main)/(auth)/login/schema";
-import { login } from "@/app/(main)/(auth)/login/actions";
+import {
+  loginSchema,
+  LoginType,
+} from "@/app/[locale]/(main)/(auth)/login/schema";
+import { login } from "@/app/[locale]/(main)/(auth)/login/actions";
 import { Separator } from "./ui/separator";
 
 interface DialogLoginProps {

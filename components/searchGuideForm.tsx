@@ -1,6 +1,9 @@
 "use client";
 
-import { searchGuideSchema, SearchGuideType } from "@/app/(main)/schema";
+import {
+  searchGuideSchema,
+  SearchGuideType,
+} from "@/app/[locale]/(main)/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -19,7 +22,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
 import { convertToVietnamISO, convertToVietnamTime } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { searchGuide } from "@/app/(main)/search-guide/actions";
+import { searchGuide } from "@/app/[locale]/(main)/search-guide/actions";
 
 interface SearchGuideProps {
   searchParams?: {

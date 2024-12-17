@@ -9,8 +9,8 @@ import { useForm } from "react-hook-form";
 import {
   languageSchema,
   LanguageType,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
-import { updateLanguage } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+} from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
+import { updateLanguage } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { MinusCircleIcon } from "@heroicons/react/24/outline";
 import { LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";

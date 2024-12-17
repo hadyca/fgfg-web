@@ -6,17 +6,17 @@ import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
 import { ClockIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
-import { createChatRoom } from "@/app/(main)/contact-guide/[guideId]/actions";
+import { createChatRoom } from "@/app/[locale]/(main)/contact-guide/[guideId]/actions";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorText from "../errorText";
 import { supabase } from "@/lib/supabaseClient";
-import { reserveGuide } from "@/app/(main)/reservation/[guideId]/actions";
+import { reserveGuide } from "@/app/[locale]/(main)/reservation/[guideId]/actions";
 import {
   reservationSchema,
   ReservationType,
-} from "@/app/(main)/reservation/[guideId]/schema";
+} from "@/app/[locale]/(main)/reservation/[guideId]/schema";
 import {
   Tooltip,
   TooltipContent,

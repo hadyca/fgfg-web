@@ -9,11 +9,11 @@ import { useForm } from "react-hook-form";
 import {
   pickupPlaceSchema,
   PickupPlaceType,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
+} from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import {
   updateGuideIntro,
   updatePickupPlace,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+} from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import GoogleMapApi from "@/components/googleMapApi";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";

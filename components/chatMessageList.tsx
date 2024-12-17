@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { ArrowUpCircleIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import { saveMessage } from "@/app/(main)/chat-room/[chatRoomId]/actions";
+import { saveMessage } from "@/app/[locale]/(main)/chat-room/[chatRoomId]/actions";
 import { DateTime } from "luxon";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
 import BillsSkeleton, {
   GetMessageSkeleton,
-} from "@/app/(main)/chat-room/[chatRoomId]/skeleton";
+} from "@/app/[locale]/(main)/chat-room/[chatRoomId]/skeleton";
 import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Button } from "./ui/button";
 import ChatRoomBill from "./chat-room-bill";

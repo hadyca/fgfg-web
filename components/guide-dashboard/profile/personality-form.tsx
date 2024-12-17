@@ -9,8 +9,8 @@ import { useForm } from "react-hook-form";
 import {
   personalitySchema,
   PersonalityType,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
-import { updatePersonality } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+} from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
+import { updatePersonality } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 
 interface PersonalityFormProps {
   personality:

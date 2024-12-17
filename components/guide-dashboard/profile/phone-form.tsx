@@ -10,8 +10,8 @@ import { useForm } from "react-hook-form";
 import {
   phoneSchema,
   PhoneType,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
-import { updatePhone } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+} from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
+import { updatePhone } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 
 interface PhoneFormProps {
   phone: string;

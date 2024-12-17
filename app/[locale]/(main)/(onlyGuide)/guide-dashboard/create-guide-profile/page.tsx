@@ -25,7 +25,7 @@ import { createGuideProfile } from "./actions";
 import GoogleMapApi from "@/components/googleMapApi";
 
 import Spinner from "@/components/ui/spinner";
-import { getUploadUrl } from "@/app/(main)/signup-guide/actions";
+import { getUploadUrl } from "@/app/[locale]/(main)/signup-guide/actions";
 
 export default function CreateGuideProfile() {
   const { toast } = useToast();
@@ -152,7 +152,6 @@ export default function CreateGuideProfile() {
             method: "POST",
             body: cloudflareForm,
           });
-
           if (response.status !== 200) {
             throw new Error("이미지 업로드에 실패했습니다.");
           }

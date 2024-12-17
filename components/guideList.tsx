@@ -1,7 +1,7 @@
 "use client";
 
-import { getGuides } from "@/app/(main)/search-guide/actions";
-import GetGuideSkeleton from "@/app/(main)/search-guide/skeleton";
+import { getGuides } from "@/app/[locale]/(main)/search-guide/actions";
+import GetGuideSkeleton from "@/app/[locale]/(main)/search-guide/skeleton";
 import { calculateAge } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,7 +46,6 @@ export default function GuideList({ searchParams }: GuideListPros) {
         const filteredData = data?.seeAvailableGuides.filter(
           (guide: Guide) => guide.mainGuidePhoto !== null
         );
-        console.log(filteredData);
         setGuides(filteredData);
       } catch (error) {
         console.error("Failed to fetch guides:", error);

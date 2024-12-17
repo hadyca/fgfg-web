@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/hooks/use-toast";
 import { useState } from "react";
-import { updateIsActive } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+import { updateIsActive } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 
 interface IsActiveFormProps {
   isActive: boolean;

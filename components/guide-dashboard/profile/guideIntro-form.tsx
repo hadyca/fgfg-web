@@ -9,8 +9,8 @@ import { useForm } from "react-hook-form";
 import {
   guideIntroSchema,
   GuideIntroType,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
-import { updateGuideIntro } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+} from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
+import { updateGuideIntro } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { Textarea } from "@/components/ui/textarea";
 
 interface GuideIntroFormProps {

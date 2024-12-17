@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon } from "lucide-react";
-import { searchGuideSchema, SearchGuideType } from "@/app/(main)/schema";
+import {
+  searchGuideSchema,
+  SearchGuideType,
+} from "@/app/[locale]/(main)/schema";
 import { Button } from "../ui/button";
-import { searchGuide } from "@/app/(main)/actions";
+import { searchGuide } from "@/app/[locale]/(main)/actions";
 import { Label } from "../ui/label";
 import { Calendar } from "../ui/calendar";
 import {

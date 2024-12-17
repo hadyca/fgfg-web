@@ -6,6 +6,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import AvatarDropMenu from "./avatarDropMenu";
+import LocalSwitcher from "../local-switcher";
 
 interface NavItemsProps {
   userId: number;
@@ -30,6 +31,7 @@ export default function NavItemsPC({
       </a>
       <NavigationMenu className="list-none">
         <NavigationMenuItem className="flex flex-row items-center">
+          <LocalSwitcher />
           <Link
             href="/search-guide"
             className={navigationMenuTriggerStyle()}

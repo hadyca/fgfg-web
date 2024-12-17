@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import getSession from "./lib/session";
 import getUser from "./lib/getUser";
+import createMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
 
 //로그아웃 상태에서만 접근 가능 한곳
 const onlyLogoutUrls = new Set(["/login", "/create-account"]);
@@ -11,13 +13,22 @@ const onlyLogInUrls = new Set(["/user-dashboard", "/signup-guide"]);
 //로그인 상태 - 가이드만 접속 가능
 const onlyGuideUrls = new Set(["/guide-dashboard"]);
 
+const intlMiddleware = createMiddleware(routing);
+
 export async function middleware(request: NextRequest) {
+  // 1. next-intl 미들웨어 실행
+  const intlResponse = intlMiddleware(request);
+  if (intlResponse) {
+    return intlResponse;
+  }
+
+  // 2. 현재 경로 체크
   const isOnlyLogoutPath = onlyLogoutUrls.has(request.nextUrl.pathname);
   const isOnlyLoginPath = onlyLogInUrls.has(request.nextUrl.pathname);
   const isOnlyGuidePath = onlyGuideUrls.has(request.nextUrl.pathname);
 
+  // 3. 세션 및 권한 체크
   const session = await getSession();
-
   const isLoggedIn = Boolean(session.token);
   const isApprovedGuide = Boolean(session.guideId);
 
@@ -42,5 +53,9 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/",
+    "/(en|vn|ko)/:path*",
+    "/((?!_next/static|_next/image|favicon.ico).*)",
+  ],
 };

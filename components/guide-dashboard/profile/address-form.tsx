@@ -10,8 +10,8 @@ import { useForm } from "react-hook-form";
 import {
   addressSchema,
   AddressType,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
-import { updateAddress } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+} from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
+import { updateAddress } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 
 interface AddressFormProps {
   address: string;

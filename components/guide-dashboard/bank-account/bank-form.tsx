@@ -9,8 +9,8 @@ import { useForm } from "react-hook-form";
 import {
   bankSchema,
   BankType,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/bank-account/schema";
-import { updateBank } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/bank-account/actions";
+} from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/bank-account/schema";
+import { updateBank } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/bank-account/actions";
 import { Separator } from "@/components/ui/separator";
 import { Card } from "@/components/ui/card";
 import {

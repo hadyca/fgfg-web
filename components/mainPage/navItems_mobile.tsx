@@ -4,6 +4,7 @@ import {
   NavigationMenuItem,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import LocaleSwitcher from "../local-switcher";
 
 interface NavItemsProps {
   userId: number;
@@ -37,6 +38,7 @@ export default function NavItemsMobile({
             가이드 가입
           </Link>
         ) : null}
+        <LocaleSwitcher />
       </NavigationMenuItem>
     </NavigationMenu>
   );

@@ -12,8 +12,8 @@ import { Separator } from "@/components/ui/separator";
 import {
   createAccountSchema,
   CreateAccountType,
-} from "@/app/(main)/(auth)/create-account/schema";
-import { createAccount } from "@/app/(main)/(auth)/create-account/actions";
+} from "@/app/[locale]/(main)/(auth)/create-account/schema";
+import { createAccount } from "@/app/[locale]/(main)/(auth)/create-account/actions";
 
 import ReservationLogin from "./reservationLogin";
 

@@ -24,7 +24,7 @@ import {
   AlertDialogTrigger,
 } from "../../ui/alert-dialog";
 import { useState } from "react";
-import { cancelReservation } from "@/app/(main)/user-dashboard/reservations/actions";
+import { cancelReservation } from "@/app/[locale]/(main)/user-dashboard/reservations/actions";
 import { useToast } from "@/components/hooks/use-toast";
 import Link from "next/link";
 import { useUserReservationStore } from "@/store/useUserReservationStore";

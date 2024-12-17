@@ -1,10 +1,10 @@
 "use client";
 
-import { updateUsername } from "@/app/(main)/user-dashboard/account/actions";
+import { updateUsername } from "@/app/[locale]/(main)/user-dashboard/account/actions";
 import {
   usernameSchema,
   UsernameType,
-} from "@/app/(main)/user-dashboard/account/schema";
+} from "@/app/[locale]/(main)/user-dashboard/account/schema";
 import ErrorText from "@/components/errorText";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

@@ -16,8 +16,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "./ui/alert-dialog";
-import { outChatRoom } from "@/app/(main)/chat-room/[chatRoomId]/actions";
-import { GetChatRoomsSkeleton } from "@/app/(main)/chat-room/[chatRoomId]/skeleton";
+import { outChatRoom } from "@/app/[locale]/(main)/chat-room/[chatRoomId]/actions";
+import { GetChatRoomsSkeleton } from "@/app/[locale]/(main)/chat-room/[chatRoomId]/skeleton";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
 interface ChatRoomListProps {

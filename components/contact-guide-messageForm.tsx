@@ -8,9 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   contactGuideSchema,
   ContactGuideType,
-} from "@/app/(main)/contact-guide/[guideId]/schema";
+} from "@/app/[locale]/(main)/contact-guide/[guideId]/schema";
 import ErrorText from "./errorText";
-import { createChatRoom } from "@/app/(main)/contact-guide/[guideId]/actions";
+import { createChatRoom } from "@/app/[locale]/(main)/contact-guide/[guideId]/actions";
 import { RealtimeChannel } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";

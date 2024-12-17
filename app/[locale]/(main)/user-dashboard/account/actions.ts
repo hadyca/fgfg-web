@@ -5,7 +5,7 @@ import { CHECK_PASSWORD, DELETE_ACCOUNT, EDIT_USER_PROFILE } from "./queries";
 import {
   CHECK_EMAIL,
   CHECK_USERNAME,
-} from "@/app/(main)/(auth)/create-account/queries";
+} from "@/app/[locale]/(main)/(auth)/create-account/queries";
 import { emailSchema, passwordSchema, usernameSchema } from "./schema";
 import getSession from "@/lib/session";
 

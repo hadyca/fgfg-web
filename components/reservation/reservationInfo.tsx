@@ -1,6 +1,6 @@
 "use client";
 
-import { GetReservationSkeletonTop } from "@/app/(main)/reservation/[guideId]/skeleton";
+import { GetReservationSkeletonTop } from "@/app/[locale]/(main)/reservation/[guideId]/skeleton";
 import {
   convertMonthDayIntl,
   convertToVietnamISO,

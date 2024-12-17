@@ -31,7 +31,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   cancelReservation,
   confirmReservation,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/reservations/actions";
+} from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/reservations/actions";
 import { useGuideReservationStore } from "@/store/useGuideReservationStore";
 
 interface User {

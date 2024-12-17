@@ -8,7 +8,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Calendar } from "../ui/calendar";
 import { useEffect, useState } from "react";
 import { subDays, format } from "date-fns";
-import { searchGuideSchema, SearchGuideType } from "@/app/(main)/schema";
+import {
+  searchGuideSchema,
+  SearchGuideType,
+} from "@/app/[locale]/(main)/schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ko } from "date-fns/locale";

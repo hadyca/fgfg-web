@@ -8,11 +8,11 @@ import { useForm } from "react-hook-form";
 import {
   guidePhotosSchema,
   GuidePhotosType,
-} from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
-import { updateGuidePhotos } from "@/app/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+} from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
+import { updateGuidePhotos } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { Label } from "@/components/ui/label";
 import { PhotoIcon, XCircleIcon } from "@heroicons/react/24/solid";
-import { getUploadUrl } from "@/app/(main)/signup-guide/actions";
+import { getUploadUrl } from "@/app/[locale]/(main)/signup-guide/actions";
 import { ACCEPTED_IMAGE_TYPES } from "@/lib/constants";
 import Spinner from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";

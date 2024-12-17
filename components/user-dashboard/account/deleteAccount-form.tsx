@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteAccount } from "@/app/(main)/user-dashboard/account/actions";
+import { deleteAccount } from "@/app/[locale]/(main)/user-dashboard/account/actions";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/hooks/use-toast";
 import { useState } from "react";

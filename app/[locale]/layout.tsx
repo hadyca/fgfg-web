@@ -4,7 +4,10 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import { ApolloWrapper } from "@/lib/apolloWrapper";
 import { Toaster } from "@/components/ui/toaster";
-import { headers } from "next/headers";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -39,17 +42,27 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-}: Readonly<{
+  params: { locale },
+}: {
   children: React.ReactNode;
-}>) {
-  // const userLang = headers().get("accept-language") || "en";
+  params: { locale: string };
+}) {
+  // Ensure that the incoming `locale` is valid
+  if (!routing.locales.includes(locale as any)) {
+    notFound();
+  }
+
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body
         className={cn("min-h-screen font-sans antialiased", fontSans.variable)}
       >
-        <ApolloWrapper>{children}</ApolloWrapper>
-        <Toaster />
+        <NextIntlClientProvider messages={messages}>
+          <ApolloWrapper>{children}</ApolloWrapper>
+          <Toaster />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
