@@ -9,7 +9,7 @@ import { Calendar } from "../ui/calendar";
 import { useEffect, useState } from "react";
 import { subDays, format } from "date-fns";
 import {
-  searchGuideSchema,
+  createSearchGuideSchema,
   SearchGuideType,
 } from "@/app/[locale]/(main)/schema";
 import { useForm } from "react-hook-form";
@@ -24,6 +24,7 @@ import {
 } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { SERVICE_FEE } from "@/lib/constants";
+import { useTranslations } from "next-intl";
 
 interface Reservation {
   id: number;
@@ -43,6 +44,7 @@ interface ReservationDateFormProps {
 }
 
 export default function ReservationDateForm(props: ReservationDateFormProps) {
+  const t = useTranslations();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
@@ -58,7 +60,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
     formState: { errors },
     watch,
   } = useForm<SearchGuideType>({
-    resolver: zodResolver(searchGuideSchema),
+    resolver: zodResolver(createSearchGuideSchema(t)),
   });
   const watchDate = watch("date");
 

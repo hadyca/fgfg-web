@@ -9,7 +9,7 @@ export const metadata = {
   },
 };
 export default function Home() {
-  const t = useTranslations("HomePage");
+  const t = useTranslations("Main");
 
   return (
     <main>
@@ -23,7 +23,6 @@ export default function Home() {
         <div className="absolute inset-0 bg-black opacity-30"></div>
         <div className="relative z-10 text-center flex flex-col gap-4 items-center">
           <h1 className="text-xl px-3  font-bold text-white text-center my-4 md:text-5xl md:my-10 ">
-            {/* 베트남 여자친구와 잊지 못할 호치민 여행을 떠나보세요! */}
             {t("title")}
           </h1>
           <HeroSectionForm />

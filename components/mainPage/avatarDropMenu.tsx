@@ -15,8 +15,10 @@ import { useUserStore } from "@/store/useUserStore";
 import { useGuideReservationStore } from "@/store/useGuideReservationStore";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function AvatarDropMenu() {
+  const t = useTranslations();
   const [isExistUnread, setIsExistUnread] = useState(false);
   const [lastChatRoomId, setLastChatRoomId] = useState("");
   const { chatRooms } = useChatRoomStore();
@@ -73,7 +75,7 @@ export default function AvatarDropMenu() {
         <Link href={`/chat-room/${lastChatRoomId}`}>
           <DropdownMenuItem>
             <div className="flex items-center gap-1">
-              <div>메시지</div>
+              <div>{t("Header.message")}</div>
               {isExistUnread ? (
                 <span className="w-2 h-2 rounded-full bg-primary"></span>
               ) : null}
@@ -84,19 +86,19 @@ export default function AvatarDropMenu() {
           <>
             <Link href="/user-dashboard/reservations">
               <DropdownMenuItem>
-                <div>내 예약</div>
+                <div>{t("Header.myReservation")}</div>
               </DropdownMenuItem>
             </Link>
           </>
         ) : null}
         <Link href="/user-dashboard/account">
           <DropdownMenuItem>
-            <div>계정</div>
+            <div>{t("Header.account")}</div>
           </DropdownMenuItem>
         </Link>
         <Link href="/user-dashboard">
           <DropdownMenuItem>
-            <div>대시보드</div>
+            <div>{t("Header.dashboard")}</div>
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
@@ -105,7 +107,7 @@ export default function AvatarDropMenu() {
             <Link href="/guide-dashboard/reservations">
               <DropdownMenuItem>
                 <div className="flex items-center gap-1">
-                  <div>가이드 예약</div>
+                  <div>{t("Header.guideReservation")}</div>
                   {countPendingReservations > 0 ? (
                     <span className="w-2 h-2 rounded-full bg-primary"></span>
                   ) : null}
@@ -114,13 +116,15 @@ export default function AvatarDropMenu() {
             </Link>
             <Link href="/guide-dashboard">
               <DropdownMenuItem>
-                <div>가이드 관리</div>
+                <div>{t("Header.guideManagement")}</div>
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
           </>
         ) : null}
-        <DropdownMenuItem onClick={handleLogout}>로그아웃</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
+          {t("Header.logout")}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -5,6 +5,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import LocaleSwitcher from "../local-switcher";
+import { useTranslations } from "next-intl";
 
 interface NavItemsProps {
   userId: number;
@@ -17,6 +18,8 @@ export default function NavItemsMobile({
   isApprovedGuide,
   onLinkClick,
 }: NavItemsProps) {
+  const t = useTranslations("Header");
+
   return (
     <NavigationMenu className="list-none mt-4">
       <NavigationMenuItem
@@ -27,18 +30,20 @@ export default function NavItemsMobile({
       >
         {!userId ? (
           <Link href="/login" className={navigationMenuTriggerStyle()}>
-            로그인
+            {t("login")}
           </Link>
         ) : null}
         <Link href="/search-guide" className={navigationMenuTriggerStyle()}>
-          가이드 보기
+          {t("seeGuide")}
         </Link>
         {!isApprovedGuide ? (
           <Link href="/signup-guide" className={navigationMenuTriggerStyle()}>
-            가이드 가입
+            {t("signupGuide")}
           </Link>
         ) : null}
-        <LocaleSwitcher />
+        <div className="px-4">
+          <LocaleSwitcher />
+        </div>
       </NavigationMenuItem>
     </NavigationMenu>
   );

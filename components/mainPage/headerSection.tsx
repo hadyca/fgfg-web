@@ -13,6 +13,7 @@ import { useUserStore } from "@/store/useUserStore";
 import { useGuideReservationStore } from "@/store/useGuideReservationStore";
 import { DateTime } from "luxon";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
+import { useTranslations } from "next-intl";
 
 interface Guide {
   id: number;
@@ -82,6 +83,7 @@ export default function HeaderSection({
   userId,
   isApprovedGuide,
 }: NavProps) {
+  const t = useTranslations("Header");
   const [isOpen, setIsOpen] = useState(false);
   const { setUser } = useUserStore();
   const { setChatRooms } = useChatRoomStore();
@@ -157,7 +159,7 @@ export default function HeaderSection({
                 href="/create-account"
                 className={navigationMenuTriggerStyle()}
               >
-                회원가입
+                {t("signup")}
               </Link>
             )}
           </div>

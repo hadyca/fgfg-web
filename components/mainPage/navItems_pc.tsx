@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import AvatarDropMenu from "./avatarDropMenu";
 import LocalSwitcher from "../local-switcher";
+import { useTranslations } from "next-intl";
 
 interface NavItemsProps {
   userId: number;
@@ -19,6 +20,7 @@ export default function NavItemsPC({
   isApprovedGuide,
   onLinkClick,
 }: NavItemsProps) {
+  const t = useTranslations("Header");
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.currentTarget.blur(); // Link 클릭 후 hover 상태 제거
     onLinkClick?.(e);
@@ -37,7 +39,7 @@ export default function NavItemsPC({
             className={navigationMenuTriggerStyle()}
             onClick={handleLinkClick}
           >
-            가이드 보기
+            {t("seeGuide")}
           </Link>
           {!isApprovedGuide ? (
             <Link
@@ -45,7 +47,7 @@ export default function NavItemsPC({
               className={navigationMenuTriggerStyle()}
               onClick={handleLinkClick}
             >
-              가이드 가입
+              {t("signupGuide")}
             </Link>
           ) : null}
           {userId ? (
@@ -57,14 +59,14 @@ export default function NavItemsPC({
                 className={navigationMenuTriggerStyle()}
                 onClick={handleLinkClick}
               >
-                로그인
+                {t("login")}
               </Link>
               <Link
                 href="/create-account"
                 className={navigationMenuTriggerStyle()}
                 onClick={handleLinkClick}
               >
-                회원가입
+                {t("signup")}
               </Link>
             </>
           )}

@@ -1,6 +1,48 @@
 {
-  "HomePage": {
-    "title": "Tiêu đề",
-    "about": "Nội dung"
+  "Main": {
+    "title": "Hãy trải nghiệm chuyến du lịch đáng nhớ ở TP.HCM cùng bạn gái Việt Nam!",
+    "selectDate": "Chọn ngày",
+    "pickupTime": "Thời gian đón",
+    "endTime": "Thời gian kết thúc",
+    "nowReservation": "Đặt ngay",
+    "checkDate": "Vui lòng kiểm tra lại ngày và giờ.",
+    "serviceIntroduction": "Giới thiệu dịch vụ FGFG",
+    "localGirlfriend": "Một ngày với bạn gái địa phương",
+    "localGirlfriendDescription": "Tận hưởng một ngày đặc biệt với bạn gái hẹn hò một ngày để cảm nhận sự quyến rũ của Việt Nam.",
+    "experienceLocalCulture": "Trải nghiệm văn hóa địa phương sâu sắc",
+    "experienceLocalCultureDescription": "Trải nghiệm văn hóa địa phương thực sự do hướng dẫn viên giới thiệu, không phải những địa điểm du lịch thông thường.",
+    "customGuideService": "Dịch vụ hướng dẫn tùy chỉnh",
+    "customGuideServiceDescription": "Lên kế hoạch lịch trình du lịch tùy chỉnh với hướng dẫn viên dựa trên thời gian đặt và trải nghiệm mong muốn.",
+    "easyReservationProcess": "Quy trình đơn giản và dễ dàng",
+    "easyReservationProcessDescription": "Đặt chỗ dễ dàng và bắt đầu gặp gỡ nhanh chóng mà không cần thủ tục phức tạp.",
+    "specialDayWithLocalGirlfriend": "Hãy trải nghiệm một ngày đặc biệt với bạn gái Việt Nam.",
+    "specialDayWithLocalGirlfriendDescription": "Tận hưởng trải nghiệm đặc biệt như hẹn hò với bạn gái. Thông qua hướng dẫn viên, bạn có thể hiểu sâu hơn về suy nghĩ và văn hóa của phụ nữ Việt Nam.",
+    "internationalCouple": "Bạn có quan tâm đến các cặp đôi quốc tế?",
+    "internationalCoupleDescription": "Để biết liệu một cặp đôi quốc tế có phù hợp với bạn hay không, điều quan trọng nhất là hiểu và tiếp xúc nhiều lần với văn hóa của đất nước đó. Hãy trải nghiệm dễ dàng với giá cả phải chăng và thời gian hướng dẫn theo ý muốn.",
+    "betaTestDescription": "Chúng tôi hiện đang cung cấp dịch vụ beta. Nếu bạn có bất kỳ bất tiện hoặc đề xuất cải thiện nào khi sử dụng, vui lòng gửi phản hồi đến hadycas@gmail.com. Ý kiến quý báu của bạn sẽ giúp chúng tôi tạo ra dịch vụ tốt hơn. Hãy tham gia cùng chúng tôi!"
+  },
+  "Validation": {
+    "invalidDate": "Vui lòng kiểm tra lại ngày.",
+    "invalidTime": "Vui lòng kiểm tra lại thời gian.",
+    "minimumDuration": "Thời gian sử dụng tối thiểu là 2 giờ.",
+    "checkTimeAgain": "Vui lòng kiểm tra lại thời gian."
+  },
+  "Header": {
+    "seeGuide": "Xem hướng dẫn viên",
+    "signupGuide": "Đăng ký làm hướng dẫn viên",
+    "login": "Đăng nhập",
+    "signup": "Đăng ký",
+    "message": "Tin nhắn",
+    "myReservation": "Đặt chỗ của tôi",
+    "account": "Tài khoản",
+    "dashboard": "Bảng điều khiển",
+    "guideReservation": "Đặt hướng dẫn viên",
+    "guideManagement": "Quản lý hướng dẫn viên",
+    "logout": "Đăng xuất"
+  },
+  "Footer": {
+    "termsAndConditions": "Điều khoản và điều kiện",
+    "privacyPolicy": "Chính sách bảo mật",
+    "refundPolicy": "Chính sách hoàn tiền"
   }
 }

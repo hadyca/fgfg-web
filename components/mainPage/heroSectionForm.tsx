@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon } from "lucide-react";
 import {
-  searchGuideSchema,
+  createSearchGuideSchema,
   SearchGuideType,
 } from "@/app/[locale]/(main)/schema";
 import { Button } from "../ui/button";
@@ -17,11 +17,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ko } from "date-fns/locale";
+import { ko } from "date-fns/locale/ko";
+import { vi } from "date-fns/locale/vi";
+import { enUS } from "date-fns/locale/en-US";
 import { subDays, format } from "date-fns";
 import { Card } from "../ui/card";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function HeroSectionForm() {
+  const t = useTranslations();
+  const locale = useLocale();
+
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(() => {
     const today = new Date();
     today.setDate(today.getDate() + 1);
@@ -38,7 +44,7 @@ export default function HeroSectionForm() {
     formState: { errors },
     watch,
   } = useForm<SearchGuideType>({
-    resolver: zodResolver(searchGuideSchema),
+    resolver: zodResolver(createSearchGuideSchema(t)),
   });
 
   const watchDate = watch("date");
@@ -97,7 +103,7 @@ export default function HeroSectionForm() {
         <div className="flex flex-col gap-3">
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
             <div>
-              <Label className="block mb-2">날짜 선택</Label>
+              <Label className="block mb-2">{t("Main.selectDate")}</Label>
               <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -111,7 +117,7 @@ export default function HeroSectionForm() {
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                    locale={ko}
+                    locale={locale === "ko" ? ko : locale === "vn" ? vi : enUS}
                     selected={selectedDate}
                     onSelect={handleDateChange}
                     disabled={(date) => {
@@ -124,7 +130,7 @@ export default function HeroSectionForm() {
               </Popover>
             </div>
             <div>
-              <Label className="block mb-2">픽업 시각</Label>
+              <Label className="block mb-2">{t("Main.pickupTime")}</Label>
               <select
                 className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
                   startTime ? "" : "text-muted-foreground"
@@ -143,7 +149,7 @@ export default function HeroSectionForm() {
               </select>
             </div>
             <div>
-              <Label className="block mb-2">종료 시각</Label>
+              <Label className="block mb-2">{t("Main.endTime")}</Label>
               <select
                 className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm  ${
                   endTime ? "" : "text-muted-foreground"
@@ -171,11 +177,11 @@ export default function HeroSectionForm() {
           ) : errors?.date || errors?.startTime || errors?.endTime ? (
             <div>
               <span className="text-destructive font-medium">
-                날짜와 시간을 다시 확인해주세요.
+                {t("Main.checkDate")}
               </span>
             </div>
           ) : null}
-          <Button disabled={loading}>지금 예약하기</Button>
+          <Button disabled={loading}>{t("Main.nowReservation")}</Button>
         </div>
       </form>
     </Card>

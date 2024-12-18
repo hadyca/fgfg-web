@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  searchGuideSchema,
+  createSearchGuideSchema,
   SearchGuideType,
 } from "@/app/[locale]/(main)/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +23,7 @@ import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
 import { convertToVietnamISO, convertToVietnamTime } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { searchGuide } from "@/app/[locale]/(main)/search-guide/actions";
+import { useTranslations } from "next-intl";
 
 interface SearchGuideProps {
   searchParams?: {
@@ -32,6 +33,7 @@ interface SearchGuideProps {
 }
 
 export default function SearchGuideForm({ searchParams }: SearchGuideProps) {
+  const t = useTranslations();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [startTime, setStartTime] = useState("");
@@ -43,7 +45,7 @@ export default function SearchGuideForm({ searchParams }: SearchGuideProps) {
     formState: { errors },
     watch,
   } = useForm<SearchGuideType>({
-    resolver: zodResolver(searchGuideSchema),
+    resolver: zodResolver(createSearchGuideSchema(t)),
   });
 
   const watchDate = watch("date");

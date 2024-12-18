@@ -1,6 +1,48 @@
 {
-  "HomePage": {
-    "title": "Title",
-    "about": "Content"
+  "Main": {
+    "title": "Experience an unforgettable Ho Chi Minh City trip with a Vietnamese girlfriend!",
+    "selectDate": "Select Date",
+    "pickupTime": "Pickup Time",
+    "endTime": "End Time",
+    "nowReservation": "Book Now",
+    "checkDate": "Please check the date and time again.",
+    "serviceIntroduction": "FGFG Service Introduction",
+    "localGirlfriend": "A Day with a Local Girlfriend",
+    "localGirlfriendDescription": "Enjoy a special day with a one-day girlfriend to experience the charm of Vietnam.",
+    "experienceLocalCulture": "Deep Local Culture Experience",
+    "experienceLocalCultureDescription": "Experience real local culture recommended by guides, not typical tourist spots.",
+    "customGuideService": "Customized Guide Service",
+    "customGuideServiceDescription": "Plan a customized travel itinerary with your guide based on your booking time and desired experiences.",
+    "easyReservationProcess": "Simple and Easy Process",
+    "easyReservationProcessDescription": "Book easily and start meeting quickly without complicated procedures.",
+    "specialDayWithLocalGirlfriend": "Experience a special day with a Vietnamese girlfriend.",
+    "specialDayWithLocalGirlfriendDescription": "Enjoy a special experience like dating a girlfriend. Through the guide, you can understand Vietnamese women's thoughts and culture more deeply.",
+    "internationalCouple": "Interested in international couples?",
+    "internationalCoupleDescription": "To know if an international couple is right for you, it's most important to understand and experience that country's culture multiple times. Experience it easily with affordable prices and desired guide times.",
+    "betaTestDescription": "We are currently providing a beta service. If you have any inconveniences or suggestions for improvement while using it, please send feedback to hadycas@gmail.com. Your valuable opinions will help us create a better service. Please participate actively!"
+  },
+  "Validation": {
+    "invalidDate": "Please check the date again.",
+    "invalidTime": "Please check the time again.",
+    "minimumDuration": "Minimum usage time is 2 hours.",
+    "checkTimeAgain": "Please check the time again."
+  },
+  "Header": {
+    "seeGuide": "See Guides",
+    "signupGuide": "Become a Guide",
+    "login": "Login",
+    "signup": "Sign Up",
+    "message": "Messages",
+    "myReservation": "My Reservations",
+    "account": "Account",
+    "dashboard": "Dashboard",
+    "guideReservation": "Guide Reservations",
+    "guideManagement": "Guide Management",
+    "logout": "Logout"
+  },
+  "Footer": {
+    "termsAndConditions": "Terms and Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "refundPolicy": "Refund Policy"
   }
 }

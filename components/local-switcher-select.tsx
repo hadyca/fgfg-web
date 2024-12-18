@@ -9,18 +9,23 @@ import {
 } from "@/components/ui/select";
 import { routing, usePathname, useRouter } from "@/i18n/routing";
 import { useParams } from "next/navigation";
-import { ReactNode } from "react";
 
 type Props = {
-  children: ReactNode;
   defaultValue: string;
   label: string;
 };
 
 export default function LocaleSwitcherSelect({ defaultValue, label }: Props) {
   const router = useRouter();
+
   const pathname = usePathname();
   const params = useParams();
+
+  const localeNames: { [key: string]: string } = {
+    en: "English",
+    vn: "Tiếng Việt",
+    ko: "한국어",
+  };
 
   function onSelectChange(nextLocale: string) {
     router.replace(
@@ -35,7 +40,7 @@ export default function LocaleSwitcherSelect({ defaultValue, label }: Props) {
   return (
     <Select defaultValue={defaultValue} onValueChange={onSelectChange}>
       <SelectTrigger
-        className="w-[80px] h-8 border-none bg-transparent focus:ring-0 focus:ring-offset-0"
+        className="w-[120px] h-8 bg-transparent focus:ring-0 focus:ring-offset-0"
         aria-label={label}
       >
         <SelectValue />
@@ -43,7 +48,7 @@ export default function LocaleSwitcherSelect({ defaultValue, label }: Props) {
       <SelectContent>
         {routing.locales.map((locale) => (
           <SelectItem key={locale} value={locale}>
-            {locale.toUpperCase()}
+            {localeNames[locale]}
           </SelectItem>
         ))}
       </SelectContent>
