@@ -12,8 +12,10 @@ import { createAccount } from "./actions";
 import ErrorText from "@/components/errorText";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
+import { useTranslations } from "next-intl";
 
 export default function CreateAccount() {
+  const t = useTranslations();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -22,7 +24,7 @@ export default function CreateAccount() {
     setError,
     formState: { errors },
   } = useForm<CreateAccountType>({
-    resolver: zodResolver(createAccountSchema),
+    resolver: zodResolver(createAccountSchema(t)),
   });
 
   const onValid = async (data: CreateAccountType) => {
@@ -47,7 +49,7 @@ export default function CreateAccount() {
     <div className="absolute inset-0 flex justify-center items-center z-10">
       <Card className="w-full max-w-md pb-4 shadow-md">
         <CardHeader>
-          <CardTitle>회원 가입</CardTitle>
+          <CardTitle>{t("createAccount.createAccount")}</CardTitle>
         </CardHeader>
         <form
           onSubmit={handleSubmit(onValid)}
@@ -55,7 +57,7 @@ export default function CreateAccount() {
         >
           <Input
             type="text"
-            placeholder="유저명"
+            placeholder={t("createAccount.username")}
             minLength={1}
             maxLength={30}
             {...register("username")}
@@ -66,14 +68,14 @@ export default function CreateAccount() {
           ) : null}
           <Input
             type="email"
-            placeholder="이메일"
+            placeholder={t("createAccount.email")}
             {...register("email")}
             required
           />
           {errors?.email ? <ErrorText text={errors.email.message!} /> : null}
           <Input
             type="password"
-            placeholder="비밀번호"
+            placeholder={t("createAccount.password")}
             minLength={PASSWORD_MIN_LENGTH}
             {...register("password")}
             required
@@ -83,7 +85,7 @@ export default function CreateAccount() {
           ) : null}
           <Input
             type="password"
-            placeholder="비밀번호 확인"
+            placeholder={t("createAccount.confirmPassword")}
             minLength={PASSWORD_MIN_LENGTH}
             {...register("confirmPassword")}
             required
@@ -91,11 +93,11 @@ export default function CreateAccount() {
           {errors?.confirmPassword ? (
             <ErrorText text={errors.confirmPassword.message!} />
           ) : null}
-          <Button disabled={loading}>회원 가입</Button>
+          <Button disabled={loading}>{t("createAccount.createAccount")}</Button>
           <Separator />
           <Link href={"/login"}>
             <Button className="w-full" variant={"secondary"}>
-              FGFG회원이신가요? 로그인
+              {t("createAccount.alreadyHaveAccount")}
             </Button>
           </Link>
         </form>

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon } from "lucide-react";
 import {
-  createSearchGuideSchema,
+  searchGuideSchema,
   SearchGuideType,
 } from "@/app/[locale]/(main)/schema";
 import { Button } from "../ui/button";
@@ -44,7 +44,7 @@ export default function HeroSectionForm() {
     formState: { errors },
     watch,
   } = useForm<SearchGuideType>({
-    resolver: zodResolver(createSearchGuideSchema(t)),
+    resolver: zodResolver(searchGuideSchema(t)),
   });
 
   const watchDate = watch("date");

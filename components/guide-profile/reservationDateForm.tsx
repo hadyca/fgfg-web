@@ -9,7 +9,7 @@ import { Calendar } from "../ui/calendar";
 import { useEffect, useState } from "react";
 import { subDays, format } from "date-fns";
 import {
-  createSearchGuideSchema,
+  searchGuideSchema,
   SearchGuideType,
 } from "@/app/[locale]/(main)/schema";
 import { useForm } from "react-hook-form";
@@ -60,7 +60,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
     formState: { errors },
     watch,
   } = useForm<SearchGuideType>({
-    resolver: zodResolver(createSearchGuideSchema(t)),
+    resolver: zodResolver(searchGuideSchema(t)),
   });
   const watchDate = watch("date");
 

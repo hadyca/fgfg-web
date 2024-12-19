@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 export const metadata = {
   title: "취소 및 환불 정책",
   description:
@@ -5,39 +7,38 @@ export const metadata = {
 };
 
 export default function RefundPolicy() {
+  const t = useTranslations();
   return (
     <div className="max-w-4xl mx-auto my-10 px-6">
       <div className="text-center font-bold text-3xl mb-6">
-        취소 및 환불정책
+        {t("RefundPolicy.title")}
       </div>
       <div className="flex flex-col gap-3">
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            가이드 요청으로 인한 예약 취소나 가이드가 예약을 이행하지 않은
-            경우(No Show)에는 전액 환불해드립니다.
+            {t("RefundPolicy.description")}
           </p>
         </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            고객님이 예약 시간에 나타나지 않은 경우(No Show), 환불이
-            불가능합니다.
+            {t("RefundPolicy.description2")}
           </p>
         </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            가이드가 예약을 확정한 이후에는 예약 취소 및 환불이 불가능합니다.
+            {t("RefundPolicy.description3")}
           </p>
         </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            단순히 가이드 서비스에 대한 불만족으로 인한 환불은 불가능합니다.
+            {t("RefundPolicy.description4")}
           </p>
+        </div>
+        <div className="mt-4">{t("RefundPolicy.contact")}</div>
+        <div className="text-center text-sm text-gray-500">
+          {t("RefundPolicy.lastModified")}
         </div>
       </div>
-      <div className="mt-4">
-        환불 요청 및 문의 사항이 있으시면 아래 이메일로 연락해 주시기 바랍니다.
-      </div>
-      <div>이메일: hadycas@gmail.com</div>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
   const t = useTranslations();
+
   return (
     <footer id="contact" className="bg-secondary py-8">
       <div className="container mx-auto text-center">

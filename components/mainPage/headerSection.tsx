@@ -136,7 +136,7 @@ export default function HeaderSection({
               <SheetTrigger className="md:hidden block">
                 <Bars3Icon className="w-6 h-6" />
               </SheetTrigger>
-              <SheetContent side={"left"} className="w-1/2">
+              <SheetContent side={"left"} className="w-2/3">
                 <NavItemsMobile
                   onLinkClick={handleLinkClick}
                   userId={userId}

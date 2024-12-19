@@ -31,8 +31,10 @@ import {
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/ui/spinner";
+import { useTranslations } from "next-intl";
 
 export default function SignUpGuide() {
+  const t = useTranslations();
   const [photoLoading, setPhotoLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState("");
@@ -52,7 +54,7 @@ export default function SignUpGuide() {
     watch,
     formState: { errors },
   } = useForm<SignUpGuideType>({
-    resolver: zodResolver(signUpGuideSchema),
+    resolver: zodResolver(signUpGuideSchema(t)),
     defaultValues: {
       language: [{ id: 1, language: "", level: "" }],
     },
@@ -71,7 +73,7 @@ export default function SignUpGuide() {
     const typeOk = fileType ? ACCEPTED_IMAGE_TYPES.includes(fileType) : false;
 
     if (!typeOk) {
-      setError("resumePhoto", { message: "이미지 파일을 선택해주세요." });
+      setError("resumePhoto", { message: t("signUpGuide.invalidResumePhoto") });
       return;
     }
 
@@ -105,13 +107,15 @@ export default function SignUpGuide() {
     const user = await userCheck();
 
     if (user?.me?.guide?.isApproved !== undefined) {
-      setExistError("가이드 심사 중 혹은 이미 등록된 가이드 입니다.");
+      setExistError(t("signUpGuide.alreadyRegisteredGuide"));
       setLoading(false);
       return;
     }
 
     if (!file || !uploadUrl) {
-      setError("resumePhoto", { message: "사진을 업로드해주세요." });
+      setError("resumePhoto", {
+        message: t("signUpGuide.invalidResumePhoto2"),
+      });
       return;
     }
 
@@ -123,7 +127,7 @@ export default function SignUpGuide() {
     });
     if (response.status !== 200) {
       setError("resumePhoto", {
-        message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
+        message: t("signUpGuide.invalidResumePhoto3"),
       });
       return;
     }
@@ -202,15 +206,15 @@ export default function SignUpGuide() {
     <div className="flex justify-center items-center">
       <Card className="w-full max-w-2xl my-10 pb-4 shadow-md">
         <CardHeader>
-          <CardTitle>가이드 가입</CardTitle>
+          <CardTitle>{t("signUpGuide.signUpGuide")}</CardTitle>
           <span className="text-sm text-muted-foreground">
-            *표시된 항목은 비공개 정보 입니다.
+            {t("signUpGuide.privateInformation")}
           </span>
         </CardHeader>
         <form onSubmit={handleSubmit(onValid)} className="flex flex-col px-7">
           <div className="flex flex-col gap-5">
             <div className="space-y-1">
-              <Label htmlFor="fullname">이름</Label>
+              <Label htmlFor="fullname">{t("signUpGuide.name")}</Label>
               {errors?.fullname ? (
                 <ErrorText text={errors.fullname.message!} />
               ) : null}
@@ -224,9 +228,9 @@ export default function SignUpGuide() {
             </div>
             <div className="space-y-1">
               <Label htmlFor="resumePhoto">
-                <span>*이력서 사진 </span>
+                <span>*{t("signUpGuide.resumePhoto")} </span>
                 <span className="text-sm text-muted-foreground">
-                  (※얼굴이 잘 보이는 사진으로 등록해주세요.)
+                  (※{t("signUpGuide.resumePhotoDescription")})
                 </span>
               </Label>
               <Label
@@ -239,7 +243,9 @@ export default function SignUpGuide() {
                 {preview === "" ? (
                   <>
                     <PhotoIcon className="w-12" />
-                    <div className="text-neutral-300 text-sm">사진 추가</div>
+                    <div className="text-neutral-300 text-sm">
+                      {t("signUpGuide.addPhoto")}
+                    </div>
                   </>
                 ) : (
                   <>
@@ -270,7 +276,7 @@ export default function SignUpGuide() {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="birthdate">생년월일 (생년만 공개됨)</Label>
+              <Label htmlFor="birthdate">{t("signUpGuide.birthdate")}</Label>
               {errors?.birthdate ? (
                 <ErrorText text={errors.birthdate.message!} />
               ) : null}
@@ -283,7 +289,7 @@ export default function SignUpGuide() {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="birthdate">키(cm)</Label>
+              <Label htmlFor="height">{t("signUpGuide.height")}</Label>
               {errors?.height ? (
                 <ErrorText text={errors.height.message!} />
               ) : null}
@@ -296,7 +302,7 @@ export default function SignUpGuide() {
               />
             </div>
             <div className="space-y-1">
-              <Label>외국어 능력</Label>
+              <Label>{t("signUpGuide.languageAbility")}</Label>
               {errors?.language ? (
                 <ErrorText text={errors?.language[0]?.message!} />
               ) : null}
@@ -311,12 +317,12 @@ export default function SignUpGuide() {
                       onChange={(e) =>
                         handleLanguageChange(index, e.target.value)
                       }
-                      className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
+                      className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-40 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
                         option.language ? "" : "text-muted-foreground"
                       }`}
                     >
                       <option value="" disabled hidden>
-                        언어 선택
+                        {t("signUpGuide.languageSelect")}
                       </option>
                       {getAvailableLanguages(index).map((lang) => (
                         <option
@@ -339,10 +345,10 @@ export default function SignUpGuide() {
                       }`}
                     >
                       <option value="" disabled hidden>
-                        레벨
+                        {t("signUpGuide.level")}
                       </option>
                       <option value="1" className="text-black">
-                        1(기초 수준)
+                        1 {t("signUpGuide.basicLevel")}
                       </option>
                       <option value="2" className="text-black">
                         2
@@ -354,7 +360,7 @@ export default function SignUpGuide() {
                         4
                       </option>
                       <option value="5" className="text-black">
-                        5(원어민 수준)
+                        5 {t("signUpGuide.nativeLevel")}
                       </option>
                     </select>
                   </div>
@@ -369,15 +375,15 @@ export default function SignUpGuide() {
                   variant={"outline"}
                   onClick={handleAddLanguage}
                   type="button"
-                  className="flex items-center justify-between w-36 pl-1 gap-1"
+                  className="flex items-center justify-between w-40 pl-1 gap-1"
                 >
                   <PlusCircleIcon className="w-6 h-6 text-primary" />
-                  <span>언어 추가하기</span>
+                  <span>{t("signUpGuide.addLanguage")}</span>
                 </Button>
               )}
             </div>
             <div className="space-y-1">
-              <Label htmlFor="address">*거주지 주소</Label>
+              <Label htmlFor="address">*{t("signUpGuide.address")}</Label>
               {errors?.address ? (
                 <ErrorText text={errors.address.message!} />
               ) : null}
@@ -389,7 +395,7 @@ export default function SignUpGuide() {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="phone">*핸드폰 번호</Label>
+              <Label htmlFor="phone">*{t("signUpGuide.phone")}</Label>
               {errors?.phone ? (
                 <ErrorText text={errors.phone.message!} />
               ) : null}
@@ -397,7 +403,7 @@ export default function SignUpGuide() {
             </div>
 
             <div className="space-y-1">
-              <Label htmlFor="selfIntro">*자기 소개</Label>
+              <Label htmlFor="selfIntro">{t("signUpGuide.selfIntro")}</Label>
               {errors?.selfIntro ? (
                 <ErrorText text={errors.selfIntro.message!} />
               ) : null}
@@ -420,21 +426,23 @@ export default function SignUpGuide() {
                   href={"/policies/privacy-policy"}
                   className="text-primary"
                 >
-                  개인정보 수집
+                  {t("signUpGuide.privacyPolicy")}
                 </Link>
-                <span> 및 </span>
+                <span> {t("signUpGuide.and")} </span>
                 <Link
                   href={"/policies/terms-and-conditions"}
                   className="text-primary"
                 >
-                  이용약관
+                  {t("signUpGuide.termsAndConditions")}
                 </Link>
-                <span> 동의</span>
+                <span> {t("signUpGuide.agree")}</span>
               </label>
             </div>
             {existError !== "" ? <ErrorText text={existError} /> : null}
             <Button disabled={loading || !isTermsChecked || photoLoading}>
-              {loading ? "로딩 중" : "가이드 가입"}
+              {loading
+                ? t("signUpGuide.loading")
+                : t("signUpGuide.signUpGuide")}
             </Button>
           </div>
         </form>
@@ -443,14 +451,11 @@ export default function SignUpGuide() {
       <Dialog open={isDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>🎉 가입 접수 완료</DialogTitle>
+            <DialogTitle>🎉 {t("signUpGuide.signUpComplete")}</DialogTitle>
           </DialogHeader>
-          <p>
-            가이드 가입 신청이 완료되었습니다. 심사 결과와 면접 장소는 24시간
-            이내에 가입하신 이메일로 안내해드리겠습니다.
-          </p>
+          <p>{t("signUpGuide.signUpCompleteDescription")}</p>
           <DialogFooter>
-            <Button onClick={handleDialog}>확인</Button>
+            <Button onClick={handleDialog}>{t("signUpGuide.confirm")}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

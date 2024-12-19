@@ -6,8 +6,10 @@ import { LOG_IN } from "./queries";
 import { client } from "@/lib/apolloClient";
 import { loginSchema } from "./schema";
 import { CHECK_EMAIL } from "../create-account/queries";
+import { getTranslations } from "next-intl/server";
 
 export async function login(formData: FormData, redirectUrl: string = "/") {
+  const t = await getTranslations();
   const data = {
     email: formData.get("email"),
     password: formData.get("password"),
@@ -24,13 +26,13 @@ export async function login(formData: FormData, redirectUrl: string = "/") {
   if (checkEmail.ok) {
     return {
       type: "checkEmail",
-      error: "없는 이메일 입니다.",
+      error: t("Validation.invalidEmail"),
     };
   }
 
   const result = loginSchema.safeParse(data);
   if (!result.success) {
-    return { type: "zodSchema", error: "유효하지 않은 데이터 입니다." };
+    return { type: "zodSchema", error: t("Validation.invalidData") };
   } else {
     const { data } = await client.mutate({
       mutation: LOG_IN,
@@ -46,7 +48,7 @@ export async function login(formData: FormData, redirectUrl: string = "/") {
       await session.save();
       redirect(redirectUrl);
     } else {
-      return { type: "password", error: "비밀번호가 틀렸습니다." };
+      return { type: "password", error: t("Validation.invalidPassword") };
     }
   }
 }

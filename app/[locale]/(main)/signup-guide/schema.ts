@@ -5,60 +5,63 @@ import validator from "validator";
 import { DateTime } from "luxon";
 import { z } from "zod";
 
-export const signUpGuideSchema = z.object({
-  fullname: z
-    .string({
-      required_error: "필수 항목 입니다.",
-    })
-    .toLowerCase()
-    .min(1, "이름을 다시 확인 해주세요.")
-    .max(30, { message: "최대 30자 까지 가능합니다." })
-    .refine(unAvailableName, "사용할 수 없는 이름 입니다."),
-  birthdate: z
-    .string({
-      required_error: "필수 항목 입니다.",
-    })
-    .regex(BIRTHDATE_REGEX, "생년월일을 다시 확인해주세요.")
-    .refine(
-      (date) => {
-        const today = DateTime.now().startOf("day");
-        const birthDate = DateTime.fromISO(date).startOf("day");
+export const signUpGuideSchema = (t: (key: string) => string) =>
+  z.object({
+    fullname: z
+      .string({
+        required_error: t("Validation.signUpGuide.required_error"),
+      })
+      .toLowerCase()
+      .min(1, "Please check your name again.")
+      .max(30, { message: "Maximum 30 characters allowed." })
+      .refine(unAvailableName, t("Validation.signUpGuide.invalidUsername")),
+    birthdate: z
+      .string({
+        required_error: t("Validation.signUpGuide.required_error"),
+      })
+      .regex(BIRTHDATE_REGEX, t("Validation.signUpGuide.invalidBirthdate"))
+      .refine(
+        (date) => {
+          const today = DateTime.now().startOf("day");
+          const birthDate = DateTime.fromISO(date).startOf("day");
 
-        const minDate = today.minus({ years: 70 });
-        const maxDate = today.minus({ years: 15 });
+          const minDate = today.minus({ years: 70 });
+          const maxDate = today.minus({ years: 15 });
 
-        return birthDate >= minDate && birthDate <= maxDate;
-      },
-      {
-        message: "생년월일을 다시 확인해주세요.",
-      }
-    ),
-  height: z.string({ required_error: "필수 항목 입니다." }).refine(
-    (val) => {
-      const height = Number(val);
-      return !isNaN(height) && height >= 100 && height <= 200;
-    },
-    {
-      message: "키를 다시 확인 해주세요.",
-    }
-  ),
-  address: z.string({
-    required_error: "필수 항목 입니다.",
-  }),
-  phone: z
-    .string({
-      required_error: "필수 항목 입니다.",
-    })
-    .trim()
-    .refine(
-      (phone) => validator.isMobilePhone(phone, "vi-VN"),
-      "잘못된 번호 입니다."
-    ),
-  selfIntro: z.string(),
-  resumePhoto: z.string({
-    required_error: "필수 항목 입니다.",
-  }),
-  language: z.array(LanguageOptionSchema),
-});
+          return birthDate >= minDate && birthDate <= maxDate;
+        },
+        {
+          message: t("Validation.signUpGuide.invalidBirthdate"),
+        }
+      ),
+    height: z
+      .string({ required_error: t("Validation.signUpGuide.required_error") })
+      .refine(
+        (val) => {
+          const height = Number(val);
+          return !isNaN(height) && height >= 100 && height <= 200;
+        },
+        {
+          message: t("Validation.signUpGuide.invalidHeight"),
+        }
+      ),
+    address: z.string({
+      required_error: t("Validation.signUpGuide.required_error"),
+    }),
+    phone: z
+      .string({
+        required_error: t("Validation.signUpGuide.required_error"),
+      })
+      .trim()
+      .refine(
+        (phone) => validator.isMobilePhone(phone, "vi-VN"),
+        t("Validation.signUpGuide.invalidPhone")
+      ),
+    selfIntro: z.string(),
+    resumePhoto: z.string({
+      required_error: t("Validation.signUpGuide.required_error"),
+    }),
+    language: z.array(LanguageOptionSchema),
+  });
 
-export type SignUpGuideType = z.infer<typeof signUpGuideSchema>;
+export type SignUpGuideType = z.infer<ReturnType<typeof signUpGuideSchema>>;

@@ -12,8 +12,10 @@ import ErrorText from "@/components/errorText";
 import { login } from "./actions";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function LogIn() {
+  const t = useTranslations();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -49,7 +51,7 @@ export default function LogIn() {
     <div className="absolute inset-0 flex justify-center items-center z-10">
       <Card className="w-full max-w-md pb-4 shadow-md">
         <CardHeader>
-          <CardTitle>로그인</CardTitle>
+          <CardTitle>{t("login.login")}</CardTitle>
         </CardHeader>
         <form
           onSubmit={handleSubmit(onValid)}
@@ -57,14 +59,14 @@ export default function LogIn() {
         >
           <Input
             type="email"
-            placeholder="이메일"
+            placeholder={t("login.email")}
             {...register("email")}
             required
           />
           {errors?.email ? <ErrorText text={errors.email.message!} /> : null}
           <Input
             type="password"
-            placeholder="비밀번호"
+            placeholder={t("login.password")}
             minLength={PASSWORD_MIN_LENGTH}
             {...register("password")}
             required
@@ -72,11 +74,11 @@ export default function LogIn() {
           {errors?.password ? (
             <ErrorText text={errors.password.message!} />
           ) : null}
-          <Button disabled={loading}>로그인</Button>
+          <Button disabled={loading}>{t("login.login")}</Button>
           <Separator />
           <Link href={"/create-account"}>
             <Button className="w-full" variant={"secondary"}>
-              계정이 없으신가요? 회원가입
+              {t("login.signup")}
             </Button>
           </Link>
         </form>

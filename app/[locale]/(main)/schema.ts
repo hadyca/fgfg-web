@@ -2,7 +2,7 @@ import { DATE_REGEX, TIME_30_MIN_REGEX } from "@/lib/constants";
 import { z } from "zod";
 import { DateTime } from "luxon";
 
-export const createSearchGuideSchema = (t: (key: string) => string) =>
+export const searchGuideSchema = (t: (key: string) => string) =>
   z
     .object({
       date: z.string().regex(DATE_REGEX, t("Validation.invalidDate")),
@@ -40,6 +40,4 @@ export const createSearchGuideSchema = (t: (key: string) => string) =>
       }
     });
 
-export type SearchGuideType = z.infer<
-  ReturnType<typeof createSearchGuideSchema>
->;
+export type SearchGuideType = z.infer<ReturnType<typeof searchGuideSchema>>;

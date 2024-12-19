@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  createSearchGuideSchema,
+  searchGuideSchema,
   SearchGuideType,
 } from "@/app/[locale]/(main)/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,7 +45,7 @@ export default function SearchGuideForm({ searchParams }: SearchGuideProps) {
     formState: { errors },
     watch,
   } = useForm<SearchGuideType>({
-    resolver: zodResolver(createSearchGuideSchema(t)),
+    resolver: zodResolver(searchGuideSchema(t)),
   });
 
   const watchDate = watch("date");

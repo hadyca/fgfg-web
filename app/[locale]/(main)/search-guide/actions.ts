@@ -3,7 +3,7 @@
 import { client } from "@/lib/apolloClient";
 import { SEE_AVAILABLE_GUIDES } from "./queries";
 import { convertToUTC } from "@/lib/utils";
-import { createSearchGuideSchema } from "../schema";
+import { searchGuideSchema } from "../schema";
 import { getTranslations } from "next-intl/server";
 
 export async function getGuides(startTime?: string, endTime?: string) {
@@ -25,7 +25,7 @@ export async function searchGuide(formData: FormData) {
     startTime: formData.get("startTime"),
     endTime: formData.get("endTime"),
   };
-  const result = createSearchGuideSchema(t).safeParse(data);
+  const result = searchGuideSchema(t).safeParse(data);
 
   if (!result.success) {
     return { ok: false, error: "유효하지 않은 데이터" };
