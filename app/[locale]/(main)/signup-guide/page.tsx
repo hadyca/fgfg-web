@@ -186,7 +186,7 @@ export default function SignUpGuide() {
       .filter((_, index) => index !== currentIndex)
       .map((option) => option.language);
 
-    return LANGUAGE_OPTIONS_KOREAN.map((lang) => ({
+    return LANGUAGE_OPTIONS.map((lang) => ({
       name: lang[locale as keyof typeof lang] || lang.ko, // locale에 맞는 언어 표시, 없으면 한국어로
       value: lang.value, // value 값 사용
       disabled: selectedLanguages.includes(

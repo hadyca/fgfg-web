@@ -13,7 +13,7 @@ import {
 import { updateLanguage } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { MinusCircleIcon } from "@heroicons/react/24/outline";
-import { LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";
+import { LANGUAGE_OPTIONS } from "@/lib/constants";
 
 interface LanguageInput {
   id: number;
@@ -49,8 +49,7 @@ export default function LanguageForm({
     },
   });
   const language = watch("language");
-  const isAllLanguagesSelected =
-    language.length >= LANGUAGE_OPTIONS_KOREAN.length;
+  const isAllLanguagesSelected = language.length >= LANGUAGE_OPTIONS.length;
 
   const handleLanguageChange = (index: number, value: string) => {
     const newOptions = [...language];
@@ -84,7 +83,7 @@ export default function LanguageForm({
     const selectedLanguages = language
       .filter((_, index) => index !== currentIndex)
       .map((option) => option.language);
-    return LANGUAGE_OPTIONS_KOREAN.map((lang) => ({
+    return LANGUAGE_OPTIONS.map((lang) => ({
       name: lang,
       disabled: selectedLanguages.includes(lang),
     }));
