@@ -26,13 +26,13 @@ export async function login(formData: FormData, redirectUrl: string = "/") {
   if (checkEmail.ok) {
     return {
       type: "checkEmail",
-      error: t("Validation.invalidEmail"),
+      error: t("validation.invalidEmail"),
     };
   }
 
   const result = loginSchema.safeParse(data);
   if (!result.success) {
-    return { type: "zodSchema", error: t("Validation.invalidData") };
+    return { type: "zodSchema", error: t("validation.invalidData") };
   } else {
     const { data } = await client.mutate({
       mutation: LOG_IN,
@@ -48,7 +48,7 @@ export async function login(formData: FormData, redirectUrl: string = "/") {
       await session.save();
       redirect(redirectUrl);
     } else {
-      return { type: "password", error: t("Validation.invalidPassword") };
+      return { type: "password", error: t("validation.invalidPassword") };
     }
   }
 }

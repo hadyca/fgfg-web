@@ -9,17 +9,17 @@ export const signUpGuideSchema = (t: (key: string) => string) =>
   z.object({
     fullname: z
       .string({
-        required_error: t("Validation.signUpGuide.required_error"),
+        required_error: t("validation.signUpGuide.required_error"),
       })
       .toLowerCase()
       .min(1, "Please check your name again.")
       .max(30, { message: "Maximum 30 characters allowed." })
-      .refine(unAvailableName, t("Validation.signUpGuide.invalidUsername")),
+      .refine(unAvailableName, t("validation.signUpGuide.invalidUsername")),
     birthdate: z
       .string({
-        required_error: t("Validation.signUpGuide.required_error"),
+        required_error: t("validation.signUpGuide.required_error"),
       })
-      .regex(BIRTHDATE_REGEX, t("Validation.signUpGuide.invalidBirthdate"))
+      .regex(BIRTHDATE_REGEX, t("validation.signUpGuide.invalidBirthdate"))
       .refine(
         (date) => {
           const today = DateTime.now().startOf("day");
@@ -31,35 +31,35 @@ export const signUpGuideSchema = (t: (key: string) => string) =>
           return birthDate >= minDate && birthDate <= maxDate;
         },
         {
-          message: t("Validation.signUpGuide.invalidBirthdate"),
+          message: t("validation.signUpGuide.invalidBirthdate"),
         }
       ),
     height: z
-      .string({ required_error: t("Validation.signUpGuide.required_error") })
+      .string({ required_error: t("validation.signUpGuide.required_error") })
       .refine(
         (val) => {
           const height = Number(val);
           return !isNaN(height) && height >= 100 && height <= 200;
         },
         {
-          message: t("Validation.signUpGuide.invalidHeight"),
+          message: t("validation.signUpGuide.invalidHeight"),
         }
       ),
     address: z.string({
-      required_error: t("Validation.signUpGuide.required_error"),
+      required_error: t("validation.signUpGuide.required_error"),
     }),
     phone: z
       .string({
-        required_error: t("Validation.signUpGuide.required_error"),
+        required_error: t("validation.signUpGuide.required_error"),
       })
       .trim()
       .refine(
         (phone) => validator.isMobilePhone(phone, "vi-VN"),
-        t("Validation.signUpGuide.invalidPhone")
+        t("validation.signUpGuide.invalidPhone")
       ),
     selfIntro: z.string(),
     resumePhoto: z.string({
-      required_error: t("Validation.signUpGuide.required_error"),
+      required_error: t("validation.signUpGuide.required_error"),
     }),
     language: z.array(LanguageOptionSchema),
   });

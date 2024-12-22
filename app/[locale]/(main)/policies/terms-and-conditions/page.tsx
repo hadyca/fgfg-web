@@ -12,49 +12,49 @@ export default function TermsAndConditions() {
   return (
     <div className="max-w-4xl mx-auto my-10 px-6">
       <div className="text-center font-bold text-3xl mb-6">
-        {t("TermsAndConditions.termsAndConditions")}
+        {t("termsAndConditions.termsAndConditions")}
       </div>
       <div className="flex flex-col gap-3">
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("TermsAndConditions.normal")}
+            {t("termsAndConditions.normal")}
           </h2>
-          <p>{t("TermsAndConditions.normalDescription")}</p>
+          <p>{t("termsAndConditions.normalDescription")}</p>
         </div>
 
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("TermsAndConditions.service")}
+            {t("termsAndConditions.service")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("TermsAndConditions.serviceDescription")}</p>
+              <p>{t("termsAndConditions.serviceDescription")}</p>
             </li>
             <li>
-              <p>{t("TermsAndConditions.serviceDescription2")}</p>
+              <p>{t("termsAndConditions.serviceDescription2")}</p>
             </li>
             <li>
-              <p>{t("TermsAndConditions.serviceDescription3")}</p>
+              <p>{t("termsAndConditions.serviceDescription3")}</p>
             </li>
           </ol>
         </div>
 
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("TermsAndConditions.paymentAndRefundPolicy")}
+            {t("termsAndConditions.paymentAndRefundPolicy")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("TermsAndConditions.paymentAndRefundPolicyDescription")}</p>
+              <p>{t("termsAndConditions.paymentAndRefundPolicyDescription")}</p>
             </li>
             <li>
               <p>
-                {t("TermsAndConditions.paymentAndRefundPolicyDescription2")}
+                {t("termsAndConditions.paymentAndRefundPolicyDescription2")}
               </p>
             </li>
             <li>
               <p>
-                {t("TermsAndConditions.paymentAndRefundPolicyDescription3")}
+                {t("termsAndConditions.paymentAndRefundPolicyDescription3")}
               </p>
             </li>
           </ol>
@@ -62,40 +62,40 @@ export default function TermsAndConditions() {
 
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("TermsAndConditions.guideAndUserDuty")}
+            {t("termsAndConditions.guideAndUserDuty")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("TermsAndConditions.guideAndUserDutyDescription")}</p>
+              <p>{t("termsAndConditions.guideAndUserDutyDescription")}</p>
             </li>
             <li>
-              <p>{t("TermsAndConditions.guideAndUserDutyDescription2")}</p>
+              <p>{t("termsAndConditions.guideAndUserDutyDescription2")}</p>
             </li>
             <li>
-              <p>{t("TermsAndConditions.guideAndUserDutyDescription3")}</p>
+              <p>{t("termsAndConditions.guideAndUserDutyDescription3")}</p>
             </li>
           </ol>
         </div>
 
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("TermsAndConditions.prohibitedActivities")}
+            {t("termsAndConditions.prohibitedActivities")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("TermsAndConditions.prohibitedActivitiesDescription")}</p>
+              <p>{t("termsAndConditions.prohibitedActivitiesDescription")}</p>
             </li>
             <li>
-              <p>{t("TermsAndConditions.prohibitedActivitiesDescription2")}</p>
+              <p>{t("termsAndConditions.prohibitedActivitiesDescription2")}</p>
             </li>
             <li>
-              <p>{t("TermsAndConditions.prohibitedActivitiesDescription3")}</p>
+              <p>{t("termsAndConditions.prohibitedActivitiesDescription3")}</p>
             </li>
           </ol>
         </div>
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("TermsAndConditions.personalInformationProtection")}
+            {t("termsAndConditions.personalInformationProtection")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
@@ -116,43 +116,43 @@ export default function TermsAndConditions() {
         </div>
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("TermsAndConditions.liabilityDisclaimer")}
+            {t("termsAndConditions.liabilityDisclaimer")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("TermsAndConditions.liabilityDisclaimerDescription")}</p>
+              <p>{t("termsAndConditions.liabilityDisclaimerDescription")}</p>
             </li>
             <li>
-              <p>{t("TermsAndConditions.liabilityDisclaimerDescription2")}</p>
+              <p>{t("termsAndConditions.liabilityDisclaimerDescription2")}</p>
             </li>
           </ol>
         </div>
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("TermsAndConditions.amendmentOfTerms")}
+            {t("termsAndConditions.amendmentOfTerms")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("TermsAndConditions.amendmentOfTermsDescription")}</p>
+              <p>{t("termsAndConditions.amendmentOfTermsDescription")}</p>
             </li>
             <li>
-              <p>{t("TermsAndConditions.amendmentOfTermsDescription2")}</p>
+              <p>{t("termsAndConditions.amendmentOfTermsDescription2")}</p>
             </li>
           </ol>
         </div>
 
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("TermsAndConditions.contact")}
+            {t("termsAndConditions.contact")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("TermsAndConditions.contactDescription")}</p>
+              <p>{t("termsAndConditions.contactDescription")}</p>
             </li>
           </ol>
         </div>
         <div className="text-center text-sm text-gray-500">
-          {t("TermsAndConditions.lastModified")}
+          {t("termsAndConditions.lastModified")}
         </div>
       </div>
     </div>

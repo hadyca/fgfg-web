@@ -20,7 +20,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { getUploadUrl, signupGuide, userCheck } from "./actions";
 import { Separator } from "@/components/ui/separator";
-import { ACCEPTED_IMAGE_TYPES, LANGUAGE_OPTIONS_KOREAN } from "@/lib/constants";
+import { ACCEPTED_IMAGE_TYPES, LANGUAGE_OPTIONS } from "@/lib/constants";
 import GuideQandA from "@/components/guideQandA";
 import {
   Dialog,
@@ -31,9 +31,10 @@ import {
 } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/ui/spinner";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function SignUpGuide() {
+  const locale = useLocale();
   const t = useTranslations();
   const [photoLoading, setPhotoLoading] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -61,8 +62,8 @@ export default function SignUpGuide() {
   });
 
   const language = watch("language");
-  const isAllLanguagesSelected =
-    language.length >= LANGUAGE_OPTIONS_KOREAN.length;
+
+  const isAllLanguagesSelected = language.length >= LANGUAGE_OPTIONS.length;
 
   const onImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -184,9 +185,13 @@ export default function SignUpGuide() {
     const selectedLanguages = language
       .filter((_, index) => index !== currentIndex)
       .map((option) => option.language);
+
     return LANGUAGE_OPTIONS_KOREAN.map((lang) => ({
-      name: lang,
-      disabled: selectedLanguages.includes(lang),
+      name: lang[locale as keyof typeof lang] || lang.ko, // locale에 맞는 언어 표시, 없으면 한국어로
+      value: lang.value, // value 값 사용
+      disabled: selectedLanguages.includes(
+        lang[locale as keyof typeof lang] || lang.ko
+      ),
     }));
   };
 
@@ -326,8 +331,8 @@ export default function SignUpGuide() {
                       </option>
                       {getAvailableLanguages(index).map((lang) => (
                         <option
-                          key={lang.name}
-                          value={lang.name}
+                          key={lang.value}
+                          value={lang.value}
                           disabled={lang.disabled}
                           className="text-black"
                         >

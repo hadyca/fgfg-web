@@ -1,5 +1,5 @@
 {
-  "Main": {
+  "main": {
     "title": "Hãy trải nghiệm chuyến du lịch đáng nhớ ở TP.HCM cùng bạn gái Việt Nam!",
     "selectDate": "Chọn ngày",
     "pickupTime": "Thời gian đón",
@@ -21,15 +21,21 @@
     "internationalCoupleDescription": "Để biết liệu một cặp đôi quốc tế có phù hợp với bạn hay không, điều quan trọng nhất là hiểu và tiếp xúc nhiều lần với văn hóa của đất nước đó. Hãy trải nghiệm dễ dàng với giá cả phải chăng và thời gian hướng dẫn theo ý muốn.",
     "betaTestDescription": "Chúng tôi hiện đang cung cấp dịch vụ beta. Nếu bạn có bất kỳ bất tiện hoặc đề xuất cải thiện nào khi sử dụng, vui lòng gửi phản hồi đến hadycas@gmail.com. Ý kiến quý báu của bạn sẽ giúp chúng tôi tạo ra dịch vụ tốt hơn. Hãy tham gia cùng chúng tôi!"
   },
+  "login": {
+    "login": "Đăng nhập",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "signup": "Chưa có tài khoản? Đăng ký"
+  },
   "createAccount": {
     "createAccount": "Đăng ký",
     "username": "Tên người dùng",
     "email": "Email",
     "password": "Mật khẩu",
     "confirmPassword": "Xác nhận mật khẩu",
-    "alreadyHaveAccount": "Đã có tài khoản? Đăng nhập"
+    "alreadyHaveAccount": "Đã là thành viên FGFG? Đăng nhập"
   },
-  "Validation": {
+  "validation": {
     "invalidDate": "Vui lòng kiểm tra lại ngày.",
     "invalidTime": "Vui lòng kiểm tra lại thời gian.",
     "minimumDuration": "Thời gian đặt tối thiểu là 2 giờ.",
@@ -51,7 +57,7 @@
       "required_error": "Đây là mục bắt buộc."
     }
   },
-  "Header": {
+  "header": {
     "seeGuide": "Xem hướng dẫn viên",
     "signupGuide": "Đăng ký làm hướng dẫn viên",
     "login": "Đăng nhập",
@@ -64,12 +70,12 @@
     "guideManagement": "Quản lý hướng dẫn viên",
     "logout": "Đăng xuất"
   },
-  "Footer": {
+  "footer": {
     "termsAndConditions": "Điều khoản và điều kiện",
     "privacyPolicy": "Chính sách bảo mật",
     "refundPolicy": "Chính sách hoàn tiền"
   },
-  "TermsAndConditions": {
+  "termsAndConditions": {
     "termsAndConditions": "Điều khoản và điều kiện",
     "normal": "1. Điều khoản chung",
     "normalDescription": "Cảm ơn bạn đã sử dụng fgfg. fgfg (sau đây gọi là \"Dịch vụ\") là nền tảng cho phép người dùng đặt hướng dẫn viên du lịch và trải nghiệm các nền văn hóa khác nhau thông qua hướng dẫn viên. Điều khoản này quy định các quyền, nghĩa vụ và trách nhiệm giữa fgfg và người dùng.",
@@ -102,7 +108,7 @@
     "contactDescription": "Vui lòng liên hệ theo địa chỉ sau đây nếu có thắc mắc về điều khoản này: hadycas@gmail.com",
     "lastModified": "Cập nhật lần cuối: 19/12/2024"
   },
-  "PrivacyPolicy": {
+  "privacyPolicy": {
     "privacyPolicy": "Chính sách bảo mật",
     "normal": "1. Quy định chung",
     "normalDescription": "fgfg (sau đây gọi là \"Dịch vụ\") coi trọng thông tin cá nhân của người dùng và tuân thủ Luật Bảo vệ thông tin cá nhân. Chính sách bảo mật này giải thích việc sử dụng và bảo vệ thông tin cá nhân được thu thập khi sử dụng dịch vụ fgfg.",
@@ -149,7 +155,7 @@
     "contactDescription": "Vui lòng liên hệ theo địa chỉ sau đây nếu có thắc mắc về chính sách bảo mật này: hadycas@gmail.com",
     "lastModified": "Cập nhật lần cuối: 19/12/2024"
   },
-  "RefundPolicy": {
+  "refundPolicy": {
     "title": "Chính sách hủy và hoàn tiền",
     "description": "Hoàn tiền đầy đủ sẽ được thực hiện trong trường hợp hủy đặt chỗ do yêu cầu của hướng dẫn viên hoặc hướng dẫn viên không xuất hiện.",
     "description2": "Không hoàn tiền trong trường hợp khách hàng không xuất hiện vào thời gian đã đặt.",
@@ -157,12 +163,6 @@
     "description4": "Không hoàn tiền chỉ vì không hài lòng với dịch vụ hướng dẫn.",
     "contact": "Vui lòng liên hệ qua email sau để yêu cầu hoàn tiền hoặc giải đáp thắc mắc: hadycas@gmail.com",
     "lastModified": "Cập nhật lần cuối: 19/12/2024"
-  },
-  "login": {
-    "login": "Đăng nhập",
-    "email": "Email",
-    "password": "Mật khẩu",
-    "signup": "Chưa có tài khoản? Đăng ký"
   },
   "signUpGuide": {
     "invalidResumePhoto": "Vui lòng chọn tệp hình ảnh.",
@@ -219,5 +219,47 @@
     "guideQandA9Answer": "Chủ yếu là khách hàng Hàn Quốc.",
     "guideQandA10": "Q. Tôi cần chuẩn bị gì khi làm hướng dẫn viên?",
     "guideQandA10Answer": "Bạn cần chuẩn bị những vật dụng cơ bản và những yêu cầu phù hợp với khách hàng."
+  },
+  "guideProfile": {
+    "nativeLanguage": "Tiếng Việt (Bản ngữ)",
+    "guide": "Hướng dẫn viên",
+    "inactive": "(Tạm nghỉ)",
+    "age": "Tuổi",
+    "height": "Chiều cao",
+    "language": "Ngôn ngữ",
+    "introduction": "Giới thiệu",
+    "pickupLocation": "Địa điểm đón",
+    "pickupLocationDescription": "Nếu bạn muốn thay đổi địa điểm đón, hãy gửi tin nhắn cho hướng dẫn viên!",
+    "reservedTime": "Thời gian đã đặt",
+    "inactiveGuide": "Không thể đặt lịch với hướng dẫn viên đang tạm nghỉ.",
+    "selfGuide": "Không thể đặt lịch với tài khoản của chính mình.",
+    "timeOverlap": "Thời gian đã chọn trùng với lịch đã đặt.",
+    "dateSelection": "Chọn ngày",
+    "addDate": "Thêm ngày",
+    "pickupTime": "Thời gian đón",
+    "addTime": "Thêm giờ",
+    "endTime": "Thời gian kết thúc",
+    "checkDateAndTime": "Vui lòng kiểm tra lại ngày và giờ.",
+    "reserve": "Đặt lịch",
+    "reserveDescription": "Bạn sẽ không bị tính phí cho đến khi đặt lịch được xác nhận.",
+    "time": "Thời gian",
+    "reportGuide": "Báo cáo hướng dẫn viên",
+    "reportGuideDescription": "Vui lòng cho chúng tôi biết lý do bạn báo cáo hướng dẫn viên này.",
+    "reportGuideDescription2": "Hướng dẫn viên sẽ không thể thấy nội dung này.",
+    "submit": "Gửi",
+    "loading": "Đang tải",
+    "reportSuccess": "Báo cáo đã được gửi.",
+    "reportSuccessDescription": "Cảm ơn bạn đã dành thời gian báo cáo. Báo cáo của bạn sẽ giúp chúng tôi cải thiện dịch vụ tốt hơn.",
+    "confirm": "Xác nhận",
+    "sendMessage": "Gửi tin nhắn cho hướng dẫn viên",
+    "signUp": "Đăng ký",
+    "signUpDescription": "Vui lòng điền vào mẫu dưới đây để đăng ký.",
+    "username": "Tên người dùng",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "FGFGMember": "Đã là thành viên FGFG? Đăng nhập",
+    "login": "Đăng nhập",
+    "noAccount": "Chưa có tài khoản? Đăng ký"
   }
 }

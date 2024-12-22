@@ -14,6 +14,7 @@ import {
 } from "@/app/[locale]/(main)/(auth)/login/schema";
 import { login } from "@/app/[locale]/(main)/(auth)/login/actions";
 import { Separator } from "./ui/separator";
+import { useTranslations } from "next-intl";
 
 interface DialogLoginProps {
   setIsOpenLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,6 +29,7 @@ export default function DialogLogin({
   startTime,
   endTime,
 }: DialogLoginProps) {
+  const t = useTranslations();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -68,7 +70,7 @@ export default function DialogLogin({
   return (
     <Card className="w-full max-w-md pb-4 shadow-none border-none">
       <CardHeader>
-        <CardTitle>로그인</CardTitle>
+        <CardTitle>{t("guideProfile.login")}</CardTitle>
       </CardHeader>
       <form
         onSubmit={handleSubmit(onValid)}
@@ -76,14 +78,14 @@ export default function DialogLogin({
       >
         <Input
           type="email"
-          placeholder="이메일"
+          placeholder={t("guideProfile.email")}
           {...register("email")}
           required
         />
         {errors?.email ? <ErrorText text={errors.email.message!} /> : null}
         <Input
           type="password"
-          placeholder="비밀번호"
+          placeholder={t("guideProfile.password")}
           minLength={PASSWORD_MIN_LENGTH}
           {...register("password")}
           required
@@ -91,10 +93,10 @@ export default function DialogLogin({
         {errors?.password ? (
           <ErrorText text={errors.password.message!} />
         ) : null}
-        <Button disabled={loading}>로그인</Button>
+        <Button disabled={loading}>{t("guideProfile.login")}</Button>
         <Separator />
         <Button variant={"secondary"} onClick={() => setIsOpenLogin(false)}>
-          계정이 없으신가요? 회원가입
+          {t("guideProfile.noAccount")}
         </Button>
       </form>
     </Card>

@@ -23,6 +23,7 @@ import {
 import { createAccount } from "@/app/[locale]/(main)/(auth)/create-account/actions";
 import DialogLogin from "../dialogLogin";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface CreateChatRoomBtnProps {
   userId?: number;
@@ -37,6 +38,7 @@ export default function CreateChatRoomBtn({
   startTime,
   endTime,
 }: CreateChatRoomBtnProps) {
+  const t = useTranslations();
   const [loading, setLoading] = useState(false);
   const [isOpenLogin, setIsOpenLogin] = useState(false);
   const {
@@ -45,7 +47,7 @@ export default function CreateChatRoomBtn({
     setError,
     formState: { errors },
   } = useForm<CreateAccountType>({
-    resolver: zodResolver(createAccountSchema),
+    resolver: zodResolver(createAccountSchema(t)),
   });
 
   const onValid = async (data: CreateAccountType) => {
@@ -75,25 +77,25 @@ export default function CreateChatRoomBtn({
     <>
       {userId ? (
         <Link href={`/contact-guide/${guideId}`}>
-          <Button>가이드에게 메시지 보내기</Button>
+          <Button>{t("guideProfile.sendMessage")}</Button>
         </Link>
       ) : (
         <Dialog>
           <DialogTrigger asChild>
             <Button onClick={() => setIsOpenLogin(false)}>
-              가이드에게 메시지 보내기
+              {t("guideProfile.sendMessage")}
             </Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogTitle hidden>회원 가입</DialogTitle>
+            <DialogTitle hidden>{t("guideProfile.signUp")}</DialogTitle>
             <DialogDescription hidden>
-              회원 가입을 위해 아래 양식을 작성해주세요.
+              {t("guideProfile.signUpDescription")}
             </DialogDescription>
             <div className="flex justify-center items-center">
               {!isOpenLogin ? (
                 <Card className="w-full max-w-md pb-4 shadow-none border-none">
                   <CardHeader>
-                    <CardTitle>회원 가입</CardTitle>
+                    <CardTitle>{t("guideProfile.signUp")}</CardTitle>
                   </CardHeader>
                   <form
                     onSubmit={handleSubmit(onValid)}
@@ -101,7 +103,7 @@ export default function CreateChatRoomBtn({
                   >
                     <Input
                       type="text"
-                      placeholder="유저명"
+                      placeholder={t("guideProfile.username")}
                       minLength={1}
                       maxLength={10}
                       {...register("username")}
@@ -112,7 +114,7 @@ export default function CreateChatRoomBtn({
                     ) : null}
                     <Input
                       type="email"
-                      placeholder="이메일"
+                      placeholder={t("guideProfile.email")}
                       {...register("email")}
                       required
                     />
@@ -121,7 +123,7 @@ export default function CreateChatRoomBtn({
                     ) : null}
                     <Input
                       type="password"
-                      placeholder="비밀번호"
+                      placeholder={t("guideProfile.password")}
                       minLength={PASSWORD_MIN_LENGTH}
                       {...register("password")}
                       required
@@ -131,7 +133,7 @@ export default function CreateChatRoomBtn({
                     ) : null}
                     <Input
                       type="password"
-                      placeholder="비밀번호 확인"
+                      placeholder={t("guideProfile.confirmPassword")}
                       minLength={PASSWORD_MIN_LENGTH}
                       {...register("confirmPassword")}
                       required
@@ -139,14 +141,16 @@ export default function CreateChatRoomBtn({
                     {errors?.confirmPassword ? (
                       <ErrorText text={errors.confirmPassword.message!} />
                     ) : null}
-                    <Button disabled={loading}>회원 가입</Button>
+                    <Button disabled={loading}>
+                      {t("guideProfile.signUp")}
+                    </Button>
                     <Separator />
                     <Button
                       onClick={() => setIsOpenLogin(true)}
                       className="w-full"
                       variant={"secondary"}
                     >
-                      FGFG회원이신가요? 로그인
+                      {t("guideProfile.FGFGMember")}
                     </Button>
                   </form>
                 </Card>

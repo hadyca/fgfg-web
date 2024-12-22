@@ -103,7 +103,7 @@ export default function HeroSectionForm() {
         <div className="flex flex-col gap-3">
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
             <div>
-              <Label className="block mb-2">{t("Main.selectDate")}</Label>
+              <Label className="block mb-2">{t("main.selectDate")}</Label>
               <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -130,7 +130,7 @@ export default function HeroSectionForm() {
               </Popover>
             </div>
             <div>
-              <Label className="block mb-2">{t("Main.pickupTime")}</Label>
+              <Label className="block mb-2">{t("main.pickupTime")}</Label>
               <select
                 className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
                   startTime ? "" : "text-muted-foreground"
@@ -149,7 +149,7 @@ export default function HeroSectionForm() {
               </select>
             </div>
             <div>
-              <Label className="block mb-2">{t("Main.endTime")}</Label>
+              <Label className="block mb-2">{t("main.endTime")}</Label>
               <select
                 className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm  ${
                   endTime ? "" : "text-muted-foreground"
@@ -177,11 +177,11 @@ export default function HeroSectionForm() {
           ) : errors?.date || errors?.startTime || errors?.endTime ? (
             <div>
               <span className="text-destructive font-medium">
-                {t("Main.checkDate")}
+                {t("main.checkDate")}
               </span>
             </div>
           ) : null}
-          <Button disabled={loading}>{t("Main.nowReservation")}</Button>
+          <Button disabled={loading}>{t("main.nowReservation")}</Button>
         </div>
       </form>
     </Card>

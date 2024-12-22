@@ -83,7 +83,7 @@ export default function HeaderSection({
   userId,
   isApprovedGuide,
 }: NavProps) {
-  const t = useTranslations("Header");
+  const t = useTranslations("header");
   const [isOpen, setIsOpen] = useState(false);
   const { setUser } = useUserStore();
   const { setChatRooms } = useChatRoomStore();

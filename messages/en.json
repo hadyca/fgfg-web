@@ -1,5 +1,5 @@
 {
-  "Main": {
+  "main": {
     "title": "Experience an Unforgettable Ho Chi Minh City Tour with a Vietnamese Girlfriend!",
     "selectDate": "Select Date",
     "pickupTime": "Pickup Time",
@@ -21,7 +21,7 @@
     "internationalCoupleDescription": "To find out if international relationships are right for you, it's important to understand and experience the culture multiple times. Try it easily with affordable prices and flexible guide times.",
     "betaTestDescription": "We are currently providing beta service. If you have any inconveniences or suggestions for improvement while using the service, please send feedback to hadycas@gmail.com. Your valuable opinions help us create better services. Please participate actively!"
   },
-  "Validation": {
+  "validation": {
     "invalidDate": "Please check the date again.",
     "invalidTime": "Please check the time again.",
     "minimumDuration": "Minimum booking duration is 2 hours.",
@@ -43,7 +43,7 @@
       "required_error": "This field is required."
     }
   },
-  "Header": {
+  "header": {
     "seeGuide": "See Guides",
     "signupGuide": "Become a Guide",
     "login": "Login",
@@ -56,12 +56,12 @@
     "guideManagement": "Guide Management",
     "logout": "Logout"
   },
-  "Footer": {
+  "footer": {
     "termsAndConditions": "Terms and Conditions",
     "privacyPolicy": "Privacy Policy",
     "refundPolicy": "Refund Policy"
   },
-  "TermsAndConditions": {
+  "termsAndConditions": {
     "termsAndConditions": "Terms and Conditions",
     "normal": "1. General Provisions",
     "normalDescription": "Thank you for using fgfg. fgfg (hereinafter referred to as the \"Service\") is a platform that allows users to book tour guides and experience various cultures through guides. These terms and conditions govern the rights, obligations, and responsibilities between fgfg and users.",
@@ -94,7 +94,7 @@
     "contactDescription": "Please contact the following email for inquiries about these terms: hadycas@gmail.com",
     "lastModified": "Last modified: December 19, 2024"
   },
-  "PrivacyPolicy": {
+  "privacyPolicy": {
     "privacyPolicy": "Privacy Policy",
     "normal": "1. General Provisions",
     "normalDescription": "fgfg (hereinafter referred to as the \"Service\") values users' personal information and complies with Personal Information Protection Law. This privacy policy explains the use and protection of personal information collected when using fgfg services.",
@@ -141,7 +141,7 @@
     "contactDescription": "Please contact the following email for inquiries about this privacy policy: hadycas@gmail.com",
     "lastModified": "Last modified: December 19, 2024"
   },
-  "RefundPolicy": {
+  "refundPolicy": {
     "title": "Cancellation and Refund Policy",
     "description": "Full refunds are provided for cancellations due to guide requests or guide no-shows.",
     "description2": "No refunds are available for customer no-shows at the scheduled time.",
@@ -162,7 +162,7 @@
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm Password",
-    "alreadyHaveAccount": "Already have an account? Login"
+    "alreadyHaveAccount": "Already a FGFG member? Login"
   },
   "signUpGuide": {
     "invalidResumePhoto": "Please select an image file.",
@@ -219,5 +219,47 @@
     "guideQandA9Answer": "Mainly Korean customers.",
     "guideQandA10": "Q. What should I prepare when working as a guide?",
     "guideQandA10Answer": "You need to prepare basic items and meet customer-specific requirements."
+  },
+  "guideProfile": {
+    "nativeLanguage": "Vietnamese (Native)",
+    "guide": "Guide",
+    "inactive": "(Inactive)",
+    "age": "Age",
+    "height": "Height",
+    "language": "Language",
+    "introduction": "Introduction",
+    "pickupLocation": "Pickup Location",
+    "pickupLocationDescription": "If you want to change the pickup location, please send a message to the guide!",
+    "reservedTime": "Reserved Time",
+    "inactiveGuide": "Cannot make reservations with inactive guides.",
+    "selfGuide": "Cannot make reservations with your own account.",
+    "timeOverlap": "Selected time overlaps with existing reservations.",
+    "dateSelection": "Select Date",
+    "addDate": "Add Date",
+    "pickupTime": "Pickup Time",
+    "addTime": "Add Time",
+    "endTime": "End Time",
+    "checkDateAndTime": "Please check the date and time again.",
+    "reserve": "Reserve",
+    "reserveDescription": "You won't be charged until the reservation is confirmed.",
+    "time": "Time",
+    "reportGuide": "Report Guide",
+    "reportGuideDescription": "Please let us know why you're reporting this guide.",
+    "reportGuideDescription2": "This content will not be visible to the guide.",
+    "submit": "Submit",
+    "loading": "Loading",
+    "reportSuccess": "Report has been submitted.",
+    "reportSuccessDescription": "Thank you for taking the time to report. Your report helps us create a better service.",
+    "confirm": "Confirm",
+    "sendMessage": "Send Message to Guide",
+    "signUp": "Sign Up",
+    "signUpDescription": "Please fill out the form below to sign up.",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "FGFGMember": "Already a FGFG member? Login",
+    "login": "Login",
+    "noAccount": "Don't have an account? Sign up"
   }
 }

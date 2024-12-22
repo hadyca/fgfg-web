@@ -16,22 +16,19 @@ const onlyGuideUrls = new Set(["/guide-dashboard"]);
 const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
-  // 1. next-intl 미들웨어 실행
-  const intlResponse = intlMiddleware(request);
-  if (intlResponse) {
-    return intlResponse;
-  }
+  const pathname = request.nextUrl.pathname;
 
   // 2. 현재 경로 체크
-  const isOnlyLogoutPath = onlyLogoutUrls.has(request.nextUrl.pathname);
-  const isOnlyLoginPath = onlyLogInUrls.has(request.nextUrl.pathname);
-  const isOnlyGuidePath = onlyGuideUrls.has(request.nextUrl.pathname);
+  const isOnlyLogoutPath = onlyLogoutUrls.has(pathname);
+  const isOnlyLoginPath = onlyLogInUrls.has(pathname);
+  const isOnlyGuidePath = onlyGuideUrls.has(pathname);
 
   // 3. 세션 및 권한 체크
   const session = await getSession();
   const isLoggedIn = Boolean(session.token);
   const isApprovedGuide = Boolean(session.guideId);
 
+  // 권한 체크 및 리다이렉션 로직
   if (isOnlyLogoutPath && isLoggedIn) {
     return NextResponse.redirect(new URL("/", request.url));
   }
@@ -42,14 +39,16 @@ export async function middleware(request: NextRequest) {
   if (isOnlyGuidePath && !isApprovedGuide) {
     const user = await getUser();
     if (user?.me?.guide?.isApproved) {
-      const originalUrl = request.nextUrl.pathname; // 원래 사용자가 가려던 URL
-
+      const originalUrl = pathname;
       const redirectUrl = new URL("/add-guideid-session", request.url);
-      redirectUrl.searchParams.set("redirect", originalUrl); // 원래 URL을 쿼리 파라미터로 추가
+      redirectUrl.searchParams.set("redirect", originalUrl);
       return NextResponse.redirect(redirectUrl);
     }
     return NextResponse.redirect(new URL("/", request.url));
   }
+
+  // 마지막으로 next-intl 미들웨어 실행
+  return intlMiddleware(request);
 }
 
 export const config = {

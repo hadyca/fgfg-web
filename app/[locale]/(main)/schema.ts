@@ -5,11 +5,11 @@ import { DateTime } from "luxon";
 export const searchGuideSchema = (t: (key: string) => string) =>
   z
     .object({
-      date: z.string().regex(DATE_REGEX, t("Validation.invalidDate")),
+      date: z.string().regex(DATE_REGEX, t("validation.invalidDate")),
       startTime: z
         .string()
-        .regex(TIME_30_MIN_REGEX, t("Validation.invalidTime")),
-      endTime: z.string().regex(TIME_30_MIN_REGEX, t("Validation.invalidTime")),
+        .regex(TIME_30_MIN_REGEX, t("validation.invalidTime")),
+      endTime: z.string().regex(TIME_30_MIN_REGEX, t("validation.invalidTime")),
     })
     .superRefine(({ date, startTime, endTime }, ctx) => {
       const startDate = DateTime.fromISO(`${date}T${startTime}`, {
@@ -26,7 +26,7 @@ export const searchGuideSchema = (t: (key: string) => string) =>
       if (timeDifference < twoHoursInMilliseconds) {
         ctx.addIssue({
           code: "custom",
-          message: t("Validation.minimumDuration"),
+          message: t("validation.minimumDuration"),
           path: ["startTime"],
         });
       }
@@ -34,7 +34,7 @@ export const searchGuideSchema = (t: (key: string) => string) =>
       if (startDate <= vietnamNow) {
         ctx.addIssue({
           code: "custom",
-          message: t("Validation.checkTimeAgain"),
+          message: t("validation.checkTimeAgain"),
           path: ["startTime"],
         });
       }

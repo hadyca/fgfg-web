@@ -11,32 +11,32 @@ export default function RefundPolicy() {
   return (
     <div className="max-w-4xl mx-auto my-10 px-6">
       <div className="text-center font-bold text-3xl mb-6">
-        {t("RefundPolicy.title")}
+        {t("refundPolicy.title")}
       </div>
       <div className="flex flex-col gap-3">
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            {t("RefundPolicy.description")}
+            {t("refundPolicy.description")}
           </p>
         </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            {t("RefundPolicy.description2")}
+            {t("refundPolicy.description2")}
           </p>
         </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            {t("RefundPolicy.description3")}
+            {t("refundPolicy.description3")}
           </p>
         </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            {t("RefundPolicy.description4")}
+            {t("refundPolicy.description4")}
           </p>
         </div>
-        <div className="mt-4">{t("RefundPolicy.contact")}</div>
+        <div className="mt-4">{t("refundPolicy.contact")}</div>
         <div className="text-center text-sm text-gray-500">
-          {t("RefundPolicy.lastModified")}
+          {t("refundPolicy.lastModified")}
         </div>
       </div>
     </div>

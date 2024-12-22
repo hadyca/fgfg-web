@@ -75,7 +75,7 @@ export default function AvatarDropMenu() {
         <Link href={`/chat-room/${lastChatRoomId}`}>
           <DropdownMenuItem>
             <div className="flex items-center gap-1">
-              <div>{t("Header.message")}</div>
+              <div>{t("header.message")}</div>
               {isExistUnread ? (
                 <span className="w-2 h-2 rounded-full bg-primary"></span>
               ) : null}
@@ -86,19 +86,19 @@ export default function AvatarDropMenu() {
           <>
             <Link href="/user-dashboard/reservations">
               <DropdownMenuItem>
-                <div>{t("Header.myReservation")}</div>
+                <div>{t("header.myReservation")}</div>
               </DropdownMenuItem>
             </Link>
           </>
         ) : null}
         <Link href="/user-dashboard/account">
           <DropdownMenuItem>
-            <div>{t("Header.account")}</div>
+            <div>{t("header.account")}</div>
           </DropdownMenuItem>
         </Link>
         <Link href="/user-dashboard">
           <DropdownMenuItem>
-            <div>{t("Header.dashboard")}</div>
+            <div>{t("header.dashboard")}</div>
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
@@ -107,7 +107,7 @@ export default function AvatarDropMenu() {
             <Link href="/guide-dashboard/reservations">
               <DropdownMenuItem>
                 <div className="flex items-center gap-1">
-                  <div>{t("Header.guideReservation")}</div>
+                  <div>{t("header.guideReservation")}</div>
                   {countPendingReservations > 0 ? (
                     <span className="w-2 h-2 rounded-full bg-primary"></span>
                   ) : null}
@@ -116,14 +116,14 @@ export default function AvatarDropMenu() {
             </Link>
             <Link href="/guide-dashboard">
               <DropdownMenuItem>
-                <div>{t("Header.guideManagement")}</div>
+                <div>{t("header.guideManagement")}</div>
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
           </>
         ) : null}
         <DropdownMenuItem onClick={handleLogout}>
-          {t("Header.logout")}
+          {t("header.logout")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -24,6 +24,8 @@ import getUser from "@/lib/getUser";
 import CreateChatRoomBtn from "@/components/guide-profile/createChatRoomBtn";
 import { DateTime } from "luxon";
 import { Metadata } from "next";
+import { getLocale, getTranslations } from "next-intl/server";
+import { LANGUAGE_OPTIONS } from "@/lib/constants";
 
 interface GuideProfileProps {
   params: {
@@ -69,13 +71,15 @@ export async function generateMetadata({
 }
 
 export default async function guideProfile(props: GuideProfileProps) {
+  const locale = (await getLocale()) as "en" | "ko" | "vn";
+  const t = await getTranslations();
   const guideId = Number(props.params.guideId);
   if (isNaN(guideId)) {
-    return notFound();
+    notFound();
   }
   const guide = await getGuide(guideId);
   if (!guide.seeGuide) {
-    return notFound();
+    notFound();
   }
 
   const filteredReservations = guide?.seeGuide?.reservations.filter(
@@ -117,13 +121,12 @@ export default async function guideProfile(props: GuideProfileProps) {
               </Avatar>
               <div className="flex flex-row items-center">
                 <div className="mr-3">
-                  <span>가이드: </span>
+                  <span>{t("guideProfile.guide")}: </span>
                   <span className="font-semibold">
                     {guide?.seeGuide?.fullname}
                   </span>
-                  <span className="ml-1">님</span>
                   {!guide?.seeGuide?.isActive ? (
-                    <span className="ml-1">(휴업 중)</span>
+                    <span className="ml-1">{t("guideProfile.inactive")}</span>
                   ) : null}
                 </div>
                 {!isMe && guide?.seeGuide?.isActive ? (
@@ -138,24 +141,37 @@ export default async function guideProfile(props: GuideProfileProps) {
             </div>
             <div className="flex flex-col gap-3">
               <div>
-                <span>나이: </span>
+                <span>{t("guideProfile.age")}: </span>
                 <span>{calculateAge(guide?.seeGuide?.birthdate)}세</span>
               </div>
               <div>
-                <span>키: </span>
+                <span>{t("guideProfile.height")}: </span>
                 <span>{guide?.seeGuide?.height}cm</span>
               </div>
               <div>
-                <span>언어: </span>
-                <span>베트남어(원어민), </span>
+                <span>{t("guideProfile.language")}: </span>
+                <span>
+                  {t("guideProfile.nativeLanguage")}
+                  {guide?.seeGuide?.language.length > 0 ? ", " : ""}
+                </span>
                 {guide?.seeGuide?.language
                   ? guide?.seeGuide?.language.map(
-                      (language: Language, index: number) => (
-                        <span key={language.id}>
-                          {language.language}lv{language.level}
-                          {index < guide?.seeGuide?.language.length - 1 && ", "}
-                        </span>
-                      )
+                      (language: Language, index: number) => {
+                        const languageOption = LANGUAGE_OPTIONS.find(
+                          (option) => option.value === language.language
+                        );
+                        return (
+                          <span key={language.id}>
+                            {languageOption
+                              ? languageOption[locale as "en" | "ko" | "vn"]
+                              : language.language}{" "}
+                            lv
+                            {language.level}
+                            {index < guide?.seeGuide?.language.length - 1 &&
+                              ", "}
+                          </span>
+                        );
+                      }
                     )
                   : null}
               </div>
@@ -163,13 +179,15 @@ export default async function guideProfile(props: GuideProfileProps) {
           </div>
           <Separator className="my-8" />
           <div className="flex flex-col gap-2">
-            <div className="text-xl font-medium">가이드 소개</div>
+            <div className="text-xl font-medium">
+              {t("guideProfile.introduction")}
+            </div>
             <div>{guide?.seeGuide?.guideIntro}</div>
           </div>
           <Separator className="my-8" />
         </div>
-        <div className="md:col-span-4 flex flex-col justify-start items-center">
-          <div className="flex flex-col gap-3 sticky top-10">
+        <div className="md:col-span-4 flex flex-col justify-start items-center w-[80%] mx-auto">
+          <div className="flex flex-col gap-3 sticky top-10 w-full">
             <ReservationDateForm
               guideId={guideId}
               searchParams={props.searchParams}
@@ -184,17 +202,14 @@ export default async function guideProfile(props: GuideProfileProps) {
       <div className="mt-8 md:mt-0 flex flex-col gap-2">
         <div className="text-xl font-medium">
           <div className="flex flex-row items-center">
-            <span>픽업 위치 </span>
+            <span>{t("guideProfile.pickupLocation")} </span>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
                   <ExclamationCircleIcon className="size-6 text-primary" />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>
-                    픽업 위치를 바꾸고 싶으시다면, 가이드님께 메시지를 보내
-                    보세요!
-                  </p>
+                  <p>{t("guideProfile.pickupLocationDescription")}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -224,7 +239,9 @@ export default async function guideProfile(props: GuideProfileProps) {
       </div>
       <Separator className="my-8" />
       <div className="mt-8 md:mt-0 flex flex-col gap-2">
-        <div className="text-xl font-medium">이미 예약된 시간</div>
+        <div className="text-xl font-medium">
+          {t("guideProfile.reservedTime")}
+        </div>
         {filteredReservations.length > 0 ? (
           <div className="flex flex-wrap gap-3">
             {filteredReservations.map((reservation: Reservation) => (

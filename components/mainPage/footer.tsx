@@ -11,17 +11,17 @@ export default function Footer() {
 
         <p className="text-sm mt-2">
           <Link href={"/policies/terms-and-conditions"}>
-            {t("Footer.termsAndConditions")}
+            {t("footer.termsAndConditions")}
           </Link>{" "}
           |
           <Link href={"/policies/privacy-policy"}>
             {" "}
-            {t("Footer.privacyPolicy")}
+            {t("footer.privacyPolicy")}
           </Link>{" "}
           |
           <Link href={"/policies/refund-policy"}>
             {" "}
-            {t("Footer.refundPolicy")}
+            {t("footer.refundPolicy")}
           </Link>
         </p>
       </div>

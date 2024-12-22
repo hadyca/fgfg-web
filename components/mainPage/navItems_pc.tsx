@@ -20,7 +20,7 @@ export default function NavItemsPC({
   isApprovedGuide,
   onLinkClick,
 }: NavItemsProps) {
-  const t = useTranslations("Header");
+  const t = useTranslations("header");
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.currentTarget.blur(); // Link 클릭 후 hover 상태 제거
     onLinkClick?.(e);

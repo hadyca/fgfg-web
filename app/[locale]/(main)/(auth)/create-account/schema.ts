@@ -26,22 +26,22 @@ export const createAccountSchema = (t: (key: string) => string) =>
         .trim()
         .refine(
           unavailableUsername,
-          t("Validation.createAccount.invalidUsername")
+          t("validation.createAccount.invalidUsername")
         ),
       email: z
         .string()
-        .email(t("Validation.createAccount.invalidEmail"))
+        .email(t("validation.createAccount.invalidEmail"))
         .toLowerCase(),
       password: z
         .string()
         .min(
           PASSWORD_MIN_LENGTH,
-          t("Validation.createAccount.invalidPassword")
+          t("validation.createAccount.invalidPassword")
         ),
       confirmPassword: z.string(),
     })
     .refine(checkPasswords, {
-      message: t("Validation.createAccount.invalidConfirmPassword"),
+      message: t("validation.createAccount.invalidConfirmPassword"),
       path: ["confirmPassword"],
     });
 

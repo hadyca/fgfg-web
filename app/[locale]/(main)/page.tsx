@@ -9,7 +9,7 @@ export const metadata = {
   },
 };
 export default function Home() {
-  const t = useTranslations("Main");
+  const t = useTranslations("main");
 
   return (
     <main>

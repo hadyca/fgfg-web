@@ -14,7 +14,7 @@ import {
 } from "@/app/[locale]/(main)/schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ko } from "date-fns/locale";
+import { enUS, ko, vi } from "date-fns/locale";
 import {
   calculateGapTime,
   convertToUTC,
@@ -24,7 +24,7 @@ import {
 } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { SERVICE_FEE } from "@/lib/constants";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface Reservation {
   id: number;
@@ -44,6 +44,7 @@ interface ReservationDateFormProps {
 }
 
 export default function ReservationDateForm(props: ReservationDateFormProps) {
+  const locale = useLocale();
   const t = useTranslations();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
@@ -92,7 +93,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
     if (!props.isActive) {
       setError("startTime", {
         type: "custom",
-        message: "휴업 중인 가이드는 예약이 불가능합니다.",
+        message: t("guideProfile.inactiveGuide"),
       });
       return;
     }
@@ -100,7 +101,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
     if (props.isMe) {
       setError("startTime", {
         type: "custom",
-        message: "본인 계정은 예약이 불가능합니다.",
+        message: t("guideProfile.selfGuide"),
       });
       return;
     }
@@ -134,7 +135,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
       if (isStartTimeOverlap || isEndTimeOverlap || isFullyOverlap) {
         setError("startTime", {
           type: "custom",
-          message: "선택한 시간이 이미 예약된 시간과 겹칩니다.",
+          message: t("guideProfile.timeOverlap"),
         });
         return;
       }
@@ -147,7 +148,6 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
   };
 
   const handleDateChange = (date: Date | undefined) => {
-    //form 실행하는 방법 연구/...
     handleSubmit(onValid);
     if (!date || date === selectedDate) {
       setIsPopoverOpen(false);
@@ -218,7 +218,9 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
         <div className="flex flex-col gap-3">
           <div className="flex flex-col justify-center items-start gap-4">
             <div>
-              <Label className="block mb-2">날짜 선택</Label>
+              <Label className="block mb-2">
+                {t("guideProfile.dateSelection")}
+              </Label>
               <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -228,7 +230,9 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
                     {watchDate ? (
                       <span className="font-normal">{watchDate}</span>
                     ) : (
-                      <span className="text-muted-foreground">날짜 추가</span>
+                      <span className="text-muted-foreground">
+                        {t("guideProfile.addDate")}
+                      </span>
                     )}
                     <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                   </Button>
@@ -236,7 +240,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                    locale={ko}
+                    locale={locale === "ko" ? ko : locale === "vn" ? vi : enUS}
                     onSelect={handleDateChange}
                     selected={selectedDate}
                     disabled={(date) => {
@@ -248,9 +252,11 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
                 </PopoverContent>
               </Popover>
             </div>
-            <div className="flex flwx-row gap-3">
+            <div className="flex flex-row justify-between w-full">
               <div>
-                <Label className="block mb-2">픽업 시각</Label>
+                <Label className="block mb-2">
+                  {t("guideProfile.pickupTime")}
+                </Label>
                 <select
                   className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
                     startTime ? "" : "text-muted-foreground"
@@ -259,7 +265,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
                   onChange={handleStartTimeChange}
                 >
                   <option value="" disabled hidden>
-                    시간 추가
+                    {t("guideProfile.addTime")}
                   </option>
                   {Array.from({ length: 23 }, (_, i) => {
                     const time = `${String(i).padStart(2, "0")}:00`;
@@ -272,7 +278,9 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
                 </select>
               </div>
               <div>
-                <Label className="block mb-2">종료 시각</Label>
+                <Label className="block mb-2">
+                  {t("guideProfile.endTime")}
+                </Label>
                 <select
                   className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm  ${
                     endTime ? "" : "text-muted-foreground"
@@ -281,7 +289,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
                   onChange={handleEndTimeChange}
                 >
                   <option value="" disabled hidden>
-                    시간 추가
+                    {t("guideProfile.addTime")}
                   </option>
                   {Array.from({ length: 23 }, (_, i) => {
                     const time = `${String(i + 2).padStart(2, "0")}:00`;
@@ -304,13 +312,13 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
           ) : errors?.date || errors?.startTime || errors?.endTime ? (
             <div className="text-center">
               <span className="text-destructive font-medium">
-                날짜와 시간을 다시 확인해주세요.
+                {t("guideProfile.checkDateAndTime")}
               </span>
             </div>
           ) : null}
-          <Button>예약하기</Button>
+          <Button>{t("guideProfile.reserve")}</Button>
           <div className="text-sm text-center">
-            예약 확정 전에는 요금이 청구되지 않습니다.
+            {t("guideProfile.reserveDescription")}
           </div>
           {calculateGapTime(startTime, endTime) > 1 ? (
             <div className="flex justify-between">
@@ -318,7 +326,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
                 {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTime(
                   startTime,
                   endTime
-                )}시간`}
+                )} ${t("guideProfile.time")}`}
               </span>
               <span>
                 {formatCurrency(

@@ -5,6 +5,7 @@ import { signUpGuideSchema } from "./schema";
 import { CREATE_GUIDE } from "./queries";
 import getUser from "@/lib/getUser";
 import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 
 export async function userCheck() {
   const user = await getUser();
@@ -13,6 +14,7 @@ export async function userCheck() {
 }
 
 export async function signupGuide(formData: FormData) {
+  const t = await getTranslations();
   const data = {
     fullname: formData.get("fullname"),
     birthdate: formData.get("birthdate"),
@@ -26,7 +28,7 @@ export async function signupGuide(formData: FormData) {
       : null,
   };
 
-  const result = signUpGuideSchema.safeParse(data);
+  const result = signUpGuideSchema(t).safeParse(data);
 
   if (!result.success) {
     return result.error.flatten();

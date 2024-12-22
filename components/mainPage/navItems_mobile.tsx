@@ -18,7 +18,7 @@ export default function NavItemsMobile({
   isApprovedGuide,
   onLinkClick,
 }: NavItemsProps) {
-  const t = useTranslations("Header");
+  const t = useTranslations("header");
 
   return (
     <NavigationMenu className="list-none mt-4">

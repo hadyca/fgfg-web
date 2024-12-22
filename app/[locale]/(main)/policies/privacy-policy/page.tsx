@@ -11,102 +11,102 @@ export default function PrivacyPolicy() {
   return (
     <div className="max-w-4xl mx-auto my-10 px-6">
       <div className="text-center font-bold text-3xl mb-6">
-        {t("PrivacyPolicy.privacyPolicy")}
+        {t("privacyPolicy.privacyPolicy")}
       </div>
       <div className="flex flex-col gap-3">
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("PrivacyPolicy.normal")}
+            {t("privacyPolicy.normal")}
           </h2>
-          <p>{t("PrivacyPolicy.normalDescription")}</p>
+          <p>{t("privacyPolicy.normalDescription")}</p>
         </div>
 
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("PrivacyPolicy.collectedInformation")}
+            {t("privacyPolicy.collectedInformation")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("PrivacyPolicy.collectedInformationDescription")}</p>
+              <p>{t("privacyPolicy.collectedInformationDescription")}</p>
             </li>
             <li>
-              <p>{t("PrivacyPolicy.collectedInformationDescription2")}</p>
+              <p>{t("privacyPolicy.collectedInformationDescription2")}</p>
             </li>
           </ol>
         </div>
 
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("PrivacyPolicy.purposeOfCollection")}
+            {t("privacyPolicy.purposeOfCollection")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("PrivacyPolicy.purposeOfCollectionDescription")}</p>
+              <p>{t("privacyPolicy.purposeOfCollectionDescription")}</p>
             </li>
             <li>
-              <p>{t("PrivacyPolicy.purposeOfCollectionDescription2")}</p>
+              <p>{t("privacyPolicy.purposeOfCollectionDescription2")}</p>
             </li>
             <li>
-              <p>{t("PrivacyPolicy.purposeOfCollectionDescription3")}</p>
+              <p>{t("privacyPolicy.purposeOfCollectionDescription3")}</p>
             </li>
           </ol>
         </div>
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("PrivacyPolicy.personalInformationProcessing")}
+            {t("privacyPolicy.personalInformationProcessing")}
           </h2>
-          <p>{t("PrivacyPolicy.personalInformationProcessingDescription")}</p>
-          <p>{t("PrivacyPolicy.personalInformationProcessingDescription2")}</p>
+          <p>{t("privacyPolicy.personalInformationProcessingDescription")}</p>
+          <p>{t("privacyPolicy.personalInformationProcessingDescription2")}</p>
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white border border-gray-300">
               <thead>
                 <tr>
                   <th className="px-4 py-2 border-b">
-                    {t("PrivacyPolicy.division")}
+                    {t("privacyPolicy.division")}
                   </th>
                   <th className="px-4 py-2 border-b">
-                    {t("PrivacyPolicy.subcontractor")}
+                    {t("privacyPolicy.subcontractor")}
                   </th>
                   <th className="px-4 py-2 border-b">
-                    {t("PrivacyPolicy.delegatedTasks")}
+                    {t("privacyPolicy.delegatedTasks")}
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td className="px-4 py-2 border-b">
-                    {t("PrivacyPolicy.contentProvision")}
+                    {t("privacyPolicy.contentProvision")}
                   </td>
                   <td className="px-4 py-2 border-b">Cloudflare</td>
                   <td className="px-4 py-2 border-b">
-                    {t("PrivacyPolicy.contentProvisionDescription")}
+                    {t("privacyPolicy.contentProvisionDescription")}
                   </td>
                 </tr>
                 <tr>
                   <td className="px-4 py-2 border-b">
-                    {t("PrivacyPolicy.serverProvision")}
+                    {t("privacyPolicy.serverProvision")}
                   </td>
                   <td className="px-4 py-2 border-b">Amazon</td>
                   <td className="px-4 py-2 border-b">
-                    {t("PrivacyPolicy.serverProvisionDescription")}
+                    {t("privacyPolicy.serverProvisionDescription")}
                   </td>
                 </tr>
                 <tr>
                   <td className="px-4 py-2 border-b">
-                    {t("PrivacyPolicy.paymentProcessing")}
+                    {t("privacyPolicy.paymentProcessing")}
                   </td>
                   <td className="px-4 py-2 border-b">Iamport</td>
                   <td className="px-4 py-2 border-b">
-                    {t("PrivacyPolicy.paymentProcessingDescription")}
+                    {t("privacyPolicy.paymentProcessingDescription")}
                   </td>
                 </tr>
                 <tr>
                   <td className="px-4 py-2 border-b">
-                    {t("PrivacyPolicy.notificationSending")}
+                    {t("privacyPolicy.notificationSending")}
                   </td>
                   <td className="px-4 py-2 border-b">Mailchimp</td>
                   <td className="px-4 py-2 border-b">
-                    {t("PrivacyPolicy.notificationSendingDescription")}
+                    {t("privacyPolicy.notificationSendingDescription")}
                   </td>
                 </tr>
               </tbody>
@@ -115,47 +115,31 @@ export default function PrivacyPolicy() {
         </div>
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("PrivacyPolicy.thirdPartyDisclosure")}
+            {t("privacyPolicy.thirdPartyDisclosure")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("PrivacyPolicy.thirdPartyDisclosureDescription")}</p>
+              <p>{t("privacyPolicy.thirdPartyDisclosureDescription")}</p>
             </li>
             <li>
-              <p>{t("PrivacyPolicy.thirdPartyDisclosureDescription2")}</p>
+              <p>{t("privacyPolicy.thirdPartyDisclosureDescription2")}</p>
             </li>
           </ol>
         </div>
 
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("PrivacyPolicy.personalInformationRetention")}
+            {t("privacyPolicy.personalInformationRetention")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
               <p>
-                {t("PrivacyPolicy.personalInformationRetentionDescription")}
+                {t("privacyPolicy.personalInformationRetentionDescription")}
               </p>
             </li>
             <li>
               <p>
-                {t("PrivacyPolicy.personalInformationRetentionDescription2")}
-              </p>
-            </li>
-          </ol>
-        </div>
-
-        <div>
-          <h2 className="font-bold text-xl mb-2">
-            {t("PrivacyPolicy.personalInformationDisposal")}
-          </h2>
-          <ol className="list-decimal pl-6">
-            <li>
-              <p>{t("PrivacyPolicy.personalInformationDisposalDescription")}</p>
-            </li>
-            <li>
-              <p>
-                {t("PrivacyPolicy.personalInformationDisposalDescription2")}
+                {t("privacyPolicy.personalInformationRetentionDescription2")}
               </p>
             </li>
           </ol>
@@ -163,31 +147,15 @@ export default function PrivacyPolicy() {
 
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("PrivacyPolicy.userRightsAndMethods")}
+            {t("privacyPolicy.personalInformationDisposal")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("PrivacyPolicy.userRightsAndMethodsDescription")}</p>
-            </li>
-            <li>
-              <p>{t("PrivacyPolicy.userRightsAndMethodsDescription2")}</p>
-            </li>
-          </ol>
-        </div>
-
-        <div>
-          <h2 className="font-bold text-xl mb-2">
-            {t("PrivacyPolicy.technicalAndManagementMeasures")}
-          </h2>
-          <ol className="list-decimal pl-6">
-            <li>
-              <p>
-                {t("PrivacyPolicy.technicalAndManagementMeasuresDescription")}
-              </p>
+              <p>{t("privacyPolicy.personalInformationDisposalDescription")}</p>
             </li>
             <li>
               <p>
-                {t("PrivacyPolicy.technicalAndManagementMeasuresDescription2")}
+                {t("privacyPolicy.personalInformationDisposalDescription2")}
               </p>
             </li>
           </ol>
@@ -195,30 +163,62 @@ export default function PrivacyPolicy() {
 
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("PrivacyPolicy.amendmentOfPrivacyPolicy")}
+            {t("privacyPolicy.userRightsAndMethods")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("PrivacyPolicy.amendmentOfPrivacyPolicyDescription")}</p>
+              <p>{t("privacyPolicy.userRightsAndMethodsDescription")}</p>
             </li>
             <li>
-              <p>{t("PrivacyPolicy.amendmentOfPrivacyPolicyDescription2")}</p>
+              <p>{t("privacyPolicy.userRightsAndMethodsDescription2")}</p>
             </li>
           </ol>
         </div>
 
         <div>
           <h2 className="font-bold text-xl mb-2">
-            {t("PrivacyPolicy.contact")}
+            {t("privacyPolicy.technicalAndManagementMeasures")}
           </h2>
           <ol className="list-decimal pl-6">
             <li>
-              <p>{t("PrivacyPolicy.contactDescription")}</p>
+              <p>
+                {t("privacyPolicy.technicalAndManagementMeasuresDescription")}
+              </p>
+            </li>
+            <li>
+              <p>
+                {t("privacyPolicy.technicalAndManagementMeasuresDescription2")}
+              </p>
+            </li>
+          </ol>
+        </div>
+
+        <div>
+          <h2 className="font-bold text-xl mb-2">
+            {t("privacyPolicy.amendmentOfPrivacyPolicy")}
+          </h2>
+          <ol className="list-decimal pl-6">
+            <li>
+              <p>{t("privacyPolicy.amendmentOfPrivacyPolicyDescription")}</p>
+            </li>
+            <li>
+              <p>{t("privacyPolicy.amendmentOfPrivacyPolicyDescription2")}</p>
+            </li>
+          </ol>
+        </div>
+
+        <div>
+          <h2 className="font-bold text-xl mb-2">
+            {t("privacyPolicy.contact")}
+          </h2>
+          <ol className="list-decimal pl-6">
+            <li>
+              <p>{t("privacyPolicy.contactDescription")}</p>
             </li>
           </ol>
         </div>
         <div className="text-center text-sm text-gray-500">
-          {t("PrivacyPolicy.lastModified")}
+          {t("privacyPolicy.lastModified")}
         </div>
       </div>
     </div>
