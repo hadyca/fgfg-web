@@ -84,8 +84,8 @@ export default function LanguageForm({
       .filter((_, index) => index !== currentIndex)
       .map((option) => option.language);
     return LANGUAGE_OPTIONS.map((lang) => ({
-      name: lang,
-      disabled: selectedLanguages.includes(lang),
+      name: lang.value,
+      disabled: selectedLanguages.includes(lang.value),
     }));
   };
 
