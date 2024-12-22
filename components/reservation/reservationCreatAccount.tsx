@@ -16,6 +16,7 @@ import {
 import { createAccount } from "@/app/[locale]/(main)/(auth)/create-account/actions";
 
 import ReservationLogin from "./reservationLogin";
+import { useTranslations } from "next-intl";
 
 interface ReservationCreateAccountProps {
   guideId: number;
@@ -28,6 +29,7 @@ export default function ReservationCreateAccount({
   startTime,
   endTime,
 }: ReservationCreateAccountProps) {
+  const t = useTranslations();
   const [loading, setLoading] = useState(false);
   const [isOpenLogin, setIsOpenLogin] = useState(false);
   const {
@@ -36,7 +38,7 @@ export default function ReservationCreateAccount({
     setError,
     formState: { errors },
   } = useForm<CreateAccountType>({
-    resolver: zodResolver(createAccountSchema),
+    resolver: zodResolver(createAccountSchema(t)),
   });
 
   const onValid = async (data: CreateAccountType) => {
