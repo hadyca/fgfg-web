@@ -5,11 +5,13 @@ import { CHECK_EMAIL, CHECK_USERNAME, CREATE_ACCOUNT } from "./queries";
 import getSession from "@/lib/session";
 import { client } from "@/lib/apolloClient";
 import { createAccountSchema } from "./schema";
+import { getTranslations } from "next-intl/server";
 
 export async function createAccount(
   formData: FormData,
   redirectUrl: string = "/"
 ) {
+  const t = await getTranslations();
   const data = {
     username: formData.get("username"),
     email: formData.get("email"),
@@ -48,7 +50,7 @@ export async function createAccount(
     };
   }
 
-  const result = createAccountSchema.safeParse(data);
+  const result = createAccountSchema(t).safeParse(data);
 
   if (!result.success) {
     return { type: "zodSchema", error: "유효하지 않은 데이터 입니다." };
