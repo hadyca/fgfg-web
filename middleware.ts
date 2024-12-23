@@ -47,14 +47,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // 마지막으로 next-intl 미들웨어 실행
   return intlMiddleware(request);
 }
 
 export const config = {
   matcher: [
     "/",
-    "/(en|vn|ko)/:path*",
+    "/(ko|vn|en)/:path*",
     "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };

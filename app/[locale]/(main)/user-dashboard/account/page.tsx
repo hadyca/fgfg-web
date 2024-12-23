@@ -1,6 +1,6 @@
 import getUser from "@/lib/getUser";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import AccountInfo from "@/components/user-dashboard/account/account-info";
 
 export const metadata = {

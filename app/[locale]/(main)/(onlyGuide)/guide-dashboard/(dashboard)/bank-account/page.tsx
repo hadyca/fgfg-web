@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import getGuide from "@/lib/getGuide";
 import BankForm from "@/components/guide-dashboard/bank-account/bank-form";
 

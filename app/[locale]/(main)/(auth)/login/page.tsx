@@ -11,7 +11,7 @@ import { loginSchema, LoginType } from "./schema";
 import ErrorText from "@/components/errorText";
 import { login } from "./actions";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 export default function LogIn() {

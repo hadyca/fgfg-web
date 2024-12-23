@@ -8,7 +8,7 @@ import {
   ClipboardDocumentCheckIcon,
   IdentificationIcon,
 } from "@heroicons/react/24/outline";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 export const metadata = {
   title: "대시보드",

@@ -24,7 +24,7 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import { useToast } from "../hooks/use-toast";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useRouter } from "next/navigation";
 
 interface CheckoutFormProps {

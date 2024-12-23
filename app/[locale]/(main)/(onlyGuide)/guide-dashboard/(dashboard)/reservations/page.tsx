@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import GuideReservations from "@/components/guide-dashboard/reservations/guide-reservations";
 
 export const metadata = {

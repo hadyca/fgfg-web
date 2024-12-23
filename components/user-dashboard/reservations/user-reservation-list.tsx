@@ -26,7 +26,7 @@ import {
 import { useState } from "react";
 import { cancelReservation } from "@/app/[locale]/(main)/user-dashboard/reservations/actions";
 import { useToast } from "@/components/hooks/use-toast";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useUserReservationStore } from "@/store/useUserReservationStore";
 
 interface MainGuidePhoto {

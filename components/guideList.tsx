@@ -4,7 +4,7 @@ import { getGuides } from "@/app/[locale]/(main)/search-guide/actions";
 import GetGuideSkeleton from "@/app/[locale]/(main)/search-guide/skeleton";
 import { calculateAge } from "@/lib/utils";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useEffect, useState } from "react";
 
 interface MainGuidePhoto {

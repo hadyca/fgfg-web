@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { logout } from "@/lib/sharedActions";
 import { useUserStore } from "@/store/useUserStore";
 import { useGuideReservationStore } from "@/store/useGuideReservationStore";

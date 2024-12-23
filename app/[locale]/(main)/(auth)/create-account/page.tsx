@@ -10,7 +10,7 @@ import { createAccountSchema, CreateAccountType } from "./schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createAccount } from "./actions";
 import ErrorText from "@/components/errorText";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "next-intl";
 

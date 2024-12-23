@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { getReservations } from "./actions";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import UserReservations from "@/components/user-dashboard/reservations/user-reservations";
 
 export const metadata = {

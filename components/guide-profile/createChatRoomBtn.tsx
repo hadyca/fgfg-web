@@ -22,7 +22,7 @@ import {
 } from "@/app/[locale]/(main)/(auth)/create-account/schema";
 import { createAccount } from "@/app/[locale]/(main)/(auth)/create-account/actions";
 import DialogLogin from "../dialogLogin";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 interface CreateChatRoomBtnProps {

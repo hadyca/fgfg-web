@@ -1,5 +1,5 @@
 import { ChatBubbleOvalLeftEllipsisIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 
 export default function SocialLogin() {
   return (
