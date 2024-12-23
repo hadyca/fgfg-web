@@ -30,7 +30,7 @@ export async function createAccount(
   if (!checkUsername.ok) {
     return {
       type: "checkUsername",
-      error: "중복된 유저명이 있습니다.",
+      error: t("validation.createAccount.duplicateUsername"),
     };
   }
 
@@ -46,14 +46,14 @@ export async function createAccount(
   if (!checkEmail.ok) {
     return {
       type: "checkEmail",
-      error: "중복된 이메일이 있습니다.",
+      error: t("validation.createAccount.duplicateEmail"),
     };
   }
 
   const result = createAccountSchema(t).safeParse(data);
 
   if (!result.success) {
-    return { type: "zodSchema", error: "유효하지 않은 데이터 입니다." };
+    return { type: "zodSchema", error: t("validation.invalidData") };
   } else {
     const { data } = await client.mutate({
       mutation: CREATE_ACCOUNT,
