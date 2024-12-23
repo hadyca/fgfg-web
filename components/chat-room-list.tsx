@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { formatChatRoomDate } from "@/lib/utils";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
 import {
   AlertDialog,
@@ -19,6 +19,7 @@ import {
 import { outChatRoom } from "@/app/[locale]/(main)/chat-room/[chatRoomId]/actions";
 import { GetChatRoomsSkeleton } from "@/app/[locale]/(main)/chat-room/[chatRoomId]/skeleton";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import { useLocale, useTranslations } from "next-intl";
 
 interface ChatRoomListProps {
   chatRoomId: string;
@@ -30,6 +31,8 @@ export default function ChatRoomList({
   chatRoomId,
   setShowChatMessageList,
 }: ChatRoomListProps) {
+  const locale = useLocale();
+  const t = useTranslations();
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const [deleteChatRoomId, setDeleteChatRoomId] = useState("");
   const router = useRouter();
@@ -118,7 +121,7 @@ export default function ChatRoomList({
                       {chatRoom.lastMessage}
                     </span>
                     <span className="text-xs text-gray-400 whitespace-nowrap ml-2">
-                      {formatChatRoomDate(chatRoom.createdAt)}
+                      {formatChatRoomDate(chatRoom.createdAt, locale)}
                     </span>
                   </div>
                 </div>
@@ -131,15 +134,15 @@ export default function ChatRoomList({
       <AlertDialog open={isAlertDialogOpen} onOpenChange={setIsAlertDialogOpen}>
         <AlertDialogContent className="max-w-sm">
           <AlertDialogHeader>
-            <AlertDialogTitle>채팅방을 나가시겠어요?</AlertDialogTitle>
+            <AlertDialogTitle>{t("chatRoom.leaveChat")}</AlertDialogTitle>
             <AlertDialogDescription></AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={handleCloseDialog}>
-              취소
+              {t("chatRoom.cancel")}
             </AlertDialogCancel>
             <AlertDialogAction onClick={() => handleDelete(deleteChatRoomId)}>
-              나가기
+              {t("chatRoom.leave")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

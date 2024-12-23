@@ -130,23 +130,31 @@ export function formatToTimeAgo(date: string): string {
   return rtf.format(0, "second");
 }
 
-export function formatChatRoomDate(utcTime: string): string {
-  const chatRoomDate = DateTime.fromISO(utcTime);
+export function formatChatRoomDate(utcTime: string, locale: string): string {
+  const chatRoomDate = DateTime.fromISO(utcTime).setLocale(
+    locale === "ko" ? "ko" : locale === "vn" ? "vi" : "en"
+  );
   const now = DateTime.local();
 
   const isToday = chatRoomDate.hasSame(now, "day");
 
   if (isToday) {
-    // 오늘이면 시간과 분 표시
+    // 오늘이면 시간과 분 표시 (베트남어 형식)
     return chatRoomDate.toLocaleString(DateTime.TIME_SIMPLE);
   } else {
-    // 어제나 그 이전이면 월과 일 표시
-    return chatRoomDate.toLocaleString({ month: "2-digit", day: "2-digit" });
+    // 어제나 그 이전이면 월과 일 표시 (베트남어 형식)
+    return chatRoomDate.toLocaleString({
+      month: "2-digit",
+      day: "2-digit",
+    });
   }
 }
 
-export function convertToVietnamISOToMonthDay(utcTime: string) {
-  const userLocale = navigator.language.split("-")[0] || "ko"; // "ko" or "en" 같은 값만 남김
+export function convertToVietnamISOToMonthDay(
+  utcTime: string,
+  locale: string | undefined
+) {
+  const userLocale = locale === "ko" ? "ko" : locale === "vn" ? "vi" : "en";
   const date = convertToVietnamISO(utcTime);
   if (date) {
     const formattedDate = convertMonthDayIntl(date, userLocale);

@@ -17,17 +17,19 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { PhotoIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { Separator } from "@/components/ui/separator";
-import { ACCEPTED_IMAGE_TYPES } from "@/lib/constants";
+import { ACCEPTED_IMAGE_TYPES, PERSONALITY_OPTIONS } from "@/lib/constants";
 import { createGuideProfileSchema } from "./schema";
 import { CreateGuideProfileType } from "./schema";
 import GuideProfileQandA from "@/components/guideProfileQandA";
 import { createGuideProfile } from "./actions";
 import GoogleMapApi from "@/components/googleMapApi";
-
 import Spinner from "@/components/ui/spinner";
 import { getUploadUrl } from "@/app/[locale]/(main)/signup-guide/actions";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function CreateGuideProfile() {
+  const locale = useLocale();
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [photoLoading, setPhotoLoading] = useState<boolean[]>(
@@ -47,7 +49,7 @@ export default function CreateGuideProfile() {
     getValues,
     formState: { errors },
   } = useForm<CreateGuideProfileType>({
-    resolver: zodResolver(createGuideProfileSchema),
+    resolver: zodResolver(createGuideProfileSchema(t)),
     defaultValues: {
       guidePhotos: [],
       pickupPlaceMain: "",
@@ -71,7 +73,9 @@ export default function CreateGuideProfile() {
     const fileType = files?.[0]?.type;
     const typeOk = fileType ? ACCEPTED_IMAGE_TYPES.includes(fileType) : false;
     if (!typeOk) {
-      setError("guidePhotos", { message: "이미지 파일을 선택해주세요." });
+      setError("guidePhotos", {
+        message: t("createGuideProfile.invalidImage"),
+      });
       input.value = ""; // 선택한 파일 초기화
       return;
     }
@@ -179,7 +183,7 @@ export default function CreateGuideProfile() {
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "프로필 생성에 실패했습니다. 나중에 다시 시도해주세요.",
+        title: t("createGuideProfile.createProfileFailed"),
       });
     } finally {
       setLoading(false);
@@ -222,15 +226,15 @@ export default function CreateGuideProfile() {
     <div className="flex justify-center items-center">
       <Card className="w-full max-w-2xl my-10 pb-4 shadow-md">
         <CardHeader>
-          <CardTitle>가이드 프로필 생성</CardTitle>
+          <CardTitle>{t("createGuideProfile.createProfileTitle")}</CardTitle>
           <CardDescription>
-            매력적인 사진과 멋진 가이드 소개로 본인을 더 어필 해보세요!
+            {t("createGuideProfile.createProfileDescription")}
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit(onValid)} className="flex flex-col px-7">
           <div className="flex flex-col gap-5">
             <div className="space-y-1">
-              <Label>가이드 프로필 사진</Label>
+              <Label>{t("createGuideProfile.guidePhoto")}</Label>
               {errors?.guidePhotos ? (
                 <ErrorText text={errors?.guidePhotos?.message!} />
               ) : null}
@@ -254,7 +258,9 @@ export default function CreateGuideProfile() {
                               index === 0 ? "font-bold" : ""
                             }`}
                           >
-                            {index === 0 ? "대표 사진" : "사진 추가"}
+                            {index === 0
+                              ? t("createGuideProfile.representativePhoto")
+                              : t("createGuideProfile.addPhoto")}
                           </div>
                         </>
                       ) : (
@@ -286,7 +292,9 @@ export default function CreateGuideProfile() {
               </div>
             </div>
             <div className="space-y-1">
-              <Label htmlFor="personality">성격</Label>
+              <Label htmlFor="personality">
+                {t("createGuideProfile.personality")}
+              </Label>
               {errors?.personality ? (
                 <ErrorText text={errors.personality.message!} />
               ) : null}
@@ -301,43 +309,24 @@ export default function CreateGuideProfile() {
                   }`}
                 >
                   <option value="" disabled hidden>
-                    성격을 선택해주세요
+                    {t("createGuideProfile.selectPersonality")}
                   </option>
-                  <option value="귀엽고 발랄한" className="text-black">
-                    귀엽고 발랄한
-                  </option>
-                  <option value="섹시하고 매혹적인" className="text-black">
-                    섹시하고 매혹적인
-                  </option>
-                  <option value="엉뚱하고 독특한" className="text-black">
-                    엉뚱하고 독특한
-                  </option>
-                  <option value="활발하고 명랑한" className="text-black">
-                    활발하고 명랑한
-                  </option>
-                  <option value="차분하고 따뜻한" className="text-black">
-                    차분하고 따뜻한
-                  </option>
-                  <option value="친절하고 상냥한" className="text-black">
-                    친절하고 상냥한
-                  </option>
-                  <option value="긍정적이고 밝은" className="text-black">
-                    긍정적이고 밝은
-                  </option>
-                  <option value="유머러스하고 재치있는" className="text-black">
-                    유머러스하고 재치있는
-                  </option>
-                  <option value="지적이고 신중한" className="text-black">
-                    지적이고 신중한
-                  </option>
-                  <option value="매력적이고 세련된" className="text-black">
-                    매력적이고 세련된
-                  </option>
+                  {PERSONALITY_OPTIONS.map((option) => (
+                    <option
+                      key={option.value}
+                      value={option.value}
+                      className="text-black"
+                    >
+                      {option[locale as keyof typeof option]}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
             <div className="space-y-1">
-              <Label htmlFor="selfIntro">가이드 소개</Label>
+              <Label htmlFor="selfIntro">
+                {t("createGuideProfile.selfIntro")}
+              </Label>
               {errors?.guideIntro ? (
                 <ErrorText text={errors.guideIntro.message!} />
               ) : null}
@@ -347,7 +336,7 @@ export default function CreateGuideProfile() {
           <Separator className="my-4" />
           {/* 구글 지도와 연동된 픽업 위치 */}
           <div className="space-y-1">
-            <Label>픽업 위치</Label>
+            <Label>{t("createGuideProfile.pickupLocation")}</Label>
             {errors?.pickupPlaceMain ? (
               <ErrorText text={errors.pickupPlaceMain.message!} />
             ) : null}
@@ -362,9 +351,11 @@ export default function CreateGuideProfile() {
             />
           </div>
           <div className="mt-2">
-            <Label htmlFor="selfIntro">픽업 위치 구체적인 설명</Label>
+            <Label htmlFor="selfIntro">
+              {t("createGuideProfile.pickupLocationDetail")}
+            </Label>
             <div className="text-sm text-muted-foreground mb-2">
-              고객님께서 길을 헤매지 않도록, 조금 더 구체적으로 설명해주세요
+              {t("createGuideProfile.pickupLocationDetailDescription")}
             </div>
             {errors?.pickupPlaceDetail ? (
               <ErrorText text={errors.pickupPlaceDetail.message!} />
@@ -372,14 +363,16 @@ export default function CreateGuideProfile() {
             <Textarea
               id="pickupPlaceDetail"
               {...register("pickupPlaceDetail")}
-              placeholder="EX) 노트르담 대성당 맞은편에 있는 카페에요. 카페 안에서 만나요"
+              placeholder={t("createGuideProfile.pickupLocationDetailExample")}
               required
             />
           </div>
           <Separator className="my-4" />
           <GuideProfileQandA />
           <Button disabled={loading || photoLoading.some((loading) => loading)}>
-            {loading ? "로딩 중" : "확인"}
+            {loading
+              ? t("createGuideProfile.loading")
+              : t("createGuideProfile.confirm")}
           </Button>
         </form>
       </Card>

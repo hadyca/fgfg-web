@@ -57,6 +57,15 @@
       "invalidHeight": "키를 다시 확인 해주세요.",
       "invalidPhone": "잘못된 번호 입니다.",
       "required_error": "필수 항목 입니다."
+    },
+    "createGuideProfile": {
+      "minimumPhotos": "2개 이상의 사진이 필요합니다.",
+      "representativePhoto": "대표 사진을 추가해주세요.",
+      "invalidPersonality": "성격을 선택해주세요.",
+      "required_error": "필수 항목 입니다."
+    },
+    "contactGuide": {
+      "requiredError": "필수 항목 입니다."
     }
   },
   "header": {
@@ -245,6 +254,7 @@
     "reserve": "예약하기",
     "reserveDescription": "예약 확정 전에는 요금이 청구되지 않습니다.",
     "time": "시간",
+    "hour": "시간",
     "reportGuide": "가이드 신고하기",
     "reportGuideDescription": "가이드를 신고하시는 이유를 알려주세요.",
     "reportGuideDescription2": "이 내용은 가이드가 볼 수 없습니다.",
@@ -263,5 +273,64 @@
     "FGFGMember": "FGFG회원이신가요? 로그인",
     "login": "로그인",
     "noAccount": "계정이 없으신가요? 회원가입"
+  },
+  "searchGuide": {
+    "dateSelection": "날짜 선택",
+    "addDate": "날짜 추가",
+    "pickupTime": "픽업 시각",
+    "addTime": "시간 추가",
+    "endTime": "종료 시각",
+    "checkDateAndTime": "날짜와 시간을 다시 확인해주세요.",
+    "imageLoadFailed": "이미지를 불러올 수 없습니다",
+    "age": "세",
+    "inactive": "휴업 중"
+  },
+  "createGuideProfile": {
+    "invalidImage": "이미지 파일을 선택해주세요.",
+    "createProfileFailed": "프로필 생성에 실패했습니다. 나중에 다시 시도해주세요.",
+    "createProfileTitle": "가이드 프로필 생성",
+    "createProfileDescription": "매력적인 사진과 멋진 가이드 소개로 본인을 더 어필 해보세요!",
+    "guidePhoto": "가이드 프로필 사진",
+    "representativePhoto": "대표 사진",
+    "addPhoto": "사진 추가",
+    "personality": "성격",
+    "selectPersonality": "성격을 선택해주세요",
+    "selfIntro": "가이드 소개",
+    "pickupLocation": "픽업 위치",
+    "pickupLocationDetail": "픽업 위치 구체적인 설명",
+    "pickupLocationDetailDescription": "고객님께서 길을 헤매지 않도록, 조금 더 구체적으로 설명해주세요",
+    "pickupLocationDetailExample": "EX) 노트르담 대성당 맞은편에 있는 카페에요. 카페 안에서 만나요",
+    "loading": "로딩 중",
+    "confirm": "확인",
+    "searchPickupLocation": "픽업 위치를 검색하세요",
+    "guideQandA": "자주 묻는 질문",
+    "guideQandA1": "Q. 꼭 사진이 필요 한가요?",
+    "guideQandA1Answer": "고객님들께서는, 가이드분의 사진과 간단한 소개를 원하십니다. 이해 부탁 드립니다.",
+    "guideQandA2": "Q. 일정 기간 활동을 정지 하고 싶어요.",
+    "guideQandA2Answer": "가이드 관리 페이지에서 활동 정지를 활성화 하시게 되면, 가이드 조회 시 노출되지 않습니다. 나중에 다시 활성화 하시면 됩니다."
+  },
+  "contactGuide": {
+    "contactGuide": "님에게 연락하기",
+    "contactGuideDescription": "궁금하신 사항이 있나요? 가이드에게 메시지 보내기",
+    "sendMessage": "메시지 전송하기"
+  },
+  "chatRoom": {
+    "noMessage": "메세지가 없습니다.",
+    "noMessageDescription": "가이드에게 메시지를 보내 대화를 시작해보세요!",
+    "viewReservation": "예약 보기",
+    "reservationNumber": "예약 번호",
+    "reservationConfirmed": "예약 확정",
+    "reservationCanceled": "예약 취소",
+    "reservationNotConfirmed": "예약 미확정",
+    "reservationInfo": "예약 정보",
+    "date": "날짜",
+    "time": "시간",
+    "pickupLocation": "픽업 위치",
+    "feeDetail": "요금 세부정보",
+    "hour": "시간",
+    "leaveChat": "채팅방을 나가시겠어요?",
+    "cancel": "취소",
+    "leave": "나가기",
+    "noReservationInfo": "예약 정보가 없습니다."
   }
 }

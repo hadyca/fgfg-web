@@ -6,6 +6,8 @@ import { calculateAge } from "@/lib/utils";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { PERSONALITY_OPTIONS } from "@/lib/constants";
 
 interface MainGuidePhoto {
   id: string;
@@ -30,6 +32,8 @@ interface GuideListPros {
 }
 
 export default function GuideList({ searchParams }: GuideListPros) {
+  const t = useTranslations();
+  const locale = useLocale();
   const [guides, setGuides] = useState<Guide[]>([]);
   const [loading, setLoading] = useState(true);
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
@@ -81,7 +85,7 @@ export default function GuideList({ searchParams }: GuideListPros) {
             <div className="relative w-60 h-72 rounded-md overflow-hidden bg-gray-100">
               {imageErrors[guide.id] ? (
                 <div className="absolute inset-0 flex items-center justify-center text-gray-500">
-                  이미지를 불러올 수 없습니다
+                  {t("searchGuide.imageLoadFailed")}
                 </div>
               ) : (
                 <Image
@@ -100,10 +104,19 @@ export default function GuideList({ searchParams }: GuideListPros) {
             </div>
             <div className="text-primary text-lg">
               <span className="mr-1">{guide.fullname}</span>
-              <span>({calculateAge(guide.birthdate)}세)</span>
+              <span>
+                ({calculateAge(guide.birthdate)}
+                {t("searchGuide.age")})
+              </span>
             </div>
-            <div className="text-sm">{guide.personality}</div>
-            <div className="text-sm">{!guide.isActive ? "휴업 중" : null}</div>
+            <div className="text-sm">
+              {PERSONALITY_OPTIONS.find(
+                (option) => option.value === guide.personality
+              )?.[locale as "en" | "ko" | "vn"] || guide.personality}
+            </div>
+            <div className="text-sm">
+              {!guide.isActive ? t("searchGuide.inactive") : null}
+            </div>
           </Link>
         </div>
       ))}

@@ -4,7 +4,7 @@ import { deleteAccount } from "@/app/[locale]/(main)/user-dashboard/account/acti
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/hooks/use-toast";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {

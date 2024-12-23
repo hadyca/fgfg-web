@@ -4,8 +4,10 @@ import { client } from "@/lib/apolloClient";
 import { createGuideProfileSchema } from "./schema";
 import { CREATE_GUIDE_PROFILE } from "./queries";
 import { notFound, redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 
 export async function createGuideProfile(formData: FormData) {
+  const t = await getTranslations();
   const data = {
     guidePhotos: formData.get("guidePhotos")
       ? JSON.parse(formData.get("guidePhotos") as string)
@@ -18,7 +20,7 @@ export async function createGuideProfile(formData: FormData) {
     pickupPlaceDetail: formData.get("pickupPlaceDetail"),
   };
 
-  const result = createGuideProfileSchema.safeParse(data);
+  const result = createGuideProfileSchema(t).safeParse(data);
 
   if (!result.success) {
     return result.error.flatten();

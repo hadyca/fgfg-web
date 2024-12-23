@@ -71,7 +71,7 @@ export async function generateMetadata({
 }
 
 export default async function guideProfile(props: GuideProfileProps) {
-  const locale = (await getLocale()) as "en" | "ko" | "vn";
+  const locale = await getLocale();
   const t = await getTranslations();
   const guideId = Number(props.params.guideId);
   if (isNaN(guideId)) {
@@ -103,7 +103,7 @@ export default async function guideProfile(props: GuideProfileProps) {
       <div className="grid grid-cols-1 md:grid-cols-10">
         <div className="w-full md:col-span-6">
           <div className="flex flex-col gap-4">
-            <div className="flex flex-row items-center gap-2">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
               <Avatar>
                 {guide?.seeGuide?.user?.avatar ? (
                   <>
@@ -119,8 +119,8 @@ export default async function guideProfile(props: GuideProfileProps) {
                   <UserCircleIcon className="text-primary w-full h-full" />
                 )}
               </Avatar>
-              <div className="flex flex-row items-center">
-                <div className="mr-3">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
+                <div>
                   <span>{t("guideProfile.guide")}: </span>
                   <span className="font-semibold">
                     {guide?.seeGuide?.fullname}
@@ -186,7 +186,7 @@ export default async function guideProfile(props: GuideProfileProps) {
           </div>
           <Separator className="my-8" />
         </div>
-        <div className="md:col-span-4 flex flex-col justify-start items-center w-[80%] mx-auto">
+        <div className="md:col-span-4 flex flex-col justify-start items-center md:max-w-sm mx-auto">
           <div className="flex flex-col gap-3 sticky top-10 w-full">
             <ReservationDateForm
               guideId={guideId}

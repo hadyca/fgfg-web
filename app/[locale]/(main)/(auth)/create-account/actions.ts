@@ -1,16 +1,17 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/routing";
 import { CHECK_EMAIL, CHECK_USERNAME, CREATE_ACCOUNT } from "./queries";
 import getSession from "@/lib/session";
 import { client } from "@/lib/apolloClient";
 import { createAccountSchema } from "./schema";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export async function createAccount(
   formData: FormData,
   redirectUrl: string = "/"
 ) {
+  const locale = await getLocale();
   const t = await getTranslations();
   const data = {
     username: formData.get("username"),
@@ -66,6 +67,6 @@ export async function createAccount(
     const session = await getSession();
     session.token = data.createAccount.token;
     await session.save();
-    redirect(redirectUrl);
+    redirect({ href: redirectUrl, locale });
   }
 }

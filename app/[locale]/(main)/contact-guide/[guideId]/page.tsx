@@ -5,6 +5,7 @@ import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Separator } from "@/components/ui/separator";
 import ContactGuideForm from "@/components/contact-guide-messageForm";
 import getUser from "@/lib/getUser";
+import { getTranslations } from "next-intl/server";
 
 interface ContactGuideProps {
   params: {
@@ -19,14 +20,15 @@ export const metadata = {
 };
 
 export default async function ContactGuide({ params }: ContactGuideProps) {
+  const t = await getTranslations();
   const guideId = Number(params.guideId);
   if (isNaN(guideId)) {
-    return notFound();
+    notFound();
   }
 
   const guide = await getGuide(guideId);
   if (!guide.seeGuide) {
-    return notFound();
+    notFound();
   }
 
   const user = await getUser();
@@ -36,7 +38,7 @@ export default async function ContactGuide({ params }: ContactGuideProps) {
       <div className="flex flex-row justify-between items-center text-xl">
         <div>
           <span className="font-semibold">{guide?.seeGuide?.fullname}</span>
-          <span>님에게 연락하기</span>
+          <span> {t("contactGuide.contactGuide")}</span>
         </div>
         <Avatar className="size-16">
           {guide?.seeGuide?.user?.avatar ? (

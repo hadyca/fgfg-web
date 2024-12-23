@@ -11,9 +11,11 @@ import {
   SEE_CHAT_ROOMS,
   SEE_MESSAGES,
 } from "./queries";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/routing";
+import { getLocale } from "next-intl/server";
 
 export async function getChatRoom(chatRoomId: String) {
+  const locale = await getLocale();
   const {
     data: { seeChatRoom },
   } = await client.query({
@@ -25,7 +27,7 @@ export async function getChatRoom(chatRoomId: String) {
   });
 
   if (!seeChatRoom) {
-    redirect("/");
+    redirect({ href: "/", locale });
   }
   return seeChatRoom;
 }

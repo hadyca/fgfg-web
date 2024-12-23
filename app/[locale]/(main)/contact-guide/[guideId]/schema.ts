@@ -1,9 +1,10 @@
 import { z } from "zod";
 
-export const contactGuideSchema = z.object({
-  payload: z.string({
-    required_error: "필수 항목 입니다.",
-  }),
-});
+export const contactGuideSchema = (t: (key: string) => string) =>
+  z.object({
+    payload: z.string({
+      required_error: t("validation.contactGuide.requiredError"),
+    }),
+  });
 
-export type ContactGuideType = z.infer<typeof contactGuideSchema>;
+export type ContactGuideType = z.infer<ReturnType<typeof contactGuideSchema>>;

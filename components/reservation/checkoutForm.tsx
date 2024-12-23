@@ -25,7 +25,7 @@ import {
 } from "../ui/tooltip";
 import { useToast } from "../hooks/use-toast";
 import { Link } from "@/i18n/routing";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 
 interface CheckoutFormProps {
   amount: number;

@@ -8,6 +8,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { Input } from "@/components/ui/input";
+import { useTranslations } from "next-intl";
 
 const libraries = ["places"] as any;
 
@@ -31,6 +32,7 @@ export default function GoogleMapApi({
   onMarkerChange,
   onInputValueChange,
 }: GoogleMapApiProps) {
+  const t = useTranslations();
   const [mapCenter, setMapCenter] = useState(
     defaultLat && defaultLng ? { lat: defaultLat, lng: defaultLng } : center
   ); // 지도 중심 좌표 상태
@@ -129,7 +131,7 @@ export default function GoogleMapApi({
           <Input
             id="pickup-location"
             type="text"
-            placeholder="픽업 위치를 검색하세요"
+            placeholder={t("createGuideProfile.searchPickupLocation")}
             className="w-full"
             value={inputValue}
             onChange={handleInputChange} // 입력 필드가 변경될 때마다 호출

@@ -1,10 +1,11 @@
 "use server";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/routing";
 import { searchGuideSchema } from "./schema";
 import { convertToUTC } from "@/lib/utils";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export async function searchGuide(formData: FormData) {
+  const locale = await getLocale();
   const t = await getTranslations();
 
   const data = {
@@ -24,10 +25,15 @@ export async function searchGuide(formData: FormData) {
     const queryEndTime = convertToUTC(
       `${result.data.date}T${result.data.endTime}`
     );
-    redirect(
-      `/search-guide?starttime=${encodeURIComponent(
-        queryStartTime!
-      )}&endtime=${encodeURIComponent(queryEndTime!)}`
-    );
+    redirect({
+      href: {
+        pathname: "/search-guide",
+        query: {
+          starttime: queryStartTime!,
+          endtime: queryEndTime!,
+        },
+      },
+      locale,
+    });
   }
 }

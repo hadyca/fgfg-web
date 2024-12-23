@@ -1,37 +1,56 @@
 import PhotosSchema from "@/lib/schema/PhotosSchema";
 import { z } from "zod";
 
-export const createGuideProfileSchema = z.object({
-  guidePhotos: z
-    .array(PhotosSchema)
-    .min(2, "2개 이상의 사진이 필요합니다.")
-    .refine(
-      (guidePhotos) =>
-        guidePhotos.some((photo) => photo !== null && photo.fileUrlOrder === 1),
+export const createGuideProfileSchema = (t: (key: string) => string) =>
+  z.object({
+    guidePhotos: z
+      .array(PhotosSchema)
+      .min(2, t("validation.createGuideProfile.minimumPhotos"))
+      .refine(
+        (guidePhotos) =>
+          guidePhotos.some(
+            (photo) => photo !== null && photo.fileUrlOrder === 1
+          ),
+        {
+          message: t("validation.createGuideProfile.representativePhoto"),
+        }
+      ),
+    personality: z.enum(
+      [
+        "CUTE",
+        "SEXY",
+        "UNIQUE",
+        "ACTIVE",
+        "CALM",
+        "FRIENDLY",
+        "POSITIVE",
+        "HUMOROUS",
+        "INTELLIGENT",
+        "CHARMING",
+      ],
       {
-        message: "대표 사진을 추가해주세요.",
+        errorMap: () => ({
+          message: t("validation.createGuideProfile.invalidPersonality"),
+        }),
       }
     ),
-  personality: z.enum(
-    [
-      "귀엽고 발랄한",
-      "섹시하고 매혹적인",
-      "엉뚱하고 독특한",
-      "활발하고 명랑한",
-      "차분하고 따뜻한",
-      "친절하고 상냥한",
-      "긍정적이고 밝은",
-      "유머러스하고 재치있는",
-      "지적이고 신중한",
-      "매력적이고 세련된",
-    ],
-    { errorMap: () => ({ message: "성격을 선택해주세요." }) }
-  ),
-  guideIntro: z.string({ required_error: "필수 항목 입니다." }),
-  pickupPlaceMain: z.string({ required_error: "필수 항목 입니다." }),
-  pickupPlaceLat: z.coerce.number({ required_error: "필수 항목 입니다." }),
-  pickupPlaceLng: z.coerce.number({ required_error: "필수 항목 입니다." }),
-  pickupPlaceDetail: z.string({ required_error: "필수 항목 입니다." }),
-});
+    guideIntro: z.string({
+      required_error: t("validation.createGuideProfile.required_error"),
+    }),
+    pickupPlaceMain: z.string({
+      required_error: t("validation.createGuideProfile.required_error"),
+    }),
+    pickupPlaceLat: z.coerce.number({
+      required_error: t("validation.createGuideProfile.required_error"),
+    }),
+    pickupPlaceLng: z.coerce.number({
+      required_error: t("validation.createGuideProfile.required_error"),
+    }),
+    pickupPlaceDetail: z.string({
+      required_error: t("validation.createGuideProfile.required_error"),
+    }),
+  });
 
-export type CreateGuideProfileType = z.infer<typeof createGuideProfileSchema>;
+export type CreateGuideProfileType = z.infer<
+  ReturnType<typeof createGuideProfileSchema>
+>;

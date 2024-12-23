@@ -38,23 +38,34 @@
   "validation": {
     "invalidDate": "Vui lòng kiểm tra lại ngày.",
     "invalidTime": "Vui lòng kiểm tra lại thời gian.",
-    "minimumDuration": "Thời gian đặt tối thiểu là 2 giờ.",
+    "minimumDuration": "Thời gian tối thiểu là 2 giờ.",
     "checkTimeAgain": "Vui lòng kiểm tra lại thời gian.",
     "invalidEmail": "Email không tồn tại.",
     "invalidPassword": "Vui lòng kiểm tra lại mật khẩu.",
     "invalidData": "Dữ liệu không hợp lệ.",
     "createAccount": {
-      "invalidUsername": "Tên người dùng không khả dụng.",
-      "invalidEmail": "Vui lòng nhập địa chỉ email hợp lệ.",
-      "invalidPassword": "Mật khẩu phải có ít nhất 8 ký tự.",
-      "invalidConfirmPassword": "Mật khẩu không khớp."
+      "invalidUsername": "Tên người dùng không hợp lệ.",
+      "invalidEmail": "Vui lòng nhập địa chỉ email.",
+      "invalidPassword": "Phải có ít nhất 8 ký tự.",
+      "invalidConfirmPassword": "Mật khẩu không khớp.",
+      "duplicateUsername": "Tên người dùng đã tồn tại.",
+      "duplicateEmail": "Email đã tồn tại."
     },
     "signUpGuide": {
       "invalidUsername": "Tên không hợp lệ.",
-      "invalidBirthdate": "Vui lòng kiểm tra lại ngày sinh của bạn.",
-      "invalidHeight": "Vui lòng kiểm tra lại chiều cao của bạn.",
+      "invalidBirthdate": "Vui lòng kiểm tra ngày sinh.",
+      "invalidHeight": "Vui lòng kiểm tra chiều cao.",
       "invalidPhone": "Số điện thoại không hợp lệ.",
-      "required_error": "Đây là mục bắt buộc."
+      "required_error": "Trường này là bắt buộc."
+    },
+    "createGuideProfile": {
+      "minimumPhotos": "Cần ít nhất 2 ảnh.",
+      "representativePhoto": "Vui lòng thêm ảnh đại diện.",
+      "invalidPersonality": "Vui lòng chọn tính cách của bạn.",
+      "required_error": "Trường này là bắt buộc."
+    },
+    "contactGuide": {
+      "requiredError": "Trường này là bắt buộc."
     }
   },
   "header": {
@@ -242,7 +253,8 @@
     "checkDateAndTime": "Vui lòng kiểm tra lại ngày và giờ.",
     "reserve": "Đặt lịch",
     "reserveDescription": "Bạn sẽ không bị tính phí cho đến khi đặt lịch được xác nhận.",
-    "time": "Thời gian",
+    "time": "giờ",
+    "hour": "giờ",
     "reportGuide": "Báo cáo hướng dẫn viên",
     "reportGuideDescription": "Vui lòng cho chúng tôi biết lý do bạn báo cáo hướng dẫn viên này.",
     "reportGuideDescription2": "Hướng dẫn viên sẽ không thể thấy nội dung này.",
@@ -261,5 +273,64 @@
     "FGFGMember": "Đã là thành viên FGFG? Đăng nhập",
     "login": "Đăng nhập",
     "noAccount": "Chưa có tài khoản? Đăng ký"
+  },
+  "searchGuide": {
+    "dateSelection": "Chọn Ngày",
+    "addDate": "Thêm Ngày",
+    "pickupTime": "Thời Gian Đón",
+    "addTime": "Thêm Thời Gian",
+    "endTime": "Thời Gian Kết Thúc",
+    "checkDateAndTime": "Vui lòng kiểm tra lại ngày và thời gian.",
+    "imageLoadFailed": "Không thể tải ảnh",
+    "age": "tuổi",
+    "inactive": "Không hoạt động"
+  },
+  "createGuideProfile": {
+    "invalidImage": "Vui lòng chọn tệp hình ảnh.",
+    "createProfileFailed": "Tạo hồ sơ thất bại. Vui lòng thử lại sau.",
+    "createProfileTitle": "Tạo Hồ Sơ Hướng Dẫn Viên",
+    "createProfileDescription": "Thể hiện bản thân với những bức ảnh hấp dẫn và giới thiệu tuyệt vời!",
+    "guidePhoto": "Ảnh Hồ Sơ Hướng Dẫn Viên",
+    "representativePhoto": "Ảnh Đại Diện",
+    "addPhoto": "Thêm Ảnh",
+    "personality": "Tính Cách",
+    "selectPersonality": "Vui lòng chọn tính cách của bạn",
+    "selfIntro": "Giới Thiệu Hướng Dẫn Viên",
+    "pickupLocation": "Địa Điểm Đón",
+    "pickupLocationDetail": "Mô Tả Chi Tiết Địa Điểm Đón",
+    "pickupLocationDetailDescription": "Vui lòng cung cấp thông tin chi tiết hơn để khách hàng không bị lạc",
+    "pickupLocationDetailExample": "VD) Đó là quán cà phê đối diện Nhà thờ Đức Bà. Hãy gặp nhau trong quán cà phê",
+    "loading": "Đang tải",
+    "confirm": "Xác nhận",
+    "searchPickupLocation": "Tìm kiếm địa điểm đón",
+    "guideQandA": "Câu Hỏi Thường Gặp",
+    "guideQandA1": "H: Ảnh có thực sự cần thiết không?",
+    "guideQandA1Answer": "Khách hàng muốn xem ảnh hướng dẫn viên và giới thiệu ngắn gọn. Vui lòng thông cảm.",
+    "guideQandA2": "H: Tôi muốn tạm dừng hoạt động một thời gian.",
+    "guideQandA2Answer": "Khi bạn kích hoạt tính năng tạm dừng trong trang quản lý hướng dẫn viên, bạn sẽ không xuất hiện trong tìm kiếm hướng dẫn viên. Bạn có thể kích hoạt lại sau."
+  },
+  "contactGuide": {
+    "contactGuide": "Liên hệ",
+    "contactGuideDescription": "Bạn có thắc mắc? Hãy gửi tin nhắn cho hướng dẫn viên",
+    "sendMessage": "Gửi tin nhắn"
+  },
+  "chatRoom": {
+    "noMessage": "Không có tin nhắn",
+    "noMessageDescription": "Hãy bắt đầu cuộc trò chuyện bằng cách gửi tin nhắn cho hướng dẫn viên!",
+    "viewReservation": "Xem đặt chỗ",
+    "reservationNumber": "Số đặt chỗ",
+    "reservationConfirmed": "Đã xác nhận đặt chỗ",
+    "reservationCanceled": "Đã hủy đặt chỗ",
+    "reservationNotConfirmed": "Chưa xác nhận đặt chỗ",
+    "reservationInfo": "Thông tin đặt chỗ",
+    "date": "Ngày",
+    "time": "Thời gian",
+    "pickupLocation": "Địa điểm đón",
+    "feeDetail": "Chi tiết phí",
+    "hour": "giờ",
+    "leaveChat": "Bạn có muốn rời khỏi phòng chat không?",
+    "cancel": "Hủy",
+    "leave": "Rời khỏi",
+    "noReservationInfo": "Không có thông tin đặt chỗ."
   }
 }

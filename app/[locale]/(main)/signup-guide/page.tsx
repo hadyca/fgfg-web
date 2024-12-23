@@ -29,7 +29,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import Spinner from "@/components/ui/spinner";
 import { useLocale, useTranslations } from "next-intl";
 

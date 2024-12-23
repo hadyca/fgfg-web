@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { ko } from "date-fns/locale";
+import { enUS, ko, vi } from "date-fns/locale";
 import { subDays, format } from "date-fns";
 import {
   Popover,
@@ -21,9 +21,9 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { MagnifyingGlassCircleIcon } from "@heroicons/react/24/solid";
 import { convertToVietnamISO, convertToVietnamTime } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import { searchGuide } from "@/app/[locale]/(main)/search-guide/actions";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 interface SearchGuideProps {
   searchParams?: {
@@ -33,6 +33,7 @@ interface SearchGuideProps {
 }
 
 export default function SearchGuideForm({ searchParams }: SearchGuideProps) {
+  const locale = useLocale();
   const t = useTranslations();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -117,17 +118,21 @@ export default function SearchGuideForm({ searchParams }: SearchGuideProps) {
       <form onSubmit={handleSubmit(onValid)}>
         <div className="flex flex-col sm:flex-row justify-center items-center sm:items-end gap-4">
           <div>
-            <Label className="block mb-2 text-center">날짜 선택</Label>
+            <Label className="block mb-2 text-center">
+              {t("searchGuide.dateSelection")}
+            </Label>
             <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
               <PopoverTrigger asChild>
                 <Button
                   variant={"outline"}
-                  className="hover:bg-white w-36 px-3"
+                  className="hover:bg-white w-40 px-3"
                 >
                   {watchDate ? (
                     <span className="font-normal">{watchDate}</span>
                   ) : (
-                    <span className="text-muted-foreground">날짜 추가</span>
+                    <span className="text-muted-foreground">
+                      {t("searchGuide.addDate")}
+                    </span>
                   )}
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
@@ -135,7 +140,7 @@ export default function SearchGuideForm({ searchParams }: SearchGuideProps) {
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   mode="single"
-                  locale={ko}
+                  locale={locale === "ko" ? ko : locale === "vn" ? vi : enUS}
                   selected={selectedDate}
                   onSelect={handleDateChange}
                   disabled={(date) => {
@@ -148,16 +153,18 @@ export default function SearchGuideForm({ searchParams }: SearchGuideProps) {
             </Popover>
           </div>
           <div>
-            <Label className="block mb-2 text-center">픽업 시각</Label>
+            <Label className="block mb-2 text-center">
+              {t("searchGuide.pickupTime")}
+            </Label>
             <select
-              className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
+              className={`w-40 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
                 startTime ? "" : "text-muted-foreground"
               }`}
               value={startTime}
               onChange={handleStartTimeChange}
             >
               <option value="" disabled hidden>
-                시간 추가
+                {t("searchGuide.addTime")}
               </option>
               {Array.from({ length: 23 }, (_, i) => {
                 const time = `${String(i).padStart(2, "0")}:00`;
@@ -170,16 +177,18 @@ export default function SearchGuideForm({ searchParams }: SearchGuideProps) {
             </select>
           </div>
           <div>
-            <Label className="block mb-2 text-center">종료 시각</Label>
+            <Label className="block mb-2 text-center">
+              {t("searchGuide.endTime")}
+            </Label>
             <select
-              className={`w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm  ${
+              className={`w-40 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm  ${
                 endTime ? "" : "text-muted-foreground"
               }`}
               value={endTime}
               onChange={handleEndTimeChange}
             >
               <option value="" disabled hidden>
-                시간 추가
+                {t("searchGuide.addTime")}
               </option>
               {Array.from({ length: 23 }, (_, i) => {
                 const time = `${String(i + 2).padStart(2, "0")}:00`;
@@ -204,7 +213,7 @@ export default function SearchGuideForm({ searchParams }: SearchGuideProps) {
         ) : errors?.date || errors?.startTime || errors?.endTime ? (
           <div className="mt-3">
             <span className="text-destructive font-medium">
-              날짜와 시간을 다시 확인해주세요.
+              {t("searchGuide.checkDateAndTime")}
             </span>
           </div>
         ) : null}

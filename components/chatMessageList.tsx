@@ -14,6 +14,7 @@ import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import { Button } from "./ui/button";
 import ChatRoomBill from "./chat-room-bill";
 import { useToast } from "./hooks/use-toast";
+import { useLocale, useTranslations } from "next-intl";
 
 interface ChatMessageListProps {
   userId: number;
@@ -31,6 +32,8 @@ export default function ChatMessageList({
   avatar,
   otherUserChannel,
 }: ChatMessageListProps) {
+  const locale = useLocale();
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [message, setMessage] = useState("");
@@ -97,19 +100,23 @@ export default function ChatMessageList({
   };
 
   // 날짜 헤더 표시 함수
-  const formatDateForHeader = (date: string) => {
-    const formattedDate = DateTime.fromISO(date).toLocaleString({
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+  const formatDateForHeader = (date: string, locale: string) => {
+    const formattedDate = DateTime.fromISO(date)
+      .setLocale(locale === "ko" ? "ko" : locale === "vn" ? "vi" : "en")
+      .toLocaleString({
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
     return formattedDate;
   };
 
   // 메시지 시간 표시 함수 (오전/오후, 시간/분)
-  const formatTimeForMessage = (date: string) => {
-    return DateTime.fromISO(date).toLocaleString(DateTime.TIME_SIMPLE);
+  const formatTimeForMessage = (date: string, locale: string) => {
+    return DateTime.fromISO(date)
+      .setLocale(locale === "ko" ? "ko" : locale === "vn" ? "vi" : "en")
+      .toLocaleString(DateTime.TIME_SIMPLE);
   };
 
   // 처음 렌더링 시 스크롤을 맨 아래로 이동 + 내 화면 isRead를 true로 처리
@@ -137,7 +144,7 @@ export default function ChatMessageList({
           <Drawer>
             <DrawerTrigger asChild>
               <Button variant="secondary" className="rounded-full">
-                예약 보기
+                {t("chatRoom.viewReservation")}
               </Button>
             </DrawerTrigger>
             <DrawerContent className="h-2/3">
@@ -173,7 +180,7 @@ export default function ChatMessageList({
                   {showDateHeader && (
                     <div className="text-center my-4">
                       <span className="text-secondary-foreground text-sm bg-secondary px-3 py-1 rounded-full">
-                        {formatDateForHeader(message.createdAt)}
+                        {formatDateForHeader(message.createdAt, locale)}
                       </span>
                     </div>
                   )}
@@ -214,7 +221,7 @@ export default function ChatMessageList({
                         {message.payload}
                       </span>
                       <span className="text-xs">
-                        {formatTimeForMessage(message.createdAt)}
+                        {formatTimeForMessage(message.createdAt, locale)}
                       </span>
                     </div>
                   </div>

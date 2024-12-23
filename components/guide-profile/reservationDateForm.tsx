@@ -22,7 +22,7 @@ import {
   convertToVietnamTime,
   formatCurrency,
 } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import { SERVICE_FEE } from "@/lib/constants";
 import { useLocale, useTranslations } from "next-intl";
 
@@ -252,7 +252,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
                 </PopoverContent>
               </Popover>
             </div>
-            <div className="flex flex-row justify-between w-full">
+            <div className="flex flex-row gap-2 justify-between w-full">
               <div>
                 <Label className="block mb-2">
                   {t("guideProfile.pickupTime")}
@@ -326,7 +326,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
                 {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTime(
                   startTime,
                   endTime
-                )} ${t("guideProfile.time")}`}
+                )} ${t("guideProfile.hour")}`}
               </span>
               <span>
                 {formatCurrency(

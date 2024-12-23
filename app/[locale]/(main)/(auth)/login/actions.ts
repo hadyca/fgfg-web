@@ -1,14 +1,15 @@
 "use server";
 
 import getSession from "@/lib/session";
-import { redirect } from "next/navigation";
+import { redirect } from "@/i18n/routing";
 import { LOG_IN } from "./queries";
 import { client } from "@/lib/apolloClient";
 import { loginSchema } from "./schema";
 import { CHECK_EMAIL } from "../create-account/queries";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 export async function login(formData: FormData, redirectUrl: string = "/") {
+  const locale = await getLocale();
   const t = await getTranslations();
   const data = {
     email: formData.get("email"),
@@ -46,7 +47,7 @@ export async function login(formData: FormData, redirectUrl: string = "/") {
       session.token = data.login.token;
       session.guideId = data.login.guideId;
       await session.save();
-      redirect(redirectUrl);
+      redirect({ href: redirectUrl, locale });
     } else {
       return { type: "password", error: t("validation.invalidPassword") };
     }

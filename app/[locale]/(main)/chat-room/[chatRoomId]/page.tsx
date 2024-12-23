@@ -117,7 +117,6 @@ export default function ChatRoom({ params: { chatRoomId } }: ChatRoomProps) {
 
         //예약 영수증 보기
         const bills = await getBills(chatRoomId);
-
         setUser(currentUser);
         setBills(chatRoomId, bills);
 

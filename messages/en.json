@@ -24,16 +24,18 @@
   "validation": {
     "invalidDate": "Please check the date again.",
     "invalidTime": "Please check the time again.",
-    "minimumDuration": "Minimum booking duration is 2 hours.",
+    "minimumDuration": "Minimum duration is 2 hours.",
     "checkTimeAgain": "Please check the time again.",
     "invalidEmail": "Email does not exist.",
     "invalidPassword": "Please check your password again.",
     "invalidData": "Invalid data.",
     "createAccount": {
-      "invalidUsername": "Username is not available.",
-      "invalidEmail": "Please enter a valid email address.",
-      "invalidPassword": "Password must be at least 8 characters long.",
-      "invalidConfirmPassword": "Passwords do not match."
+      "invalidUsername": "Invalid username.",
+      "invalidEmail": "Please enter your email address.",
+      "invalidPassword": "Must be at least 8 characters.",
+      "invalidConfirmPassword": "Passwords do not match.",
+      "duplicateUsername": "Username already exists.",
+      "duplicateEmail": "Email already exists."
     },
     "signUpGuide": {
       "invalidUsername": "Invalid name.",
@@ -41,6 +43,15 @@
       "invalidHeight": "Please check your height.",
       "invalidPhone": "Invalid phone number.",
       "required_error": "This field is required."
+    },
+    "createGuideProfile": {
+      "minimumPhotos": "At least 2 photos are required.",
+      "representativePhoto": "Please add a representative photo.",
+      "invalidPersonality": "Please select your personality.",
+      "required_error": "This field is required."
+    },
+    "contactGuide": {
+      "requiredError": "This field is required."
     }
   },
   "header": {
@@ -243,6 +254,7 @@
     "reserve": "Reserve",
     "reserveDescription": "You won't be charged until the reservation is confirmed.",
     "time": "Time",
+    "hour": "hours",
     "reportGuide": "Report Guide",
     "reportGuideDescription": "Please let us know why you're reporting this guide.",
     "reportGuideDescription2": "This content will not be visible to the guide.",
@@ -261,5 +273,64 @@
     "FGFGMember": "Already a FGFG member? Login",
     "login": "Login",
     "noAccount": "Don't have an account? Sign up"
+  },
+  "searchGuide": {
+    "dateSelection": "Select Date",
+    "addDate": "Add Date",
+    "pickupTime": "Pickup Time",
+    "addTime": "Add Time",
+    "endTime": "End Time",
+    "checkDateAndTime": "Please check the date and time again.",
+    "imageLoadFailed": "Failed to load image",
+    "age": "years old",
+    "inactive": "Inactive"
+  },
+  "createGuideProfile": {
+    "invalidImage": "Please select an image file.",
+    "createProfileFailed": "Failed to create profile. Please try again later.",
+    "createProfileTitle": "Create Guide Profile",
+    "createProfileDescription": "Show yourself off with attractive photos and a great guide introduction!",
+    "guidePhoto": "Guide Profile Photos",
+    "representativePhoto": "Representative Photo",
+    "addPhoto": "Add Photo",
+    "personality": "Personality",
+    "selectPersonality": "Please select your personality",
+    "selfIntro": "Guide Introduction",
+    "pickupLocation": "Pickup Location",
+    "pickupLocationDetail": "Detailed Pickup Location Description",
+    "pickupLocationDetailDescription": "Please provide more specific details so customers won't get lost",
+    "pickupLocationDetailExample": "EX) It's a cafe across from Notre-Dame Cathedral. Let's meet inside the cafe",
+    "loading": "Loading",
+    "confirm": "Confirm",
+    "searchPickupLocation": "Search pickup location",
+    "guideQandA": "Frequently Asked Questions",
+    "guideQandA1": "Q. Are photos really necessary?",
+    "guideQandA1Answer": "Customers want to see guide photos and brief introductions. Please understand.",
+    "guideQandA2": "Q. I want to pause my activities for a while.",
+    "guideQandA2Answer": "When you activate the pause feature in the guide management page, you won't appear in guide searches. You can reactivate it later."
+  },
+  "contactGuide": {
+    "contactGuide": "Contact",
+    "contactGuideDescription": "Have any questions? Send a message to guide",
+    "sendMessage": "Send Message"
+  },
+  "chatRoom": {
+    "noMessage": "No messages",
+    "noMessageDescription": "Start a conversation by sending a message to the guide!",
+    "viewReservation": "View Reservation",
+    "reservationNumber": "Reservation Number",
+    "reservationConfirmed": "Reservation Confirmed",
+    "reservationCanceled": "Reservation Canceled",
+    "reservationNotConfirmed": "Reservation Not Confirmed",
+    "reservationInfo": "Reservation Information",
+    "date": "Date",
+    "time": "Time",
+    "pickupLocation": "Pickup Location",
+    "feeDetail": "Fee Details",
+    "hour": "hours",
+    "leaveChat": "Do you want to leave the chat room?",
+    "cancel": "Cancel",
+    "leave": "Leave",
+    "noReservationInfo": "No reservation information."
   }
 }

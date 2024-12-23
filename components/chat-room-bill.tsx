@@ -10,21 +10,23 @@ import {
 import { Separator } from "./ui/separator";
 import { SERVICE_FEE } from "@/lib/constants";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
-import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
+import { useLocale, useTranslations } from "next-intl";
 
 interface ChatRoomBillProps {
   chatRoomId: string;
 }
 
 export default function ChatRoomBill({ chatRoomId }: ChatRoomBillProps) {
-  const bills = useChatRoomStore((state) => state.bills);
+  const locale = useLocale();
+  const t = useTranslations();
+  const { bills } = useChatRoomStore();
   const currentRoomBills = bills[chatRoomId] || [];
 
   if (currentRoomBills.length === 0) {
     return (
       <div className="flex justify-center items-center h-full">
-        예약 정보가 없습니다.
+        {t("chatRoom.noReservationInfo")}
       </div>
     );
   }
@@ -36,37 +38,39 @@ export default function ChatRoomBill({ chatRoomId }: ChatRoomBillProps) {
           <Card key={index} className="mx-10 shadow-md p-6">
             <div className="flex flex-col gap-3">
               <div className="text-sm text-muted-foreground">
-                <span>예약 번호: </span>
+                <span>{t("chatRoom.reservationNumber")}: </span>
                 <span>{bill.id} </span>
                 {bill.guideConfirm ? (
-                  <span>(예약 확정)</span>
+                  <span>({t("chatRoom.reservationConfirmed")})</span>
                 ) : (bill.guideConfirm === false &&
                     DateTime.now().toISO() > bill.startTime) ||
                   bill.userCancel ||
                   bill.guideCancel ? (
-                  <span>(예약 취소)</span>
+                  <span>({t("chatRoom.reservationCanceled")})</span>
                 ) : (
-                  <span>(예약 미확정)</span>
+                  <span>({t("chatRoom.reservationNotConfirmed")})</span>
                 )}
               </div>
               <div className="text-xl font-semibold">
-                <span>예약 정보</span>
+                <span>{t("chatRoom.reservationInfo")}</span>
               </div>
               <div>
-                <div>날짜</div>
+                <div>{t("chatRoom.date")}</div>
                 <div>
-                  <span>{convertToVietnamISOToMonthDay(bill.startTime)}</span>
+                  <span>
+                    {convertToVietnamISOToMonthDay(bill.startTime, locale)}
+                  </span>
                 </div>
               </div>
               <div>
-                <div>시간</div>
+                <div>{t("chatRoom.time")}</div>
                 <div>
                   <span>{convertToVietnamTime(bill.startTime)}~</span>
                   <span>{convertToVietnamTime(bill.endTime)}</span>
                 </div>
               </div>
               <div>
-                <div>픽업 위치</div>
+                <div>{t("chatRoom.pickupLocation")}</div>
                 <div className="flex flex-col">
                   <div>
                     <a
@@ -88,14 +92,16 @@ export default function ChatRoomBill({ chatRoomId }: ChatRoomBillProps) {
             </div>
             <Separator className="my-6" />
             <div className="flex flex-col gap-3">
-              <div className="text-xl font-semibold">요금 세부정보</div>
+              <div className="text-xl font-semibold">
+                {t("chatRoom.feeDetail")}
+              </div>
               <div>
                 <div className="flex justify-between">
                   <span className="underline">
                     {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTimeISO(
                       bill.startTime,
                       bill.endTime
-                    )}시간`}
+                    )}${t("chatRoom.hour")}`}
                   </span>
                   <span>
                     {formatCurrency(

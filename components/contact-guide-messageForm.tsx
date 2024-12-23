@@ -12,9 +12,10 @@ import {
 import ErrorText from "./errorText";
 import { createChatRoom } from "@/app/[locale]/(main)/contact-guide/[guideId]/actions";
 import { RealtimeChannel } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/routing";
 import { supabase } from "@/lib/supabaseClient";
 import { useToast } from "./hooks/use-toast";
+import { useTranslations } from "next-intl";
 
 interface ContactGuideFormProps {
   guideId: number;
@@ -29,6 +30,7 @@ export default function ContactGuideForm({
   username,
   avatar,
 }: ContactGuideFormProps) {
+  const t = useTranslations();
   const router = useRouter();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
@@ -39,7 +41,7 @@ export default function ContactGuideForm({
     handleSubmit,
     formState: { errors },
   } = useForm<ContactGuideType>({
-    resolver: zodResolver(contactGuideSchema),
+    resolver: zodResolver(contactGuideSchema(t)),
   });
 
   const onValid = async (data: ContactGuideType) => {
@@ -90,12 +92,12 @@ export default function ContactGuideForm({
     <form onSubmit={handleSubmit(onValid)}>
       <div>
         <div className="text-xl mb-3">
-          궁금하신 사항이 있나요? 가이드에게 메시지 보내기
+          {t("contactGuide.contactGuideDescription")}
         </div>
         {errors?.payload ? <ErrorText text={errors.payload.message!} /> : null}
         <Textarea id="payload" {...register("payload")} required />
         <Button disabled={loading} className="mt-3">
-          메시지 전송하기
+          {t("contactGuide.sendMessage")}
         </Button>
       </div>
     </form>
