@@ -47,7 +47,9 @@
       "invalidUsername": "사용할 수 없는 유저명입니다.",
       "invalidEmail": "이메일 주소를 입력해주세요.",
       "invalidPassword": "최소 8자 이상이어야 합니다.",
-      "invalidConfirmPassword": "비밀번호가 일치하지 않습니다."
+      "invalidConfirmPassword": "비밀번호가 일치하지 않습니다.",
+      "duplicateUsername": "중복된 유저명이 있습니다.",
+      "duplicateEmail": "중복된 이메일이 있습니다."
     },
     "signUpGuide": {
       "invalidUsername": "사용할 수 없는 이름입니다.",
