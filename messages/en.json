@@ -332,5 +332,41 @@
     "cancel": "Cancel",
     "leave": "Leave",
     "noReservationInfo": "No reservation information."
+  },
+  "reservation": {
+    "feeDetail": "Fee Details",
+    "hour": "hours",
+    "reservationInfo": "Reservation Information",
+    "date": "Date",
+    "time": "Time",
+    "paymentMethod": "Payment Method",
+    "paymentMethodDescription": "Please refer to the page content after reservation request.",
+    "customerAgeRange": "Customer Age Range",
+    "customerAgeRangeDescription": "Information that needs to be provided to the guide in advance.",
+    "addAgeRange": "Add Age Range",
+    "year": "years old",
+    "guideMessage": "Send Message to Guide",
+    "guideMessageDescription": "Please let the guide know about your desired date course, necessary preparations, and why you chose them.",
+    "refundPolicy": "Refund Policy",
+    "refundPolicyDescription": "Full refund for cancellations due to guide request or guide no-show.",
+    "refundPolicyDescription2": "No refund if customer does not show up at the reserved time (No Show).",
+    "refundPolicyDescription3": "Cancellation and refund are not possible after the guide confirms the reservation.",
+    "refundPolicyDescription4": "No refund for simple dissatisfaction with guide service.",
+    "basicRules": "Basic Rules",
+    "basicRulesDescription1": "Please cooperate so that the guide can safely conduct the tour.",
+    "basicRulesDescription2": "Only hand-holding and arm-linking are allowed for physical contact.",
+    "basicRulesDescription3": "Tour includes various locations except accommodation facilities.",
+    "basicRulesDescription4": "Payment for additional extension time must be made through the official fgfg website.",
+    "basicRulesDescription5": "Reservation is not confirmed until the guide accepts the request within 48 hours. If the reservation is declined, the fee will be automatically refunded.",
+    "agreeDescription": "By selecting the button below, you agree to fgfg's terms of use and refund policy, and agree that fgfg may charge through your payment method in case of damage due to your fault. You agree to pay the displayed fee when the guide accepts the reservation request.",
+    "requestReservation": "Request Reservation",
+    "loading": "Loading..."
+  },
+  "paymentSuccess": {
+    "title": "Reservation Complete!",
+    "description": "For additional payment processing, please send your reservation number to KakaoTalk ID: rlawpgud",
+    "reservationNumber": "Reservation Number",
+    "reservationCanceled": "The reservation will be automatically canceled if payment is not processed within 24 hours. After payment, please wait for guide approval.",
+    "goToHome": "Return to Home"
   }
 }

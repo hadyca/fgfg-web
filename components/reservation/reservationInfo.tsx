@@ -6,6 +6,7 @@ import {
   convertToVietnamISO,
   convertToVietnamTime,
 } from "@/lib/utils";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 interface ReservationInfoPros {
@@ -17,6 +18,8 @@ export default function ReservationInfo({
   startTime,
   endTime,
 }: ReservationInfoPros) {
+  const locale = useLocale();
+  const t = useTranslations();
   const [loading, setLoading] = useState(true);
   const [onlyMonthDay, setOnlyMonthDay] = useState<string | null>(null);
   const [covertedStartTime, setCovertedStartTime] = useState("");
@@ -24,17 +27,16 @@ export default function ReservationInfo({
 
   useEffect(() => {
     setLoading(true);
-    const userLocale = navigator.language.split("-")[0] || "ko"; // "ko" or "en" 같은 값만 남김
     const date = convertToVietnamISO(startTime);
     if (date) {
-      const formattedDate = convertMonthDayIntl(date, userLocale);
+      const formattedDate = convertMonthDayIntl(date, locale);
       setOnlyMonthDay(formattedDate);
     }
     setCovertedStartTime(convertToVietnamTime(startTime));
     setCovertedEndTime(convertToVietnamTime(endTime));
 
     setLoading(false);
-  }, [startTime, endTime]);
+  }, [startTime, endTime, locale]);
 
   return (
     <>
@@ -42,15 +44,17 @@ export default function ReservationInfo({
         <GetReservationSkeletonTop />
       ) : (
         <div className="flex flex-col gap-3">
-          <div className="text-xl font-semibold">예약 정보</div>
+          <div className="text-xl font-semibold">
+            {t("reservation.reservationInfo")}
+          </div>
           <div>
-            <div>날짜</div>
+            <div>{t("reservation.date")}</div>
             <div>
               <span>{onlyMonthDay}</span>
             </div>
           </div>
           <div>
-            <div>시간</div>
+            <div>{t("reservation.time")}</div>
             <div>
               <span>{covertedStartTime}~</span>
               <span>{covertedEndTime}</span>

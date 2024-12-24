@@ -26,6 +26,7 @@ import {
 import { useToast } from "../hooks/use-toast";
 import { Link } from "@/i18n/routing";
 import { useRouter } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 
 interface CheckoutFormProps {
   amount: number;
@@ -47,6 +48,7 @@ export default function CheckoutForm({
   startTime,
   endTime,
 }: CheckoutFormProps) {
+  const t = useTranslations();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -129,13 +131,17 @@ export default function CheckoutForm({
   return (
     <form onSubmit={handleSubmit(onValid)}>
       <div className="flex flex-col gap-3">
-        <div className="text-xl font-semibold">결제 방법</div>
-        <span>예약 요청 후, 페이지 내용 참조 바랍니다.</span>
+        <div className="text-xl font-semibold">
+          {t("reservation.paymentMethod")}
+        </div>
+        <span>{t("reservation.paymentMethodDescription")}</span>
       </div>
       <Separator className="my-8" />
       <div className="flex flex-col gap-3">
         <div className="flex flex-row">
-          <div className="text-xl font-semibold">고객님 연령대</div>
+          <div className="text-xl font-semibold">
+            {t("reservation.customerAgeRange")}
+          </div>
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger
@@ -146,7 +152,7 @@ export default function CheckoutForm({
                 <ExclamationCircleIcon className="size-6 text-primary" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>가이드에게 미리 제공해야 할 정보입니다.</p>
+                <p>{t("reservation.customerAgeRangeDescription")}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -163,34 +169,31 @@ export default function CheckoutForm({
             onChange={handleStartTimeChange}
           >
             <option value="" disabled hidden>
-              연령대 추가
+              {t("reservation.addAgeRange")}
             </option>
             <option value="20~25세" className="text-black">
-              20~25세
+              20~25{t("reservation.year")}
             </option>
             <option value="26~30세" className="text-black">
-              26~30세
+              26~30{t("reservation.year")}
             </option>
             <option value="31~35세" className="text-black">
-              31~35세
+              31~35{t("reservation.year")}
             </option>
             <option value="36~40세" className="text-black">
-              36~40세
+              36~40{t("reservation.year")}
             </option>
             <option value="41~45세" className="text-black">
-              41~45세
+              41~45{t("reservation.year")}
             </option>
             <option value="46~50세" className="text-black">
-              46~50세
+              46~50{t("reservation.year")}
             </option>
             <option value="51~55세" className="text-black">
-              51~55세
+              51~55{t("reservation.year")}
             </option>
             <option value="56~60세" className="text-black">
-              56~60세
-            </option>
-            <option value="60세 이상" className="text-black">
-              60세 이상
+              56~60{t("reservation.year")}
             </option>
           </select>
         </div>
@@ -199,11 +202,10 @@ export default function CheckoutForm({
       <div className="flex flex-col gap-3">
         <div className="flex flex-col">
           <span className="text-xl font-semibold">
-            가이드에게 메시지 보내기
+            {t("reservation.guideMessage")}
           </span>
           <span className="text-sm text-muted-foreground">
-            고객님께서 원하시는 데이트 코스, 가이드가 필요한 준비물, 가이드를
-            선택한 이유 등을 알려주세요.
+            {t("reservation.guideMessageDescription")}
           </span>
         </div>
         {errors?.payload ? <ErrorText text={errors.payload.message!} /> : null}
@@ -212,81 +214,71 @@ export default function CheckoutForm({
       <Separator className="my-8" />
 
       <div className="flex flex-col gap-2">
-        <div className="text-xl font-semibold">환불 정책</div>
+        <div className="text-xl font-semibold">
+          {t("reservation.refundPolicy")}
+        </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            가이드 요청으로 인한 예약 취소나 가이드가 예약을 이행하지 않은
-            경우(No Show)에는 전액 환불해드립니다.
+            {t("reservation.refundPolicyDescription")}
           </p>
         </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            고객님이 예약 시간에 나타나지 않은 경우(No Show), 환불이
-            불가능합니다.
+            {t("reservation.refundPolicyDescription2")}
           </p>
         </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            가이드가 예약을 확정한 이후에는 예약 취소 및 환불이 불가능합니다.
+            {t("reservation.refundPolicyDescription3")}
           </p>
         </div>
-
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            단순히 가이드 서비스에 대한 불만족으로 인한 환불은 불가능합니다.
+            {t("reservation.refundPolicyDescription4")}
           </p>
         </div>
       </div>
       <Separator className="my-8" />
       <div className="flex flex-col gap-2">
-        <div className="text-xl font-semibold">기본 규칙</div>
+        <div className="text-xl font-semibold">
+          {t("reservation.basicRules")}
+        </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            가이드가 안전하게 가이드를 진행할 수 있도록 협조 부탁드립니다.
+            {t("reservation.basicRulesDescription1")}
           </p>
         </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            스킨쉽은 손잡기와 팔짱끼기만 허용 됩니다.
+            {t("reservation.basicRulesDescription2")}
           </p>
         </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            가이드 코스는 숙박업체를 제외한 다양한 장소를 포함하여 진행됩니다.
+            {t("reservation.basicRulesDescription3")}
           </p>
         </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            추가 연장 시간에 대한 결제는 fgfg 공식 사이트를 통해서만 진행됩니다.
+            {t("reservation.basicRulesDescription4")}
           </p>
         </div>
       </div>
       <Separator className="my-8" />
       <div className="flex flex-row items-center gap-2">
         <ClockIcon className="size-10" />
-        <span>
-          가이드가 48시간 이내 예약 요청을 수락하기 전까지는 예약이 아직 확정된
-          것이 아닙니다. 만약 예약이 거절된다면, 요금은 자동 환불 됩니다.
-        </span>
+        <span>{t("reservation.basicRulesDescription5")}</span>
       </div>
       <Separator className="my-8" />
       <div className="flex flex-col gap-3">
         <div className="text-sm text-muted-foreground">
-          아래 버튼을 선택하면 fgfg가 정한
-          <Link href={"/policies/terms-and-conditions"}>
-            <span className="text-primary"> 이용 약관 </span>
-          </Link>
-          및
-          <Link href={"/policies/refund-policy"}>
-            <span className="text-primary"> 환불 정책</span>
-          </Link>
-          에 동의하며, 본인에게 책임이 있는 피해가 발생할 경우 fgfg가 결제
-          수단을 통해 청구할 수 있다는 점에 동의하는 것입니다. 가이드가 예약
-          요청을 수락하면 표시된 요금에 대해 결제가 이루어짐에 동의합니다.
+          {t("reservation.agreeDescription")}
         </div>
       </div>
       <Button disabled={loading} className="w-full font-bold mt-3">
-        {!loading ? "예약 요청" : "로딩 중..."}
+        {!loading
+          ? t("reservation.requestReservation")
+          : t("reservation.loading")}
       </Button>
     </form>
   );

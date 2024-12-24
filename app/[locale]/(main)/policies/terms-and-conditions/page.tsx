@@ -101,14 +101,14 @@ export default function TermsAndConditions() {
             <li>
               <p>
                 {t(
-                  "TermsAndConditions.personalInformationProtectionDescription"
+                  "termsAndConditions.personalInformationProtectionDescription"
                 )}
               </p>
             </li>
             <li>
               <p>
                 {t(
-                  "TermsAndConditions.personalInformationProtectionDescription2"
+                  "termsAndConditions.personalInformationProtectionDescription2"
                 )}
               </p>
             </li>

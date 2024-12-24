@@ -332,5 +332,41 @@
     "cancel": "Hủy",
     "leave": "Rời khỏi",
     "noReservationInfo": "Không có thông tin đặt chỗ."
+  },
+  "reservation": {
+    "feeDetail": "Chi tiết phí",
+    "hour": "giờ",
+    "reservationInfo": "Thông tin đặt chỗ",
+    "date": "Ngày",
+    "time": "Thời gian",
+    "paymentMethod": "Phương thức thanh toán",
+    "paymentMethodDescription": "Vui lòng tham khảo nội dung trang sau khi yêu cầu đặt chỗ.",
+    "customerAgeRange": "Độ tuổi của khách",
+    "customerAgeRangeDescription": "Thông tin cần cung cấp trước cho hướng dẫn viên.",
+    "addAgeRange": "Thêm độ tuổi",
+    "year": "tuổi",
+    "guideMessage": "Gửi tin nhắn cho hướng dẫn viên",
+    "guideMessageDescription": "Hãy cho hướng dẫn viên biết về lịch trình hẹn hò bạn mong muốn, những thứ cần chuẩn bị và lý do bạn chọn họ.",
+    "refundPolicy": "Chính sách hoàn tiền",
+    "refundPolicyDescription": "Hoàn tiền đầy đủ trong trường hợp hủy đặt chỗ theo yêu cầu của hướng dẫn viên hoặc hướng dẫn viên không thực hiện đặt chỗ (No Show).",
+    "refundPolicyDescription2": "Không hoàn tiền nếu khách không xuất hiện đúng giờ đặt chỗ (No Show).",
+    "refundPolicyDescription3": "Không thể hủy đặt chỗ và hoàn tiền sau khi hướng dẫn viên đã xác nhận đặt chỗ.",
+    "refundPolicyDescription4": "Không hoàn tiền chỉ vì không hài lòng với dịch vụ hướng dẫn.",
+    "basicRules": "Quy tắc cơ bản",
+    "basicRulesDescription1": "Vui lòng hợp tác để hướng dẫn viên có thể thực hiện tour một cách an toàn.",
+    "basicRulesDescription2": "Chỉ cho phép nắm tay và khoác tay.",
+    "basicRulesDescription3": "Tour bao gồm nhiều địa điểm khác nhau, ngoại trừ các cơ sở lưu trú.",
+    "basicRulesDescription4": "Thanh toán thời gian gia hạn thêm chỉ được thực hiện thông qua trang web chính thức của fgfg.",
+    "basicRulesDescription5": "Đặt chỗ chưa được xác nhận cho đến khi hướng dẫn viên chấp nhận yêu cầu trong vòng 48 giờ. Nếu đặt chỗ bị từ chối, phí sẽ được tự động hoàn lại.",
+    "agreeDescription": "Bằng cách chọn nút bên dưới, bạn đồng ý với điều khoản sử dụng và chính sách hoàn tiền của fgfg, và đồng ý rằng fgfg có thể tính phí thông qua phương thức thanh toán của bạn trong trường hợp thiệt hại do lỗi của bạn. Bạn đồng ý thanh toán số tiền hiển thị khi hướng dẫn viên chấp nhận yêu cầu đặt chỗ.",
+    "requestReservation": "Yêu cầu đặt chỗ",
+    "loading": "Đang tải..."
+  },
+  "paymentSuccess": {
+    "title": "Đặt chỗ đã hoàn tất!",
+    "description": "Để xử lý thanh toán bổ sung, vui lòng gửi số đặt chỗ của bạn đến KakaoTalk ID: rlawpgud",
+    "reservationNumber": "Số đặt chỗ",
+    "reservationCanceled": "Đặt chỗ sẽ tự động bị hủy nếu không xử lý thanh toán trong vòng 24 giờ. Sau khi thanh toán, vui lòng đợi sự chấp thuận của hướng dẫn viên.",
+    "goToHome": "Trở về Trang chủ"
   }
 }

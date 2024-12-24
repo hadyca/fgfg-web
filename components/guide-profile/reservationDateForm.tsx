@@ -326,7 +326,7 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
                 {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTime(
                   startTime,
                   endTime
-                )} ${t("guideProfile.hour")}`}
+                )}${t("guideProfile.hour")}`}
               </span>
               <span>
                 {formatCurrency(

@@ -9,10 +9,11 @@ import {
   formatCurrency,
   isValidISODate,
 } from "@/lib/utils";
-import { SERVICE_FEE } from "@/lib/constants";
+import { PERSONALITY_OPTIONS, SERVICE_FEE } from "@/lib/constants";
 import ReservationCreateAccount from "@/components/reservation/reservationCreatAccount";
 import getUser from "@/lib/getUser";
 import ReservationLoggedInInfo from "@/components/reservation/reservatioLoggedInInfo";
+import { getLocale, getTranslations } from "next-intl/server";
 
 interface ReservationProps {
   params: {
@@ -31,6 +32,8 @@ export const metadata = {
 };
 
 export default async function Reservation(props: ReservationProps) {
+  const locale = await getLocale();
+  const t = await getTranslations();
   const guideId = Number(props.params.guideId);
   if (isNaN(guideId)) {
     return notFound();
@@ -107,22 +110,24 @@ export default async function Reservation(props: ReservationProps) {
             </div>
             <div>
               <span className="font-semibold">{guide?.seeGuide?.fullname}</span>
-              <span>님</span>
               <div className="text-sm text-muted-foreground">
-                {guide?.seeGuide?.personality}
+                {PERSONALITY_OPTIONS.find(
+                  (option) => option.value === guide?.seeGuide? .personality
+                )?.[locale as "en" | "ko" | "vn"] ||
+                  guide?.seeGuide?.personality}
               </div>
             </div>
           </div>
           <Separator className="my-6" />
           <div className="flex flex-col gap-3">
-            <div className="text-lg">요금 세부정보</div>
+            <div className="text-lg">{t("reservation.feeDetail")}</div>
             <div>
               <div className="flex justify-between">
                 <span className="underline">
                   {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTimeISO(
                     props.searchParams.starttime,
                     props.searchParams.endtime
-                  )}시간`}
+                  )}${t("reservation.hour")}`}
                 </span>
                 <span>{formatCurrency(amount)}</span>
               </div>
