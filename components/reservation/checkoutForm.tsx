@@ -63,7 +63,7 @@ export default function CheckoutForm({
     setValue,
     formState: { errors },
   } = useForm<ReservationType>({
-    resolver: zodResolver(reservationSchema),
+    resolver: zodResolver(reservationSchema(t)),
   });
 
   const onValid = async (data: ReservationType) => {
@@ -162,7 +162,7 @@ export default function CheckoutForm({
             <ErrorText text={errors.customerAgeRange.message!} />
           ) : null}
           <select
-            className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 w-36 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
+            className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 w-44 focus:outline-none flex h-10 items-center justify-between rounded-md border border-input bg-background px-3 py-2 pr-8 text-sm  ${
               customerAgeRange ? "" : "text-muted-foreground"
             }`}
             value={customerAgeRange}
@@ -171,28 +171,28 @@ export default function CheckoutForm({
             <option value="" disabled hidden>
               {t("reservation.addAgeRange")}
             </option>
-            <option value="20~25세" className="text-black">
+            <option value="20~25" className="text-black">
               20~25{t("reservation.year")}
             </option>
-            <option value="26~30세" className="text-black">
+            <option value="26~30" className="text-black">
               26~30{t("reservation.year")}
             </option>
-            <option value="31~35세" className="text-black">
+            <option value="31~35" className="text-black">
               31~35{t("reservation.year")}
             </option>
-            <option value="36~40세" className="text-black">
+            <option value="36~40" className="text-black">
               36~40{t("reservation.year")}
             </option>
-            <option value="41~45세" className="text-black">
+            <option value="41~45" className="text-black">
               41~45{t("reservation.year")}
             </option>
-            <option value="46~50세" className="text-black">
+            <option value="46~50" className="text-black">
               46~50{t("reservation.year")}
             </option>
-            <option value="51~55세" className="text-black">
+            <option value="51~55" className="text-black">
               51~55{t("reservation.year")}
             </option>
-            <option value="56~60세" className="text-black">
+            <option value="56~60" className="text-black">
               56~60{t("reservation.year")}
             </option>
           </select>

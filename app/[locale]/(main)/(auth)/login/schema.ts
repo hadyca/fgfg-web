@@ -1,10 +1,11 @@
 import { z } from "zod";
 
-export const loginSchema = z.object({
-  email: z.string().toLowerCase(),
-  password: z.string({
-    required_error: "비밀번호를 입력해주세요.",
-  }),
-});
+export const loginSchema = (t: (key: string) => string) =>
+  z.object({
+    email: z.string().toLowerCase(),
+    password: z.string({
+      required_error: t("validation.login.requiredError"),
+    }),
+  });
 
-export type LoginType = z.infer<typeof loginSchema>;
+export type LoginType = z.infer<ReturnType<typeof loginSchema>>;

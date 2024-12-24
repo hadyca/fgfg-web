@@ -19,7 +19,7 @@
     "specialDayWithLocalGirlfriendDescription": "Tận hưởng trải nghiệm đặc biệt như hẹn hò với bạn gái. Thông qua hướng dẫn viên, bạn có thể hiểu sâu hơn về suy nghĩ và văn hóa của phụ nữ Việt Nam.",
     "internationalCouple": "Bạn có quan tâm đến các cặp đôi quốc tế?",
     "internationalCoupleDescription": "Để biết liệu một cặp đôi quốc tế có phù hợp với bạn hay không, điều quan trọng nhất là hiểu và tiếp xúc nhiều lần với văn hóa của đất nước đó. Hãy trải nghiệm dễ dàng với giá cả phải chăng và thời gian hướng dẫn theo ý muốn.",
-    "betaTestDescription": "Chúng tôi hiện đang cung cấp dịch vụ beta. Nếu bạn có bất kỳ bất tiện hoặc đề xuất cải thiện nào khi sử dụng, vui lòng gửi phản hồi đến hadycas@gmail.com. Ý kiến quý báu của bạn sẽ giúp chúng tôi tạo ra dịch vụ tốt hơn. Hãy tham gia cùng chúng tôi!"
+    "betaTestDescription": "Chúng tôi hiện đang cung cấp dịch vụ beta. Nếu bạn có bất kỳ bất tiện hoặc đề xuất cải thiện nào khi sử dụng, vui lòng gửi phản hồi đến hadycas@gmail.com. �� kiến quý báu của bạn sẽ giúp chúng tôi tạo ra dịch vụ tốt hơn. Hãy tham gia cùng chúng tôi!"
   },
   "login": {
     "login": "Đăng nhập",
@@ -44,9 +44,9 @@
     "invalidPassword": "Vui lòng kiểm tra lại mật khẩu.",
     "invalidData": "Dữ liệu không hợp lệ.",
     "createAccount": {
-      "invalidUsername": "Tên người dùng không hợp lệ.",
+      "invalidUsername": "Tên người dùng không khả dụng.",
       "invalidEmail": "Vui lòng nhập địa chỉ email.",
-      "invalidPassword": "Phải có ít nhất 8 ký tự.",
+      "invalidPassword": "Mật khẩu phải có ít nhất 8 ký tự.",
       "invalidConfirmPassword": "Mật khẩu không khớp.",
       "duplicateUsername": "Tên người dùng đã tồn tại.",
       "duplicateEmail": "Email đã tồn tại."
@@ -66,6 +66,13 @@
     },
     "contactGuide": {
       "requiredError": "Trường này là bắt buộc."
+    },
+    "reservation": {
+      "requiredError": "Mục này là bắt buộc.",
+      "customerAgeRange": "Vui lòng chọn độ tuổi phù hợp."
+    },
+    "login": {
+      "requiredError": "Mục này là bắt buộc."
     }
   },
   "header": {
@@ -360,7 +367,15 @@
     "basicRulesDescription5": "Đặt chỗ chưa được xác nhận cho đến khi hướng dẫn viên chấp nhận yêu cầu trong vòng 48 giờ. Nếu đặt chỗ bị từ chối, phí sẽ được tự động hoàn lại.",
     "agreeDescription": "Bằng cách chọn nút bên dưới, bạn đồng ý với điều khoản sử dụng và chính sách hoàn tiền của fgfg, và đồng ý rằng fgfg có thể tính phí thông qua phương thức thanh toán của bạn trong trường hợp thiệt hại do lỗi của bạn. Bạn đồng ý thanh toán số tiền hiển thị khi hướng dẫn viên chấp nhận yêu cầu đặt chỗ.",
     "requestReservation": "Yêu cầu đặt chỗ",
-    "loading": "Đang tải..."
+    "loading": "Đang tải...",
+    "signUp": "Đăng ký",
+    "username": "Tên người dùng",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "FGFGMember": "Đã là thành viên FGFG? Đăng nhập",
+    "login": "Đăng nhập",
+    "noAccount": "Chưa có tài khoản? Đăng ký"
   },
   "paymentSuccess": {
     "title": "Đặt chỗ đã hoàn tất!",

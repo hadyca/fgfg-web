@@ -3,6 +3,7 @@
 import { client } from "@/lib/apolloClient";
 import { CREATE_RESERVATION } from "./queries";
 import { reservationSchema } from "./schema";
+import { getTranslations } from "next-intl/server";
 
 export async function reserveGuide(
   formData: FormData,
@@ -10,11 +11,12 @@ export async function reserveGuide(
   startTime: string,
   endTime: string
 ) {
+  const t = await getTranslations();
   const data = {
     payload: formData.get("payload"),
     customerAgeRange: formData.get("customerAgeRange"),
   };
-  const result = reservationSchema.safeParse(data);
+  const result = reservationSchema(t).safeParse(data);
 
   if (!result.success) {
     return result.error.flatten();

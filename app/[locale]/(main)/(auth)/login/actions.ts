@@ -31,7 +31,7 @@ export async function login(formData: FormData, redirectUrl: string = "/") {
     };
   }
 
-  const result = loginSchema.safeParse(data);
+  const result = loginSchema(t).safeParse(data);
   if (!result.success) {
     return { type: "zodSchema", error: t("validation.invalidData") };
   } else {

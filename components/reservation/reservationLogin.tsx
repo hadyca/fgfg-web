@@ -14,6 +14,7 @@ import {
 } from "@/app/[locale]/(main)/(auth)/login/schema";
 import { login } from "@/app/[locale]/(main)/(auth)/login/actions";
 import { Separator } from "../ui/separator";
+import { useTranslations } from "next-intl";
 
 interface ReservationLoginProps {
   setIsOpenLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,6 +29,7 @@ export default function ReservationLogin({
   startTime,
   endTime,
 }: ReservationLoginProps) {
+  const t = useTranslations();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -36,7 +38,7 @@ export default function ReservationLogin({
     setError,
     formState: { errors },
   } = useForm<LoginType>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(loginSchema(t)),
   });
 
   const onValid = async (data: LoginType) => {
@@ -65,7 +67,7 @@ export default function ReservationLogin({
   return (
     <Card className="w-full max-w-md pb-4">
       <CardHeader>
-        <CardTitle>로그인</CardTitle>
+        <CardTitle>{t("reservation.login")}</CardTitle>
       </CardHeader>
       <form
         onSubmit={handleSubmit(onValid)}
@@ -73,14 +75,14 @@ export default function ReservationLogin({
       >
         <Input
           type="email"
-          placeholder="이메일"
+          placeholder={t("reservation.email")}
           {...register("email")}
           required
         />
         {errors?.email ? <ErrorText text={errors.email.message!} /> : null}
         <Input
           type="password"
-          placeholder="비밀번호"
+          placeholder={t("reservation.password")}
           minLength={PASSWORD_MIN_LENGTH}
           {...register("password")}
           required
@@ -88,10 +90,10 @@ export default function ReservationLogin({
         {errors?.password ? (
           <ErrorText text={errors.password.message!} />
         ) : null}
-        <Button disabled={loading}>로그인</Button>
+        <Button disabled={loading}>{t("reservation.login")}</Button>
         <Separator />
         <Button variant={"secondary"} onClick={() => setIsOpenLogin(false)}>
-          계정이 없으신가요? 회원가입
+          {t("reservation.noAccount")}
         </Button>
       </form>
     </Card>

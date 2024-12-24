@@ -67,7 +67,7 @@ export default function ReservationCreateAccount({
       {!isOpenLogin ? (
         <Card className="w-full max-w-md pb-4">
           <CardHeader>
-            <CardTitle>회원 가입</CardTitle>
+            <CardTitle>{t("reservation.signUp")}</CardTitle>
           </CardHeader>
           <form
             onSubmit={handleSubmit(onValid)}
@@ -75,7 +75,7 @@ export default function ReservationCreateAccount({
           >
             <Input
               type="text"
-              placeholder="유저명"
+              placeholder={t("reservation.username")}
               minLength={1}
               maxLength={10}
               {...register("username")}
@@ -86,14 +86,14 @@ export default function ReservationCreateAccount({
             ) : null}
             <Input
               type="email"
-              placeholder="이메일"
+              placeholder={t("reservation.email")}
               {...register("email")}
               required
             />
             {errors?.email ? <ErrorText text={errors.email.message!} /> : null}
             <Input
               type="password"
-              placeholder="비밀번호"
+              placeholder={t("reservation.password")}
               minLength={PASSWORD_MIN_LENGTH}
               {...register("password")}
               required
@@ -103,7 +103,7 @@ export default function ReservationCreateAccount({
             ) : null}
             <Input
               type="password"
-              placeholder="비밀번호 확인"
+              placeholder={t("reservation.confirmPassword")}
               minLength={PASSWORD_MIN_LENGTH}
               {...register("confirmPassword")}
               required
@@ -111,14 +111,14 @@ export default function ReservationCreateAccount({
             {errors?.confirmPassword ? (
               <ErrorText text={errors.confirmPassword.message!} />
             ) : null}
-            <Button disabled={loading}>회원 가입</Button>
+            <Button disabled={loading}>{t("reservation.signUp")}</Button>
             <Separator />
             <Button
               onClick={() => setIsOpenLogin(true)}
               className="w-full"
               variant={"secondary"}
             >
-              FGFG회원이신가요? 로그인
+              {t("reservation.FGFGMember")}
             </Button>
           </form>
         </Card>

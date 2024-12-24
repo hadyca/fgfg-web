@@ -21,6 +21,20 @@
     "internationalCoupleDescription": "To find out if international relationships are right for you, it's important to understand and experience the culture multiple times. Try it easily with affordable prices and flexible guide times.",
     "betaTestDescription": "We are currently providing beta service. If you have any inconveniences or suggestions for improvement while using the service, please send feedback to hadycas@gmail.com. Your valuable opinions help us create better services. Please participate actively!"
   },
+  "login": {
+    "login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "signup": "Don't have an account? Sign up"
+  },
+  "createAccount": {
+    "createAccount": "Sign Up",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "alreadyHaveAccount": "Already a FGFG member? Login"
+  },
   "validation": {
     "invalidDate": "Please check the date again.",
     "invalidTime": "Please check the time again.",
@@ -30,9 +44,9 @@
     "invalidPassword": "Please check your password again.",
     "invalidData": "Invalid data.",
     "createAccount": {
-      "invalidUsername": "Invalid username.",
-      "invalidEmail": "Please enter your email address.",
-      "invalidPassword": "Must be at least 8 characters.",
+      "invalidUsername": "Username is not available.",
+      "invalidEmail": "Please enter an email address.",
+      "invalidPassword": "Password must be at least 8 characters.",
       "invalidConfirmPassword": "Passwords do not match.",
       "duplicateUsername": "Username already exists.",
       "duplicateEmail": "Email already exists."
@@ -51,6 +65,13 @@
       "required_error": "This field is required."
     },
     "contactGuide": {
+      "requiredError": "This field is required."
+    },
+    "reservation": {
+      "requiredError": "This field is required.",
+      "customerAgeRange": "Please select an appropriate age range."
+    },
+    "login": {
       "requiredError": "This field is required."
     }
   },
@@ -160,20 +181,6 @@
     "description4": "Refunds are not available for simple dissatisfaction with guide services.",
     "contact": "Please contact the following email for refund requests or inquiries: hadycas@gmail.com",
     "lastModified": "Last modified: December 19, 2024"
-  },
-  "login": {
-    "login": "Login",
-    "email": "Email",
-    "password": "Password",
-    "signup": "Don't have an account? Sign up"
-  },
-  "createAccount": {
-    "createAccount": "Sign Up",
-    "username": "Username",
-    "email": "Email",
-    "password": "Password",
-    "confirmPassword": "Confirm Password",
-    "alreadyHaveAccount": "Already a FGFG member? Login"
   },
   "signUpGuide": {
     "invalidResumePhoto": "Please select an image file.",
@@ -360,7 +367,15 @@
     "basicRulesDescription5": "Reservation is not confirmed until the guide accepts the request within 48 hours. If the reservation is declined, the fee will be automatically refunded.",
     "agreeDescription": "By selecting the button below, you agree to fgfg's terms of use and refund policy, and agree that fgfg may charge through your payment method in case of damage due to your fault. You agree to pay the displayed fee when the guide accepts the reservation request.",
     "requestReservation": "Request Reservation",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "signUp": "Sign Up",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "FGFGMember": "Already a FGFG member? Login",
+    "login": "Login",
+    "noAccount": "Don't have an account? Sign up"
   },
   "paymentSuccess": {
     "title": "Reservation Complete!",

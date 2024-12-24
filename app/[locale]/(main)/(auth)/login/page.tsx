@@ -24,7 +24,7 @@ export default function LogIn() {
     setError,
     formState: { errors },
   } = useForm<LoginType>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(loginSchema(t)),
   });
 
   const onValid = async (data: LoginType) => {

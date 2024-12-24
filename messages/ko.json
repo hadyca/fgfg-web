@@ -66,6 +66,13 @@
     },
     "contactGuide": {
       "requiredError": "필수 항목 입니다."
+    },
+    "reservation": {
+      "requiredError": "필수 항목 입니다.",
+      "customerAgeRange": "올바른 연령대를 선택해주세요."
+    },
+    "login": {
+      "requiredError": "필수 항목 입니다."
     }
   },
   "header": {
@@ -360,7 +367,15 @@
     "basicRulesDescription5": "가이드가 48시간 이내 예약 요청을 수락하기 전까지는 예약이 아직 확정된 것이 아닙니다. 만약 예약이 거절된다면, 요금은 자동 환불 됩니다.",
     "agreeDescription": "아래 버튼을 선택하면 fgfg가 정한 이용 약관 및 환불 정책에 동의하며, 본인에게 책임이 있는 피해가 발생할 경우 fgfg가 결제 수단을 통해 청구할 수 있다는 점에 동의하는 것입니다. 가이드가 예약 요청을 수락하면 표시된 요금에 대해 결제가 이루어짐에 동의합니다.",
     "requestReservation": "예약 요청",
-    "loading": "로딩 중..."
+    "loading": "로딩 중...",
+    "signUp": "회원 가입",
+    "username": "유저명",
+    "email": "이메일",
+    "password": "비밀번호",
+    "confirmPassword": "비밀번호 확인",
+    "FGFGMember": "FGFG회원이신가요? 로그인",
+    "login": "로그인",
+    "noAccount": "계정이 없으신가요? 회원가입"
   },
   "paymentSuccess": {
     "title": "예약이 완료되었습니다!",
