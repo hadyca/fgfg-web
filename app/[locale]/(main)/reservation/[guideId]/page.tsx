@@ -112,7 +112,7 @@ export default async function Reservation(props: ReservationProps) {
               <span className="font-semibold">{guide?.seeGuide?.fullname}</span>
               <div className="text-sm text-muted-foreground">
                 {PERSONALITY_OPTIONS.find(
-                  (option) => option.value === guide?.seeGuide? .personality
+                  (option) => option.value === guide?.seeGuide?.personality
                 )?.[locale as "en" | "ko" | "vn"] ||
                   guide?.seeGuide?.personality}
               </div>
