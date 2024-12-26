@@ -3,17 +3,19 @@
 import { client } from "@/lib/apolloClient";
 import { EDIT_GUIDE_PROFILE } from "../profile/queries";
 import { bankSchema } from "./schema";
+import { getTranslations } from "next-intl/server";
 
 export async function updateBank(formData: FormData) {
+  const t = await getTranslations();
   const data = {
     bankname: formData.get("bankname"),
     bankAccount: formData.get("bankAccount"),
   };
 
-  const result = bankSchema.safeParse(data);
+  const result = bankSchema(t).safeParse(data);
 
   if (!result.success) {
-    return { ok: false, error: "유효하지 않은 데이터 입니다." };
+    return { ok: false, error: "invalidData" };
   } else {
     const {
       data: {

@@ -118,7 +118,7 @@ export default function GoogleMapApi({
   }
 
   if (!isLoaded) {
-    return <div>Loading...</div>;
+    return <div>Loading</div>;
   }
 
   return (
