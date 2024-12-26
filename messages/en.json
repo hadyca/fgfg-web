@@ -226,7 +226,7 @@
     "resumePhotoDescription": "Please register a photo that clearly shows your face.",
     "addPhoto": "Add Photo",
     "birthdate": "Date of Birth (only year shown)",
-    "height": "Height (cm)",
+    "height": "Height(cm)",
     "languageAbility": "Language Ability",
     "languageSelect": "Select Language",
     "level": "Level",
@@ -275,7 +275,7 @@
     "guide": "Guide",
     "inactive": "(Inactive)",
     "age": "Age",
-    "height": "Height",
+    "height": "Height(cm)",
     "language": "Language",
     "introduction": "Introduction",
     "pickupLocation": "Pickup Location",
@@ -483,7 +483,9 @@
     "bankAccount": "Bank Account",
     "bankAccountDescription": "You can update your bank account information for payments",
     "guideManual": "Guide Manual",
-    "guideManualDescription": "This is a manual for guides"
+    "guideManualDescription": "Manual for guides",
+    "guideReservations": "Guide Reservations",
+    "guideReservationsDescription": "You can manage your reservations"
   },
   "guideReservations": {
     "guideManagement": "Guide Management",
@@ -538,7 +540,7 @@
     "loading": "Loading",
     "save": "Save",
     "birthdate": "Date of Birth",
-    "height": "Height",
+    "height": "Height(cm)",
     "languageAbility": "Language Ability",
     "languageSelect": "Select Language",
     "level": "Level",

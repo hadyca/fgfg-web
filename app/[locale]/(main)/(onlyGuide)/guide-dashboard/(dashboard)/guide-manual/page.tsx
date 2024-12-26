@@ -64,7 +64,9 @@ export default async function GuideManual() {
           </div>
         </div>
         <div>
-          <div className="font-bold text-lg mb-2">3. 가이드 진행</div>
+          <div className="font-bold text-lg mb-2">
+            3. {t("guideManual.guideProgress")}
+          </div>
           <div className="flex flex-col gap-2">
             <li>{t("guideManual.guideProgressDescription1")}</li>
             <li>{t("guideManual.guideProgressDescription2")}</li>

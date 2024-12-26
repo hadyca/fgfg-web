@@ -2,8 +2,10 @@
 
 import { useGuideReservationStore } from "@/store/useGuideReservationStore";
 import { CalendarDaysIcon } from "@heroicons/react/24/outline";
+import { useTranslations } from "next-intl";
 
 export default function GuideReservationsCard() {
+  const t = useTranslations();
   const { countPendingReservations } = useGuideReservationStore();
   return (
     <div className="h-32 flex flex-col justify-between">
@@ -16,9 +18,9 @@ export default function GuideReservationsCard() {
         ) : null}
       </div>
       <div>
-        <div>가이드 예약</div>
+        <div>{t("guideDashboard.guideReservations")}</div>
         <div className="text-muted-foreground text-sm">
-          예약들을 관리 할 수 있어요
+          {t("guideDashboard.guideReservationsDescription")}
         </div>
       </div>
     </div>

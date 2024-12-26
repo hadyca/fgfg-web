@@ -275,7 +275,7 @@
     "guide": "가이드",
     "inactive": "(휴업 중)",
     "age": "나이",
-    "height": "키",
+    "height": "키(cm)",
     "language": "언어",
     "introduction": "가이드 소개",
     "pickupLocation": "픽업 위치",
@@ -474,6 +474,8 @@
     "yes": "확인"
   },
   "guideDashboard": {
+    "guideReservations": "가이드 예약",
+    "guideReservationsDescription": "예약들을 관리 할 수 있어요",
     "guideManagement": "가이드 관리",
     "createGuideProfile": "가이드 프로필 생성",
     "revenue": "수익",
@@ -538,7 +540,7 @@
     "loading": "로딩 중",
     "save": "저장",
     "birthdate": "생년월일",
-    "height": "키",
+    "height": "키(cm)",
     "languageAbility": "외국어 능력",
     "languageSelect": "언어 선택",
     "level": "레벨",
