@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/hooks/use-toast";
 import { useState } from "react";
 import { updateIsActive } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+import { useTranslations } from "next-intl";
 
 interface IsActiveFormProps {
   isActive: boolean;
@@ -12,6 +13,7 @@ interface IsActiveFormProps {
 export default function IsActiveForm({
   isActive: originIsActive,
 }: IsActiveFormProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -28,18 +30,22 @@ export default function IsActiveForm({
     } else {
       setIsActive(isActive);
       toast({
-        description: "변경 되었습니다.",
+        description: t("profile.changeSuccess"),
       });
     }
     setLoading(false);
   };
   return (
     <div>
-      <div className="font-semibold mb-2">가이드 활동 일시 정지</div>
+      <div className="font-semibold mb-2">{t("profile.isActive")}</div>
       <div className="flex flex-row justify-between items-center">
-        <span>언제든 편하실 때 가이드 활동을 다시 시작해보세요! 🥰</span>
+        <span>{t("profile.isActiveDescription")}</span>
         <Button disabled={loading} onClick={() => handleActive(!isActive)}>
-          {loading ? "로딩 중" : isActive ? "활동 정지" : "활동 시작"}
+          {loading
+            ? t("profile.loading")
+            : isActive
+            ? t("profile.isActiveStop")
+            : t("profile.isActiveStart")}
         </Button>
       </div>
     </div>

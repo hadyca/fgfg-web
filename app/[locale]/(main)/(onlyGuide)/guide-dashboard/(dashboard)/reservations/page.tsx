@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Link } from "@/i18n/routing";
 import GuideReservations from "@/components/guide-dashboard/reservations/guide-reservations";
+import { getTranslations } from "next-intl/server";
 
 export const metadata = {
   title: "가이드 예약",
@@ -11,16 +12,21 @@ export const metadata = {
 };
 
 export default async function Reservations() {
+  const t = await getTranslations();
   return (
     <>
       <div className="flex flex-row items-center mb-2">
         <Link href={"/guide-dashboard"}>
-          <span className="text-primary text-lg">가이드 관리</span>
+          <span className="text-primary text-lg">
+            {t("guideReservations.guideManagement")}
+          </span>
         </Link>
         <ChevronRightIcon className="size-4" />
-        <span className="text-lg">가이드 예약</span>
+        <span className="text-lg">{t("guideReservations.reservations")}</span>
       </div>
-      <div className="font-bold text-3xl mb-10">가이드 예약</div>
+      <div className="font-bold text-3xl mb-10">
+        {t("guideReservations.reservations")}
+      </div>
       <GuideReservations />
     </>
   );

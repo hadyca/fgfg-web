@@ -11,22 +11,16 @@ import {
   PersonalityType,
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import { updatePersonality } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+import { useLocale, useTranslations } from "next-intl";
+import { PERSONALITY_OPTIONS } from "@/lib/constants";
 
 interface PersonalityFormProps {
-  personality:
-    | "귀엽고 발랄한"
-    | "섹시하고 매혹적인"
-    | "엉뚱하고 독특한"
-    | "활발하고 명랑한"
-    | "차분하고 따뜻한"
-    | "친절하고 상냥한"
-    | "긍정적이고 밝은"
-    | "유머러스하고 재치있는"
-    | "지적이고 신중한"
-    | "매력적이고 세련된";
+  personality: string;
 }
 
 export default function PersonalityForm({ personality }: PersonalityFormProps) {
+  const locale = useLocale();
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -37,9 +31,9 @@ export default function PersonalityForm({ personality }: PersonalityFormProps) {
     watch,
     formState: { errors },
   } = useForm<PersonalityType>({
-    resolver: zodResolver(personalitySchema),
+    resolver: zodResolver(personalitySchema(t)),
     defaultValues: {
-      personality,
+      personality: personality as PersonalityType["personality"],
     },
   });
 
@@ -61,7 +55,7 @@ export default function PersonalityForm({ personality }: PersonalityFormProps) {
       });
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("profile.changeSuccess"),
       });
     }
     setLoading(false);
@@ -69,7 +63,7 @@ export default function PersonalityForm({ personality }: PersonalityFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">성격</div>
+      <div className="font-semibold mb-2">{t("profile.personality")}</div>
       <div className="flex flex-row justify-between items-center">
         <div>
           <select
@@ -81,38 +75,17 @@ export default function PersonalityForm({ personality }: PersonalityFormProps) {
             }`}
           >
             <option value="" disabled hidden>
-              성격을 선택해주세요
+              {t("profile.selectPersonality")}
             </option>
-            <option value="귀엽고 발랄한" className="text-black">
-              귀엽고 발랄한
-            </option>
-            <option value="섹시하고 매혹적인" className="text-black">
-              섹시하고 매혹적인
-            </option>
-            <option value="엉뚱하고 독특한" className="text-black">
-              엉뚱하고 독특한
-            </option>
-            <option value="활발하고 명랑한" className="text-black">
-              활발하고 명랑한
-            </option>
-            <option value="차분하고 따뜻한" className="text-black">
-              차분하고 따뜻한
-            </option>
-            <option value="친절하고 상냥한" className="text-black">
-              친절하고 상냥한
-            </option>
-            <option value="긍정적이고 밝은" className="text-black">
-              긍정적이고 밝은
-            </option>
-            <option value="유머러스하고 재치있는" className="text-black">
-              유머러스하고 재치있는
-            </option>
-            <option value="지적이고 신중한" className="text-black">
-              지적이고 신중한
-            </option>
-            <option value="매력적이고 세련된" className="text-black">
-              매력적이고 세련된
-            </option>
+            {PERSONALITY_OPTIONS.map((option) => (
+              <option
+                key={option.value}
+                value={option.value}
+                className="text-black"
+              >
+                {option[locale as keyof typeof option]}
+              </option>
+            ))}
           </select>
         </div>
         <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>

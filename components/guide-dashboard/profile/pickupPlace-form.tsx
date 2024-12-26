@@ -10,13 +10,10 @@ import {
   pickupPlaceSchema,
   PickupPlaceType,
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
-import {
-  updateGuideIntro,
-  updatePickupPlace,
-} from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+import { updatePickupPlace } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import GoogleMapApi from "@/components/googleMapApi";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { useTranslations } from "next-intl";
 
 interface PickupPlaceFormProps {
   pickupPlaceMain: string;
@@ -31,6 +28,7 @@ export default function PickupPlaceForm({
   pickupPlaceLng,
   pickupPlaceDetail,
 }: PickupPlaceFormProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -41,7 +39,7 @@ export default function PickupPlaceForm({
     setValue,
     formState: { errors },
   } = useForm<PickupPlaceType>({
-    resolver: zodResolver(pickupPlaceSchema),
+    resolver: zodResolver(pickupPlaceSchema(t)),
     defaultValues: {
       pickupPlaceMain,
       pickupPlaceLat,
@@ -66,7 +64,7 @@ export default function PickupPlaceForm({
       });
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("profile.changeSuccess"),
       });
     }
     setLoading(false);
@@ -75,7 +73,7 @@ export default function PickupPlaceForm({
   return (
     <form onSubmit={handleSubmit(onValid)}>
       <div className="mb-3">
-        <div className="font-semibold mb-2">픽업 위치</div>
+        <div className="font-semibold mb-2">{t("profile.pickupPlace")}</div>
         {errors?.pickupPlaceMain ? (
           <ErrorText text={errors.pickupPlaceMain.message!} />
         ) : null}
@@ -93,21 +91,23 @@ export default function PickupPlaceForm({
         />
       </div>
       <div>
-        <div className="font-semibold">픽업 위치 구체적인 설명</div>
+        <div className="font-semibold">{t("profile.pickupPlaceDetail")}</div>
         <div className="text-sm text-muted-foreground mb-2">
-          고객님께서 길을 헤매지 않도록, 조금 더 구체적으로 설명해주세요
+          {t("profile.pickupPlaceDetailDescription")}
         </div>
         {errors?.pickupPlaceDetail ? (
           <ErrorText text={errors.pickupPlaceDetail.message!} />
         ) : null}
         <Textarea
           {...register("pickupPlaceDetail")}
-          placeholder="EX) 노트르담 대성당 맞은편에 있는 카페에요. 카페 안에서 만나요"
+          placeholder={t("profile.pickupPlaceDetailExample")}
           required
         />
       </div>
       <div className="flex justify-end mt-3">
-        <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
+        <Button disabled={loading}>
+          {loading ? t("profile.loading") : t("profile.save")}
+        </Button>
       </div>
     </form>
   );

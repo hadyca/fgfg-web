@@ -8,8 +8,10 @@ import {
 } from "@heroicons/react/24/solid";
 import GuideReservationList from "./guide-reservation-list";
 import { useGuideReservationStore } from "@/store/useGuideReservationStore";
+import { useTranslations } from "next-intl";
 
 export default function GuideReservations() {
+  const t = useTranslations();
   const { selectedTab, setSelectedTab, reservations } =
     useGuideReservationStore();
 
@@ -25,21 +27,21 @@ export default function GuideReservations() {
           onClick={() => setSelectedTab("upcoming")}
           className="w-full"
         >
-          다가오는 예약
+          {t("guideReservations.upcoming")}
         </Button>
         <Button
           variant={selectedTab === "completed" ? "secondary" : "ghost"}
           onClick={() => setSelectedTab("completed")}
           className="w-full"
         >
-          완료된 예약
+          {t("guideReservations.completed")}
         </Button>
         <Button
           variant={selectedTab === "cancelled" ? "secondary" : "ghost"}
           onClick={() => setSelectedTab("cancelled")}
           className="w-full"
         >
-          취소된 예약
+          {t("guideReservations.cancelled")}
         </Button>
       </div>
       <div className="mt-3">
@@ -61,10 +63,10 @@ export default function GuideReservations() {
             )}
             <span className="text-lg">
               {selectedTab === "upcoming"
-                ? "다가오는 예약이 없습니다."
+                ? t("guideReservations.noUpcomingReservations")
                 : selectedTab === "completed"
-                ? "완료된 예약이 없습니다."
-                : "취소된 예약이 없습니다."}
+                ? t("guideReservations.noCompletedReservations")
+                : t("guideReservations.noCancelledReservations")}
             </span>
           </div>
         )}

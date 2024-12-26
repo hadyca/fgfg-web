@@ -2,6 +2,7 @@ import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { Link } from "@/i18n/routing";
 import ProfileInfo from "@/components/guide-dashboard/profile/profile-info";
 import getGuide from "@/lib/getGuide";
+import { getTranslations } from "next-intl/server";
 
 export const metadata = {
   title: "프로필",
@@ -10,17 +11,20 @@ export const metadata = {
 };
 
 export default async function Profile() {
+  const t = await getTranslations();
   const guide = await getGuide();
   return (
     <>
       <div className="flex flex-row items-center mb-2">
         <Link href={"/guide-dashboard"}>
-          <span className="text-primary text-lg">가이드 관리</span>
+          <span className="text-primary text-lg">
+            {t("profile.guideManagement")}
+          </span>
         </Link>
         <ChevronRightIcon className="size-4" />
-        <span className="text-lg">프로필</span>
+        <span className="text-lg">{t("profile.profile")}</span>
       </div>
-      <div className="font-bold text-3xl mb-10">프로필</div>
+      <div className="font-bold text-3xl mb-10">{t("profile.profile")}</div>
       <ProfileInfo
         fullname={guide?.seeMyGuide.fullname}
         birthdate={guide?.seeMyGuide.birthdate}

@@ -3,6 +3,7 @@ import { Link } from "@/i18n/routing";
 import getGuide from "@/lib/getGuide";
 import RevenueInfo from "@/components/guide-dashboard/revenue/revenue-info";
 import { getUntransferredRevenue } from "./action";
+import { getTranslations } from "next-intl/server";
 
 export const metadata = {
   title: "수익",
@@ -11,6 +12,7 @@ export const metadata = {
 };
 
 export default async function Revenue() {
+  const t = await getTranslations();
   const guide = await getGuide();
   const unTransferredRevenue = await getUntransferredRevenue();
 
@@ -18,12 +20,14 @@ export default async function Revenue() {
     <>
       <div className="flex flex-row items-center mb-2">
         <Link href={"/guide-dashboard"}>
-          <span className="text-primary text-lg">가이드 관리</span>
+          <span className="text-primary text-lg">
+            {t("revenue.guideManagement")}
+          </span>
         </Link>
         <ChevronRightIcon className="size-4" />
-        <span className="text-lg">수익</span>
+        <span className="text-lg">{t("revenue.revenue")}</span>
       </div>
-      <div className="font-bold text-3xl mb-10">수익</div>
+      <div className="font-bold text-3xl mb-10">{t("revenue.revenue")}</div>
       <RevenueInfo
         totalAmount={guide?.seeMyGuide.totalAmount}
         totalUnTransferredAmount={guide?.seeMyGuide.totalUnTransferredAmount}

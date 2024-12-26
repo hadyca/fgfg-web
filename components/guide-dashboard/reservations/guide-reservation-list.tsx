@@ -33,6 +33,7 @@ import {
   confirmReservation,
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/reservations/actions";
 import { useGuideReservationStore } from "@/store/useGuideReservationStore";
+import { useTranslations } from "next-intl";
 
 interface User {
   avatar: string;
@@ -63,6 +64,7 @@ export default function GuideReservationList({
   reservations,
   selected,
 }: UpcomingReservationsProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [rejectLoading, setRejectLoading] = useState(false);
@@ -111,13 +113,15 @@ export default function GuideReservationList({
         <Card key={reservation.id} className="shadow-md max-w-full p-6 h-fit">
           <div className="flex flex-row items-center justify-between mb-3">
             <span className="text-sm text-muted-foreground">
-              예약번호:{reservation.id}
+              {t("guideReservations.reservationNumber")}:{reservation.id}
             </span>
             {selected === "upcoming" ? (
               reservation.guideConfirm ? (
                 <div className="flex items-center gap-2 bg-green-100 text-green-700 px-3 py-2 rounded-md">
                   <CheckCircleIcon className="h-5 w-5 text-green-700" />
-                  <span className="font-semibold">예약 확정</span>
+                  <span className="font-semibold">
+                    {t("guideReservations.reservationConfirmed")}
+                  </span>
                 </div>
               ) : (
                 <div className="flex flex-row gap-3">
@@ -127,21 +131,25 @@ export default function GuideReservationList({
                         disabled={rejectLoading || confirmLoading}
                         variant={"outline"}
                       >
-                        {rejectLoading ? "로딩 중..." : "거절"}
+                        {rejectLoading
+                          ? t("guideReservations.loading")
+                          : t("guideReservations.reject")}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent className="max-w-sm">
                       <AlertDialogHeader>
                         <AlertDialogTitle>
-                          예약을 거절하시겠어요?
+                          {t("guideReservations.rejectDescription")}
                         </AlertDialogTitle>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>아니요</AlertDialogCancel>
+                        <AlertDialogCancel>
+                          {t("guideReservations.no")}
+                        </AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => handleReject(reservation.id)}
                         >
-                          확인
+                          {t("guideReservations.yes")}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -149,21 +157,25 @@ export default function GuideReservationList({
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button disabled={rejectLoading || confirmLoading}>
-                        {confirmLoading ? "로딩 중..." : "수락"}
+                        {confirmLoading
+                          ? t("guideReservations.loading")
+                          : t("guideReservations.accept")}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent className="max-w-sm">
                       <AlertDialogHeader>
                         <AlertDialogTitle>
-                          예약을 수락하시겠어요?
+                          {t("guideReservations.acceptDescription")}
                         </AlertDialogTitle>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel>아니요</AlertDialogCancel>
+                        <AlertDialogCancel>
+                          {t("guideReservations.no")}
+                        </AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => handleConfirm(reservation.id)}
                         >
-                          확인
+                          {t("guideReservations.yes")}
                         </AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
@@ -173,12 +185,16 @@ export default function GuideReservationList({
             ) : selected === "completed" ? (
               <div className="flex items-center gap-2 bg-green-100 text-green-700 px-3 py-2 rounded-md">
                 <CheckCircleIcon className="h-5 w-5 text-green-700" />
-                <span className="font-semibold">예약 확정</span>
+                <span className="font-semibold">
+                  {t("guideReservations.reservationConfirmed")}
+                </span>
               </div>
             ) : (
               <div className="flex items-center gap-2 bg-red-100 text-red-700 px-3 py-2 rounded-md">
                 <XCircleIcon className="h-5 w-5 text-red-700" />
-                <span className="font-semibold">예약 취소됨</span>
+                <span className="font-semibold">
+                  {t("guideReservations.reservationCanceled")}
+                </span>
               </div>
             )}
           </div>
@@ -201,18 +217,26 @@ export default function GuideReservationList({
               </Avatar>
             </div>
             <div>
-              <div className="font-semibold">유저명</div>
+              <div className="font-semibold">
+                {t("guideReservations.username")}
+              </div>
               <span className="mr-1">{reservation.user.username}</span>
               <span>
-                <span>{`(${reservation.customerAgeRange})`}</span>
+                <span>{`(${reservation.customerAgeRange}${t(
+                  "guideReservations.age"
+                )})`}</span>
               </span>
             </div>
             <div>
-              <div className="font-semibold">예약 날짜</div>
+              <div className="font-semibold">
+                {t("guideReservations.reservationDate")}
+              </div>
               <span>{convertDate(reservation.startTime)}</span>
             </div>
             <div>
-              <div className="font-semibold">예약 시간</div>
+              <div className="font-semibold">
+                {t("guideReservations.reservationTime")}
+              </div>
               <span>
                 {`${convertToVietnamTime(
                   reservation.startTime
@@ -220,7 +244,9 @@ export default function GuideReservationList({
               </span>
             </div>
             <div>
-              <div className="font-semibold">픽업 위치</div>
+              <div className="font-semibold">
+                {t("guideReservations.pickupLocation")}
+              </div>
               <div className="flex flex-col">
                 <div>
                   <a
@@ -240,13 +266,15 @@ export default function GuideReservationList({
               </div>
             </div>
             <div>
-              <div className="font-semibold">요금</div>
+              <div className="font-semibold">
+                {t("guideReservations.feeDetail")}
+              </div>
               <div>
                 <span className="underline">
                   {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTimeISO(
                     reservation.startTime,
                     reservation.endTime
-                  )}시간`}
+                  )}${t("guideReservations.hour")}`}
                 </span>
                 <span>={formatCurrency(reservation.serviceFee)}</span>
               </div>

@@ -12,12 +12,14 @@ import {
   FullnameType,
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import { updateFullname } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+import { useTranslations } from "next-intl";
 
 interface FullnameFormProps {
   fullname: string;
 }
 
 export default function FullnameForm({ fullname }: FullnameFormProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ export default function FullnameForm({ fullname }: FullnameFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<FullnameType>({
-    resolver: zodResolver(fullnameSchema),
+    resolver: zodResolver(fullnameSchema(t)),
     defaultValues: {
       fullname,
     },
@@ -50,7 +52,7 @@ export default function FullnameForm({ fullname }: FullnameFormProps) {
       });
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("profile.changeSuccess"),
       });
     }
 
@@ -59,7 +61,7 @@ export default function FullnameForm({ fullname }: FullnameFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">이름</div>
+      <div className="font-semibold mb-2">{t("profile.name")}</div>
       <div className="flex flex-row justify-between items-center">
         <Input
           className="w-2/3"
@@ -69,7 +71,9 @@ export default function FullnameForm({ fullname }: FullnameFormProps) {
           {...register("fullname")}
           required
         />
-        <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
+        <Button disabled={loading}>
+          {loading ? t("profile.loading") : t("profile.save")}
+        </Button>
       </div>
       {errors?.fullname ? <ErrorText text={errors.fullname.message!} /> : null}
     </form>

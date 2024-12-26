@@ -12,12 +12,14 @@ import {
   PhoneType,
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import { updatePhone } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+import { useTranslations } from "next-intl";
 
 interface PhoneFormProps {
   phone: string;
 }
 
 export default function PhoneForm({ phone }: PhoneFormProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ export default function PhoneForm({ phone }: PhoneFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<PhoneType>({
-    resolver: zodResolver(phoneSchema),
+    resolver: zodResolver(phoneSchema(t)),
     defaultValues: {
       phone,
     },
@@ -50,7 +52,7 @@ export default function PhoneForm({ phone }: PhoneFormProps) {
       });
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("profile.changeSuccess"),
       });
     }
     setLoading(false);
@@ -58,10 +60,12 @@ export default function PhoneForm({ phone }: PhoneFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">핸드폰 번호</div>
+      <div className="font-semibold mb-2">{t("profile.phone")}</div>
       <div className="flex flex-row justify-between items-center">
         <Input className="w-2/3" type="text" {...register("phone")} required />
-        <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
+        <Button disabled={loading}>
+          {loading ? t("profile.loading") : t("profile.save")}
+        </Button>
       </div>
       {errors?.phone ? <ErrorText text={errors.phone.message!} /> : null}
     </form>

@@ -14,6 +14,7 @@ import { updateLanguage } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboar
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { MinusCircleIcon } from "@heroicons/react/24/outline";
 import { LANGUAGE_OPTIONS } from "@/lib/constants";
+import { useLocale, useTranslations } from "next-intl";
 
 interface LanguageInput {
   id: number;
@@ -28,6 +29,8 @@ interface LanguageFormProps {
 export default function LanguageForm({
   language: originLanguage,
 }: LanguageFormProps) {
+  const locale = useLocale();
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -43,7 +46,7 @@ export default function LanguageForm({
     watch,
     formState: { errors },
   } = useForm<LanguageType>({
-    resolver: zodResolver(languageSchema),
+    resolver: zodResolver(languageSchema(t)),
     defaultValues: {
       language: initialLanguage,
     },
@@ -84,7 +87,8 @@ export default function LanguageForm({
       .filter((_, index) => index !== currentIndex)
       .map((option) => option.language);
     return LANGUAGE_OPTIONS.map((lang) => ({
-      name: lang.value,
+      name: lang[locale as keyof typeof lang] || lang.ko,
+      value: lang.value,
       disabled: selectedLanguages.includes(lang.value),
     }));
   };
@@ -106,7 +110,7 @@ export default function LanguageForm({
       });
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("profile.changeSuccess"),
       });
     }
 
@@ -115,7 +119,7 @@ export default function LanguageForm({
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">외국어 능력</div>
+      <div className="font-semibold mb-2">{t("profile.languageAbility")}</div>
       <div className="flex flex-row justify-between items-center">
         <div className="space-y-1">
           {errors?.language ? (
@@ -127,19 +131,21 @@ export default function LanguageForm({
                 <select
                   value={option.language}
                   onChange={(e) => handleLanguageChange(index, e.target.value)}
-                  className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
+                  className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-40 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
                     option.language ? "" : "text-muted-foreground"
                   }`}
                 >
                   <option value="" disabled hidden>
-                    언어 선택
+                    {t("profile.languageSelect")}
                   </option>
                   {getAvailableLanguages(index).map((lang) => (
                     <option
-                      key={lang.name}
-                      value={lang.name}
+                      key={lang.value}
+                      value={lang.value}
                       disabled={lang.disabled}
-                      className="text-black"
+                      className={`${
+                        lang.disabled ? "text-neutral-300" : "text-black"
+                      }`}
                     >
                       {lang.name}
                     </option>
@@ -150,15 +156,15 @@ export default function LanguageForm({
                 <select
                   value={option.level}
                   onChange={(e) => handleLevelChange(index, e.target.value)}
-                  className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
+                  className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-40 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
                     option.level ? "" : "text-muted-foreground"
                   }`}
                 >
                   <option value="" disabled hidden>
-                    레벨
+                    {t("profile.level")}
                   </option>
                   <option value="1" className="text-black">
-                    1(기초 수준)
+                    1 {t("profile.basicLevel")}
                   </option>
                   <option value="2" className="text-black">
                     2
@@ -170,7 +176,7 @@ export default function LanguageForm({
                     4
                   </option>
                   <option value="5" className="text-black">
-                    5(원어민 수준)
+                    5 {t("profile.nativeLevel")}
                   </option>
                 </select>
               </div>
@@ -185,14 +191,16 @@ export default function LanguageForm({
               variant={"outline"}
               onClick={handleAddLanguage}
               type="button"
-              className="flex items-center justify-between w-36 pl-1 gap-1"
+              className="flex items-center justify-between w-40 pl-1 gap-1"
             >
               <PlusCircleIcon className="w-6 h-6 text-primary" />
-              <span>언어 추가하기</span>
+              <span>{t("profile.addLanguage")}</span>
             </Button>
           )}
         </div>
-        <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
+        <Button disabled={loading}>
+          {loading ? t("profile.loading") : t("profile.save")}
+        </Button>
       </div>
       {errors?.language ? <ErrorText text={errors.language.message!} /> : null}
     </form>

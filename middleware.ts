@@ -8,7 +8,14 @@ import { routing } from "./i18n/routing";
 const onlyLogoutUrls = new Set(["/login", "/create-account"]);
 
 //로그인 상태 - 가이드&일반 모두 접속 가능함
-const onlyLogInUrls = new Set(["/user-dashboard", "/signup-guide"]);
+const onlyLogInUrls = new Set([
+  "/ko/user-dashboard",
+  "/vn/user-dashboard",
+  "/en/user-dashboard",
+  "/ko/signup-guide",
+  "/vn/signup-guide",
+  "/en/signup-guide",
+]);
 
 //로그인 상태 - 가이드만 접속 가능
 const onlyGuideUrls = new Set(["/guide-dashboard"]);

@@ -9,6 +9,7 @@ import {
   IdentificationIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 
 export const metadata = {
   title: "대시보드",
@@ -17,16 +18,17 @@ export const metadata = {
 };
 
 export default async function GuideDashboard() {
+  const t = await getTranslations();
   const guide = await getGuide();
 
   return (
     <div className="max-w-6xl mx-auto my-10 px-6">
-      <div className="text-3xl mb-2">가이드 관리</div>
+      <div className="text-3xl mb-2">{t("guideDashboard.guideManagement")}</div>
       <div className="text-lg flex flex-row justify-between items-center">
         <span className="font-semibold">{guide?.seeMyGuide?.fullname}</span>
         {!guide?.seeMyGuide?.mainGuidePhoto ? (
           <Link href={"/guide-dashboard/create-guide-profile"}>
-            <Button>가이드 프로필 생성</Button>
+            <Button>{t("guideDashboard.createGuideProfile")}</Button>
           </Link>
         ) : null}
       </div>
@@ -41,9 +43,9 @@ export default async function GuideDashboard() {
             <div className="h-32 flex flex-col justify-between">
               <ChartBarIcon className="size-10" strokeWidth={1.2} />
               <div>
-                <div>수익</div>
+                <div>{t("guideDashboard.revenue")}</div>
                 <div className="text-muted-foreground text-sm">
-                  수익 내역과 미정산 금액을 확인 할 수 있어요
+                  {t("guideDashboard.revenueDescription")}
                 </div>
               </div>
             </div>
@@ -54,9 +56,9 @@ export default async function GuideDashboard() {
             <div className="h-32 flex flex-col justify-between">
               <IdentificationIcon className="size-10" strokeWidth={1.2} />
               <div>
-                <div>프로필</div>
+                <div>{t("guideDashboard.profile")}</div>
                 <div className="text-muted-foreground text-sm">
-                  프로필 정보를 수정할 수 있어요
+                  {t("guideDashboard.profileDescription")}
                 </div>
               </div>
             </div>
@@ -67,9 +69,9 @@ export default async function GuideDashboard() {
             <div className="h-32 flex flex-col justify-between">
               <BanknotesIcon className="size-10" strokeWidth={1.2} />
               <div>
-                <div>입금 계좌</div>
+                <div>{t("guideDashboard.bankAccount")}</div>
                 <div className="text-muted-foreground text-sm">
-                  입금 받을 계좌 정보를 수정 할 수 있어요
+                  {t("guideDashboard.bankAccountDescription")}
                 </div>
               </div>
             </div>
@@ -83,9 +85,9 @@ export default async function GuideDashboard() {
                 strokeWidth={1.2}
               />
               <div>
-                <div>가이드 매뉴얼</div>
+                <div>{t("guideDashboard.guideManual")}</div>
                 <div className="text-muted-foreground text-sm">
-                  가이드를 위한 매뉴얼이에요
+                  {t("guideDashboard.guideManualDescription")}
                 </div>
               </div>
             </div>

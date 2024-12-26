@@ -12,12 +12,14 @@ import {
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import { updateGuideIntro } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { Textarea } from "@/components/ui/textarea";
+import { useTranslations } from "next-intl";
 
 interface GuideIntroFormProps {
   guideIntro: string;
 }
 
 export default function GuideIntroForm({ guideIntro }: GuideIntroFormProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ export default function GuideIntroForm({ guideIntro }: GuideIntroFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<GuideIntroType>({
-    resolver: zodResolver(guideIntroSchema),
+    resolver: zodResolver(guideIntroSchema(t)),
     defaultValues: {
       guideIntro,
     },
@@ -49,7 +51,7 @@ export default function GuideIntroForm({ guideIntro }: GuideIntroFormProps) {
       });
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("profile.changeSuccess"),
       });
     }
     setLoading(false);
@@ -57,14 +59,14 @@ export default function GuideIntroForm({ guideIntro }: GuideIntroFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">가이드 소개</div>
+      <div className="font-semibold mb-2">{t("profile.guideIntro")}</div>
       <div className="flex flex-col items-end">
         <Textarea {...register("guideIntro")} required />
         {errors?.guideIntro ? (
           <ErrorText text={errors.guideIntro.message!} />
         ) : null}
         <Button className="mt-3" disabled={loading}>
-          {loading ? "로딩 중" : "저장"}
+          {loading ? t("profile.loading") : t("profile.save")}
         </Button>
       </div>
     </form>

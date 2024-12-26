@@ -187,11 +187,9 @@ export default function SignUpGuide() {
       .map((option) => option.language);
 
     return LANGUAGE_OPTIONS.map((lang) => ({
-      name: lang[locale as keyof typeof lang] || lang.ko, // locale에 맞는 언어 표시, 없으면 한국어로
-      value: lang.value, // value 값 사용
-      disabled: selectedLanguages.includes(
-        lang[locale as keyof typeof lang] || lang.ko
-      ),
+      name: lang[locale as keyof typeof lang] || lang.ko,
+      value: lang.value,
+      disabled: selectedLanguages.includes(lang.value),
     }));
   };
 
@@ -334,7 +332,9 @@ export default function SignUpGuide() {
                           key={lang.value}
                           value={lang.value}
                           disabled={lang.disabled}
-                          className="text-black"
+                          className={`${
+                            lang.disabled ? "text-neutral-300" : "text-black"
+                          }`}
                         >
                           {lang.name}
                         </option>
@@ -345,7 +345,7 @@ export default function SignUpGuide() {
                     <select
                       value={option.level}
                       onChange={(e) => handleLevelChange(index, e.target.value)}
-                      className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-36 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
+                      className={`focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 h-10 w-40 rounded-md border border-input px-3 py-2 text-sm focus:outline-none ${
                         option.level ? "" : "text-muted-foreground"
                       }`}
                     >

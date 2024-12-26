@@ -16,6 +16,7 @@ import { getUploadUrl } from "@/app/[locale]/(main)/signup-guide/actions";
 import { ACCEPTED_IMAGE_TYPES } from "@/lib/constants";
 import Spinner from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 interface GuidePhotosInput {
   fileUrlOrder: number;
@@ -27,6 +28,7 @@ interface GuidePhotosFormProps {
 }
 
 export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [photoLoading, setPhotoLoading] = useState<boolean[]>(
@@ -43,7 +45,7 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
     setError,
     formState: { errors },
   } = useForm<GuidePhotosType>({
-    resolver: zodResolver(guidePhotosSchema),
+    resolver: zodResolver(guidePhotosSchema(t)),
     defaultValues: {
       guidePhotos: guidePhotos.map((photo) => ({
         ...photo,
@@ -75,7 +77,7 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
     const fileType = files?.[0]?.type;
     const typeOk = fileType ? ACCEPTED_IMAGE_TYPES.includes(fileType) : false;
     if (!typeOk) {
-      setError("guidePhotos", { message: "이미지 파일을 선택해주세요." });
+      setError("guidePhotos", { message: t("profile.imageFile") });
       input.value = ""; // 선택한 파일 초기화
       return;
     }
@@ -163,7 +165,7 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
           });
 
           if (response.status !== 200) {
-            throw new Error("이미지 업로드에 실패했습니다.");
+            throw new Error(t("profile.imageUploadFailed"));
           }
         })
       );
@@ -188,12 +190,12 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
         });
       } else {
         toast({
-          description: "변경 되었습니다.",
+          description: t("profile.changeSuccess"),
         });
       }
     } catch (error) {
       setError("guidePhotos", {
-        message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
+        message: t("profile.photoUploadFailed"),
       });
     } finally {
       setLoading(false);
@@ -233,7 +235,7 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">가이드 프로필 사진</div>
+      <div className="font-semibold mb-2">{t("profile.guideProfilePhoto")}</div>
       <div className="flex flex-row justify-between items-end">
         <div className="flex gap-3 flex-wrap">
           {Array.from({ length: 8 }).map((_, index) => (
@@ -257,7 +259,9 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
                         index === 0 ? "font-bold" : ""
                       }`}
                     >
-                      {index === 0 ? "대표 사진" : "사진 추가"}
+                      {index === 0
+                        ? t("profile.representativePhoto")
+                        : t("profile.addPhoto")}
                     </div>
                   </>
                 ) : (
@@ -287,7 +291,9 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
             </div>
           ))}
         </div>
-        <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
+        <Button disabled={loading}>
+          {loading ? t("profile.loading") : t("profile.save")}
+        </Button>
       </div>
       {errors?.guidePhotos ? (
         <ErrorText text={errors.guidePhotos.message!} />

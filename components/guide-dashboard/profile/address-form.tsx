@@ -12,12 +12,14 @@ import {
   AddressType,
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import { updateAddress } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+import { useTranslations } from "next-intl";
 
 interface AddressFormProps {
   address: string;
 }
 
 export default function AddressForm({ address }: AddressFormProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ export default function AddressForm({ address }: AddressFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<AddressType>({
-    resolver: zodResolver(addressSchema),
+    resolver: zodResolver(addressSchema(t)),
     defaultValues: {
       address,
     },
@@ -50,7 +52,7 @@ export default function AddressForm({ address }: AddressFormProps) {
       });
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("profile.changeSuccess"),
       });
     }
     setLoading(false);
@@ -58,7 +60,7 @@ export default function AddressForm({ address }: AddressFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">거주지 주소</div>
+      <div className="font-semibold mb-2">{t("profile.address")}</div>
       <div className="flex flex-row justify-between items-center">
         <Input
           className="w-2/3"
@@ -66,7 +68,9 @@ export default function AddressForm({ address }: AddressFormProps) {
           {...register("address")}
           required
         />
-        <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
+        <Button disabled={loading}>
+          {loading ? t("profile.loading") : t("profile.save")}
+        </Button>
       </div>
       {errors?.address ? <ErrorText text={errors.address.message!} /> : null}
     </form>

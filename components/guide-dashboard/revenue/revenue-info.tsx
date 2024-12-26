@@ -1,9 +1,5 @@
 "use client";
 
-import { Link } from "@/i18n/routing";
-import { ArrowUpRight } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -21,6 +17,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { useLocale, useTranslations } from "next-intl";
 
 interface Reservation {
   id: number;
@@ -46,14 +43,6 @@ interface RevenueInfoProps {
   oneMonthRevenue: OneMonthRevenue[];
   totalThisMonthRevenue: number;
 }
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
-];
 
 const chartConfig = {
   amount: {
@@ -71,12 +60,16 @@ export default function RevenueInfo({
   oneMonthRevenue,
   totalThisMonthRevenue,
 }: RevenueInfoProps) {
+  const locale = useLocale();
+  const t = useTranslations();
   return (
     <div className="flex flex-col gap-4 md:gap-8">
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">총 수익</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("revenue.totalAmount")}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatToVND(totalAmount)}</div>
@@ -85,7 +78,7 @@ export default function RevenueInfo({
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">
-              미정산 총 금액
+              {t("revenue.totalUnTransferredAmount")}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -96,20 +89,24 @@ export default function RevenueInfo({
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">총 예약 건수</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("revenue.totalReservations")}
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{`${totalReservations}건`}</div>
+            <div className="text-2xl font-bold">{`${totalReservations}`}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">
-              총 가이드 시간
+              {t("revenue.totalGuideTime")}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{`${totalGuideTime}시간`}</div>
+            <div className="text-2xl font-bold">{`${totalGuideTime}${t(
+              "revenue.hour"
+            )}`}</div>
           </CardContent>
         </Card>
       </div>
@@ -117,9 +114,9 @@ export default function RevenueInfo({
         <Card className="lg:col-span-6">
           <CardHeader className="flex flex-row items-center">
             <div className="grid gap-2">
-              <CardTitle>{`이번 달 총 수익 -  ${formatToVND(
-                totalThisMonthRevenue
-              )}`}</CardTitle>
+              <CardTitle>{`${t(
+                "revenue.thisMonthTotalRevenue"
+              )} -  ${formatToVND(totalThisMonthRevenue)}`}</CardTitle>
             </div>
           </CardHeader>
           <CardContent>
@@ -134,10 +131,13 @@ export default function RevenueInfo({
                   minTickGap={32}
                   tickFormatter={(value) => {
                     const date = new Date(value);
-                    return date.toLocaleDateString("vi-VN", {
-                      month: "short",
-                      day: "numeric",
-                    });
+                    return date.toLocaleDateString(
+                      locale === "ko" ? "ko" : locale === "vn" ? "vi" : "en",
+                      {
+                        month: "short",
+                        day: "numeric",
+                      }
+                    );
                   }}
                 />
                 <ChartTooltip
@@ -145,11 +145,18 @@ export default function RevenueInfo({
                     <ChartTooltipContent
                       className="w-[150px]"
                       labelFormatter={(value) => {
-                        return new Date(value).toLocaleDateString("vi-VN", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        });
+                        return new Date(value).toLocaleDateString(
+                          locale === "ko"
+                            ? "ko"
+                            : locale === "vn"
+                            ? "vi"
+                            : "en",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          }
+                        );
                       }}
                       formatter={(value, name, props) => {
                         return formatToVND(props.payload.amount);
@@ -164,15 +171,17 @@ export default function RevenueInfo({
         </Card>
         <Card className="lg:col-span-4 h-full">
           <CardHeader>
-            <CardTitle>미정산 금액 리스트</CardTitle>
+            <CardTitle>{t("revenue.unTransferredRevenueList")}</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>예약 번호</TableHead>
-                  <TableHead>결제 날짜</TableHead>
-                  <TableHead className="text-right">금액</TableHead>
+                  <TableHead>{t("revenue.reservationNumber")}</TableHead>
+                  <TableHead>{t("revenue.paymentDate")}</TableHead>
+                  <TableHead className="text-right">
+                    {t("revenue.amount")}
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

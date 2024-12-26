@@ -14,6 +14,7 @@ import PersonalityForm from "./personality-form";
 import GuideIntroForm from "./guideIntro-form";
 import PickupPlaceForm from "./pickupPlace-form";
 import IsActiveForm from "./isActive-form";
+import { useTranslations } from "next-intl";
 
 interface LanguageInput {
   id: number;
@@ -34,17 +35,7 @@ interface ProfileInfoProps {
   phone: string;
   language: LanguageInput[];
   guidePhotos: GuidePhotosInput[];
-  personality:
-    | "귀엽고 발랄한"
-    | "섹시하고 매혹적인"
-    | "엉뚱하고 독특한"
-    | "활발하고 명랑한"
-    | "차분하고 따뜻한"
-    | "친절하고 상냥한"
-    | "긍정적이고 밝은"
-    | "유머러스하고 재치있는"
-    | "지적이고 신중한"
-    | "매력적이고 세련된";
+  personality: string;
   guideIntro: string;
   pickupPlaceMain: string;
   pickupPlaceLat: number;
@@ -69,6 +60,7 @@ export default function ProfileInfo({
   pickupPlaceDetail,
   isActive,
 }: ProfileInfoProps) {
+  const t = useTranslations();
   return (
     <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] pb-10">
       <div className="flex flex-col gap-5">
@@ -104,20 +96,18 @@ export default function ProfileInfo({
         <Card className="p-6">
           <EyeIcon className="size-16" strokeWidth={1.2} />
           <div className="text-lg font-semibold mb-2">
-            다른 사람에게 어떤 정보가 공개되나요?
+            {t("profile.otherInformation")}
           </div>
           <div className="text-muted-foreground">
-            생년월일(나이만 공개), 거주지 주소, 핸드폰 번호는 비공개 정보이며
-            나머지 정보는 모두 공개 됩니다.
+            {t("profile.otherInformationDescription")}
           </div>
           <Separator className="my-6" />
           <LockClosedIcon className="size-16" strokeWidth={1.2} />
           <div className="text-lg font-semibold mb-2">
-            가이드 활동 일시 정지를 하면 어떻게 되나요?
+            {t("profile.inactive")}
           </div>
           <div className="text-muted-foreground">
-            가이드님의 프로필은 공개되어 있지만, 고객님들께서는 예약을 진행할 수
-            없습니다. 언제든 원하실 때 다시 가이드 활동을 시작하실 수 있습니다.
+            {t("profile.inactiveDescription")}
           </div>
         </Card>
       </div>

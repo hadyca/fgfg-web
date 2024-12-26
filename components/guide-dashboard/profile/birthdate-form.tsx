@@ -12,12 +12,14 @@ import {
   BirthdateType,
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import { updateBirthdate } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+import { useTranslations } from "next-intl";
 
 interface BirthdateFormProps {
   birthdate: string;
 }
 
 export default function BirthdateForm({ birthdate }: BirthdateFormProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ export default function BirthdateForm({ birthdate }: BirthdateFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<BirthdateType>({
-    resolver: zodResolver(birthdateSchema),
+    resolver: zodResolver(birthdateSchema(t)),
     defaultValues: {
       birthdate,
     },
@@ -50,7 +52,7 @@ export default function BirthdateForm({ birthdate }: BirthdateFormProps) {
       });
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("profile.changeSuccess"),
       });
     }
     setLoading(false);
@@ -58,7 +60,7 @@ export default function BirthdateForm({ birthdate }: BirthdateFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">생년월일</div>
+      <div className="font-semibold mb-2">{t("profile.birthdate")}</div>
       <div className="flex flex-row justify-between items-center">
         <Input
           className="w-36"
@@ -66,7 +68,9 @@ export default function BirthdateForm({ birthdate }: BirthdateFormProps) {
           {...register("birthdate")}
           required
         />
-        <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
+        <Button disabled={loading}>
+          {loading ? t("profile.loading") : t("profile.save")}
+        </Button>
       </div>
       {errors?.birthdate ? (
         <ErrorText text={errors.birthdate.message!} />

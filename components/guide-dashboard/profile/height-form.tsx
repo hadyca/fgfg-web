@@ -12,12 +12,14 @@ import {
   HeightType,
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import { updateHeight } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
+import { useTranslations } from "next-intl";
 
 interface HeightFormProps {
   height: string;
 }
 
 export default function HeightForm({ height }: HeightFormProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ export default function HeightForm({ height }: HeightFormProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<HeightType>({
-    resolver: zodResolver(heightSchema),
+    resolver: zodResolver(heightSchema(t)),
     defaultValues: {
       height,
     },
@@ -50,7 +52,7 @@ export default function HeightForm({ height }: HeightFormProps) {
       });
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("profile.changeSuccess"),
       });
     }
 
@@ -59,7 +61,7 @@ export default function HeightForm({ height }: HeightFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">키</div>
+      <div className="font-semibold mb-2">{t("profile.height")}</div>
       <div className="flex flex-row justify-between items-center">
         <Input
           className="w-36"
@@ -67,7 +69,9 @@ export default function HeightForm({ height }: HeightFormProps) {
           {...register("height")}
           required
         />
-        <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
+        <Button disabled={loading}>
+          {loading ? t("profile.loading") : t("profile.save")}
+        </Button>
       </div>
       {errors?.height ? <ErrorText text={errors.height.message!} /> : null}
     </form>
