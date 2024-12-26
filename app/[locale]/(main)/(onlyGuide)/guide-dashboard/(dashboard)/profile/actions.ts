@@ -14,13 +14,15 @@ import {
   phoneSchema,
   pickupPlaceSchema,
 } from "./schema";
+import { getTranslations } from "next-intl/server";
 
 export async function updateFullname(formData: FormData) {
+  const t = await getTranslations();
   const data = {
     fullname: formData.get("fullname"),
   };
 
-  const result = fullnameSchema.safeParse(data);
+  const result = fullnameSchema(t).safeParse(data);
 
   if (!result.success) {
     return { ok: false, error: "유효하지 않은 데이터 입니다." };
@@ -40,11 +42,13 @@ export async function updateFullname(formData: FormData) {
 }
 
 export async function updateBirthdate(formData: FormData) {
+  const t = await getTranslations();
+
   const data = {
     birthdate: formData.get("birthdate"),
   };
 
-  const result = birthdateSchema.safeParse(data);
+  const result = birthdateSchema(t).safeParse(data);
 
   if (!result.success) {
     return { ok: false, error: "유효하지 않은 데이터 입니다." };
@@ -64,11 +68,13 @@ export async function updateBirthdate(formData: FormData) {
 }
 
 export async function updateHeight(formData: FormData) {
+  const t = await getTranslations();
+
   const data = {
     height: formData.get("height"),
   };
 
-  const result = heightSchema.safeParse(data);
+  const result = heightSchema(t).safeParse(data);
 
   if (!result.success) {
     return { ok: false, error: "유효하지 않은 데이터 입니다." };
@@ -88,13 +94,14 @@ export async function updateHeight(formData: FormData) {
 }
 
 export async function updateLanguage(formData: FormData) {
+  const t = await getTranslations();
   const data = {
     language: formData.get("language")
       ? JSON.parse(formData.get("language") as string)
       : null,
   };
 
-  const result = languageSchema.safeParse(data);
+  const result = languageSchema(t).safeParse(data);
 
   if (!result.success) {
     return { ok: false, error: "유효하지 않은 데이터 입니다." };
@@ -114,11 +121,13 @@ export async function updateLanguage(formData: FormData) {
 }
 
 export async function updateAddress(formData: FormData) {
+  const t = await getTranslations();
+
   const data = {
     address: formData.get("address"),
   };
 
-  const result = addressSchema.safeParse(data);
+  const result = addressSchema(t).safeParse(data);
 
   if (!result.success) {
     return { ok: false, error: "유효하지 않은 데이터 입니다." };
@@ -138,11 +147,13 @@ export async function updateAddress(formData: FormData) {
 }
 
 export async function updatePhone(formData: FormData) {
+  const t = await getTranslations();
+
   const data = {
     phone: formData.get("phone"),
   };
 
-  const result = phoneSchema.safeParse(data);
+  const result = phoneSchema(t).safeParse(data);
 
   if (!result.success) {
     return { ok: false, error: "유효하지 않은 데이터 입니다." };
@@ -162,13 +173,14 @@ export async function updatePhone(formData: FormData) {
 }
 
 export async function updateGuidePhotos(formData: FormData) {
+  const t = await getTranslations();
   const data = {
     guidePhotos: formData.get("guidePhotos")
       ? JSON.parse(formData.get("guidePhotos") as string)
       : null,
   };
 
-  const result = guidePhotosSchema.safeParse(data);
+  const result = guidePhotosSchema(t).safeParse(data);
 
   if (!result.success) {
     return { ok: false, error: "유효하지 않은 데이터 입니다." };
@@ -189,11 +201,13 @@ export async function updateGuidePhotos(formData: FormData) {
 }
 
 export async function updatePersonality(formData: FormData) {
+  const t = await getTranslations();
+
   const data = {
     personality: formData.get("personality"),
   };
 
-  const result = personalitySchema.safeParse(data);
+  const result = personalitySchema(t).safeParse(data);
 
   if (!result.success) {
     return { ok: false, error: "유효하지 않은 데이터 입니다." };
@@ -213,11 +227,13 @@ export async function updatePersonality(formData: FormData) {
 }
 
 export async function updateGuideIntro(formData: FormData) {
+  const t = await getTranslations();
+
   const data = {
     guideIntro: formData.get("guideIntro"),
   };
 
-  const result = guideIntroSchema.safeParse(data);
+  const result = guideIntroSchema(t).safeParse(data);
 
   if (!result.success) {
     return { ok: false, error: "유효하지 않은 데이터 입니다." };
@@ -237,6 +253,8 @@ export async function updateGuideIntro(formData: FormData) {
 }
 
 export async function updatePickupPlace(formData: FormData) {
+  const t = await getTranslations();
+
   const data = {
     pickupPlaceMain: formData.get("pickupPlaceMain"),
     pickupPlaceLat: formData.get("pickupPlaceLat"),
@@ -244,7 +262,7 @@ export async function updatePickupPlace(formData: FormData) {
     pickupPlaceDetail: formData.get("pickupPlaceDetail"),
   };
 
-  const result = pickupPlaceSchema.safeParse(data);
+  const result = pickupPlaceSchema(t).safeParse(data);
 
   if (!result.success) {
     return { ok: false, error: "유효하지 않은 데이터 입니다." };
