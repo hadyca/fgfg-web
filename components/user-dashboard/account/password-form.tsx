@@ -13,8 +13,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { PASSWORD_MIN_LENGTH } from "@/lib/constants";
+import { useTranslations } from "next-intl";
 
 export default function PasswordForm() {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -26,7 +28,7 @@ export default function PasswordForm() {
     reset,
     formState: { errors },
   } = useForm<PasswordType>({
-    resolver: zodResolver(passwordSchema),
+    resolver: zodResolver(passwordSchema(t)),
   });
 
   const onValid = async (data: PasswordType) => {
@@ -47,7 +49,7 @@ export default function PasswordForm() {
       });
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("account.changeSuccess"),
       });
       reset();
     }
@@ -56,10 +58,10 @@ export default function PasswordForm() {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">비밀번호</div>
+      <div className="font-semibold mb-2">{t("account.password")}</div>
       <div className="flex flex-col gap-5">
         <div className="flex flex-col">
-          <div className="text-sm mb-2">현재 비밀번호</div>
+          <div className="text-sm mb-2">{t("account.currentPassword")}</div>
           <Input
             className="w-2/3"
             type="password"
@@ -72,7 +74,7 @@ export default function PasswordForm() {
           ) : null}
         </div>
         <div className="flex flex-col">
-          <div className="text-sm mb-2">새 비밀번호</div>
+          <div className="text-sm mb-2">{t("account.newPassword")}</div>
           <Input
             className="w-2/3"
             type="password"
@@ -86,7 +88,7 @@ export default function PasswordForm() {
         </div>
 
         <div className="flex flex-col">
-          <div className="text-sm mb-2">비밀번호 확인</div>
+          <div className="text-sm mb-2">{t("account.confirmPassword")}</div>
           <div className="flex flex-row justify-between">
             <Input
               className="w-2/3"
@@ -95,7 +97,9 @@ export default function PasswordForm() {
               {...register("confirmPassword")}
               required
             />
-            <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
+            <Button disabled={loading}>
+              {loading ? t("account.loading") : t("account.save")}
+            </Button>
           </div>
           {errors?.confirmPassword ? (
             <ErrorText text={errors.confirmPassword.message!} />

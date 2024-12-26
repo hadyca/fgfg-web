@@ -17,8 +17,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useTranslations } from "next-intl";
 
 export default function DeleteAccountForm() {
+  const t = useTranslations();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -36,7 +38,7 @@ export default function DeleteAccountForm() {
       });
     } else {
       toast({
-        description: "계정이 삭제 되었습니다.",
+        description: t("account.deleteAccountDescription"),
       });
       router.push("/");
     }
@@ -46,7 +48,9 @@ export default function DeleteAccountForm() {
 
   return (
     <div>
-      <div className="font-semibold mb-2 text-destructive">계정 삭제</div>
+      <div className="font-semibold mb-2 text-destructive">
+        {t("account.deleteAccount")}
+      </div>
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row items-center gap-2">
           <Checkbox
@@ -54,23 +58,25 @@ export default function DeleteAccountForm() {
             onCheckedChange={(checked) => setChecked(checked === true)}
           />
           <Label htmlFor="deleteAccount">
-            저는 계정 삭제가 영구적이며, 되돌릴 수 없다는 점을 이해합니다.
+            {t("account.deleteAccountDescription2")}
           </Label>
         </div>
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button disabled={loading || !checked}>
-              {loading ? "로딩 중" : "계정 삭제"}
+              {loading ? t("account.loading") : t("account.deleteAccount")}
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent className="max-w-sm">
             <AlertDialogHeader>
-              <AlertDialogTitle>계정을 삭제하시겠어요?</AlertDialogTitle>
+              <AlertDialogTitle>
+                {t("account.deleteAccountConfirm")}
+              </AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>아니요</AlertDialogCancel>
+              <AlertDialogCancel>{t("account.no")}</AlertDialogCancel>
               <AlertDialogAction onClick={() => handleSubmit()}>
-                확인
+                {t("account.yes")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

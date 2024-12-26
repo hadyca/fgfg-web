@@ -5,6 +5,7 @@ import {
   IdentificationIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 
 export const metadata = {
   title: "대시보드",
@@ -13,10 +14,11 @@ export const metadata = {
 };
 
 export default async function UserDashboard() {
+  const t = await getTranslations();
   const user = await getUser();
   return (
     <div className="max-w-6xl mx-auto my-10 px-6">
-      <div className="text-3xl mb-2">대시보드</div>
+      <div className="text-3xl mb-2">{t("userDashboard.dashboard")}</div>
       <div className="text-lg">
         <span className="font-semibold">{user?.me?.username}</span>
         <span>, {user?.me?.email}</span>
@@ -27,9 +29,9 @@ export default async function UserDashboard() {
             <div className="h-32 flex flex-col justify-between">
               <CalendarDaysIcon className="size-10" strokeWidth={1.2} />
               <div>
-                <div>예약</div>
+                <div>{t("userDashboard.reservations")}</div>
                 <div className="text-muted-foreground">
-                  내가 신청했던 예약들을 볼 수 있어요
+                  {t("userDashboard.reservationsDescription")}
                 </div>
               </div>
             </div>
@@ -40,9 +42,9 @@ export default async function UserDashboard() {
             <div className="h-32 flex flex-col justify-between">
               <IdentificationIcon className="size-10" strokeWidth={1.2} />
               <div>
-                <div>계정</div>
+                <div>{t("userDashboard.account")}</div>
                 <div className="text-muted-foreground">
-                  계정 정보를 수정 할 수 있어요
+                  {t("userDashboard.accountDescription")}
                 </div>
               </div>
             </div>

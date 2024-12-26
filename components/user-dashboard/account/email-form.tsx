@@ -12,12 +12,14 @@ import { useToast } from "@/components/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 interface EmailFormProps {
   email: string;
 }
 
 export default function EmailForm({ email }: EmailFormProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -28,7 +30,7 @@ export default function EmailForm({ email }: EmailFormProps) {
     setError,
     formState: { errors },
   } = useForm<EmailType>({
-    resolver: zodResolver(emailSchema),
+    resolver: zodResolver(emailSchema(t)),
     defaultValues: {
       email,
     },
@@ -53,7 +55,7 @@ export default function EmailForm({ email }: EmailFormProps) {
       });
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("account.changeSuccess"),
       });
     }
     setLoading(false);
@@ -61,16 +63,18 @@ export default function EmailForm({ email }: EmailFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">이메일</div>
+      <div className="font-semibold mb-2">{t("account.email")}</div>
       <div className="flex flex-row justify-between items-center">
         <Input
           className="w-2/3"
           type="email"
-          placeholder="이메일"
+          placeholder={t("account.email")}
           {...register("email")}
           required
         />
-        <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
+        <Button disabled={loading}>
+          {loading ? t("account.loading") : t("account.save")}
+        </Button>
       </div>
       {errors?.email ? <ErrorText text={errors.email.message!} /> : null}
     </form>

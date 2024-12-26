@@ -11,12 +11,14 @@ import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/components/hooks/use-toast";
+import { useTranslations } from "next-intl";
 
 interface AvatarFormProps {
   avatar: string;
 }
 
 export default function AvatarForm({ avatar }: AvatarFormProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [avatarLoading, setAvatarLoading] = useState(false);
@@ -45,7 +47,7 @@ export default function AvatarForm({ avatar }: AvatarFormProps) {
     const typeOk = fileType ? ACCEPTED_IMAGE_TYPES.includes(fileType) : false;
 
     if (!typeOk) {
-      setError("avatar", { message: "이미지 파일을 선택해주세요." });
+      setError("avatar", { message: t("account.selectImageFile") });
       return;
     }
 
@@ -99,7 +101,7 @@ export default function AvatarForm({ avatar }: AvatarFormProps) {
 
     if (response.status !== 200) {
       setError("avatar", {
-        message: "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
+        message: t("account.uploadFailed"),
       });
       return;
     }
@@ -116,7 +118,7 @@ export default function AvatarForm({ avatar }: AvatarFormProps) {
       return;
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("account.changeSuccess"),
       });
     }
 
@@ -126,7 +128,7 @@ export default function AvatarForm({ avatar }: AvatarFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">아바타</div>
+      <div className="font-semibold mb-2">{t("account.avatar")}</div>
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row gap-3 justify-center items-center relative">
           <div className="relative">
@@ -169,11 +171,11 @@ export default function AvatarForm({ avatar }: AvatarFormProps) {
             className="hidden"
           />
           <Button type="button" variant={"outline"} onClick={handleClick}>
-            사진 선택
+            {t("account.selectImage")}
           </Button>
         </div>
         <Button disabled={loading || avatarLoading}>
-          {loading ? "로딩 중" : "저장"}
+          {loading ? t("account.loading") : t("account.save")}
         </Button>
       </div>
       {errors?.avatar ? <ErrorText text={errors.avatar.message!} /> : null}

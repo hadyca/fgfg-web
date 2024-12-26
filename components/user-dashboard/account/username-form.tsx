@@ -12,12 +12,14 @@ import { useToast } from "@/components/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 interface UsernameFormProps {
   username: string;
 }
 
 export default function UsernameForm({ username }: UsernameFormProps) {
+  const t = useTranslations();
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
@@ -28,7 +30,7 @@ export default function UsernameForm({ username }: UsernameFormProps) {
     setError,
     formState: { errors },
   } = useForm<UsernameType>({
-    resolver: zodResolver(usernameSchema),
+    resolver: zodResolver(usernameSchema(t)),
     defaultValues: {
       username,
     },
@@ -53,7 +55,7 @@ export default function UsernameForm({ username }: UsernameFormProps) {
       });
     } else {
       toast({
-        description: "변경 되었습니다.",
+        description: t("account.changeSuccess"),
       });
     }
     setLoading(false);
@@ -61,18 +63,20 @@ export default function UsernameForm({ username }: UsernameFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
-      <div className="font-semibold mb-2">유저명</div>
+      <div className="font-semibold mb-2">{t("account.username")}</div>
       <div className="flex flex-row justify-between items-center">
         <Input
           className="w-2/3"
           type="text"
-          placeholder="유저명"
+          placeholder={t("account.username")}
           minLength={1}
           maxLength={30}
           {...register("username")}
           required
         />
-        <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
+        <Button disabled={loading}>
+          {loading ? t("account.loading") : t("account.save")}
+        </Button>
       </div>
       {errors?.username ? <ErrorText text={errors.username.message!} /> : null}
     </form>

@@ -10,6 +10,7 @@ import {
   XCircleIcon,
 } from "@heroicons/react/24/solid";
 import { useUserReservationStore } from "@/store/useUserReservationStore";
+import { useTranslations } from "next-intl";
 
 interface MainGuidePhoto {
   fileUrl: string;
@@ -43,6 +44,7 @@ interface UserReservationsProps {
 export default function UserReservations({
   reservations,
 }: UserReservationsProps) {
+  const t = useTranslations();
   const { selectedTab, setSelectedTab, reservationList, setReservationList } =
     useUserReservationStore();
 
@@ -78,21 +80,21 @@ export default function UserReservations({
           onClick={() => setSelectedTab("upcoming")}
           className="w-full"
         >
-          다가오는 예약
+          {t("reservations.upcoming")}
         </Button>
         <Button
           variant={selectedTab === "completed" ? "secondary" : "ghost"}
           onClick={() => setSelectedTab("completed")}
           className="w-full"
         >
-          완료된 예약
+          {t("reservations.completed")}
         </Button>
         <Button
           variant={selectedTab === "cancelled" ? "secondary" : "ghost"}
           onClick={() => setSelectedTab("cancelled")}
           className="w-full"
         >
-          취소된 예약
+          {t("reservations.cancelled")}
         </Button>
       </div>
       <div className="mt-3">
@@ -114,10 +116,10 @@ export default function UserReservations({
             )}
             <span className="text-lg">
               {selectedTab === "upcoming"
-                ? "다가오는 예약이 없습니다."
+                ? t("reservations.noUpcomingReservations")
                 : selectedTab === "completed"
-                ? "완료된 예약이 없습니다."
-                : "취소된 예약이 없습니다."}
+                ? t("reservations.noCompletedReservations")
+                : t("reservations.noCancelledReservations")}
             </span>
           </div>
         )}

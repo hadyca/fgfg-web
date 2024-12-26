@@ -73,6 +73,21 @@
     },
     "login": {
       "requiredError": "This field is required."
+    },
+    "account": {
+      "invalidUsername": "Please enter letters.",
+      "invalidEmail": "Please enter an email address.",
+      "requiredError": "This field is required.",
+      "usernameRequired": "Please enter a username.",
+      "maximumUsernameLength": "Maximum 30 characters.",
+      "unavailableUsername": "This username is not available.",
+      "minimumPasswordLength": "Minimum 8 characters required.",
+      "passwordRequired": "Please enter a password.",
+      "samePassword": "Please enter the same password.",
+      "duplicateUsername": "Username already exists.",
+      "invalidData": "Invalid data.",
+      "duplicateEmail": "Email already exists.",
+      "wrongPassword": "Wrong password."
     }
   },
   "header": {
@@ -383,5 +398,62 @@
     "reservationNumber": "Reservation Number",
     "reservationCanceled": "The reservation will be automatically canceled if payment is not processed within 24 hours. After payment, please wait for guide approval.",
     "goToHome": "Return to Home"
+  },
+  "userDashboard": {
+    "dashboard": "Dashboard",
+    "reservations": "Reservations",
+    "reservationsDescription": "View your requested reservations",
+    "account": "Account",
+    "accountDescription": "Edit your account information"
+  },
+  "reservations": {
+    "dashboard": "Dashboard",
+    "reservations": "Reservations",
+    "upcoming": "Upcoming Reservations",
+    "completed": "Completed Reservations",
+    "cancelled": "Cancelled Reservations",
+    "noUpcomingReservations": "No upcoming reservations",
+    "noCompletedReservations": "No completed reservations",
+    "noCancelledReservations": "No cancelled reservations",
+    "reservationNumber": "Reservation Number",
+    "reservationConfirmed": "Reservation Confirmed",
+    "loading": "Loading...",
+    "cancelReservation": "Cancel Reservation",
+    "cancelReservationDescription": "Are you sure you want to cancel this reservation?",
+    "no": "No",
+    "yes": "Yes",
+    "cancelled2": "Reservation Cancelled",
+    "guideName": "Guide Name",
+    "reservationDate": "Reservation Date",
+    "reservationTime": "Reservation Time",
+    "age": "years old",
+    "pickupLocation": "Pickup Location",
+    "feeDetail": "Fee Details",
+    "hour": "hours"
+  },
+  "account": {
+    "dashboard": "Dashboard",
+    "account": "Account",
+    "otherInformation": "What information is visible to others?",
+    "otherInformationDescription": "Username is visible when chatting with guides, email is not visible.",
+    "selectImageFile": "Please select an image file.",
+    "uploadFailed": "Failed to upload photo. Please try again later.",
+    "changeSuccess": "Changes saved.",
+    "avatar": "Avatar",
+    "selectImage": "Select Image",
+    "loading": "Loading...",
+    "save": "Save",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "deleteAccount": "Delete Account",
+    "deleteAccountDescription": "Account has been deleted.",
+    "deleteAccountDescription2": "I understand that account deletion is permanent and cannot be undone.",
+    "deleteAccountConfirm": "Are you sure you want to delete your account?",
+    "no": "No",
+    "yes": "Confirm"
   }
 }

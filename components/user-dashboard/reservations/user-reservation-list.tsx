@@ -28,6 +28,7 @@ import { cancelReservation } from "@/app/[locale]/(main)/user-dashboard/reservat
 import { useToast } from "@/components/hooks/use-toast";
 import { Link } from "@/i18n/routing";
 import { useUserReservationStore } from "@/store/useUserReservationStore";
+import { useTranslations } from "next-intl";
 
 interface MainGuidePhoto {
   fileUrl: string;
@@ -63,6 +64,7 @@ export default function UserReservationList({
   reservationList,
   selected,
 }: UserReservationListProps) {
+  const t = useTranslations();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const { setCancel } = useUserReservationStore();
@@ -95,33 +97,39 @@ export default function UserReservationList({
         <Card key={reservation.id} className="shadow-md max-w-full p-6 h-fit">
           <div className="flex flex-row items-center justify-between mb-3">
             <span className="text-sm text-muted-foreground">
-              예약번호:{reservation.id}
+              {t("reservations.reservationNumber")}:{reservation.id}
             </span>
             {selected === "upcoming" ? (
               reservation.guideConfirm ? (
                 <div className="flex items-center gap-2 bg-green-100 text-green-700 px-3 py-2 rounded-md">
                   <CheckCircleIcon className="h-5 w-5 text-green-700" />
-                  <span className="font-semibold">예약 확정</span>
+                  <span className="font-semibold">
+                    {t("reservations.reservationConfirmed")}
+                  </span>
                 </div>
               ) : (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button disabled={loading}>
-                      {loading ? "로딩 중..." : "예약 취소"}
+                      {loading
+                        ? t("reservations.loading")
+                        : t("reservations.cancelReservation")}
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent className="max-w-sm">
                     <AlertDialogHeader>
                       <AlertDialogTitle>
-                        예약을 취소하시겠어요?
+                        {t("reservations.cancelReservationDescription")}
                       </AlertDialogTitle>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>아니요</AlertDialogCancel>
+                      <AlertDialogCancel>
+                        {t("reservations.no")}
+                      </AlertDialogCancel>
                       <AlertDialogAction
                         onClick={() => handleContinueDialog(reservation.id)}
                       >
-                        확인
+                        {t("reservations.yes")}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
@@ -130,12 +138,16 @@ export default function UserReservationList({
             ) : selected === "completed" ? (
               <div className="flex items-center gap-2 bg-green-100 text-green-700 px-3 py-2 rounded-md">
                 <CheckCircleIcon className="h-5 w-5 text-green-700" />
-                <span className="font-semibold">예약 확정</span>
+                <span className="font-semibold">
+                  {t("reservations.reservationConfirmed")}
+                </span>
               </div>
             ) : (
               <div className="flex items-center gap-2 bg-red-100 text-red-700 px-3 py-2 rounded-md">
                 <XCircleIcon className="h-5 w-5 text-red-700" />
-                <span className="font-semibold">예약 취소됨</span>
+                <span className="font-semibold">
+                  {t("reservations.cancelled2")}
+                </span>
               </div>
             )}
           </div>
@@ -153,18 +165,23 @@ export default function UserReservationList({
               </Link>
             </div>
             <div>
-              <div className="font-semibold">가이드 이름</div>
+              <div className="font-semibold">{t("reservations.guideName")}</div>
               <span className="mr-1">{reservation.guide.fullname}</span>
               <span>
-                <span>({calculateAge(reservation.guide.birthdate)}세)</span>
+                <span>({calculateAge(reservation.guide.birthdate)}</span>
+                <span>{t("reservations.age")}</span>
               </span>
             </div>
             <div>
-              <div className="font-semibold">예약 날짜</div>
+              <div className="font-semibold">
+                {t("reservations.reservationDate")}
+              </div>
               <span>{convertDate(reservation.startTime)}</span>
             </div>
             <div>
-              <div className="font-semibold">예약 시간</div>
+              <div className="font-semibold">
+                {t("reservations.reservationTime")}
+              </div>
               <span>
                 {`${convertToVietnamTime(
                   reservation.startTime
@@ -172,7 +189,9 @@ export default function UserReservationList({
               </span>
             </div>
             <div>
-              <div className="font-semibold">픽업 위치</div>
+              <div className="font-semibold">
+                {t("reservations.pickupLocation")}
+              </div>
               <div className="flex flex-col">
                 <div>
                   <a
@@ -192,13 +211,13 @@ export default function UserReservationList({
               </div>
             </div>
             <div>
-              <div className="font-semibold">요금</div>
+              <div className="font-semibold">{t("reservations.feeDetail")}</div>
               <div>
                 <span className="underline">
                   {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTimeISO(
                     reservation.startTime,
                     reservation.endTime
-                  )}시간`}
+                  )}${t("reservations.hour")}`}
                 </span>
                 <span>={formatCurrency(reservation.serviceFee)}</span>
               </div>

@@ -8,6 +8,7 @@ import {
 } from "@/app/[locale]/(main)/(auth)/create-account/queries";
 import { emailSchema, passwordSchema, usernameSchema } from "./schema";
 import getSession from "@/lib/session";
+import { getTranslations } from "next-intl/server";
 
 export async function updateAvatar(formData: FormData) {
   const data = {
@@ -28,6 +29,8 @@ export async function updateAvatar(formData: FormData) {
 }
 
 export async function updateUsername(formData: FormData) {
+  const t = await getTranslations();
+
   const data = {
     username: formData.get("username"),
   };
@@ -43,14 +46,14 @@ export async function updateUsername(formData: FormData) {
   if (!checkUsername.ok) {
     return {
       type: "checkUsername",
-      error: "중복된 유저명이 있습니다.",
+      error: t("validation.account.duplicateUsername"),
     };
   }
 
-  const result = usernameSchema.safeParse(data);
+  const result = usernameSchema(t).safeParse(data);
 
   if (!result.success) {
-    return { ok: false, error: "유효하지 않은 데이터 입니다." };
+    return { ok: false, error: t("validation.account.invalidData") };
   } else {
     const {
       data: {
@@ -67,6 +70,8 @@ export async function updateUsername(formData: FormData) {
 }
 
 export async function updateEmail(formData: FormData) {
+  const t = await getTranslations();
+
   const data = {
     email: formData.get("email"),
   };
@@ -82,14 +87,14 @@ export async function updateEmail(formData: FormData) {
   if (!checkEmail.ok) {
     return {
       type: "checkEmail",
-      error: "중복된 이메일이 있습니다.",
+      error: t("validation.account.duplicateEmail"),
     };
   }
 
-  const result = emailSchema.safeParse(data);
+  const result = emailSchema(t).safeParse(data);
 
   if (!result.success) {
-    return { ok: false, error: "유효하지 않은 데이터 입니다." };
+    return { ok: false, error: t("validation.account.invalidData") };
   } else {
     const {
       data: {
@@ -106,6 +111,8 @@ export async function updateEmail(formData: FormData) {
 }
 
 export async function updatePassword(formData: FormData) {
+  const t = await getTranslations();
+
   const data = {
     password: formData.get("password"),
     newPassword: formData.get("newPassword"),
@@ -123,14 +130,14 @@ export async function updatePassword(formData: FormData) {
   if (!checkPassword.ok) {
     return {
       type: "checkPassword",
-      error: "비밀번호가 틀렸습니다.",
+      error: t("validation.account.wrongPassword"),
     };
   }
 
-  const result = passwordSchema.safeParse(data);
+  const result = passwordSchema(t).safeParse(data);
 
   if (!result.success) {
-    return { ok: false, error: "유효하지 않은 데이터 입니다." };
+    return { ok: false, error: t("validation.account.invalidData") };
   } else {
     const {
       data: {

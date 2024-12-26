@@ -19,7 +19,7 @@
     "specialDayWithLocalGirlfriendDescription": "Tận hưởng trải nghiệm đặc biệt như hẹn hò với bạn gái. Thông qua hướng dẫn viên, bạn có thể hiểu sâu hơn về suy nghĩ và văn hóa của phụ nữ Việt Nam.",
     "internationalCouple": "Bạn có quan tâm đến các cặp đôi quốc tế?",
     "internationalCoupleDescription": "Để biết liệu một cặp đôi quốc tế có phù hợp với bạn hay không, điều quan trọng nhất là hiểu và tiếp xúc nhiều lần với văn hóa của đất nước đó. Hãy trải nghiệm dễ dàng với giá cả phải chăng và thời gian hướng dẫn theo ý muốn.",
-    "betaTestDescription": "Chúng tôi hiện đang cung cấp dịch vụ beta. Nếu bạn có bất kỳ bất tiện hoặc đề xuất cải thiện nào khi sử dụng, vui lòng gửi phản hồi đến hadycas@gmail.com. �� kiến quý báu của bạn sẽ giúp chúng tôi tạo ra dịch vụ tốt hơn. Hãy tham gia cùng chúng tôi!"
+    "betaTestDescription": "Chúng tôi hiện đang cung cấp dịch vụ beta. Nếu bạn gặp bất kỳ sự bất tiện hoặc có đề xuất cải thiện nào trong quá trình sử dụng, vui lòng gửi phản hồi đến hadycas@gmail.com bất cứ lúc nào. Ý kiến quý báu của bạn sẽ giúp chúng tôi tạo ra dịch vụ tốt hơn. Hãy tham gia cùng chúng tôi!"
   },
   "login": {
     "login": "Đăng nhập",
@@ -73,6 +73,21 @@
     },
     "login": {
       "requiredError": "Mục này là bắt buộc."
+    },
+    "account": {
+      "invalidUsername": "Vui lòng nhập chữ cái.",
+      "invalidEmail": "Vui lòng nhập địa chỉ email.",
+      "requiredError": "Đây là mục bắt buộc.",
+      "usernameRequired": "Vui lòng nhập tên người dùng.",
+      "maximumUsernameLength": "Tối đa 30 ký tự.",
+      "unavailableUsername": "Không thể sử dụng tên người dùng này.",
+      "minimumPasswordLength": "Tối thiểu 8 ký tự.",
+      "passwordRequired": "Vui lòng nhập mật khẩu.",
+      "samePassword": "Vui lòng nhập cùng một mật khẩu.",
+      "duplicateUsername": "Tên người dùng đã tồn tại.",
+      "invalidData": "Dữ liệu không hợp lệ.",
+      "duplicateEmail": "Email đã tồn tại.",
+      "wrongPassword": "Sai mật khẩu."
     }
   },
   "header": {
@@ -383,5 +398,62 @@
     "reservationNumber": "Số đặt chỗ",
     "reservationCanceled": "Đặt chỗ sẽ tự động bị hủy nếu không xử lý thanh toán trong vòng 24 giờ. Sau khi thanh toán, vui lòng đợi sự chấp thuận của hướng dẫn viên.",
     "goToHome": "Trở về Trang chủ"
+  },
+  "userDashboard": {
+    "dashboard": "Bảng điều khiển",
+    "reservations": "Đặt chỗ",
+    "reservationsDescription": "Xem các đặt chỗ bạn đã yêu cầu",
+    "account": "Tài khoản",
+    "accountDescription": "Chỉnh sửa thông tin tài khoản của bạn"
+  },
+  "reservations": {
+    "dashboard": "Bảng điều khiển",
+    "reservations": "Đặt chỗ",
+    "upcoming": "Đặt chỗ sắp tới",
+    "completed": "Đặt chỗ đã hoàn thành",
+    "cancelled": "Đặt chỗ đã hủy",
+    "noUpcomingReservations": "Không có đặt chỗ sắp tới",
+    "noCompletedReservations": "Không có đặt chỗ đã hoàn thành",
+    "noCancelledReservations": "Không có đặt chỗ đã hủy",
+    "reservationNumber": "Số đặt chỗ",
+    "reservationConfirmed": "Đã xác nhận đặt chỗ",
+    "loading": "Đang tải...",
+    "cancelReservation": "Hủy đặt chỗ",
+    "cancelReservationDescription": "Bạn có chắc chắn muốn hủy đặt chỗ không?",
+    "no": "Không",
+    "yes": "Có",
+    "cancelled2": "Đã hủy đặt chỗ",
+    "guideName": "Tên hướng dẫn viên",
+    "reservationDate": "Ngày đặt chỗ",
+    "reservationTime": "Thời gian đặt chỗ",
+    "age": "tuổi",
+    "pickupLocation": "Địa điểm đón",
+    "feeDetail": "Chi tiết phí",
+    "hour": "giờ"
+  },
+  "account": {
+    "dashboard": "Bảng điều khiển",
+    "account": "Tài khoản",
+    "otherInformation": "Những thông tin nào được hiển thị với người khác?",
+    "otherInformationDescription": "Tên người dùng sẽ được hiển thị khi trò chuyện với hướng dẫn viên, email sẽ không được hiển thị.",
+    "selectImageFile": "Vui lòng chọn tệp hình ảnh.",
+    "uploadFailed": "Tải ảnh lên thất bại. Vui lòng thử lại sau.",
+    "changeSuccess": "Đã thay đổi.",
+    "avatar": "Ảnh đại diện",
+    "selectImage": "Chọn ảnh",
+    "loading": "Đang tải...",
+    "save": "Lưu",
+    "username": "Tên người dùng",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "currentPassword": "Mật khẩu hiện tại",
+    "newPassword": "Mật khẩu mới",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "deleteAccount": "Xóa tài khoản",
+    "deleteAccountDescription": "Tài khoản đã được xóa.",
+    "deleteAccountDescription2": "Tôi hiểu rằng việc xóa tài khoản là vĩnh viễn và không thể hoàn tác.",
+    "deleteAccountConfirm": "Bạn có chắc chắn muốn xóa tài khoản?",
+    "no": "Không",
+    "yes": "Xác nhận"
   }
 }

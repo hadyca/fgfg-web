@@ -73,6 +73,21 @@
     },
     "login": {
       "requiredError": "필수 항목 입니다."
+    },
+    "account": {
+      "invalidUsername": "문자를 넣어주세요.",
+      "invalidEmail": "이메일 주소를 입력해주세요.",
+      "requiredError": "필수 항목 입니다.",
+      "usernameRequired": "유저명을 입력해 주세요.",
+      "maximumUsernameLength": "최대 30자 까지 가능합니다.",
+      "unavailableUsername": "사용할 수 없는 유저명입니다.",
+      "minimumPasswordLength": "최소 8자 이상이어야 합니다.",
+      "passwordRequired": "비밀번호를 입력해주세요.",
+      "samePassword": "동일한 비밀번호를 입력해주세요.",
+      "duplicateUsername": "중복된 유저명이 있습니다.",
+      "invalidData": "유효하지 않은 데이터 입니다.",
+      "duplicateEmail": "중복된 이메일이 있습니다.",
+      "wrongPassword": "비밀번호가 틀렸습니다."
     }
   },
   "header": {
@@ -383,5 +398,62 @@
     "reservationNumber": "예약 번호",
     "reservationCanceled": "24시간 이내 결제 진행을 하시지 않으면 예약은 자동 취소 됩니다. 결제 후, 가이드의 승인을 기다려주세요.",
     "goToHome": "홈으로 돌아가기"
+  },
+  "userDashboard": {
+    "dashboard": "대시보드",
+    "reservations": "예약",
+    "reservationsDescription": "내가 신청했던 예약들을 볼 수 있어요",
+    "account": "계정",
+    "accountDescription": "계정 정보를 수정 할 수 있어요"
+  },
+  "reservations": {
+    "dashboard": "대시보드",
+    "reservations": "예약",
+    "upcoming": "다가오는 예약",
+    "completed": "완료된 예약",
+    "cancelled": "취소된 예약",
+    "noUpcomingReservations": "다가오는 예약이 없습니다.",
+    "noCompletedReservations": "완료된 예약이 없습니다.",
+    "noCancelledReservations": "취소된 예약이 없습니다.",
+    "reservationNumber": "예약번호",
+    "reservationConfirmed": "예약 확정",
+    "loading": "로딩 중...",
+    "cancelReservation": "예약 취소",
+    "cancelReservationDescription": "예약을 취소하시겠어요?",
+    "no": "아니요",
+    "yes": "확인",
+    "cancelled2": "예약 취소됨",
+    "guideName": "가이드 이름",
+    "reservationDate": "예약 날짜",
+    "reservationTime": "예약 시간",
+    "age": "세",
+    "pickupLocation": "픽업 위치",
+    "feeDetail": "요금 세부정보",
+    "hour": "시간"
+  },
+  "account": {
+    "dashboard": "대시보드",
+    "account": "계정",
+    "otherInformation": "다른 사람에게 어떤 정보가 공개되나요?",
+    "otherInformationDescription": "유저명은 가이드와의 채팅 시 공개되며, 이메일은 공개되지 않습니다.",
+    "selectImageFile": "이미지 파일을 선택해주세요.",
+    "uploadFailed": "사진 업로드에 실패했습니다. 나중에 다시 시도해주세요.",
+    "changeSuccess": "변경 되었습니다.",
+    "avatar": "아바타",
+    "selectImage": "사진 선택",
+    "loading": "로딩 중...",
+    "save": "저장",
+    "username": "유저명",
+    "email": "이메일",
+    "password": "비밀번호",
+    "currentPassword": "현재 비밀번호",
+    "newPassword": "새 비밀번호",
+    "confirmPassword": "비밀번호 확인",
+    "deleteAccount": "계정 삭제",
+    "deleteAccountDescription": "계정이 삭제 되었습니다.",
+    "deleteAccountDescription2": "저는 계정 삭제가 영구적이며, 되돌릴 수 없다는 점을 이해합니다.",
+    "deleteAccountConfirm": "계정을 삭제하시겠어요?",
+    "no": "아니요",
+    "yes": "확인"
   }
 }
