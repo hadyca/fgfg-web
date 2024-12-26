@@ -38,6 +38,9 @@ export const metadata: Metadata = {
     "베트남 여자 친구 서비스",
     "FGFG 가이드 서비스",
   ],
+  other: {
+    "naver-site-verification": "771dc4c817f8ba4d7d5102907f0779d66085c235",
+  },
 };
 
 export default async function RootLayout({
