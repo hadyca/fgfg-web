@@ -4,8 +4,8 @@ import {
   NavigationMenuItem,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import LocaleSwitcher from "../local-switcher";
 import { useTranslations } from "next-intl";
+import LocaleSwitcher from "../local-switcher";
 
 interface NavItemsProps {
   userId: number;
@@ -21,7 +21,7 @@ export default function NavItemsMobile({
   const t = useTranslations("header");
 
   return (
-    <NavigationMenu className="list-none mt-4">
+    <NavigationMenu className="flex flex-col list-none mt-4">
       <NavigationMenuItem
         onClick={(e) =>
           onLinkClick?.(e as unknown as React.MouseEvent<HTMLAnchorElement>)
@@ -41,10 +41,10 @@ export default function NavItemsMobile({
             {t("signupGuide")}
           </Link>
         ) : null}
-        <div className="px-4">
-          <LocaleSwitcher />
-        </div>
       </NavigationMenuItem>
+      <div className="px-4 mt-2">
+        <LocaleSwitcher />
+      </div>
     </NavigationMenu>
   );
 }
