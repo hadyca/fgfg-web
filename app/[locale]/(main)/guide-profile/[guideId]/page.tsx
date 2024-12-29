@@ -142,11 +142,11 @@ export default async function guideProfile(props: GuideProfileProps) {
             <div className="flex flex-col gap-3">
               <div>
                 <span>{t("guideProfile.age")}: </span>
-                <span>{calculateAge(guide?.seeGuide?.birthdate)}세</span>
+                <span>{calculateAge(guide?.seeGuide?.birthdate)}</span>
               </div>
               <div>
                 <span>{t("guideProfile.height")}: </span>
-                <span>{guide?.seeGuide?.height}cm</span>
+                <span>{guide?.seeGuide?.height}</span>
               </div>
               <div>
                 <span>{t("guideProfile.language")}: </span>
