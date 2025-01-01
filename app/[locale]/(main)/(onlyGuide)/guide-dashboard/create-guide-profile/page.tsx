@@ -26,6 +26,7 @@ import GoogleMapApi from "@/components/googleMapApi";
 import Spinner from "@/components/ui/spinner";
 import { getUploadUrl } from "@/app/[locale]/(main)/signup-guide/actions";
 import { useLocale, useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 export default function CreateGuideProfile() {
   const locale = useLocale();
@@ -224,6 +225,7 @@ export default function CreateGuideProfile() {
 
   return (
     <div className="flex justify-center items-center">
+      {loading && <LoadingOverlay />}
       <Card className="w-full max-w-2xl my-10 pb-4 shadow-md">
         <CardHeader>
           <CardTitle>{t("createGuideProfile.createProfileTitle")}</CardTitle>
@@ -370,9 +372,7 @@ export default function CreateGuideProfile() {
           <Separator className="my-4" />
           <GuideProfileQandA />
           <Button disabled={loading || photoLoading.some((loading) => loading)}>
-            {loading
-              ? t("createGuideProfile.loading")
-              : t("createGuideProfile.confirm")}
+            {t("createGuideProfile.confirm")}
           </Button>
         </form>
       </Card>

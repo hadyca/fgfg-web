@@ -32,6 +32,7 @@ import {
 import { useRouter } from "@/i18n/routing";
 import Spinner from "@/components/ui/spinner";
 import { useLocale, useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 export default function SignUpGuide() {
   const locale = useLocale();
@@ -207,6 +208,7 @@ export default function SignUpGuide() {
 
   return (
     <div className="flex justify-center items-center">
+      {loading && <LoadingOverlay />}
       <Card className="w-full max-w-2xl my-10 pb-4 shadow-md">
         <CardHeader>
           <CardTitle>{t("signUpGuide.signUpGuide")}</CardTitle>
@@ -444,10 +446,9 @@ export default function SignUpGuide() {
               </label>
             </div>
             {existError !== "" ? <ErrorText text={existError} /> : null}
+
             <Button disabled={loading || !isTermsChecked || photoLoading}>
-              {loading
-                ? t("signUpGuide.loading")
-                : t("signUpGuide.signUpGuide")}
+              {t("signUpGuide.signUpGuide")}
             </Button>
           </div>
         </form>

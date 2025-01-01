@@ -34,6 +34,7 @@ import {
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/reservations/actions";
 import { useGuideReservationStore } from "@/store/useGuideReservationStore";
 import { useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 interface User {
   avatar: string;
@@ -109,6 +110,7 @@ export default function GuideReservationList({
   };
   return (
     <div className="flex flex-col gap-5">
+      {(confirmLoading || rejectLoading) && <LoadingOverlay />}
       {reservations.map((reservation) => (
         <Card key={reservation.id} className="shadow-md max-w-full p-6 h-fit">
           <div className="flex flex-row items-center justify-between mb-3">
@@ -131,9 +133,7 @@ export default function GuideReservationList({
                         disabled={rejectLoading || confirmLoading}
                         variant={"outline"}
                       >
-                        {rejectLoading
-                          ? t("guideReservations.loading")
-                          : t("guideReservations.reject")}
+                        {t("guideReservations.reject")}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent className="max-w-sm">
@@ -157,9 +157,7 @@ export default function GuideReservationList({
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button disabled={rejectLoading || confirmLoading}>
-                        {confirmLoading
-                          ? t("guideReservations.loading")
-                          : t("guideReservations.accept")}
+                        {t("guideReservations.accept")}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent className="max-w-sm">

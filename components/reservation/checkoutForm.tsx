@@ -27,6 +27,7 @@ import { useToast } from "../hooks/use-toast";
 import { Link } from "@/i18n/routing";
 import { useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { LoadingOverlay } from "../loading-overlay";
 
 interface CheckoutFormProps {
   amount: number;
@@ -130,6 +131,7 @@ export default function CheckoutForm({
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
+      {loading && <LoadingOverlay />}
       <div className="flex flex-col gap-3">
         <div className="text-xl font-semibold">
           {t("reservation.paymentMethod")}
@@ -276,9 +278,7 @@ export default function CheckoutForm({
         </div>
       </div>
       <Button disabled={loading} className="w-full font-bold mt-3">
-        {!loading
-          ? t("reservation.requestReservation")
-          : t("reservation.loading")}
+        {t("reservation.requestReservation")}
       </Button>
     </form>
   );
