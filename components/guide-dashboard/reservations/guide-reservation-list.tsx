@@ -89,10 +89,10 @@ export default function GuideReservationList({
         variant: "destructive",
         title: error,
       });
+      setRejectLoading(false);
       return;
     }
     setReject(reservationId);
-    setRejectLoading(false);
   };
 
   const handleConfirm = async (reservationId: number) => {
@@ -103,10 +103,10 @@ export default function GuideReservationList({
         variant: "destructive",
         title: error,
       });
+      setConfirmLoading(false);
       return;
     }
     setConfirm(reservationId);
-    setConfirmLoading(false);
   };
   return (
     <div className="flex flex-col gap-5">

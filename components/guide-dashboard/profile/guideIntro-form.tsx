@@ -13,6 +13,7 @@ import {
 import { updateGuideIntro } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { Textarea } from "@/components/ui/textarea";
 import { useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 interface GuideIntroFormProps {
   guideIntro: string;
@@ -49,16 +50,18 @@ export default function GuideIntroForm({ guideIntro }: GuideIntroFormProps) {
         variant: "destructive",
         title: error,
       });
+      setLoading(false);
     } else {
       toast({
         description: t("profile.changeSuccess"),
       });
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
+      {loading && <LoadingOverlay />}
       <div className="font-semibold mb-2">{t("profile.guideIntro")}</div>
       <div className="flex flex-col items-end">
         <Textarea {...register("guideIntro")} required />
@@ -66,7 +69,7 @@ export default function GuideIntroForm({ guideIntro }: GuideIntroFormProps) {
           <ErrorText text={errors.guideIntro.message!} />
         ) : null}
         <Button className="mt-3" disabled={loading}>
-          {loading ? t("profile.loading") : t("profile.save")}
+          {t("profile.save")}
         </Button>
       </div>
     </form>

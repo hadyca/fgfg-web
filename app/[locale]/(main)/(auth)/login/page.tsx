@@ -13,6 +13,7 @@ import { login } from "./actions";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 export default function LogIn() {
   const t = useTranslations();
@@ -39,16 +40,18 @@ export default function LogIn() {
 
     if (result?.type === "checkEmail") {
       setError("email", { message: result.error });
+      setLoading(false);
     }
 
     if (result?.type === "password") {
       setError("password", { message: result.error });
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
     <div className="absolute inset-0 flex justify-center items-center z-10">
+      {loading && <LoadingOverlay />}
       <Card className="w-full max-w-md pb-4 shadow-md">
         <CardHeader>
           <CardTitle>{t("login.login")}</CardTitle>

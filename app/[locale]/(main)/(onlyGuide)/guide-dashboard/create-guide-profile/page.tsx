@@ -186,7 +186,6 @@ export default function CreateGuideProfile() {
         variant: "destructive",
         title: t("createGuideProfile.createProfileFailed"),
       });
-    } finally {
       setLoading(false);
     }
   };

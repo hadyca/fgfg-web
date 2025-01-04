@@ -17,6 +17,7 @@ import { ACCEPTED_IMAGE_TYPES } from "@/lib/constants";
 import Spinner from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 interface GuidePhotosInput {
   fileUrlOrder: number;
@@ -192,12 +193,12 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
         toast({
           description: t("profile.changeSuccess"),
         });
+        setLoading(false);
       }
     } catch (error) {
       setError("guidePhotos", {
         message: t("profile.photoUploadFailed"),
       });
-    } finally {
       setLoading(false);
     }
   };
@@ -235,6 +236,7 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
+      {loading && <LoadingOverlay />}
       <div className="font-semibold mb-2">{t("profile.guideProfilePhoto")}</div>
       <div className="flex flex-row justify-between items-end">
         <div className="flex gap-3 flex-wrap">
@@ -291,9 +293,7 @@ export default function GuidePhotosForm({ guidePhotos }: GuidePhotosFormProps) {
             </div>
           ))}
         </div>
-        <Button disabled={loading}>
-          {loading ? t("profile.loading") : t("profile.save")}
-        </Button>
+        <Button disabled={loading}>{t("profile.save")}</Button>
       </div>
       {errors?.guidePhotos ? (
         <ErrorText text={errors.guidePhotos.message!} />

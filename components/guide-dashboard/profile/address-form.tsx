@@ -13,6 +13,7 @@ import {
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import { updateAddress } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 interface AddressFormProps {
   address: string;
@@ -50,16 +51,18 @@ export default function AddressForm({ address }: AddressFormProps) {
         variant: "destructive",
         title: error,
       });
+      setLoading(false);
     } else {
       toast({
         description: t("profile.changeSuccess"),
       });
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
+      {loading && <LoadingOverlay />}
       <div className="font-semibold mb-2">{t("profile.address")}</div>
       <div className="flex flex-row justify-between items-center">
         <Input
@@ -68,9 +71,7 @@ export default function AddressForm({ address }: AddressFormProps) {
           {...register("address")}
           required
         />
-        <Button disabled={loading}>
-          {loading ? t("profile.loading") : t("profile.save")}
-        </Button>
+        <Button disabled={loading}>{t("profile.save")}</Button>
       </div>
       {errors?.address ? <ErrorText text={errors.address.message!} /> : null}
     </form>

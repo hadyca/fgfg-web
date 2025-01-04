@@ -13,6 +13,7 @@ import {
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import { updateFullname } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 interface FullnameFormProps {
   fullname: string;
@@ -54,13 +55,13 @@ export default function FullnameForm({ fullname }: FullnameFormProps) {
       toast({
         description: t("profile.changeSuccess"),
       });
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
+      {loading && <LoadingOverlay />}
       <div className="font-semibold mb-2">{t("profile.name")}</div>
       <div className="flex flex-row justify-between items-center">
         <Input
@@ -71,9 +72,7 @@ export default function FullnameForm({ fullname }: FullnameFormProps) {
           {...register("fullname")}
           required
         />
-        <Button disabled={loading}>
-          {loading ? t("profile.loading") : t("profile.save")}
-        </Button>
+        <Button disabled={loading}>{t("profile.save")}</Button>
       </div>
       {errors?.fullname ? <ErrorText text={errors.fullname.message!} /> : null}
     </form>

@@ -5,6 +5,7 @@ import { useToast } from "@/components/hooks/use-toast";
 import { useState } from "react";
 import { updateIsActive } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 interface IsActiveFormProps {
   isActive: boolean;
@@ -27,25 +28,23 @@ export default function IsActiveForm({
         variant: "destructive",
         title: error,
       });
+      setLoading(false);
     } else {
       setIsActive(isActive);
       toast({
         description: t("profile.changeSuccess"),
       });
+      setLoading(false);
     }
-    setLoading(false);
   };
   return (
     <div>
+      {loading && <LoadingOverlay />}
       <div className="font-semibold mb-2">{t("profile.isActive")}</div>
       <div className="flex flex-row justify-between items-center">
         <span>{t("profile.isActiveDescription")}</span>
         <Button disabled={loading} onClick={() => handleActive(!isActive)}>
-          {loading
-            ? t("profile.loading")
-            : isActive
-            ? t("profile.isActiveStop")
-            : t("profile.isActiveStart")}
+          {isActive ? t("profile.isActiveStop") : t("profile.isActiveStart")}
         </Button>
       </div>
     </div>

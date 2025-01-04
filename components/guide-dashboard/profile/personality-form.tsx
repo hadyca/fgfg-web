@@ -13,6 +13,7 @@ import {
 import { updatePersonality } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { useLocale, useTranslations } from "next-intl";
 import { PERSONALITY_OPTIONS } from "@/lib/constants";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 interface PersonalityFormProps {
   personality: string;
@@ -53,16 +54,18 @@ export default function PersonalityForm({ personality }: PersonalityFormProps) {
         variant: "destructive",
         title: error,
       });
+      setLoading(false);
     } else {
       toast({
         description: t("profile.changeSuccess"),
       });
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
+      {loading && <LoadingOverlay />}
       <div className="font-semibold mb-2">{t("profile.personality")}</div>
       <div className="flex flex-row justify-between items-center">
         <div>
@@ -88,7 +91,7 @@ export default function PersonalityForm({ personality }: PersonalityFormProps) {
             ))}
           </select>
         </div>
-        <Button disabled={loading}>{loading ? "로딩 중" : "저장"}</Button>
+        <Button disabled={loading}>{t("profile.save")}</Button>
       </div>
       {errors?.personality ? (
         <ErrorText text={errors.personality.message!} />

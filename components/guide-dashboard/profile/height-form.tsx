@@ -13,6 +13,7 @@ import {
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import { updateHeight } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 interface HeightFormProps {
   height: string;
@@ -54,13 +55,13 @@ export default function HeightForm({ height }: HeightFormProps) {
       toast({
         description: t("profile.changeSuccess"),
       });
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
+      {loading && <LoadingOverlay />}
       <div className="font-semibold mb-2">{t("profile.height")}</div>
       <div className="flex flex-row justify-between items-center">
         <Input
@@ -69,9 +70,7 @@ export default function HeightForm({ height }: HeightFormProps) {
           {...register("height")}
           required
         />
-        <Button disabled={loading}>
-          {loading ? t("profile.loading") : t("profile.save")}
-        </Button>
+        <Button disabled={loading}>{t("profile.save")}</Button>
       </div>
       {errors?.height ? <ErrorText text={errors.height.message!} /> : null}
     </form>

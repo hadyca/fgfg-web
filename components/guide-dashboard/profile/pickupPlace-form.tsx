@@ -14,6 +14,7 @@ import { updatePickupPlace } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashb
 import GoogleMapApi from "@/components/googleMapApi";
 import { Textarea } from "@/components/ui/textarea";
 import { useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 interface PickupPlaceFormProps {
   pickupPlaceMain: string;
@@ -62,16 +63,18 @@ export default function PickupPlaceForm({
         variant: "destructive",
         title: error,
       });
+      setLoading(false);
     } else {
       toast({
         description: t("profile.changeSuccess"),
       });
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
+      {loading && <LoadingOverlay />}
       <div className="mb-3">
         <div className="font-semibold mb-2">{t("profile.pickupPlace")}</div>
         {errors?.pickupPlaceMain ? (
@@ -105,9 +108,7 @@ export default function PickupPlaceForm({
         />
       </div>
       <div className="flex justify-end mt-3">
-        <Button disabled={loading}>
-          {loading ? t("profile.loading") : t("profile.save")}
-        </Button>
+        <Button disabled={loading}>{t("profile.save")}</Button>
       </div>
     </form>
   );

@@ -15,6 +15,7 @@ import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { MinusCircleIcon } from "@heroicons/react/24/outline";
 import { LANGUAGE_OPTIONS } from "@/lib/constants";
 import { useLocale, useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 interface LanguageInput {
   id: number;
@@ -108,17 +109,18 @@ export default function LanguageForm({
         variant: "destructive",
         title: error,
       });
+      setLoading(false);
     } else {
       toast({
         description: t("profile.changeSuccess"),
       });
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
+      {loading && <LoadingOverlay />}
       <div className="font-semibold mb-2">{t("profile.languageAbility")}</div>
       <div className="flex flex-row justify-between items-center">
         <div className="space-y-1">
@@ -198,9 +200,7 @@ export default function LanguageForm({
             </Button>
           )}
         </div>
-        <Button disabled={loading}>
-          {loading ? t("profile.loading") : t("profile.save")}
-        </Button>
+        <Button disabled={loading}>{t("profile.save")}</Button>
       </div>
       {errors?.language ? <ErrorText text={errors.language.message!} /> : null}
     </form>

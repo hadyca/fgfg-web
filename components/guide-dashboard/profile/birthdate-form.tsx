@@ -13,6 +13,7 @@ import {
 } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/schema";
 import { updateBirthdate } from "@/app/[locale]/(main)/(onlyGuide)/guide-dashboard/(dashboard)/profile/actions";
 import { useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 interface BirthdateFormProps {
   birthdate: string;
@@ -54,12 +55,13 @@ export default function BirthdateForm({ birthdate }: BirthdateFormProps) {
       toast({
         description: t("profile.changeSuccess"),
       });
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit(onValid)}>
+      {loading && <LoadingOverlay />}
       <div className="font-semibold mb-2">{t("profile.birthdate")}</div>
       <div className="flex flex-row justify-between items-center">
         <Input
@@ -68,9 +70,7 @@ export default function BirthdateForm({ birthdate }: BirthdateFormProps) {
           {...register("birthdate")}
           required
         />
-        <Button disabled={loading}>
-          {loading ? t("profile.loading") : t("profile.save")}
-        </Button>
+        <Button disabled={loading}>{t("profile.save")}</Button>
       </div>
       {errors?.birthdate ? (
         <ErrorText text={errors.birthdate.message!} />

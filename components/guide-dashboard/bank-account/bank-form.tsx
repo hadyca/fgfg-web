@@ -36,6 +36,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { BANK_OPTIONS } from "@/lib/constants";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 interface BankFormProps {
   bankname?: BankType["bankname"];
@@ -86,13 +87,13 @@ export default function BankForm({ bankname, bankAccount }: BankFormProps) {
       toast({
         description: t("bankAccount.changeSuccess"),
       });
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr] pb-10">
+      {loading && <LoadingOverlay />}
       <form onSubmit={handleSubmit(onValid)}>
         <div className="font-semibold mb-2">{t("bankAccount.bankName")}</div>
         <div>
@@ -163,9 +164,7 @@ export default function BankForm({ bankname, bankAccount }: BankFormProps) {
             {...register("bankAccount")}
             required
           />
-          <Button disabled={loading}>
-            {loading ? t("bankAccount.loading") : t("bankAccount.save")}
-          </Button>
+          <Button disabled={loading}>{t("bankAccount.save")}</Button>
         </div>
         {errors?.bankAccount ? (
           <ErrorText text={errors.bankAccount.message!} />

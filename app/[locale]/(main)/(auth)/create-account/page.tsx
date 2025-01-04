@@ -13,6 +13,7 @@ import ErrorText from "@/components/errorText";
 import { Link } from "@/i18n/routing";
 import { Separator } from "@/components/ui/separator";
 import { useTranslations } from "next-intl";
+import { LoadingOverlay } from "@/components/loading-overlay";
 
 export default function CreateAccount() {
   const t = useTranslations();
@@ -38,15 +39,17 @@ export default function CreateAccount() {
     const result = await createAccount(formData);
     if (result?.type === "checkUsername") {
       setError("username", { message: result.error });
+      setLoading(false);
     }
     if (result?.type === "checkEmail") {
       setError("email", { message: result.error });
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
     <div className="absolute inset-0 flex justify-center items-center z-10">
+      {loading && <LoadingOverlay />}
       <Card className="w-full max-w-md pb-4 shadow-md">
         <CardHeader>
           <CardTitle>{t("createAccount.createAccount")}</CardTitle>
