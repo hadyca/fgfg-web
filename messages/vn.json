@@ -1,25 +1,25 @@
 {
   "main": {
-    "title": "Hãy trải nghiệm chuyến du lịch đáng nhớ ở TP.HCM cùng bạn gái Việt Nam!",
+    "title": "Hãy cùng đến quán ăn mà chỉ người địa phương ở Hồ Chí Minh biết nhé!",
     "selectDate": "Chọn ngày",
     "pickupTime": "Thời gian đón",
     "endTime": "Thời gian kết thúc",
     "nowReservation": "Đặt ngay",
     "checkDate": "Vui lòng kiểm tra lại ngày và giờ.",
     "serviceIntroduction": "Giới thiệu dịch vụ FGFG",
-    "localGirlfriend": "Một ngày với bạn gái địa phương",
-    "localGirlfriendDescription": "Tận hưởng một ngày đặc biệt với bạn gái hẹn hò một ngày để cảm nhận sự quyến rũ của Việt Nam.",
-    "experienceLocalCulture": "Trải nghiệm văn hóa địa phương sâu sắc",
-    "experienceLocalCultureDescription": "Trải nghiệm văn hóa địa phương thực sự do hướng dẫn viên giới thiệu, không phải những địa điểm du lịch thông thường.",
-    "customGuideService": "Dịch vụ hướng dẫn tùy chỉnh",
-    "customGuideServiceDescription": "Lên kế hoạch lịch trình du lịch tùy chỉnh với hướng dẫn viên dựa trên thời gian đặt và trải nghiệm mong muốn.",
-    "easyReservationProcess": "Quy trình đơn giản và dễ dàng",
-    "easyReservationProcessDescription": "Đặt chỗ dễ dàng và bắt đầu gặp gỡ nhanh chóng mà không cần thủ tục phức tạp.",
-    "specialDayWithLocalGirlfriend": "Hãy trải nghiệm một ngày đặc biệt với bạn gái Việt Nam.",
-    "specialDayWithLocalGirlfriendDescription": "Tận hưởng trải nghiệm đặc biệt như hẹn hò với bạn gái. Thông qua hướng dẫn viên, bạn có thể hiểu sâu hơn về suy nghĩ và văn hóa của phụ nữ Việt Nam.",
-    "internationalCouple": "Bạn có quan tâm đến các cặp đôi quốc tế?",
-    "internationalCoupleDescription": "Để biết liệu một cặp đôi quốc tế có phù hợp với bạn hay không, điều quan trọng nhất là hiểu và tiếp xúc nhiều lần với văn hóa của đất nước đó. Hãy trải nghiệm dễ dàng với giá cả phải chăng và thời gian hướng dẫn theo ý muốn.",
-    "betaTestDescription": "Chúng tôi hiện đang cung cấp dịch vụ beta. Nếu bạn gặp bất kỳ sự bất tiện hoặc có đề xuất cải thiện nào trong quá trình sử dụng, vui lòng gửi phản hồi đến hadycas@gmail.com bất cứ lúc nào. Ý kiến quý báu của bạn sẽ giúp chúng tôi tạo ra dịch vụ tốt hơn. Hãy tham gia cùng chúng tôi!"
+    "localGirlfriend": "Một Ngày Cùng Bạn Địa Phương",
+    "localGirlfriendDescription": "Chúng tôi sẽ là người bạn đáng tin cậy của bạn tại những điểm đến du lịch mới lạ.",
+    "experienceLocalCulture": "Văn Hóa Địa Phương Thực Sự",
+    "experienceLocalCultureDescription": "Thay vì các điểm du lịch phổ biến, bạn có muốn khám phá các quán ăn, khu phố chỉ có người dân địa phương biết đến không?",
+    "customGuideService": "Dịch Vụ Hướng Dẫn Tùy Chỉnh",
+    "customGuideServiceDescription": "Nếu bạn có hành trình riêng, không vấn đề gì! Chúng tôi sẽ đồng hành cùng bạn đến bất kỳ đâu",
+    "easyReservationProcess": "Quy Trình Đặt Chỗ Đơn Giản và Dễ Dàng",
+    "easyReservationProcessDescription": "Đặt chỗ dễ dàng mà không cần thủ tục phức tạp.",
+    "specialDayWithLocalGirlfriend": "Hướng Dẫn Viên Được Kiểm Chứng",
+    "specialDayWithLocalGirlfriendDescription": "Để đảm bảo an toàn cho khách hàng, chúng tôi kiểm tra kỹ lưỡng thông tin của các hướng dẫn viên trước khi đăng ký. Các hướng dẫn viên của chúng tôi trải qua quy trình kiểm tra bao gồm xét duyệt hồ sơ và phỏng vấn.",
+    "internationalCouple": "Lịch Trình Hướng Dẫn Linh Hoạt",
+    "internationalCoupleDescription": "Sau khi xem xét hồ sơ của hướng dẫn viên, bạn có thể chọn theo lịch trình của họ hoặc yêu cầu đến những địa điểm mà bạn muốn. Chúng tôi sẽ đồng hành và hỗ trợ bạn đến bất kỳ đâu.",
+    "betaTestDescription": "Chúng tôi hiện đang cung cấp dịch vụ beta. Nếu bạn gặp bất kỳ sự bất tiện hoặc có đề xuất cải thiện nào trong quá trình sử dụng, vui lòng gửi phản hồi đến vinaarba@gmail.com bất cứ lúc nào. Ý kiến quý báu của bạn sẽ giúp chúng tôi tạo ra dịch vụ tốt hơn. Hãy tham gia cùng chúng tôi!"
   },
   "login": {
     "login": "Đăng nhập",
@@ -155,7 +155,7 @@
     "amendmentOfTermsDescription": "Điều khoản này có thể được sửa đổi khi cần thiết và những thay đổi sẽ được thông báo ngay lập tức.",
     "amendmentOfTermsDescription2": "Người dùng có quyền từ chối các điều khoản đã sửa đổi và có thể ngừng sử dụng dịch vụ trong trường hợp này.",
     "contact": "9. Liên hệ",
-    "contactDescription": "Vui lòng liên hệ theo địa chỉ sau đây nếu có thắc mắc về điều khoản này: hadycas@gmail.com",
+    "contactDescription": "Vui lòng liên hệ theo địa chỉ sau đây nếu có thắc mắc về điều khoản này: vinaarba@gmail.com",
     "lastModified": "Cập nhật lần cuối: 19/12/2024"
   },
   "privacyPolicy": {
@@ -202,7 +202,7 @@
     "amendmentOfPrivacyPolicyDescription": "Khi chính sách bảo mật thay đổi, những thay đổi sẽ được thông báo trên trang web chính thức của fgfg.",
     "amendmentOfPrivacyPolicyDescription2": "Chính sách đã thay đổi sẽ có hiệu lực sau 7 ngày kể từ ngày thông báo, và những thay đổi quan trọng sẽ được thông báo trước ít nhất 30 ngày.",
     "contact": "11. Liên hệ",
-    "contactDescription": "Vui lòng liên hệ theo địa chỉ sau đây nếu có thắc mắc về chính sách bảo mật này: hadycas@gmail.com",
+    "contactDescription": "Vui lòng liên hệ theo địa chỉ sau đây nếu có thắc mắc về chính sách bảo mật này: vinaarba@gmail.com",
     "lastModified": "Cập nhật lần cuối: 19/12/2024"
   },
   "refundPolicy": {
@@ -211,7 +211,7 @@
     "description2": "Không hoàn tiền trong trường hợp khách hàng không xuất hiện vào thời gian đã đặt.",
     "description3": "Không thể hủy đặt chỗ và hoàn tiền sau khi hướng dẫn viên đã xác nhận đặt chỗ.",
     "description4": "Không hoàn tiền chỉ vì không hài lòng với dịch vụ hướng dẫn.",
-    "contact": "Vui lòng liên hệ qua email sau để yêu cầu hoàn tiền hoặc giải đáp thắc mắc: hadycas@gmail.com",
+    "contact": "Vui lòng liên hệ qua email sau để yêu cầu hoàn tiền hoặc giải đáp thắc mắc: vinaarba@gmail.com",
     "lastModified": "Cập nhật lần cuối: 19/12/2024"
   },
   "signUpGuide": {
@@ -246,9 +246,9 @@
     "confirm": "Xác nhận",
     "guideQandA": "Câu hỏi thường gặp",
     "guideQandA1": "Q. Tôi sẽ làm những hoạt động gì với tư cách là hướng dẫn viên?",
-    "guideQandA1Answer1": "Bạn sẽ đóng vai trò là hướng dẫn viên, thoải mái và thân thiện như một người bạn gái thực sự cho khách du lịch nước ngoài.",
+    "guideQandA1Answer1": "Bạn sẽ đóng vai trò là hướng dẫn viên, thoải mái và thân thiện như một người bạn thực sự cho khách du lịch nước ngoài.",
     "guideQandA1Answer2": "Bạn sẽ cùng khách tham quan các địa điểm du lịch, trò chuyện thông thường và giúp họ trải nghiệm văn hóa Việt Nam sâu sắc hơn. Bạn có thể giới thiệu các quán ăn địa phương hoặc những địa điểm đặc biệt mà chỉ bạn biết để tạo trải nghiệm độc đáo cho khách.",
-    "guideQandA1Answer3": "Đối với khách hàng, bạn không chỉ là một hướng dẫn viên du lịch đơn thuần mà còn là một người bạn gái đặc biệt chia sẻ cuộc sống hàng ngày thực sự của Việt Nam.",
+    "guideQandA1Answer3": "Đối với khách hàng, bạn không chỉ là một hướng dẫn viên du lịch đơn thuần mà còn là một người bạn đặc biệt chia sẻ cuộc sống hàng ngày thực sự của Việt Nam.",
     "guideQandA2": "Q. Tôi không giỏi ngoại ngữ, có sao không?",
     "guideQandA2Answer": "Không sao cả. Khả năng ngoại ngữ không phải là yêu cầu bắt buộc. Hãy thoải mái đăng ký.",
     "guideQandA3": "Q. Tôi có cần phỏng vấn không?",

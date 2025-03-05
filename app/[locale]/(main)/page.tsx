@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 
 export const metadata = {
   title: {
-    absolute: "프지프지 FGFG - 베트남 여친 가이드",
+    absolute: "프지프지 FGFG - 해외 여행자를 위한 현지 일반인 가이드 매칭 서비스",
   },
 };
 export default function Home() {

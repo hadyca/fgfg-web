@@ -252,11 +252,6 @@ export default function CheckoutForm({
         </div>
         <div className="relative pl-3">
           <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
-            {t("reservation.basicRulesDescription2")}
-          </p>
-        </div>
-        <div className="relative pl-3">
-          <p className="before:content-['•'] before:absolute before:left-0 before:text-black">
             {t("reservation.basicRulesDescription3")}
           </p>
         </div>

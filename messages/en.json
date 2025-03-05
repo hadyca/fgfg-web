@@ -1,25 +1,25 @@
 {
   "main": {
-    "title": "Experience an Unforgettable Ho Chi Minh City Tour with a Vietnamese Girlfriend!",
+    "title": "Let's go to a restaurant in Ho Chi Minh that only locals know about!",
     "selectDate": "Select Date",
     "pickupTime": "Pickup Time",
     "endTime": "End Time",
     "nowReservation": "Book Now",
     "checkDate": "Please check the date and time again.",
     "serviceIntroduction": "FGFG Service Introduction",
-    "localGirlfriend": "A Day with a Local Girlfriend",
-    "localGirlfriendDescription": "Enjoy a special day with a daily girlfriend who can help you experience Vietnam's charm.",
-    "experienceLocalCulture": "Deep Local Culture Experience",
-    "experienceLocalCultureDescription": "Experience real local culture recommended by guides, not just typical tourist spots.",
+    "localGirlfriend": "A Day with a Local Friend",
+    "localGirlfriendDescription": "We’ll be your reliable friend in a new and unfamiliar travel destination.",
+    "experienceLocalCulture": "Authentic Local Culture",
+    "experienceLocalCultureDescription": "How about exploring hidden local gems, neighborhood strolls, and restaurants that only locals know about, instead of the usual tourist spots?",
     "customGuideService": "Customized Guide Service",
-    "customGuideServiceDescription": "Plan your customized travel itinerary with guides based on your preferred time and experiences.",
-    "easyReservationProcess": "Simple and Easy Process",
-    "easyReservationProcessDescription": "Start your meeting quickly and easily without complicated procedures.",
-    "specialDayWithLocalGirlfriend": "Experience a Special Day with a Vietnamese Girlfriend",
-    "specialDayWithLocalGirlfriendDescription": "Enjoy a special experience like dating a girlfriend. Through the guide, you can better understand Vietnamese women's thoughts and culture.",
-    "internationalCouple": "Interested in International Couples?",
-    "internationalCoupleDescription": "To find out if international relationships are right for you, it's important to understand and experience the culture multiple times. Try it easily with affordable prices and flexible guide times.",
-    "betaTestDescription": "We are currently providing beta service. If you have any inconveniences or suggestions for improvement while using the service, please send feedback to hadycas@gmail.com. Your valuable opinions help us create better services. Please participate actively!"
+    "customGuideServiceDescription": "If you have a specific itinerary in mind, no problem! We’ll be with you wherever you go.",
+    "easyReservationProcess": "Simple and Easy Reservation",
+    "easyReservationProcessDescription": "Book easily without complicated procedures.",
+    "specialDayWithLocalGirlfriend": "Verified Guides",
+    "specialDayWithLocalGirlfriendDescription": "For your safety, we thoroughly verify the identity of all guides before registering them. Our guides pass a 2-step process: a document review and an interview.",
+    "internationalCouple": "Flexible Guide Itinerary",
+    "internationalCoupleDescription": "After reviewing the guide’s profile, you can choose to follow their itinerary or request a place you want to visit. We will accompany and support you wherever you go.",
+    "betaTestDescription": "We are currently providing beta service. If you have any inconveniences or suggestions for improvement while using the service, please send feedback to vinaarba@gmail.com. Your valuable opinions help us create better services. Please participate actively!"
   },
   "login": {
     "login": "Login",
@@ -155,7 +155,7 @@
     "amendmentOfTermsDescription": "These terms may be amended when necessary, and changes will be notified immediately.",
     "amendmentOfTermsDescription2": "Users have the right to reject amended terms and may discontinue service use in such cases.",
     "contact": "9. Contact",
-    "contactDescription": "Please contact the following email for inquiries about these terms: hadycas@gmail.com",
+    "contactDescription": "Please contact the following email for inquiries about these terms: vinaarba@gmail.com",
     "lastModified": "Last modified: December 19, 2024"
   },
   "privacyPolicy": {
@@ -202,7 +202,7 @@
     "amendmentOfPrivacyPolicyDescription": "When privacy policy changes occur, changes will be posted on the official fgfg website.",
     "amendmentOfPrivacyPolicyDescription2": "Changed policies take effect 7 days after posting, and important changes are notified at least 30 days in advance.",
     "contact": "11. Contact",
-    "contactDescription": "Please contact the following email for inquiries about this privacy policy: hadycas@gmail.com",
+    "contactDescription": "Please contact the following email for inquiries about this privacy policy: vinaarba@gmail.com",
     "lastModified": "Last modified: December 19, 2024"
   },
   "refundPolicy": {
@@ -211,7 +211,7 @@
     "description2": "No refunds are available for customer no-shows at the scheduled time.",
     "description3": "Cancellations and refunds are not possible after guide confirmation of the booking.",
     "description4": "Refunds are not available for simple dissatisfaction with guide services.",
-    "contact": "Please contact the following email for refund requests or inquiries: hadycas@gmail.com",
+    "contact": "Please contact the following email for refund requests or inquiries: vinaarba@gmail.com",
     "lastModified": "Last modified: December 19, 2024"
   },
   "signUpGuide": {
@@ -246,9 +246,9 @@
     "confirm": "Confirm",
     "guideQandA": "Frequently Asked Questions",
     "guideQandA1": "Q. What activities will I do as a guide?",
-    "guideQandA1Answer1": "You will act as a guide, being comfortable and friendly like a real girlfriend for foreign tourists.",
+    "guideQandA1Answer1": "You will act as a guide, being comfortable and friendly like a real friend for foreign tourists.",
     "guideQandA1Answer2": "You will visit tourist spots with customers, have casual conversations, and help them experience Vietnamese culture more deeply. You can introduce local restaurants or special places that only you know to create unique experiences for customers.",
-    "guideQandA1Answer3": "For customers, you are not just a tour guide but a special girlfriend sharing the real daily life of Vietnam.",
+    "guideQandA1Answer3": "For customers, you are not just a tour guide but a special friend sharing the real daily life of Vietnam.",
     "guideQandA2": "Q. I'm not good at foreign languages, is that okay?",
     "guideQandA2Answer": "That's fine. Language ability is not a requirement. Feel free to apply.",
     "guideQandA3": "Q. Do I need an interview?",

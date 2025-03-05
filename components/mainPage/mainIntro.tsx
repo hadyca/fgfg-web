@@ -64,7 +64,7 @@ export default function MainIntro() {
             <Image
               fill
               src={
-                "https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/69ed51ec-a776-46bd-46a1-5e1d1e33c700/mainphoto"
+                "https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/5b31ce8d-1098-4813-a99b-558dfed36300/mainphoto"
               }
               alt={"guide main photo"}
               className="object-cover"
@@ -80,7 +80,7 @@ export default function MainIntro() {
             <Image
               fill
               src={
-                "https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/684c2c63-e75b-45e9-8770-7d6cff5f8700/mainphoto"
+                "https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/5c6fd55a-d986-4618-95c5-b3487c120600/mainphoto"
               }
               alt={"guide main photo"}
               className="object-cover"

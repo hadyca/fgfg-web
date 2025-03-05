@@ -58,12 +58,6 @@ export default function GuideQandA() {
             {t("signUpGuide.guideQandA6Answer")}
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="item-4">
-          <AccordionTrigger>{t("signUpGuide.guideQandA7")}</AccordionTrigger>
-          <AccordionContent>
-            {t("signUpGuide.guideQandA7Answer")}
-          </AccordionContent>
-        </AccordionItem>
         <AccordionItem value="item-9">
           <AccordionTrigger>{t("signUpGuide.guideQandA8")}</AccordionTrigger>
           <AccordionContent>

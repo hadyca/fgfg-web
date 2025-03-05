@@ -16,10 +16,10 @@ const fontSans = FontSans({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s - FGFG Foreign GirlFriend Guide",
+    template: "%s - FGFG Foreign Guide for Global Friends",
     default: "프지프지 FGFG",
   },
-  description: "베트남 여친 가이드",
+  description: "해외 여행자를 위한 현지 일반인 가이드 매칭 서비스",
   keywords: [
     "fgfg",
     "FGFG",
@@ -32,6 +32,9 @@ export const metadata: Metadata = {
     "베트남 여친",
     "베트남 연애",
     "베트남 여자",
+    "호치민",
+    "호치민 여행",
+    "호치민 가이드",
     "렌탈 여친",
     "프지프지",
     "베트남 국제 커플",

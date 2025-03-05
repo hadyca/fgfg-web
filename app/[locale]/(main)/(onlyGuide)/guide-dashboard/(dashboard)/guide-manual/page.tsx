@@ -50,7 +50,7 @@ export default async function GuideManual() {
                   {t("guideManual.checkReservationNumber")}
                 </a>
               </Link>
-              <br />({t("guideManual.admin")} email : hadycas@gmail.com )
+              <br />({t("guideManual.admin")} email : vinaarba@gmail.com )
             </li>
           </div>
         </div>
