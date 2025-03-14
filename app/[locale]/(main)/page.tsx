@@ -1,11 +1,13 @@
 import Footer from "@/components/mainPage/footer";
 import HeroSectionForm from "@/components/mainPage/heroSectionForm";
 import MainIntro from "@/components/mainPage/mainIntro";
+import MainPopup from "@/components/mainPage/MainPopup";
 import { useTranslations } from "next-intl";
 
 export const metadata = {
   title: {
-    absolute: "프지프지 FGFG - 해외 여행자를 위한 현지 일반인 가이드 매칭 서비스",
+    absolute:
+      "프지프지 FGFG - 해외 여행자를 위한 현지 일반인 가이드 매칭 서비스",
   },
 };
 export default function Home() {
@@ -13,6 +15,7 @@ export default function Home() {
 
   return (
     <main>
+      <MainPopup />
       <section
         className="relative h-[60vh] md:h-[50vh] bg-cover bg-center"
         style={{
