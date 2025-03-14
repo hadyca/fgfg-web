@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "../ui/button";
 
 export default function MainPopup() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState<boolean | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -15,6 +15,8 @@ export default function MainPopup() {
 
       if (popupHideDate === today) {
         setIsOpen(false);
+      } else {
+        setIsOpen(true);
       }
     }
   }, []);
@@ -29,7 +31,8 @@ export default function MainPopup() {
     setIsOpen(false);
   };
 
-  if (!isOpen) return null;
+  if (isOpen === null) return null;
+  if (isOpen === false) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
