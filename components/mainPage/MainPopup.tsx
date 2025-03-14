@@ -35,13 +35,13 @@ export default function MainPopup() {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <Card className="max-w-md w-full mx-4">
         <CardContent className="p-4">
-          <div className="relative w-full h-[500px]">
+          <div className="relative w-full aspect-[3/4] md:h-[500px]">
             <Image
               src={
                 "https://imagedelivery.net/dGGUSNmPRJm6ENhe7q2fhw/1f2d5a74-9fc6-4f46-30e7-f4a46747df00/detail"
               }
               alt={"guide post"}
-              className="object-cover"
+              className="object-contain md:object-cover"
               sizes="(max-width: 768px) 100vw, 500px"
               priority
               fill
