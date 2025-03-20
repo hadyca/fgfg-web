@@ -23,7 +23,7 @@ import {
   formatCurrency,
 } from "@/lib/utils";
 import { useRouter } from "@/i18n/routing";
-import { SERVICE_FEE } from "@/lib/constants";
+import { HOUR_FEE } from "@/lib/constants";
 import { useLocale, useTranslations } from "next-intl";
 
 interface Reservation {
@@ -323,14 +323,14 @@ export default function ReservationDateForm(props: ReservationDateFormProps) {
           {calculateGapTime(startTime, endTime) > 1 ? (
             <div className="flex justify-between">
               <span className="underline">
-                {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTime(
+                {`${formatCurrency(HOUR_FEE)} x ${calculateGapTime(
                   startTime,
                   endTime
                 )}${t("guideProfile.hour")}`}
               </span>
               <span>
                 {formatCurrency(
-                  SERVICE_FEE * calculateGapTime(startTime, endTime)
+                  HOUR_FEE * calculateGapTime(startTime, endTime)
                 )}
               </span>
             </div>

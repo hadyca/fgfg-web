@@ -8,7 +8,7 @@ import {
   convertToVietnamTime,
   formatCurrency,
 } from "@/lib/utils";
-import { SERVICE_FEE } from "@/lib/constants";
+import { HOUR_FEE } from "@/lib/constants";
 import { Button } from "../../ui/button";
 import {
   CheckCircleIcon,
@@ -93,6 +93,7 @@ export default function GuideReservationList({
       return;
     }
     setReject(reservationId);
+    setRejectLoading(false);
   };
 
   const handleConfirm = async (reservationId: number) => {
@@ -107,6 +108,7 @@ export default function GuideReservationList({
       return;
     }
     setConfirm(reservationId);
+    setConfirmLoading(false);
   };
   return (
     <div className="flex flex-col gap-5">
@@ -269,7 +271,7 @@ export default function GuideReservationList({
               </div>
               <div>
                 <span className="underline">
-                  {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTimeISO(
+                  {`${formatCurrency(HOUR_FEE)} x ${calculateGapTimeISO(
                     reservation.startTime,
                     reservation.endTime
                   )}${t("guideReservations.hour")}`}

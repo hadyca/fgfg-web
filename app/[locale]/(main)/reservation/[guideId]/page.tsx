@@ -9,7 +9,7 @@ import {
   formatCurrency,
   isValidISODate,
 } from "@/lib/utils";
-import { PERSONALITY_OPTIONS, SERVICE_FEE } from "@/lib/constants";
+import { PERSONALITY_OPTIONS, HOUR_FEE } from "@/lib/constants";
 import ReservationCreateAccount from "@/components/reservation/reservationCreatAccount";
 import getUser from "@/lib/getUser";
 import ReservationLoggedInInfo from "@/components/reservation/reservatioLoggedInInfo";
@@ -61,7 +61,7 @@ export default async function Reservation(props: ReservationProps) {
   const isMe = Boolean(guideId === user?.me?.guide?.id);
 
   const amount =
-    SERVICE_FEE *
+    HOUR_FEE *
     calculateGapTimeISO(
       props.searchParams.starttime,
       props.searchParams.endtime
@@ -124,7 +124,7 @@ export default async function Reservation(props: ReservationProps) {
             <div>
               <div className="flex justify-between">
                 <span className="underline">
-                  {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTimeISO(
+                  {`${formatCurrency(HOUR_FEE)} x ${calculateGapTimeISO(
                     props.searchParams.starttime,
                     props.searchParams.endtime
                   )}${t("reservation.hour")}`}

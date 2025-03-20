@@ -1,5 +1,5 @@
 export const PASSWORD_MIN_LENGTH = 8;
-export const SERVICE_FEE = 20000;
+export const HOUR_FEE = 15000;
 
 export const UNAVAILABLE_USERNAME = ["master", "admin", "fgfg", "sex", "guide"];
 export const DATE_REGEX = new RegExp(/^\d{4}-\d{2}-\d{2}$/);

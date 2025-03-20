@@ -10,7 +10,7 @@ import {
   convertToVietnamTime,
   formatCurrency,
 } from "@/lib/utils";
-import { SERVICE_FEE } from "@/lib/constants";
+import { HOUR_FEE } from "@/lib/constants";
 import { Button } from "../../ui/button";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import {
@@ -77,6 +77,7 @@ export default function UserReservationList({
       return formattedDate;
     }
   };
+
   const handleContinueDialog = async (reservationId: number) => {
     setLoading(true);
 
@@ -86,6 +87,7 @@ export default function UserReservationList({
         variant: "destructive",
         title: error,
       });
+      setLoading(false);
       return;
     }
     setCancel(reservationId);
@@ -214,7 +216,7 @@ export default function UserReservationList({
               <div className="font-semibold">{t("reservations.feeDetail")}</div>
               <div>
                 <span className="underline">
-                  {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTimeISO(
+                  {`${formatCurrency(HOUR_FEE)} x ${calculateGapTimeISO(
                     reservation.startTime,
                     reservation.endTime
                   )}${t("reservations.hour")}`}

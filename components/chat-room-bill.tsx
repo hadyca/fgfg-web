@@ -8,7 +8,7 @@ import {
   formatCurrency,
 } from "@/lib/utils";
 import { Separator } from "./ui/separator";
-import { SERVICE_FEE } from "@/lib/constants";
+import { HOUR_FEE } from "@/lib/constants";
 import { useChatRoomStore } from "@/store/useChatRoomStore";
 import { DateTime } from "luxon";
 import { useLocale, useTranslations } from "next-intl";
@@ -98,14 +98,14 @@ export default function ChatRoomBill({ chatRoomId }: ChatRoomBillProps) {
               <div>
                 <div className="flex justify-between">
                   <span className="underline">
-                    {`${formatCurrency(SERVICE_FEE)} x ${calculateGapTimeISO(
+                    {`${formatCurrency(HOUR_FEE)} x ${calculateGapTimeISO(
                       bill.startTime,
                       bill.endTime
                     )}${t("chatRoom.hour")}`}
                   </span>
                   <span>
                     {formatCurrency(
-                      SERVICE_FEE *
+                      HOUR_FEE *
                         calculateGapTimeISO(bill.startTime, bill.endTime)
                     )}
                   </span>
