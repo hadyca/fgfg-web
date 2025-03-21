@@ -378,8 +378,8 @@
     "reservationInfo": "Thông tin đặt chỗ",
     "date": "Ngày",
     "time": "Thời gian",
-    "paymentMethod": "Phương thức thanh toán",
-    "paymentMethodDescription": "Vui lòng tham khảo nội dung trang sau khi yêu cầu đặt chỗ.",
+    "paymentMethod": "Thanh toán và các câu hỏi khác",
+    "paymentMethodDescription": "Instagram DM hoặc KakaoTalk https://open.kakao.com/o/s4tBl8hh",
     "customerAgeRange": "Độ tuổi của khách",
     "customerAgeRangeDescription": "Thông tin cần cung cấp trước cho hướng dẫn viên.",
     "addAgeRange": "Thêm độ tuổi",
@@ -411,7 +411,7 @@
   },
   "paymentSuccess": {
     "title": "Đặt chỗ đã hoàn tất!",
-    "description": "Để xử lý thanh toán bổ sung, vui lòng gửi số đặt chỗ của bạn đến KakaoTalk ID: rlawpgud",
+    "description": "Vui lòng cung cấp số đặt chỗ của bạn qua thông tin liên hệ bên dưới để tiến hành thanh toán bổ sung.",
     "reservationNumber": "Số đặt chỗ",
     "reservationCanceled": "Đặt chỗ sẽ tự động bị hủy nếu không xử lý thanh toán trong vòng 24 giờ. Sau khi thanh toán, vui lòng đợi sự chấp thuận của hướng dẫn viên.",
     "goToHome": "Trở về Trang chủ"

@@ -378,8 +378,8 @@
     "reservationInfo": "예약 정보",
     "date": "날짜",
     "time": "시간",
-    "paymentMethod": "결제 방법",
-    "paymentMethodDescription": "예약 요청 후, 페이지 내용 참조 바랍니다.",
+    "paymentMethod": "결제 및 기타 문의",
+    "paymentMethodDescription": "인스타그램DM 또는 카카오톡 https://open.kakao.com/o/s4tBl8hh 으로 연락주세요.",
     "customerAgeRange": "고객님 연령대",
     "customerAgeRangeDescription": "가이드에게 미리 제공해야 할 정보입니다.",
     "addAgeRange": "연령대 추가",
@@ -411,7 +411,7 @@
   },
   "paymentSuccess": {
     "title": "예약이 완료되었습니다!",
-    "description": "추가 결제 진행을 위해, 아래 예약 번호를 카카오톡 ID: rlawpgud로 알려주세요.",
+    "description": "추가 결제 진행을 위해 아래 연락처로 예약 번호를 알려주세요.",
     "reservationNumber": "예약 번호",
     "reservationCanceled": "24시간 이내 결제 진행을 하시지 않으면 예약은 자동 취소 됩니다. 결제 후, 가이드의 승인을 기다려주세요.",
     "goToHome": "홈으로 돌아가기"

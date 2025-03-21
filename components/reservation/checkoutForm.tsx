@@ -28,7 +28,8 @@ import { Link } from "@/i18n/routing";
 import { useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { LoadingOverlay } from "../loading-overlay";
-
+import { FaInstagram } from "react-icons/fa";
+import { RiKakaoTalkFill } from "react-icons/ri";
 interface CheckoutFormProps {
   amount: number;
   isMe: boolean;
@@ -136,7 +137,28 @@ export default function CheckoutForm({
         <div className="text-xl font-semibold">
           {t("reservation.paymentMethod")}
         </div>
-        <span>{t("reservation.paymentMethodDescription")}</span>
+        <div className="flex flex-col gap-2">
+          <div className="text-primary flex flex-row items-center gap-2">
+            <FaInstagram className="size-4" />
+            <Link
+              href="https://www.instagram.com/fgfgglobal/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram DM
+            </Link>
+          </div>
+          <div className="text-primary flex flex-row items-center gap-2">
+            <RiKakaoTalkFill className="size-4" />
+            <Link
+              href="https://open.kakao.com/o/s4tBl8hh"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              KakaoTalk Open Chat
+            </Link>
+          </div>
+        </div>
       </div>
       <Separator className="my-8" />
       <div className="flex flex-col gap-3">

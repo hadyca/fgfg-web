@@ -378,8 +378,8 @@
     "reservationInfo": "Reservation Information",
     "date": "Date",
     "time": "Time",
-    "paymentMethod": "Payment Method",
-    "paymentMethodDescription": "Please refer to the page content after reservation request.",
+    "paymentMethod": "Payment and Other Inquiries",
+    "paymentMethodDescription": "Instagram DM or KakaoTalk https://open.kakao.com/o/s4tBl8hh",
     "customerAgeRange": "Customer Age Range",
     "customerAgeRangeDescription": "Information that needs to be provided to the guide in advance.",
     "addAgeRange": "Add Age Range",
@@ -411,7 +411,7 @@
   },
   "paymentSuccess": {
     "title": "Reservation Complete!",
-    "description": "For additional payment processing, please send your reservation number to KakaoTalk ID: rlawpgud",
+    "description": "Please provide your reservation number to the contact information below to proceed with additional payment.",
     "reservationNumber": "Reservation Number",
     "reservationCanceled": "The reservation will be automatically canceled if payment is not processed within 24 hours. After payment, please wait for guide approval.",
     "goToHome": "Return to Home"
