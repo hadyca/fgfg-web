@@ -182,7 +182,9 @@ export default async function guideProfile(props: GuideProfileProps) {
             <div className="text-xl font-medium">
               {t("guideProfile.introduction")}
             </div>
-            <div>{guide?.seeGuide?.guideIntro}</div>
+            <div className="whitespace-pre-wrap">
+              {guide?.seeGuide?.guideIntro}
+            </div>
           </div>
           <Separator className="my-8" />
         </div>
