@@ -45,47 +45,52 @@ export default function ContactGuideForm({
   });
 
   const onValid = async (data: ContactGuideType) => {
-    setLoading(true);
-    const formData = new FormData();
-    formData.append("payload", data.payload);
-    const { ok, error, chatRoom, messageId } = await createChatRoom(
-      formData,
-      guideId
-    );
-    if (!ok) {
-      toast({
-        variant: "destructive",
-        title: error,
-      });
-      return;
-    }
+    try {
+      setLoading(true);
+      const formData = new FormData();
+      formData.append("payload", data.payload);
+      const { ok, error, chatRoom, messageId } = await createChatRoom(
+        formData,
+        guideId
+      );
+      if (!ok) {
+        toast({
+          variant: "destructive",
+          title: error,
+        });
+        return;
+      }
 
-    otherUserChannel.current = supabase.channel(`user-${chatRoom.otherUserId}`);
+      otherUserChannel.current = supabase.channel(
+        `user-${chatRoom.otherUserId}`
+      );
 
-    if (otherUserChannel.current) {
-      otherUserChannel.current.send({
-        type: "broadcast",
-        event: "message",
-        payload: {
-          id: messageId,
-          chatRoomId: chatRoom.id,
-          message: data.payload,
-          user: {
-            id: userId,
-            username,
+      if (otherUserChannel.current) {
+        otherUserChannel.current.send({
+          type: "broadcast",
+          event: "message",
+          payload: {
+            id: messageId,
+            chatRoomId: chatRoom.id,
+            message: data.payload,
+            user: {
+              id: userId,
+              username,
+              avatar,
+            },
+            isMyMessage: true,
+            createdAt: new Date().toISOString(),
             avatar,
+            usernameOrFullname: username,
+            isRead: false,
           },
-          isMyMessage: true,
-          createdAt: new Date().toISOString(),
-          avatar,
-          usernameOrFullname: username,
-          isRead: false,
-        },
-      });
+        });
+      }
+      await router.push(`/chat-room/${chatRoom.id}`);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
     }
-
-    router.push(`/chat-room/${chatRoom.id}`);
-    setLoading(false);
   };
 
   return (
